@@ -16,7 +16,7 @@ export default function PricingPage() {
           <h1 className="font-display text-5xl">Pricing</h1>
           <p className="mt-4 text-ink-soft">
             Every tier includes a fully designed, mobile-ready invite. Higher
-            tiers add motion, sound, AI personalization, and — at Platinum —
+            tiers add motion, sound, deeper personalization, and — at Platinum —
             a uniquely named invite for every guest on your list.
           </p>
         </section>

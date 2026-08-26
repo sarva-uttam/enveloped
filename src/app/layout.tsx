@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { LocaleProvider } from "@/lib/i18n/LocaleContext";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -17,7 +18,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Enveloped — Digital invites people actually open",
   description:
-    "Create a beautiful, personalized digital invite for your wedding or event in minutes. AI-crafted, tier by tier, delivered as a moment worth clicking.",
+    "Create a beautiful, personalized digital invite for your wedding or event in minutes — tier by tier, delivered as a moment worth clicking.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
-        {children}
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );

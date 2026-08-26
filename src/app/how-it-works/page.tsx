@@ -15,8 +15,8 @@ const STAGES = [
     body: "Bronze is clean and fast. Platinum is a full cinematic experience with a uniquely named invite generated for every guest on your list.",
   },
   {
-    title: "3. AI writes and designs it",
-    body: "Your answers go to an AI model that writes warm, tasteful copy and assembles your invite — headline, welcome message, event details, and a matching color palette — in under a minute.",
+    title: "3. We write and design it",
+    body: "Your answers become warm, tasteful copy and a fully assembled invite — headline, welcome message, event details, and a matching color palette — in under a minute.",
   },
   {
     title: "4. Deliver it as a moment",

@@ -1,5 +1,9 @@
 -- Enveloped — persistence schema.
--- Already applied to the connected Supabase project (ravfwnqfxngphncuyyxo).
+-- Base tables already applied to the connected Supabase project
+-- (ravfwnqfxngphncuyyxo). The `paid` / `paypal_order_id` columns and the
+-- "invites public update" policy below are NOT applied yet — run the
+-- "-- Payment gating migration" block at the bottom against that project
+-- (SQL editor or `supabase db execute`) before the PayPal flow will work.
 -- Kept here so the schema is reproducible / reviewable in source control.
 
 create extension if not exists pgcrypto;
@@ -11,6 +15,8 @@ create table if not exists invites (
   tier text not null check (tier in ('bronze', 'silver', 'gold', 'platinum')),
   answers jsonb not null,
   content jsonb not null,
+  paid boolean not null default false,
+  paypal_order_id text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -49,6 +55,7 @@ alter table invite_rsvps enable row level security;
 -- column so one couple can't edit or read another's invite.
 create policy "invites public read" on invites for select using (true);
 create policy "invites public insert" on invites for insert with check (true);
+create policy "invites public update" on invites for update using (true) with check (true);
 
 create policy "invite_guests public read" on invite_guests for select using (true);
 create policy "invite_guests public insert" on invite_guests for insert with check (true);
@@ -56,3 +63,10 @@ create policy "invite_guests public update" on invite_guests for update using (t
 
 create policy "invite_rsvps public read" on invite_rsvps for select using (true);
 create policy "invite_rsvps public insert" on invite_rsvps for insert with check (true);
+
+-- Payment gating migration — run this against the already-provisioned
+-- project to bring it up to date with the two table changes above.
+alter table invites add column if not exists paid boolean not null default false;
+alter table invites add column if not exists paypal_order_id text;
+drop policy if exists "invites public update" on invites;
+create policy "invites public update" on invites for update using (true) with check (true);

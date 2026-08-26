@@ -109,6 +109,7 @@ export function SurveyFlow({
       content,
       guestList,
       createdAt: new Date().toISOString(),
+      paid: false,
     });
 
     setLoading(false);
@@ -273,7 +274,7 @@ export function SurveyFlow({
             <div>
               <h2 className="font-display text-3xl">Ready when you are</h2>
               <p className="mt-2 text-ink-soft">
-                Our AI will write and design your invite from these answers.
+                We&apos;ll write and design your invite from these answers.
               </p>
               <div className="mt-8 space-y-2 rounded-2xl border border-line bg-paper-raised p-6 text-sm">
                 <ReviewRow label="Category" value={EVENT_CATEGORIES.find((c) => c.id === answers.category)?.label} />

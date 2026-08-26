@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Sparkles, ListChecks, Wand2, Send } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { FloatingMotif } from "@/components/site/FloatingMotif";
+import { Hero } from "@/components/site/Hero";
 import { TeaserDemo } from "@/components/site/TeaserDemo";
 import { EVENT_CATEGORIES } from "@/lib/categories";
 import { TIERS } from "@/lib/tiers";
@@ -20,8 +20,8 @@ const STEPS = [
   },
   {
     icon: Wand2,
-    title: "AI crafts your invite",
-    body: "Our AI writes the wording and assembles your design from your answers — ready to review in under a minute.",
+    title: "We craft your invite",
+    body: "We write the wording and assemble your design from your answers — ready to review in under a minute.",
   },
   {
     icon: Send,
@@ -35,42 +35,7 @@ export default function Home() {
     <>
       <Navbar />
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-line">
-          <FloatingMotif count={16} />
-          <div className="relative mx-auto max-w-4xl px-6 py-28 text-center sm:py-36">
-            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
-              <Sparkles className="h-3.5 w-3.5 text-gold" />
-              AI-crafted digital invites
-            </span>
-            <h1 className="mt-8 font-display text-5xl leading-[1.05] tracking-tight sm:text-7xl">
-              Skip the printer.
-              <br />
-              Send a <span className="italic text-blush">moment</span> instead.
-            </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-ink-soft">
-              A digital invite platform built for weddings — and everything
-              else worth celebrating. Answer a few questions, let AI write
-              and design it, then deliver it as an irresistible &ldquo;click
-              me&rdquo; — not a link full of gibberish.
-            </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/survey"
-                className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
-              >
-                Start my invite
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                href="/templates"
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised px-7 py-3.5 text-sm font-medium text-ink transition hover:border-ink"
-              >
-                See templates
-              </Link>
-            </div>
-          </div>
-        </section>
+        <Hero />
 
         {/* How it works */}
         <section id="how" className="mx-auto max-w-6xl px-6 py-24">
@@ -154,8 +119,8 @@ export default function Home() {
                   <div className="text-sm font-medium uppercase tracking-wide" style={{ color: tier.colorVar }}>
                     {tier.name}
                   </div>
-                  <div className="mt-2 font-display text-3xl">${tier.price}</div>
-                  <p className="mt-2 text-sm text-ink-soft">{tier.tagline}</p>
+                  <p className="mt-2 font-display text-xl">{tier.tagline}</p>
+                  <p className="mt-2 text-sm text-ink-soft">{tier.description}</p>
                   <ul className="mt-4 flex-1 space-y-1.5 text-xs text-ink-soft">
                     {tier.highlights.slice(0, 3).map((h) => (
                       <li key={h}>· {h}</li>

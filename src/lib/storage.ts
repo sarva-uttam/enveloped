@@ -7,6 +7,7 @@ export interface StoredInvite {
   content: GeneratedInviteContent;
   guestList: GuestEntry[];
   createdAt: string;
+  paid: boolean;
 }
 
 const INDEX_KEY = "enveloped:invites";
@@ -120,6 +121,7 @@ export async function getInvite(id: string): Promise<StoredInvite | null> {
         content: inviteRow.content,
         guestList,
         createdAt: inviteRow.created_at,
+        paid: Boolean(inviteRow.paid),
       };
       saveLocalCache(resolved);
       return resolved;
@@ -127,6 +129,18 @@ export async function getInvite(id: string): Promise<StoredInvite | null> {
   }
 
   return getLocalCache(id);
+}
+
+/** Marks an invite as paid after a successful PayPal capture — server-side only (needs Supabase). */
+export async function markInvitePaid(id: string, paypalOrderId: string): Promise<boolean> {
+  if (!supabaseConfigured || !supabase) return false;
+
+  const { error } = await supabase
+    .from("invites")
+    .update({ paid: true, paypal_order_id: paypalOrderId })
+    .eq("slug", id);
+
+  return !error;
 }
 
 export function getAllInvites(): StoredInvite[] {

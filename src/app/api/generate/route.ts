@@ -48,7 +48,7 @@ export async function POST(req: Request) {
   } catch (err) {
     if (NoObjectGeneratedError.isInstance(err)) {
       return NextResponse.json(
-        { error: "The AI couldn't generate a valid invite. Please try again." },
+        { error: "We couldn't generate a valid invite. Please try again." },
         { status: 502 }
       );
     }
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error:
-          "AI generation is not configured yet. Add an AI Gateway or provider API key to enable this endpoint.",
+          "Generation is not configured yet. Add a model provider API key to enable this endpoint.",
       },
       { status: 503 }
     );
