@@ -49,22 +49,23 @@ export function PaywallPanel({
   tier: Tier;
   onPaid: () => void;
 }) {
+  // NEXT_PUBLIC_* env vars are inlined at build time, so this is a true
+  // constant — safe to fold into the initial state (no SSR/hydration
+  // mismatch risk, same value in both environments) instead of setting it
+  // synchronously inside the effect below.
   const [status, setStatus] = useState<"loading" | "ready" | "unavailable" | "processing" | "error">(
-    "loading"
+    () => (process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? "loading" : "unavailable")
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const buttonRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    if (!clientId) {
-      setStatus("unavailable");
-      return;
-    }
+    if (!clientId) return;
 
     let cancelled = false;
 
-    async function init() {
+    async function init(clientId: string) {
       const existing = document.querySelector<HTMLScriptElement>(`script[src="${SDK_SRC}"]`);
       if (!existing) {
         await new Promise<void>((resolve, reject) => {
@@ -151,7 +152,7 @@ export function PaywallPanel({
       });
     }
 
-    init().catch((err) => {
+    init(clientId).catch((err) => {
       if (!cancelled) {
         setStatus("error");
         setErrorMessage(err instanceof Error ? err.message : "Could not load PayPal.");

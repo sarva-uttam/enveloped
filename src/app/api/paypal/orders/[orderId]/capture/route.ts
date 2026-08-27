@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { markInvitePaid } from "@/lib/storage";
+import { markInvitePaid } from "@/lib/storage.server";
 import { capturePayPalOrder, paypalConfigured } from "@/lib/paypal";
 
 type Params = { params: Promise<{ orderId: string }> };

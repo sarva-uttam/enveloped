@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getInvite } from "@/lib/storage";
+import { getInviteServer } from "@/lib/storage.server";
 import { getTier } from "@/lib/tiers";
 import { createPayPalOrder, paypalConfigured } from "@/lib/paypal";
 
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "inviteId is required." }, { status: 400 });
   }
 
-  const invite = await getInvite(inviteId);
+  const invite = await getInviteServer(inviteId);
   if (!invite) {
     return NextResponse.json({ error: "Invite not found." }, { status: 404 });
   }

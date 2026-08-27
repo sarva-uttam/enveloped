@@ -31,7 +31,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-12 border-t border-line pt-6 text-xs text-ink-soft">
-          © {new Date().getFullYear()} Enveloped. Made for the people who'd
+          © {new Date().getFullYear()} Enveloped. Made for the people who&apos;d
           rather send a moment than a message.
         </div>
       </div>

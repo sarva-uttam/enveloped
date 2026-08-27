@@ -7,8 +7,10 @@ import { Copy, Check, ArrowLeft, Clock } from "lucide-react";
 import { InviteCanvas } from "@/components/invite/InviteCanvas";
 import { PaywallPanel } from "@/components/invite/PaywallPanel";
 import { DEMO_INVITES } from "@/lib/demo-invites";
-import { getInvite, type StoredInvite } from "@/lib/storage";
+import { getInvite, getGuestEntry, getPublicInvite, type StoredInvite, type PublicInvite } from "@/lib/storage";
 import { getTier } from "@/lib/tiers";
+import { resolveViewerRole } from "@/lib/ownership";
+import { useAuth } from "@/lib/auth/AuthContext";
 import type { GeneratedInviteContent, TierId } from "@/lib/types";
 
 function CopyLink({ text }: { text: string }) {
@@ -36,21 +38,75 @@ export function InviteClient() {
   const params = useParams<{ id: string }>();
   const search = useSearchParams();
   const guestSlug = search.get("guest");
+  const { user, loading: authLoading } = useAuth();
 
-  const [stored, setStored] = useState<StoredInvite | null | undefined>(undefined);
+  // Two independent, independently-authorized reads, always attempted
+  // together: getInvite() only ever succeeds for the actual owner (RLS),
+  // getPublicInvite() is the sanitized read anyone else gets. Exactly one
+  // of them "winning" (being non-null) is what proves which the viewer
+  // actually is — never inferred from auth state alone, and never from
+  // whether a ?guest= param is present.
+  const [ownerInvite, setOwnerInvite] = useState<StoredInvite | null | undefined>(undefined);
+  const [publicInvite, setPublicInvite] = useState<PublicInvite | null | undefined>(undefined);
+  const [guestEntry, setGuestEntry] = useState<
+    { id: string; name: string; clickTeaser: string } | null | undefined
+  >(guestSlug ? undefined : null);
+
+  const demo = DEMO_INVITES[params.id];
 
   useEffect(() => {
-    if (params.id.startsWith("demo-")) return;
+    if (demo) return;
     let cancelled = false;
-    getInvite(params.id).then((result) => {
-      if (!cancelled) setStored(result);
+    Promise.all([getInvite(params.id), getPublicInvite(params.id)]).then(([owner, pub]) => {
+      if (!cancelled) {
+        setOwnerInvite(owner);
+        setPublicInvite(pub);
+      }
     });
     return () => {
       cancelled = true;
     };
-  }, [params.id]);
+  }, [params.id, demo]);
 
-  const demo = DEMO_INVITES[params.id];
+  useEffect(() => {
+    if (demo || !guestSlug) return;
+    let cancelled = false;
+    // Resolved via a SECURITY DEFINER lookup that returns only this one
+    // guest's public fields — never the full guest list, and only for a
+    // paid/published invite. See getGuestEntry() / resolve_invite_guest().
+    getGuestEntry(params.id, guestSlug).then((result) => {
+      if (!cancelled) setGuestEntry(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [params.id, guestSlug, demo]);
+
+  // Wait for auth, both invite fetches, and the guest lookup (when
+  // relevant) before deciding what to show — this is what makes
+  // ownership a real, verified fact instead of a guess.
+  const stillLoading =
+    authLoading ||
+    (!demo && (ownerInvite === undefined || publicInvite === undefined)) ||
+    (guestSlug !== null && !demo && guestEntry === undefined);
+
+  const role = stillLoading
+    ? null
+    : resolveViewerRole({
+        isDemo: !!demo,
+        storedExists: demo ? true : Boolean(ownerInvite) || Boolean(publicInvite),
+        isPaid: demo ? true : Boolean(ownerInvite?.paid ?? publicInvite?.paid),
+        currentUserId: user?.id ?? null,
+        // null when only the sanitized public read succeeded — that
+        // path never learns the real owner_id, which is exactly the
+        // point: it can't, so it can't be spoofed into matching either.
+        ownerId: ownerInvite?.ownerId ?? null,
+        guestSlug,
+      });
+
+  if (role === null) return null;
+  if (role.kind === "not-found") return <NotFound />;
+  if (role.kind === "guest-unpublished") return <NotPublishedYet />;
 
   let tier: TierId;
   let content: GeneratedInviteContent;
@@ -67,29 +123,33 @@ export function InviteClient() {
     eventDate = demo.eventDate;
     song = demo.song;
     guestName = demo.guestName;
-  } else if (stored) {
-    tier = stored.answers.tier || "bronze";
-    content = stored.content;
-    eventDate = stored.answers.eventDate;
-    song = stored.answers.song;
-    guestList = stored.guestList;
-    const match = guestSlug ? stored.guestList.find((g) => g.slug === guestSlug) : null;
-    guestName = match?.name;
-    guestId = match?.id;
-  } else if (stored === null) {
-    return <NotFound />;
+  } else if (ownerInvite) {
+    tier = ownerInvite.answers.tier || "bronze";
+    content = ownerInvite.content;
+    eventDate = ownerInvite.answers.eventDate;
+    song = ownerInvite.answers.song;
+    guestList = ownerInvite.guestList;
+    guestName = guestEntry?.name;
+    guestId = guestEntry?.id;
+  } else if (publicInvite?.paid && publicInvite.content) {
+    tier = publicInvite.tier || "bronze";
+    content = publicInvite.content;
+    eventDate = publicInvite.eventDate ?? undefined;
+    song = publicInvite.song ?? undefined;
+    guestName = guestEntry?.name;
+    guestId = guestEntry?.id;
   } else {
-    return null;
+    // Unreachable — role would have been "not-found" or
+    // "guest-unpublished" above — but keeps TypeScript satisfied without
+    // a non-null assertion.
+    return <NotFound />;
   }
 
   if (typeof window !== "undefined") origin = window.location.origin;
 
-  const isOwnerView = !demo && !guestSlug;
-  const isUnpaid = !demo && stored ? !stored.paid : false;
-
   // Owner previewing their own unpublished invite: show the design, gate
   // sharing behind payment. No demo invites are ever unpaid.
-  if (isOwnerView && isUnpaid) {
+  if (role.kind === "owner-unpublished") {
     return (
       <div className="flex min-h-screen flex-col">
         <div className="border-b border-line px-6 py-3">
@@ -101,20 +161,14 @@ export function InviteClient() {
           <PaywallPanel
             inviteId={params.id}
             tier={getTier(tier)}
-            onPaid={async () => setStored(await getInvite(params.id))}
+            onPaid={async () => setOwnerInvite(await getInvite(params.id))}
           />
         </div>
       </div>
     );
   }
 
-  // A guest link to an invite that hasn't been paid for yet — no payment UI
-  // shown here, that's the owner's job.
-  if (!isOwnerView && isUnpaid) {
-    return <NotPublishedYet />;
-  }
-
-  const showOwnerPanel = isOwnerView && !demo;
+  const showOwnerPanel = role.kind === "owner-published";
 
   return (
     <div className="min-h-screen">

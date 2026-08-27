@@ -13,11 +13,21 @@ function getParts(target: number) {
 
 export function Countdown({ date, accent }: { date: string; accent: string }) {
   const target = new Date(date).getTime();
-  const [parts, setParts] = useState<ReturnType<typeof getParts> | null>(null);
+  const [parts, setParts] = useState<ReturnType<typeof getParts> | null>(() =>
+    Number.isFinite(target) ? getParts(target) : null
+  );
+  // Tracks the target we last computed `parts` for, so a changed `date`
+  // prop updates the displayed countdown immediately (during render, not
+  // via a synchronous setState inside the effect below) rather than
+  // waiting up to 1s for the interval to catch up.
+  const [trackedTarget, setTrackedTarget] = useState(target);
+  if (target !== trackedTarget) {
+    setTrackedTarget(target);
+    setParts(Number.isFinite(target) ? getParts(target) : null);
+  }
 
   useEffect(() => {
     if (!Number.isFinite(target)) return;
-    setParts(getParts(target));
     const id = setInterval(() => setParts(getParts(target)), 1000);
     return () => clearInterval(id);
   }, [target]);

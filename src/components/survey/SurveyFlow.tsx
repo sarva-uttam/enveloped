@@ -9,7 +9,7 @@ import { TIERS } from "@/lib/tiers";
 import type { EventCategory, GuestEntry, SurveyAnswers, TierId } from "@/lib/types";
 import { cn, slugify } from "@/lib/utils";
 import { buildFallbackContent } from "@/lib/fallback-content";
-import { saveInvite } from "@/lib/storage";
+import { saveInvite, NotAuthenticatedError } from "@/lib/storage";
 
 const EMPTY_ANSWERS: SurveyAnswers = {
   category: null,
@@ -103,14 +103,24 @@ export function SurveyFlow({
     const id = `${slugify(answers.partnerNames || answers.category || "invite")}-${Date.now().toString(36)}`;
     const guestList = isPlatinum ? buildGuestList(answers.guestNames) : [];
 
-    await saveInvite({
-      id,
-      answers,
-      content,
-      guestList,
-      createdAt: new Date().toISOString(),
-      paid: false,
-    });
+    try {
+      await saveInvite({
+        id,
+        answers,
+        content,
+        guestList,
+        createdAt: new Date().toISOString(),
+        paid: false,
+      });
+    } catch (err) {
+      setLoading(false);
+      if (err instanceof NotAuthenticatedError) {
+        router.push(`/login?next=${encodeURIComponent("/survey")}`);
+        return;
+      }
+      setError(err instanceof Error ? err.message : "Could not save your invite. Please try again.");
+      return;
+    }
 
     setLoading(false);
     router.push(`/invite/${id}`);
