@@ -7,14 +7,18 @@
 -- chunks out of this file.
 --
 -- Base tables (invites/invite_guests/invite_rsvps) are already applied to
--- the connected Supabase project (ravfwnqfxngphncuyyxo). Two migrations
+-- the connected Supabase project (ravfwnqfxngphncuyyxo). Three migrations
 -- are NOT applied there yet — see PROJECT_STATUS.md for exact steps:
 --   1. "Payment gating migration" (bottom of this file) — paid /
 --      paypal_order_id columns.
 --   2. supabase/migrations/20260828000000_auth_ownership.sql — owner_id,
 --      the ownership-scoped RLS policies below, and resolve_invite_guest().
--- The policies shown below already reflect BOTH migrations applied — they
--- will NOT match the live project's actual policies until you run them.
+--   3. supabase/migrations/20260829000000_payment_integrity.sql — the
+--      `payments` table and the trigger preventing clients from setting
+--      `paid`/`paypal_order_id` directly.
+-- The policies/tables shown below already reflect ALL THREE migrations
+-- applied — they will NOT match the live project's actual state until
+-- you run them, in order.
 
 create extension if not exists pgcrypto;
 
@@ -188,9 +192,72 @@ $$;
 revoke all on function get_published_invite(text) from public;
 grant execute on function get_published_invite(text) to anon, authenticated;
 
+-- payments — one row per PayPal order attempt against an invitation.
+-- Never written by the browser: RLS is enabled with an owner-read-only
+-- policy and NO insert/update/delete policy for anon/authenticated at
+-- all, so those operations are denied outright for every role except the
+-- service-role client (src/lib/supabase/admin.ts). expected_amount/
+-- captured_amount are numeric(10,2), not floating point, so the
+-- capture-time exact-match comparison can't be defeated by float
+-- rounding. See supabase/migrations/20260829000000_payment_integrity.sql
+-- for the full reasoning.
+create table if not exists payments (
+  id uuid primary key default gen_random_uuid(),
+  invitation_id uuid not null references invites (id) on delete cascade,
+  owner_id uuid not null references auth.users (id) on delete cascade,
+  provider text not null default 'paypal',
+  provider_order_id text not null,
+  provider_capture_id text,
+  tier text not null check (tier in ('bronze', 'silver', 'gold', 'platinum')),
+  expected_amount numeric(10, 2) not null check (expected_amount > 0),
+  captured_amount numeric(10, 2),
+  currency text not null default 'USD',
+  status text not null default 'created'
+    check (status in ('created', 'processing', 'captured', 'failed')),
+  idempotency_key uuid not null default gen_random_uuid(),
+  raw_capture_response jsonb,
+  failure_reason text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (provider, provider_order_id)
+);
+
+create index if not exists payments_invitation_id_idx on payments (invitation_id);
+create index if not exists payments_owner_id_idx on payments (owner_id);
+create index if not exists payments_invitation_status_idx on payments (invitation_id, status);
+
+alter table payments enable row level security;
+
+create policy "payments owner read own" on payments for select using (auth.uid() = owner_id);
+
+-- Prevents an owner from setting paid/paypal_order_id directly on their
+-- own invite via the client SDK — only the service-role client
+-- (markInvitePaid()) may change these two columns. See the migration's
+-- comment on this trigger for the full reasoning.
+create or replace function public.reject_client_paid_update()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if (new.paid is distinct from old.paid or new.paypal_order_id is distinct from old.paypal_order_id)
+     and coalesce(auth.role(), '') <> 'service_role' then
+    raise exception 'paid and paypal_order_id can only be set by the payment system';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists invites_reject_client_paid_update on invites;
+create trigger invites_reject_client_paid_update
+  before update on invites
+  for each row
+  execute function public.reject_client_paid_update();
+
 -- ---------------------------------------------------------------------
--- Historical migrations below, preserved for reference. Both are still
--- pending against the live project — see PROJECT_STATUS.md.
+-- Historical migrations below, preserved for reference. All three are
+-- still pending against the live project — see PROJECT_STATUS.md.
 -- ---------------------------------------------------------------------
 
 -- Payment gating migration
@@ -202,3 +269,8 @@ alter table invites add column if not exists paypal_order_id text;
 -- versioned copy of this (it's identical in substance to the policies
 -- already shown above; duplicated there so it can be applied standalone
 -- and tracked by filename/date).
+
+-- Payment integrity migration — see
+-- supabase/migrations/20260829000000_payment_integrity.sql for the
+-- runnable, versioned copy of the payments table + trigger already
+-- shown above.

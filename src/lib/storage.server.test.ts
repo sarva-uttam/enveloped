@@ -70,16 +70,18 @@ describe("getInviteServer / getGuestEntryServer", () => {
 });
 
 describe("markInvitePaid", () => {
-  it("uses the admin (service-role) client, scoped to the given slug", async () => {
+  it("uses the admin (service-role) client, scoped to the invitation's internal uuid (not the slug)", async () => {
     const eq = vi.fn().mockResolvedValue({ error: null });
     const update = vi.fn().mockReturnValue({ eq });
     mockAdminClient.from.mockReturnValue({ update });
 
-    const ok = await markInvitePaid("some-slug", "PAYPAL-ORDER-1");
+    const ok = await markInvitePaid("11111111-1111-1111-1111-111111111111", "PAYPAL-ORDER-1");
 
     expect(ok).toBe(true);
     expect(mockAdminClient.from).toHaveBeenCalledWith("invites");
     expect(update).toHaveBeenCalledWith({ paid: true, paypal_order_id: "PAYPAL-ORDER-1" });
-    expect(eq).toHaveBeenCalledWith("slug", "some-slug");
+    // Keyed by the real primary key, so a capture can never accidentally
+    // touch a different row that happens to share some other identifier.
+    expect(eq).toHaveBeenCalledWith("id", "11111111-1111-1111-1111-111111111111");
   });
 });
