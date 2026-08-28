@@ -167,6 +167,67 @@ pass through, a wide range of malicious `next` values all fall back);
 `src/lib/rls-policy.test.ts` gained checks for the empty search_path,
 qualified table references, and the new RSVP insert conditions.
 
+### Round 5: the round-4 RSVP fix was itself broken
+
+A further pre-merge review caught that round 4's own fix for the
+`invite_rsvps` insert policy didn't work as written — a subtler bug than
+any of the previous rounds, worth explaining precisely because it's easy
+to reintroduce.
+
+**The bug:** round 4 wrote the paid/guest_id checks as inline `exists
+(select 1 from invites ...)` / `exists (select 1 from invite_guests
+...)` subqueries directly inside the `invite_rsvps` insert policy's
+`with check (...)` expression. That looks reasonable, but it's wrong: an
+RLS policy's own subqueries are themselves subject to RLS on whatever
+tables they reference. By round 3, `invites` and `invite_guests` are
+BOTH owner-only for SELECT — an anonymous guest submitting an RSVP has
+literally zero row visibility into either table. So those inline
+subqueries would return no rows and the check would evaluate to false
+**unconditionally**, for every anonymous RSVP, regardless of whether the
+invite was actually paid or the guest_id actually matched. The fix
+would have silently broken the RSVP feature for every real guest while
+LOOKING correct on inspection (and passing every text-pattern test from
+round 4, since those checked for the right substrings being present,
+not for whether the substrings would actually evaluate correctly under
+RLS).
+
+**The fix:** the exact same pattern already used for
+`resolve_invite_guest()`/`get_published_invite()` — wrap the check in a
+new SECURITY DEFINER function, `can_insert_rsvp(p_invite_id, p_guest_id)
+returns boolean`. Statements inside a SECURITY DEFINER function run
+with the privileges of the function's OWNER, not the caller's — and
+since that owner also owns `invites`/`invite_guests` (created in the
+same migration) and neither table has `FORCE ROW LEVEL SECURITY` set,
+the owner bypasses RLS on them entirely for the function's internal
+queries. The policy now reads:
+`with check (can_insert_rsvp(invite_rsvps.invite_id, invite_rsvps.guest_id))`.
+The function itself is hardened the same way as the other two
+(`search_path = ''`, fully-qualified `public.invites`/
+`public.invite_guests`, explicit `revoke`/`grant`) and returns ONLY a
+boolean — never row data.
+
+**On integration testing:** this round's instructions asked for a real
+local Supabase/Postgres integration test if available. It genuinely
+isn't, in this environment — a documented attempt: Docker Desktop's own
+launch log shows `backend process exited` about a minute after starting,
+consistent with missing virtualization support in this sandbox; no
+standalone `psql`/Postgres install exists either. `rls-policy.test.ts`
+gained regression tests for both the specific broken pattern (inline
+`exists(...)` in the policy — now explicitly asserted absent) and the
+new function's definition, but these remain text-pattern checks, same
+caveat as before: they catch someone reintroducing the exact bug this
+round fixed, they do not prove the fixed version is correct under real
+Postgres. **This is now the single most important thing to verify
+against real Postgres before this migration is trusted** — the fact
+that round 4's own fix passed review-by-reading and still didn't work
+is itself the strongest argument for actually running this, not just
+reading it, before it reaches production. Concretely, once a Supabase
+project or local `supabase start` is available: try the RSVP insert
+policy as the `anon` role directly (not through the app) — a valid
+insert against a paid invite with no guest_id should succeed; against a
+paid invite with a guest_id from a DIFFERENT invite should fail;
+against an unpaid invite should fail.
+
 ## Pending — needs a human to do these, not just code
 
 1. **Run the auth & ownership migration.**
@@ -228,22 +289,24 @@ qualified table references, and the new RSVP insert conditions.
    own tool for exactly this); `Footer.tsx`'s unescaped apostrophe is
    escaped. `npm run lint` is clean (exit 0).
 8. **RLS is reviewed and covered by two kinds of test, still not
-   integration-tested against real Postgres.** `src/lib/storage-queries.test.ts`
-   tests the actual query logic (mocked client) both storage.ts and
-   storage.server.ts share, including that `fetchPublicInvite()`'s return
-   shape structurally has no room for `answers`/`owner_id`/
-   `paypal_order_id` and that `submitRsvp` never touches the raw
-   `invites` table; `src/lib/rls-policy.test.ts` is a text-pattern
-   regression guard over the migration SQL itself, asserting the
-   security-critical conditions (no public policy on the raw `invites`
-   table at all; `get_published_invite()`'s body never references
-   `guestnames`/`partnernames`/`extradetails`/`colormood`/`owner_id`/
-   `paypal_order_id`, and only touches `answers` via `->>'eventdate'`/
-   `->>'song'`; `resolve_invite_guest()` requires `paid = true`) are
-   still present — it reads the SQL as text, it doesn't execute it, and
-   says so in its own header comment. Neither replaces actually running
-   this against a real (or local Docker) Postgres — `supabase start`
-   locally, or `supabase test db` — before fully trusting it in
+   integration-tested against real Postgres — treat this as the single
+   highest-priority pre-production item, not routine polish.**
+   `src/lib/storage-queries.test.ts` tests the actual query logic
+   (mocked client) both storage.ts and storage.server.ts share;
+   `src/lib/rls-policy.test.ts` is a text-pattern regression guard over
+   the migration SQL itself — it says plainly in its own header that
+   this isn't proof the RLS is correct, just a guard against silently
+   reverting a known-fixed bug. That caveat isn't hypothetical: round 4
+   of this migration's own `invite_rsvps` insert policy fix passed
+   review-by-reading and every text-pattern test, and was STILL broken
+   (inline RLS-subquery recursion silently rejected every legitimate
+   anonymous RSVP — see "Round 5" above). A Docker-based local Supabase
+   instance was attempted for this round specifically to close that gap
+   with a real integration test and genuinely isn't available in this
+   environment (see Round 5's note) — this remains open. Actually
+   running the full migration against a real (or local Docker) Postgres
+   — `supabase start` locally, or `supabase test db` — is not optional
+   polish at this point; do it before trusting any of this in
    production.
 
 ## Key files

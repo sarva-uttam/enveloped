@@ -119,6 +119,30 @@ create policy "invite_guests owner update" on invite_guests
 --         guest list. guest_id remains optional (null is fine — RSVPs
 --         are collected on non-Platinum tiers too, which have no named
 --         guest list at all).
+--
+--    IMPORTANT — this was wrong in an earlier draft of this migration,
+--    and worth recording so it doesn't come back: that draft expressed
+--    both conditions as `exists (select 1 from invites ...)` / `exists
+--    (select 1 from invite_guests ...)` subqueries written DIRECTLY in
+--    the policy expression. That's broken. An RLS policy's subqueries
+--    are themselves subject to RLS on whatever tables they touch — and
+--    `invites`/`invite_guests` are owner-only for SELECT (sections 2/3
+--    above). An anonymous caller has ZERO visibility into either table,
+--    so those subqueries would return no rows and the check would
+--    evaluate to false REGARDLESS of whether the invite is actually
+--    paid or the guest_id actually matches — rejecting every legitimate
+--    anonymous RSVP unconditionally, not just the illegitimate ones.
+--    The fix: the exact same pattern already used below for
+--    resolve_invite_guest()/get_published_invite() — a SECURITY DEFINER
+--    function. Statements inside a SECURITY DEFINER function run with
+--    the privileges of the function's OWNER, not the caller's — and
+--    since that owner also owns `invites`/`invite_guests` (both created
+--    in this same migration run) and neither table has FORCE ROW LEVEL
+--    SECURITY set, the owner bypasses RLS on them entirely. The
+--    function itself returns only a boolean and is EXECUTE-granted to
+--    anon/authenticated (never a raw SELECT grant on the tables) — the
+--    caller can ask "would this insert be allowed?" but can never read
+--    invites/invite_guests directly through it.
 -- ---------------------------------------------------------------------
 
 drop policy if exists "invite_rsvps public read" on invite_rsvps;
@@ -129,21 +153,35 @@ create policy "invite_rsvps owner read" on invite_rsvps
     auth.uid() = (select owner_id from invites where invites.id = invite_rsvps.invite_id)
   );
 
-create policy "invite_rsvps insert on published invite" on invite_rsvps
-  for insert
-  with check (
-    exists (
-      select 1 from invites i
-      where i.id = invite_rsvps.invite_id and i.paid = true
-    )
-    and (
-      invite_rsvps.guest_id is null
-      or exists (
-        select 1 from invite_guests g
-        where g.id = invite_rsvps.guest_id and g.invite_id = invite_rsvps.invite_id
-      )
+-- search_path = '' plus fully-qualified public.* table references — same
+-- search_path-hijacking rationale as resolve_invite_guest()/
+-- get_published_invite() below.
+create or replace function can_insert_rsvp(p_invite_id uuid, p_guest_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = ''
+stable
+as $$
+  select exists (
+    select 1 from public.invites i
+    where i.id = p_invite_id and i.paid = true
+  )
+  and (
+    p_guest_id is null
+    or exists (
+      select 1 from public.invite_guests g
+      where g.id = p_guest_id and g.invite_id = p_invite_id
     )
   );
+$$;
+
+revoke all on function can_insert_rsvp(uuid, uuid) from public;
+grant execute on function can_insert_rsvp(uuid, uuid) to anon, authenticated;
+
+create policy "invite_rsvps insert on published invite" on invite_rsvps
+  for insert
+  with check (can_insert_rsvp(invite_rsvps.invite_id, invite_rsvps.guest_id));
 
 -- ---------------------------------------------------------------------
 -- 5. Narrow, unauthenticated guest lookup.

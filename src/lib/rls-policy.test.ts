@@ -148,27 +148,59 @@ describe("auth_ownership migration — security property regression guard", () =
     expect(sql).not.toMatch(/create policy "invites public update"/);
   });
 
-  it("invite_rsvps insert is NOT unconditional — it requires the invite to be paid, and any supplied guest_id to belong to that same invite", () => {
-    // The exact regression this guards: the original policy was
-    // `with check (true)` — anyone (the anon key is public) could insert
-    // an RSVP against ANY invite_id, published or not, and cite ANY
-    // guest_id regardless of which invite it actually belongs to.
+  it("invite_rsvps insert is NOT unconditional — it delegates to can_insert_rsvp(), never inline exists(...) subqueries in the policy itself", () => {
+    // Regression #1: the ORIGINAL policy was `with check (true)` —
+    // anyone (the anon key is public) could insert an RSVP against ANY
+    // invite_id, published or not, citing ANY guest_id.
     expect(sql).not.toMatch(/create policy "invite_rsvps public insert" on invite_rsvps for insert with check \(true\)/);
 
     const insert = policyBlock("invite_rsvps insert on published invite");
 
-    // Condition 1: the referenced invite must be paid — closes "anonymous
-    // users cannot insert against unpublished invitations" at the DB
-    // level, not just via the app's submitRsvp() check.
-    expect(insert).toMatch(/exists\s*\(\s*select 1 from invites i\s*where i\.id = invite_rsvps\.invite_id and i\.paid = true\s*\)/);
+    // Regression #2 — the one this specific test exists for: an
+    // intermediate draft "fixed" #1 by writing `exists (select 1 from
+    // invites ...)` / `exists (select 1 from invite_guests ...)`
+    // DIRECTLY in this policy's with-check expression. That's broken —
+    // an RLS policy's own subqueries are themselves subject to RLS on
+    // whatever they touch, and invites/invite_guests are owner-only for
+    // SELECT, so an anonymous caller's inline subquery sees zero rows
+    // and the check fails REGARDLESS of the real data — rejecting every
+    // legitimate anonymous RSVP, not just illegitimate ones. The policy
+    // must call the SECURITY DEFINER can_insert_rsvp() instead, which
+    // bypasses that recursion the same way resolve_invite_guest()/
+    // get_published_invite() already do.
+    expect(insert).not.toMatch(/exists\s*\(\s*select 1 from invites/);
+    expect(insert).not.toMatch(/exists\s*\(\s*select 1 from invite_guests/);
+    expect(insert).toContain("with check (can_insert_rsvp(invite_rsvps.invite_id, invite_rsvps.guest_id))");
+  });
 
-    // Condition 2: a supplied guest_id must belong to the SAME invite —
-    // prevents citing a real guest_id that actually belongs to a
-    // different invite (cross-invite misattribution). null guest_id
-    // stays allowed (non-Platinum tiers have no named guest list).
-    expect(insert).toContain("invite_rsvps.guest_id is null");
-    expect(insert).toMatch(
-      /exists\s*\(\s*select 1 from invite_guests g\s*where g\.id = invite_rsvps\.guest_id and g\.invite_id = invite_rsvps\.invite_id\s*\)/
+  it("can_insert_rsvp() is a minimal boolean check, hardened against search_path hijacking, that verifies paid status and (when supplied) guest_id/invite_id ownership", () => {
+    const body = functionBody("can_insert_rsvp");
+
+    expect(body).toContain("returns boolean");
+    expect(body).toContain("security definer");
+    expect(body).toContain("set search_path = ''");
+    expect(body).not.toMatch(/set search_path = public\b/);
+
+    // Fully-qualified table references — same hijacking rationale as
+    // the other two functions.
+    expect(body).toContain("public.invites");
+    expect(body).toContain("public.invite_guests");
+    expect(body).not.toMatch(/from invites\b/); // must be "from public.invites"
+    expect(body).not.toMatch(/from invite_guests\b/); // must be "from public.invite_guests"
+
+    // Condition 1: the invite must be paid.
+    expect(body).toMatch(/exists\s*\(\s*select 1 from public\.invites i\s*where i\.id = p_invite_id and i\.paid = true\s*\)/);
+
+    // Condition 2: null guest_id is explicitly allowed (non-Platinum
+    // tiers have no named guest list); a NON-null guest_id must belong
+    // to the SAME invite_id — prevents citing a real guest_id that
+    // actually belongs to a different invite.
+    expect(body).toContain("p_guest_id is null");
+    expect(body).toMatch(
+      /exists\s*\(\s*select 1 from public\.invite_guests g\s*where g\.id = p_guest_id and g\.invite_id = p_invite_id\s*\)/
     );
+
+    expect(sql).toContain("revoke all on function can_insert_rsvp(uuid, uuid) from public");
+    expect(sql).toContain("grant execute on function can_insert_rsvp(uuid, uuid) to anon, authenticated");
   });
 });

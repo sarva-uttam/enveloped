@@ -92,18 +92,38 @@ create policy "invite_rsvps owner read" on invite_rsvps for select
 -- Insert is NOT unconditional ("with check (true)") — the database
 -- itself, not just the app's submitRsvp(), enforces that the invite is
 -- paid and that a supplied guest_id actually belongs to the same
--- invite. See the migration's comment on this policy for the reasoning.
-create policy "invite_rsvps insert on published invite" on invite_rsvps for insert
-  with check (
-    exists (select 1 from invites i where i.id = invite_rsvps.invite_id and i.paid = true)
-    and (
-      invite_rsvps.guest_id is null
-      or exists (
-        select 1 from invite_guests g
-        where g.id = invite_rsvps.guest_id and g.invite_id = invite_rsvps.invite_id
-      )
+-- invite. This goes through a SECURITY DEFINER function, NOT inline
+-- `exists (select 1 from invites ...)` subqueries — an RLS policy's
+-- subqueries are themselves subject to RLS on whatever they reference,
+-- and invites/invite_guests are owner-only for SELECT, so an anonymous
+-- caller's inline subquery would see zero rows and reject every
+-- legitimate RSVP regardless of the real data. See the migration's
+-- comment on this policy for the full reasoning.
+create or replace function can_insert_rsvp(p_invite_id uuid, p_guest_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = ''
+stable
+as $$
+  select exists (
+    select 1 from public.invites i
+    where i.id = p_invite_id and i.paid = true
+  )
+  and (
+    p_guest_id is null
+    or exists (
+      select 1 from public.invite_guests g
+      where g.id = p_guest_id and g.invite_id = p_invite_id
     )
   );
+$$;
+
+revoke all on function can_insert_rsvp(uuid, uuid) from public;
+grant execute on function can_insert_rsvp(uuid, uuid) to anon, authenticated;
+
+create policy "invite_rsvps insert on published invite" on invite_rsvps for insert
+  with check (can_insert_rsvp(invite_rsvps.invite_id, invite_rsvps.guest_id));
 
 -- Narrow, unauthenticated guest lookup — returns only the ONE matching
 -- guest's public fields for an exact (invite slug, guest slug) pair, on

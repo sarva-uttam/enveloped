@@ -118,6 +118,30 @@ This brief is narrower: it's about what to *scrutinize*.
     was a real search_path-hijacking exposure; both now use
     `search_path = ''` with every table reference schema-qualified
     (`public.invites`, `public.invite_guests`).
+  - **Round 5: round 4's own RSVP fix was itself broken** — the
+    subtlest bug found across all five rounds, worth reading closely.
+    Round 4 wrote the `invite_rsvps` insert policy's paid/guest_id
+    checks as inline `exists (select 1 from invites ...)` subqueries
+    directly in the policy. That's broken: an RLS policy's own
+    subqueries are themselves subject to RLS on whatever they reference,
+    and `invites`/`invite_guests` are BOTH owner-only for SELECT as of
+    round 3 — an anonymous guest has zero row visibility into either, so
+    those subqueries would return no rows and the check would fail
+    UNCONDITIONALLY, rejecting every legitimate anonymous RSVP,
+    regardless of the real data. It read correctly, and passed every
+    round-4 text-pattern test (which checked for the right substrings
+    being present, not for whether they'd evaluate correctly under RLS).
+    Fixed with the same SECURITY DEFINER pattern as the other two
+    functions: `can_insert_rsvp(p_invite_id, p_guest_id) returns
+    boolean`, hardened the same way (`search_path = ''`, qualified
+    `public.*` tables, explicit revoke/grant). The policy is now `with
+    check (can_insert_rsvp(invite_rsvps.invite_id, invite_rsvps.guest_id))`.
+    A local Supabase/Postgres integration test was attempted for this
+    round specifically (to verify this class of bug can't hide behind
+    text-pattern tests again) and is genuinely unavailable in this
+    environment — Docker Desktop's backend process exits ~60s after
+    launch, consistent with missing virtualization support in this
+    sandbox. This is now the top scrutiny item — see #9 below.
 
 ## Specific areas to scrutinize
 
@@ -169,23 +193,27 @@ This brief is narrower: it's about what to *scrutinize*.
    project should actually adopt the Supabase CLI's migration tooling
    (`supabase migration up` / `db push`) rather than manual SQL-editor
    pastes, now that there's a real folder structure for it.
-5. **RLS is reviewed but not integration-tested** — the auth_ownership
+5. **RLS is reviewed but not integration-tested — treat as a hard
+   pre-production blocker, not routine polish.** The auth_ownership
    migration's policies are covered by two kinds of test, neither of
    which stands up a real Postgres: `src/lib/storage.test.ts` and
    `storage-queries.test.ts` verify the app-layer logic against a mocked
-   Supabase client (never attempts a write while unauthenticated, always
-   filters by the real owner_id, guest lookups only ever go through the
-   RPC); `src/lib/rls-policy.test.ts` is a text-pattern regression guard
-   that reads the migration SQL and asserts the security-critical
-   conditions are present — now including the round-4 fixes (empty
-   search_path, qualified table references, the RSVP insert conditions)
-   — it says plainly in its own header that this isn't proof the RLS is
-   correct, just a guard against silently reverting it. Actually running
-   this against a real (or local Docker) Postgres is still worth doing
-   before trusting this fully — this specifically includes actually
-   trying to insert an `invite_rsvps` row against an unpaid invite or
-   with a mismatched `guest_id`/`invite_id` pair, which no test in this
-   batch exercises against a real database.
+   Supabase client; `src/lib/rls-policy.test.ts` is a text-pattern
+   regression guard that reads the migration SQL and asserts the
+   security-critical conditions are present. That caveat isn't
+   hypothetical: round 4's own `invite_rsvps` insert policy fix passed
+   review-by-reading AND every text-pattern test from that round, and
+   was still broken — an RLS-subquery-recursion bug that would have
+   silently rejected every legitimate anonymous RSVP (see "Round 5"
+   above). A Docker-based local Supabase instance was specifically
+   attempted to close this gap with a real integration test and isn't
+   available in this environment (Docker Desktop's backend exits ~60s
+   after launch). Concretely, once Postgres access exists: try the
+   `invite_rsvps` insert policy as the `anon` role directly — a valid
+   insert against a paid invite with no guest_id should succeed; against
+   a paid invite with a guest_id from a DIFFERENT invite should fail;
+   against an unpaid invite should fail. None of that is exercised
+   against a real database anywhere in this batch.
 6. **`src/app/api/generate/route.ts`**: error handling when the AI
    Gateway/provider call fails or isn't authenticated — does it fail
    gracefully for the user, or leak internal error detail?
@@ -207,18 +235,24 @@ This brief is narrower: it's about what to *scrutinize*.
    `storage.server.ts` and the session-aware server client instead. Grep
    for `from "@/lib/storage"` vs `from "@/lib/storage.server"` to confirm
    nothing server-side still imports the browser-facing module.)
-9. **Round 4's three fixes, freshest and least-reviewed part of this
-   batch**: `src/lib/safe-redirect.ts`'s `sanitizeRedirectPath()` —
+9. **Rounds 4 and 5, freshest and least-reviewed part of this batch —
+   start here.** `src/lib/safe-redirect.ts`'s `sanitizeRedirectPath()` —
    worth trying to find a bypass the 26 existing test cases
    (`safe-redirect.test.ts`) missed, since this is exactly the kind of
    validator where one overlooked edge case reopens the whole class of
-   bug; the new `invite_rsvps` insert policy in
-   `supabase/migrations/20260828000000_auth_ownership.sql` — confirm the
-   `exists (...)` subqueries actually express "same invite" correctly
-   and there's no way to satisfy them with a guest_id/invite_id pair
-   that doesn't really match; and the `search_path = ''` / `public.*`
-   qualification on both SECURITY DEFINER functions — confirm nothing
-   inside either function body still resolves an unqualified name.
+   bug. `can_insert_rsvp()` and the `invite_rsvps` insert policy in
+   `supabase/migrations/20260828000000_auth_ownership.sql` — this is the
+   function that replaced round 4's broken inline-subquery version (see
+   "Round 5" above); confirm the SECURITY DEFINER + table-ownership
+   reasoning that lets it bypass RLS for its own internal queries is
+   actually correct for how this Supabase project's roles/ownership are
+   set up, since that reasoning has NOT been verified against a real
+   database in this batch at all — it's standard Postgres semantics
+   applied carefully, not something observed working. And the
+   `search_path = ''` / `public.*` qualification on all three SECURITY
+   DEFINER functions now (`resolve_invite_guest`, `get_published_invite`,
+   `can_insert_rsvp`) — confirm nothing inside any of the three still
+   resolves an unqualified name.
 10. Anything else that looks like a genuine bug, security gap, or
     accessibility issue — the above is a starting list, not an
     exhaustive one.
