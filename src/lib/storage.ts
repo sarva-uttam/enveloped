@@ -73,7 +73,7 @@ export function getInviteIndex(): string[] {
  * ownership on someone else's behalf even if this code had a bug.
  */
 export async function saveInvite(
-  invite: Omit<StoredInvite, "ownerId">
+  invite: Omit<StoredInvite, "ownerId" | "internalId">
 ): Promise<void> {
   if (!supabaseConfigured || !supabase) {
     throw new Error("Invites require a configured Supabase backend — none is set up.");
@@ -111,7 +111,7 @@ export async function saveInvite(
     if (guestErr) console.error("Supabase saveInvite guests failed", guestErr);
   }
 
-  const resolved: StoredInvite = { ...invite, ownerId: user.id };
+  const resolved: StoredInvite = { ...invite, internalId: inviteRow.id, ownerId: user.id };
   addToLocalIndex(resolved.id);
   saveLocalCache(resolved);
 }
@@ -182,6 +182,7 @@ export async function getMyInvites(): Promise<StoredInvite[]> {
 
   return rows.map((row) => ({
     id: row.slug,
+    internalId: row.id,
     answers: row.answers,
     content: row.content,
     guestList: (row.invite_guests || []).map(

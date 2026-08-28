@@ -63,12 +63,14 @@ This brief is narrower: it's about what to *scrutinize*.
   full design, and its "Pending" list for what's NOT yet done (the
   migration hasn't been run against the live project yet as of this
   writing — verify that before assuming any of this is actually live).
-- **PayPal integrity is still explicitly deferred**, same as before this
-  batch — see "Specific areas to scrutinize" #1 below, unchanged. The one
-  thing that DID change: `markInvitePaid` now runs through a service-role
-  client instead of the old public RLS policy (necessary once that policy
-  became owner-scoped), but nothing about *who* can trigger a capture was
-  touched.
+- **PayPal integrity was the deferred item this brief previously
+  flagged — now addressed at the code level**, see "Round 6" below and
+  "Payment integrity foundation (PayPal)" in `PROJECT_STATUS.md` for the
+  full design. Not yet enforced in *production*: the migration
+  (`supabase/migrations/20260829000000_payment_integrity.sql`) hasn't
+  been applied to the live database as of this writing — verify that
+  before assuming any of this is actually live, same caveat as the
+  auth_ownership migration above.
 - **A second round found and fixed one more real leak, then a third
   found the fix was still incomplete**:
   - Round 2: the original `invites` read policy was `using (true)`
@@ -146,20 +148,23 @@ This brief is narrower: it's about what to *scrutinize*.
 ## Specific areas to scrutinize
 
 1. **PayPal payment integrity** (`src/lib/paypal.ts`,
+   `src/lib/paypal-verify.ts`, `src/lib/payments.server.ts`,
    `src/app/api/paypal/**`, `src/components/invite/PaywallPanel.tsx`):
-   is the `paid` flag only ever set from a verified server-side capture
-   response, or is there any path where a client could mark an invite
-   paid without a real, verified PayPal transaction?
+   as of round 6, the `paid` flag is only ever set from a verified
+   server-side capture response — see "Round 6" and scrutiny item #10
+   below for the full detail on what's now checked and what's still
+   worth independently confirming (none of it has been exercised against
+   a real database or PayPal sandbox call yet).
 2. **Supabase RLS on the `paid` column** (`supabase/schema.sql`,
-   `supabase/migrations/20260828000000_auth_ownership.sql`): as of this
-   batch, `invites` update requires `auth.uid() = owner_id` — an
-   authenticated client can no longer flip `paid`/`paypal_order_id` on
-   someone else's invite via the SDK directly. It CAN still flip it on
-   its OWN invite directly (nothing stops a host from client-side-calling
-   `.update({ paid: true })` on their own row instead of going through
-   PayPal) — that gap is real and is exactly what "PayPal integrity, next
-   batch" is meant to close. Worth confirming this reasoning holds once
-   the migration is actually applied and testable.
+   `supabase/migrations/20260828000000_auth_ownership.sql`,
+   `supabase/migrations/20260829000000_payment_integrity.sql`): as of
+   round 6, an authenticated owner can no longer flip
+   `paid`/`paypal_order_id` on their OWN invite directly via the client
+   SDK either — a new `invites_reject_client_paid_update` trigger raises
+   an exception on any such change unless the connection is
+   `service_role`. This is the gap round-6's own prior text here flagged
+   as open; see scrutiny item #10 for what's worth independently
+   confirming about the fix (chiefly: unverified against real Postgres).
 3. **Guest-facing paywall gate AND the sanitized-payload boundary**
    (`src/app/invite/[id]/`, `InviteClient.tsx`,
    `src/lib/storage-queries.ts`'s `fetchPublicInvite()`/
@@ -253,17 +258,54 @@ This brief is narrower: it's about what to *scrutinize*.
    DEFINER functions now (`resolve_invite_guest`, `get_published_invite`,
    `can_insert_rsvp`) — confirm nothing inside any of the three still
    resolves an unqualified name.
-10. Anything else that looks like a genuine bug, security gap, or
+10. **Round 6 (PayPal payment integrity), newest and least-reviewed part
+    of this batch — start here.** `src/lib/paypal-verify.ts`'s
+    `verifyCaptureResponse()` is the actual security boundary for
+    payment integrity — everything upstream of it (auth, ownership,
+    idempotency claim) only decides whether to call PayPal at all; this
+    decides whether what PayPal returned actually matches the
+    invitation/amount/currency the order was created for. Worth
+    confirming: (a) every field it checks is genuinely unspoofable by
+    the payer (order id, `custom_id`, capture status, currency, exact
+    amount, and — when configured — payee); (b) the capture route
+    (`src/app/api/paypal/orders/[orderId]/capture/route.ts`) truly never
+    uses the client-supplied `inviteId` for anything but an early,
+    optional, non-authoritative error message — the invitation
+    association is meant to come ONLY from `getPaymentByOrderId()`
+    (`src/lib/payments.server.ts`), itself keyed by the PayPal order id;
+    (c) the atomic claim (`claimPaymentForCapture`, a conditional
+    `status: 'created' -> 'processing'` update) genuinely can't let two
+    concurrent requests both proceed to call PayPal's capture endpoint
+    for the same order — this reasoning has NOT been verified against a
+    real database in this batch, same caveat as the RLS work in rounds
+    2-5; (d) the `payments` table's RLS (no insert/update/delete policy
+    for anon/authenticated at all) and the new
+    `invites_reject_client_paid_update` trigger
+    (`supabase/migrations/20260829000000_payment_integrity.sql`) actually
+    close the "owner flips their own `paid` flag directly" gap this
+    brief previously flagged as scrutiny item #2 — also unverified
+    against real Postgres. `custom_id` is set to the invitation's
+    **internal uuid**, not the slug — worth confirming nothing
+    downstream still expects a slug there. Test coverage:
+    `src/lib/paypal-verify.test.ts`, `src/lib/payments.server.test.ts`,
+    `src/app/api/paypal/orders/route.test.ts`,
+    `src/app/api/paypal/orders/[orderId]/capture/route.test.ts` — all
+    against mocked clients/PayPal responses, none against a real
+    database or PayPal sandbox call.
+11. Anything else that looks like a genuine bug, security gap, or
     accessibility issue — the above is a starting list, not an
     exhaustive one.
 
 ## What NOT to flag as issues
 
 - Missing PayPal live credentials, missing `AI_GATEWAY_API_KEY`, and the
-  unrun Supabase migrations (both the payment-gating one and the new
-  auth_ownership one) are all known, tracked in `PROJECT_STATUS.md`, and
+  unrun Supabase migrations (the auth_ownership one and the payment
+  integrity one) are all known, tracked in `PROJECT_STATUS.md`, and
   waiting on the product owner — not something the code needs to "fix"
   itself.
+- PayPal sandbox mode itself (`NEXT_PUBLIC_PAYPAL_ENV=sandbox`, no live
+  credentials configured) is deliberate, not a gap — see "Context not
+  visible from the code alone" above.
 - Sparse i18n coverage beyond nav/hero — also known and in progress.
 - Existing invites having `owner_id = null` post-migration (no dashboard
   visibility for them) — known, documented in `PROJECT_STATUS.md`'s

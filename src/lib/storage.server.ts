@@ -54,7 +54,15 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
 }
 
 /**
- * Marks an invite as paid after a successful PayPal capture.
+ * Marks an invite as paid after a successful, verified PayPal capture.
+ *
+ * `invitationId` is the invite's internal uuid (invites.id), NOT the
+ * slug — the caller is always the capture route, which already has this
+ * value authoritatively from the matched `payments` row
+ * (payments.invitation_id), never from client input. Keying off the
+ * uuid here (rather than the slug, as an earlier version of this
+ * function did) avoids a redundant lookup and matches what the caller
+ * actually has on hand.
  *
  * Uses the service-role client (bypasses RLS) — this used to live in
  * storage.ts alongside client-callable functions and ran through the
@@ -63,14 +71,23 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
  * that public policy is gone, so this needed its own server-only path to
  * keep working exactly as before. See src/lib/supabase/admin.ts for why
  * that's safe and what it does/doesn't change about payment integrity.
+ * Also the one write path exempted from the invites_reject_client_paid_update
+ * trigger (supabase/migrations/20260829000000_payment_integrity.sql),
+ * since it runs as service_role.
+ *
+ * Idempotent by design: setting paid=true / paypal_order_id on a row
+ * that already has those values is a harmless no-op — this is what lets
+ * the capture route safely retry just this step (see the capture route's
+ * "already captured, recover the invite flip" branch) without needing to
+ * first check whether the previous attempt actually got this far.
  */
-export async function markInvitePaid(id: string, paypalOrderId: string): Promise<boolean> {
+export async function markInvitePaid(invitationId: string, paypalOrderId: string): Promise<boolean> {
   if (!supabaseAdminConfigured || !supabaseAdmin) return false;
 
   const { error } = await supabaseAdmin
     .from("invites")
     .update({ paid: true, paypal_order_id: paypalOrderId })
-    .eq("slug", id);
+    .eq("id", invitationId);
 
   return !error;
 }

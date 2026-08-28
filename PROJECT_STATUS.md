@@ -228,6 +228,115 @@ insert against a paid invite with no guest_id should succeed; against a
 paid invite with a guest_id from a DIFFERENT invite should fail;
 against an unpaid invite should fail.
 
+## Payment integrity foundation (PayPal)
+
+**What changed and why:** before this batch, the PayPal capture route
+trusted the client-supplied `inviteId` to decide which invitation to mark
+paid, and did no verification of the capture response at all beyond
+`status === "COMPLETED"` — no check that the captured order actually
+belonged to that invitation, was for the right amount, or was in the
+right currency. Concretely, this meant: a captured order for one
+invitation could be replayed against a request naming a different
+invitation slug; a Bronze-tier ($19) capture could unlock a Platinum
+invitation ($149) if the client simply requested a different `inviteId`
+at capture time; and nothing in the database structurally stopped an
+authenticated owner from calling `.update({ paid: true })` on their own
+invite directly via the client SDK, bypassing PayPal entirely (this
+specific gap was explicitly flagged as deferred in the auth_ownership
+round — see REVIEW_BRIEF.md's prior "Specific areas to scrutinize" #2).
+
+- **New `payments` table**
+  (`supabase/migrations/20260829000000_payment_integrity.sql`) — one row
+  per PayPal order attempt: `invitation_id`, `owner_id`, `provider`/
+  `provider_order_id`/`provider_capture_id`, `tier`, `expected_amount`/
+  `captured_amount` (`numeric(10,2)`, not floating point), `currency`,
+  `status` (`created`/`processing`/`captured`/`failed`),
+  `idempotency_key`, `raw_capture_response`, `failure_reason`,
+  timestamps. RLS enabled with an owner-read-only `select` policy and
+  **no insert/update/delete policy for anon/authenticated at all** — with
+  RLS on and no policy granting a given operation, that operation is
+  denied outright for every role except one that bypasses RLS (the
+  service-role client). The browser is structurally unable to write to
+  this table under any circumstances, not just discouraged from it by
+  convention.
+- **Closed the "owner flips their own `paid` flag directly" gap**: a new
+  `reject_client_paid_update()` trigger function on `invites` raises an
+  exception if `paid`/`paypal_order_id` change and the connection isn't
+  `service_role` — the one exception being `markInvitePaid()`
+  (`storage.server.ts`), which uses the service-role client. This closes
+  REVIEW_BRIEF.md's previously-deferred "Specific areas to scrutinize" #2
+  at the database level, not just the app layer.
+- **Order creation** (`POST /api/paypal/orders`): requires an
+  authenticated session and invite ownership (401/403), Zod-validates the
+  body (just `inviteId`, matching the invite-slug shape), looks up the
+  tier price from the invite's own stored `answers.tier` against the
+  fixed `TIERS` table (`src/lib/tiers.ts`) — never from anything the
+  client sends — and creates the PayPal order with `custom_id` set to the
+  invitation's **internal uuid** (`invites.id`, not the slug), so
+  capture-time verification can compare directly against
+  `payments.invitation_id` with no extra lookup. Reuses an existing
+  `status = 'created'` payment row for the same invitation instead of
+  creating a second outstanding PayPal order on a retried click.
+- **Capture** (`POST /api/paypal/orders/[orderId]/capture/route.ts` —
+  fully rewritten): the invitation this capture affects is now derived
+  **only** from the `payments` row looked up by the PayPal order id
+  (`getPaymentByOrderId`, `src/lib/payments.server.ts`) — the
+  client-supplied `inviteId` in the request body is optional and used for
+  nothing but a friendlier early error, never to decide what gets
+  unlocked. Flow: 401 if signed out; 404 if the order id matches no
+  stored payment (closes "reused/unknown order"); 403 if the caller isn't
+  `payment.ownerId` (closes "non-owner pays for/publishes someone else's
+  invitation"); an atomic conditional update
+  (`claimPaymentForCapture`, `status: 'created' → 'processing'`) claims
+  the payment before PayPal is ever called, so a concurrent duplicate
+  request (double-click, retry) gets a 409 instead of triggering a second
+  capture call; the actual PayPal capture response is run through
+  `verifyCaptureResponse()` (`src/lib/paypal-verify.ts`, a pure,
+  dependency-free function — see its exhaustive tests in
+  `paypal-verify.test.ts`) which checks the order id, `custom_id` (must
+  equal `payments.invitation_id`), capture status (`COMPLETED`),
+  currency, exact amount (`numeric(10,2)` compared as normalized
+  2-decimal strings, so no floating-point rounding gap), and — only when
+  `PAYPAL_MERCHANT_EMAIL` is configured — the payee email; any mismatch
+  marks the payment `failed` and returns a **generic** client-facing
+  error (the specific reason is server-log-only, so a probing attacker
+  learns nothing about which check failed).
+- **Idempotent by design, including the "PayPal succeeded but the
+  database update failed" case**: a payment already `status = 'captured'`
+  short-circuits before ever calling PayPal again — it just retries
+  `markInvitePaid()` (itself a no-op if already applied) and returns
+  success. This is exactly the recovery path if `markPaymentCaptured()`
+  landed but the subsequent `invites.paid` flip failed on a prior
+  request: the payment row's durable "captured" state survives that
+  failure, so a retried capture call for the same order recovers only
+  the missing step, without re-contacting PayPal. `markInvitePaid()` was
+  changed to key off the invitation's internal uuid
+  (`payments.invitation_id`) instead of the slug, matching what the
+  capture route now has on hand authoritatively — see
+  `storage.server.ts`.
+- **PayPal API response shape verified against official docs**
+  (developer.paypal.com/api/orders/v2/orders-capture): `custom_id` lives
+  on `purchase_units[]`, not on the capture object itself; the capture
+  record is `purchase_units[].payments.captures[]` with its own
+  `status`/`amount`; payee info is `purchase_units[].payee`.
+- **New tests**: `src/lib/paypal-verify.test.ts` (18 cases — every
+  verification failure mode: order id mismatch, missing/wrong
+  `custom_id`, non-`COMPLETED` status, currency mismatch, amount
+  mismatch including a one-cent discrepancy, payee mismatch, and the
+  success path); `src/lib/payments.server.test.ts` (every function
+  against a mocked service-role client, including the atomic-claim
+  win/lose cases); `src/app/api/paypal/orders/route.test.ts` and
+  `src/app/api/paypal/orders/[orderId]/capture/route.test.ts`
+  (route-handler-level orchestration tests calling `POST` directly with
+  mocked dependencies — auth/ownership failures, Zod validation, reused
+  order, wrong invitation/amount/currency, duplicate capture in both the
+  "already captured" and "concurrently processing" shapes, and both
+  database-update-failure branches). `src/lib/storage.server.test.ts`'s
+  existing `markInvitePaid` test was updated to match the new
+  uuid-keyed behavior.
+- **Still sandbox-only, unchanged on purpose**: no live PayPal
+  credentials, no code path enabling `NEXT_PUBLIC_PAYPAL_ENV=live`.
+
 ## Pending — needs a human to do these, not just code
 
 1. **Run the auth & ownership migration.**
@@ -259,13 +368,19 @@ against an unpaid invite should fail.
    correctly shows "Payments aren't available right now" rather than
    breaking. `PAYPAL_API_BASE_URL` and `NEXT_PUBLIC_PAYPAL_ENV` in
    `.env.example` document the sandbox→live switch.
-3. **PayPal integrity — still deferred, next batch.** This batch
-   deliberately did not touch *who* is allowed to trigger a PayPal
-   capture or verify a payment actually happened — see REVIEW_BRIEF.md.
-   `markInvitePaid` now runs through a proper service-role client instead
-   of the old public policy (a client-separation fix), but its trust
-   model — "the server can mark any invite paid after any successful
-   capture call" — is unchanged.
+3. **Run the payment integrity migration.**
+   `supabase/migrations/20260829000000_payment_integrity.sql` has **not**
+   been applied to the live database — until it is, there's no `payments`
+   table and the `invites_reject_client_paid_update` trigger doesn't
+   exist, so the code-level fixes described in "Payment integrity
+   foundation" above aren't actually enforced yet in production. Steps:
+   Supabase dashboard → SQL Editor → paste the file's contents → Run
+   (same process as the auth_ownership migration above; this one assumes
+   that migration is already applied, since it references
+   `invites.owner_id`). Also add `PAYPAL_MERCHANT_EMAIL` (Project's
+   PayPal account email) to `.env.local` if you want the payee-match
+   check enabled — optional, every other verification check applies
+   regardless.
 4. **AI Gateway auth is unset.** `/api/generate` currently throws
    `GatewayAuthenticationError` in local dev — `AI_GATEWAY_API_KEY` (or a
    direct provider key) isn't configured yet, so AI generation doesn't
@@ -314,7 +429,7 @@ against an unpaid invite should fail.
 | Area | Path |
 |---|---|
 | i18n system | `src/lib/i18n/translations.ts`, `src/lib/i18n/LocaleContext.tsx` |
-| PayPal server-side | `src/lib/paypal.ts`, `src/app/api/paypal/**` |
+| PayPal server-side | `src/lib/paypal.ts`, `src/lib/paypal-verify.ts`, `src/lib/payments.server.ts`, `src/app/api/paypal/**` |
 | Paywall UI | `src/components/invite/PaywallPanel.tsx` |
 | DB schema (+ pending migrations) | `supabase/schema.sql`, `supabase/migrations/` |
 | AI generation endpoint | `src/app/api/generate/route.ts` |
@@ -327,7 +442,7 @@ against an unpaid invite should fail.
 | Shared query logic (client-agnostic) | `src/lib/storage-queries.ts` — includes `PublicInvite`/`fetchPublicInvite()`, the sanitized non-owner read |
 | Browser-only storage ops | `src/lib/storage.ts` |
 | Server-only storage ops | `src/lib/storage.server.ts` |
-| Tests (`npm test`) | `src/lib/ownership.test.ts`, `storage.test.ts`, `storage-queries.test.ts`, `storage.server.test.ts`, `rls-policy.test.ts`, `safe-redirect.test.ts` |
+| Tests (`npm test`) | `src/lib/ownership.test.ts`, `storage.test.ts`, `storage-queries.test.ts`, `storage.server.test.ts`, `rls-policy.test.ts`, `safe-redirect.test.ts`, `paypal-verify.test.ts`, `payments.server.test.ts`, `src/app/api/paypal/orders/route.test.ts`, `src/app/api/paypal/orders/[orderId]/capture/route.test.ts` |
 | Local dev server config | `.claude/launch.json` (`npm run dev`, port 3000) |
 
 ## Repo

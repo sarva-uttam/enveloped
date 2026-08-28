@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import type { PayPalCaptureBody } from "./paypal-verify";
 
 const PAYPAL_API_BASE_URL = process.env.PAYPAL_API_BASE_URL || "https://api-m.sandbox.paypal.com";
 
@@ -39,25 +39,39 @@ async function getAccessToken(): Promise<string> {
   return cachedToken.accessToken;
 }
 
-/** Creates a PayPal order server-side for a fixed, trusted amount — never accept an amount from the client. */
-export async function createPayPalOrder(params: { priceUsd: number; inviteId: string }) {
+/**
+ * Creates a PayPal order server-side for a fixed, trusted amount — never
+ * accept an amount from the client. `customId` is the invitation's
+ * internal uuid (invites.id, NOT the slug) — stored verbatim as
+ * purchase_units[0].custom_id, so at capture time we can compare what
+ * PayPal echoes back against the SAME uuid our own `payments` row
+ * already has on hand (payments.invitation_id), no extra lookup needed.
+ * `idempotencyKey` should be the payment row's own idempotency_key (a
+ * uuid we generated and stored ourselves) so a retried order-creation
+ * attempt for the SAME payment row reuses the same PayPal-Request-Id,
+ * making PayPal's own idempotency guarantee apply, not just ours.
+ */
+export async function createPayPalOrder(params: {
+  priceUsd: string;
+  customId: string;
+  idempotencyKey: string;
+}) {
   const accessToken = await getAccessToken();
-  const amount = params.priceUsd.toFixed(2);
 
   const res = await fetch(`${PAYPAL_API_BASE_URL}/v2/checkout/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
-      "PayPal-Request-Id": randomUUID(),
+      "PayPal-Request-Id": params.idempotencyKey,
     },
     body: JSON.stringify({
       intent: "CAPTURE",
       purchase_units: [
         {
-          custom_id: params.inviteId,
+          custom_id: params.customId,
           description: "Enveloped digital invite",
-          amount: { currency_code: "USD", value: amount },
+          amount: { currency_code: "USD", value: params.priceUsd },
         },
       ],
     }),
@@ -72,7 +86,17 @@ export async function createPayPalOrder(params: { priceUsd: number; inviteId: st
   return order.id;
 }
 
-export async function capturePayPalOrder(orderId: string) {
+/**
+ * Captures a PayPal order and returns the FULL response body — the
+ * caller (the capture route) is responsible for running this through
+ * verifyCaptureResponse() (src/lib/paypal-verify.ts) before trusting
+ * anything about it. This function does no verification itself, only
+ * the network call.
+ */
+export async function capturePayPalOrder(
+  orderId: string,
+  idempotencyKey: string
+): Promise<{ httpStatus: number; body: PayPalCaptureBody }> {
   const accessToken = await getAccessToken();
 
   const res = await fetch(`${PAYPAL_API_BASE_URL}/v2/checkout/orders/${orderId}/capture`, {
@@ -80,15 +104,10 @@ export async function capturePayPalOrder(orderId: string) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
-      "PayPal-Request-Id": randomUUID(),
+      "PayPal-Request-Id": idempotencyKey,
     },
   });
 
-  const body = (await res.json()) as { status?: string; id?: string };
-
-  if (!res.ok) {
-    throw new Error(`PayPal order capture failed: ${res.status} ${JSON.stringify(body)}`);
-  }
-
-  return { status: body.status, orderId: body.id ?? orderId };
+  const body = (await res.json()) as PayPalCaptureBody;
+  return { httpStatus: res.status, body };
 }

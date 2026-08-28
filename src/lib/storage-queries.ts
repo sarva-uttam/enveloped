@@ -15,6 +15,12 @@ import type { GeneratedInviteContent, GuestEntry, SurveyAnswers, TierId } from "
 
 export interface StoredInvite {
   id: string; // = slug, used in /invite/[id]
+  /** The invites table's real primary key (uuid) — distinct from `id`
+   *  above, which is the slug. Needed as a foreign key by anything that
+   *  references this invitation server-side (e.g. payments.invitation_id
+   *  — see src/lib/payments.server.ts). Not sensitive on its own, same
+   *  reasoning as PublicInvite.invitesRowId below. */
+  internalId: string;
   answers: SurveyAnswers;
   content: GeneratedInviteContent;
   guestList: GuestEntry[];
@@ -60,6 +66,7 @@ export async function fetchInvite(client: SupabaseClient, id: string): Promise<S
 
   return {
     id: inviteRow.slug,
+    internalId: inviteRow.id,
     answers: inviteRow.answers,
     content: inviteRow.content,
     guestList,
