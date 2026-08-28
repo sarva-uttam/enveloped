@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DEMO_INVITES } from "@/lib/demo-invites";
-import { getInvite } from "@/lib/storage";
+import { getInviteServer, getGuestEntryServer, getPublicInviteServer } from "@/lib/storage.server";
 import { InviteClient } from "./InviteClient";
 
 type Props = {
@@ -13,12 +13,20 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const { guest } = await searchParams;
 
   const demo = DEMO_INVITES[id];
-  const stored = demo ? null : await getInvite(id);
+  // getInviteServer only ever succeeds for the actual owner (RLS) — for
+  // everyone else, including the anonymous request generating OG
+  // metadata for a shared link, fall back to the sanitized public read.
+  const owned = demo ? null : await getInviteServer(id);
+  const pub = demo || owned ? null : await getPublicInviteServer(id);
 
-  const content = demo?.content ?? stored?.content;
+  const content = demo?.content ?? owned?.content ?? (pub?.paid ? pub.content : null);
   if (!content) return {};
 
-  const guestEntry = guest ? stored?.guestList.find((g) => g.slug === guest) : undefined;
+  // Resolved via the same SECURITY DEFINER lookup InviteClient uses — this
+  // can run for an anonymous guest (no session), so it can't read
+  // stored.guestList directly (that's owner-only now); resolve_invite_guest()
+  // returns just this one guest's fields regardless of caller auth state.
+  const guestEntry = !demo && guest ? await getGuestEntryServer(id, guest) : undefined;
 
   // A personal guest link leads with their teaser line ("Click me.") so it
   // reads as a message, not a link, when previewed in WhatsApp/iMessage/etc.

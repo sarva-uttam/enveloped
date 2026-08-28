@@ -5,15 +5,33 @@ import Link from "next/link";
 import { Trash2, ArrowUpRight, Plus } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { getAllInvites, forgetInvite, type StoredInvite } from "@/lib/storage";
+import { getMyInvites, deleteOwnInvite, type StoredInvite } from "@/lib/storage";
 import { getTier } from "@/lib/tiers";
+import { useAuth } from "@/lib/auth/AuthContext";
 
 export default function DashboardPage() {
+  const { user, loading: authLoading } = useAuth();
   const [invites, setInvites] = useState<StoredInvite[] | null>(null);
 
   useEffect(() => {
-    setInvites(getAllInvites());
-  }, []);
+    if (authLoading) return;
+    let cancelled = false;
+    // proxy.ts already redirects unauthenticated requests to /login for
+    // this route — the `user ? ... : []` branch below is a defense-in-depth
+    // fallback for cases where the session expires client-side after the
+    // page already loaded.
+    (user ? getMyInvites() : Promise.resolve([])).then((result) => {
+      if (!cancelled) setInvites(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, user]);
+
+  async function handleDelete(id: string) {
+    const ok = await deleteOwnInvite(id);
+    if (ok) setInvites((prev) => prev?.filter((i) => i.id !== id) ?? null);
+  }
 
   return (
     <>
@@ -30,14 +48,13 @@ export default function DashboardPage() {
             </Link>
           </div>
           <p className="mt-2 text-sm text-ink-soft">
-            Invites you&apos;ve created on this device. The list below is
-            local to this browser, but each link works anywhere — invites
-            are backed by a real database now.
+            Invites you own, tied to your account — sign in on any device to
+            see the same list.
           </p>
 
-          {invites === null && <p className="mt-10 text-sm text-ink-soft">Loading…</p>}
+          {(authLoading || invites === null) && <p className="mt-10 text-sm text-ink-soft">Loading…</p>}
 
-          {invites?.length === 0 && (
+          {!authLoading && invites?.length === 0 && (
             <div className="mt-14 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line py-16 text-center">
               <p className="text-ink-soft">You haven&apos;t made an invite yet.</p>
               <Link href="/survey" className="text-sm font-medium text-ink underline underline-offset-4">
@@ -79,13 +96,10 @@ export default function DashboardPage() {
                       Open <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                     <button
-                      onClick={() => {
-                        forgetInvite(invite.id);
-                        setInvites(getAllInvites());
-                      }}
+                      onClick={() => handleDelete(invite.id)}
                       className="rounded-full border border-line p-2 text-ink-soft transition hover:border-red-400 hover:text-red-500"
-                      aria-label="Remove from this list"
-                      title="Removes it from this device's list only — the shared link still works"
+                      aria-label="Delete this invite"
+                      title="Permanently deletes this invite"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>

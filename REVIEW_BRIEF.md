@@ -7,8 +7,9 @@ made along the way, and specific areas worth scrutinizing.
 
 **Repo:** https://github.com/sarva-uttam/enveloped
 **Branch:** `master`
-**Relevant commits (most recent work):** `5719d11`, `04922e4`, `f5162ea`
-(the initial `9c6ab27` is the untouched `create-next-app` scaffold)
+**Relevant commits (most recent work):** see the auth & ownership batch
+(described below), `5719d11`, `04922e4`, `f5162ea` (the initial `9c6ab27`
+is the untouched `create-next-app` scaffold)
 
 > ⚠️ **This repo is currently private.** For the reviewing AI to actually
 > browse it, its GitHub account needs access — add it as a collaborator, or
@@ -51,6 +52,96 @@ This brief is narrower: it's about what to *scrutinize*.
   Morisien was supplied by the product owner via ChatGPT — worth a
   language-quality look if the reviewer is equipped for it, separate from
   a code review.
+- **Auth & ownership was just added** (Supabase Auth via email magic
+  link, `owner_id` on invites, RLS scoped to ownership). This directly
+  fixed two real, already-shipped bugs this brief previously flagged:
+  invites had fully-public RLS (anyone could write/read anything), and
+  `InviteClient.tsx` decided "is this viewer the owner" by checking
+  whether `?guest=` was *absent* from the URL — meaning stripping that
+  param off a shared link made you "the owner." Both are fixed. See
+  `PROJECT_STATUS.md`'s "Auth & ownership foundation" section for the
+  full design, and its "Pending" list for what's NOT yet done (the
+  migration hasn't been run against the live project yet as of this
+  writing — verify that before assuming any of this is actually live).
+- **PayPal integrity is still explicitly deferred**, same as before this
+  batch — see "Specific areas to scrutinize" #1 below, unchanged. The one
+  thing that DID change: `markInvitePaid` now runs through a service-role
+  client instead of the old public RLS policy (necessary once that policy
+  became owner-scoped), but nothing about *who* can trigger a capture was
+  touched.
+- **A second round found and fixed one more real leak, then a third
+  found the fix was still incomplete**:
+  - Round 2: the original `invites` read policy was `using (true)`
+    unconditionally — an UNPAID invite's full content was sent to any
+    caller, and "not live yet" was UI-only, not a real data boundary.
+    "Fixed" to `paid = true OR auth.uid() = owner_id` — a table-level
+    policy. Same round: every server-side caller of invite-reading code
+    (the PayPal `orders` Route Handler, `generateMetadata`) was moved off
+    the browser Supabase client onto the session-aware server client.
+  - Round 3: the round-2 table policy was STILL wrong — `invites.answers`
+    is the raw survey input, including `guestNames` (the host's
+    plain-text guest list, distinct from and never protected the same
+    way as the `invite_guests` table) plus `partnerNames`/`venue`/
+    `city`/`colorMood`/`extraDetails`. A `paid = true` table policy still
+    means `select("*")` ships all of that to any guest on a published
+    invite. RLS is row-level, not column-level, so this genuinely
+    couldn't be fixed as a table policy at all — the raw `invites` table
+    now has NO public read policy, period (owner-only), and every
+    non-owner read goes through a new `get_published_invite()` SECURITY
+    DEFINER function that hand-picks a minimal column set instead. Same
+    round: `resolve_invite_guest()` was found to have no `paid` check at
+    all (a guest link to an unpublished invite could still resolve a
+    real name/teaser through it), and `submitRsvp()` — which read the
+    now-owner-only raw table directly — was moved onto the new sanitized
+    function too, gaining a `paid` check it didn't have before as a
+    side effect.
+  - The read logic itself is deduplicated into
+    `src/lib/storage-queries.ts` (client-agnostic, takes an injected
+    client) so `storage.ts` and `storage.server.ts` share one
+    implementation instead of two to keep in sync — that's where
+    `fetchPublicInvite()` (the sanitized read) and `fetchInvite()` (the
+    now-owner-only full read) both live.
+  - Round 4 (pre-merge review of `review/auth-ownership-foundation`,
+    three more real issues, none overlapping the guest-list/answers work
+    above): (1) `/login`/`/auth/callback`'s `next` redirect parameter was
+    a genuine open redirect — `next = "@evil.com"` defeats the naive
+    `${origin}${next}` prefixing (turns into a valid URL whose real host
+    IS evil.com); fixed with `sanitizeRedirectPath()`
+    (`src/lib/safe-redirect.ts`), a strict allowlist validator. (2) the
+    `invite_rsvps` insert policy was `with check (true)` — unconditional;
+    the app's `submitRsvp()` paid-check was never a real boundary since
+    the anon key is public and can be driven directly; the database now
+    requires the referenced invite to be paid and any supplied guest_id
+    to belong to that same invite. (3) both SECURITY DEFINER functions
+    used `search_path = public` with unqualified table references —
+    `public` is exactly the schema most setups leave writable, so this
+    was a real search_path-hijacking exposure; both now use
+    `search_path = ''` with every table reference schema-qualified
+    (`public.invites`, `public.invite_guests`).
+  - **Round 5: round 4's own RSVP fix was itself broken** — the
+    subtlest bug found across all five rounds, worth reading closely.
+    Round 4 wrote the `invite_rsvps` insert policy's paid/guest_id
+    checks as inline `exists (select 1 from invites ...)` subqueries
+    directly in the policy. That's broken: an RLS policy's own
+    subqueries are themselves subject to RLS on whatever they reference,
+    and `invites`/`invite_guests` are BOTH owner-only for SELECT as of
+    round 3 — an anonymous guest has zero row visibility into either, so
+    those subqueries would return no rows and the check would fail
+    UNCONDITIONALLY, rejecting every legitimate anonymous RSVP,
+    regardless of the real data. It read correctly, and passed every
+    round-4 text-pattern test (which checked for the right substrings
+    being present, not for whether they'd evaluate correctly under RLS).
+    Fixed with the same SECURITY DEFINER pattern as the other two
+    functions: `can_insert_rsvp(p_invite_id, p_guest_id) returns
+    boolean`, hardened the same way (`search_path = ''`, qualified
+    `public.*` tables, explicit revoke/grant). The policy is now `with
+    check (can_insert_rsvp(invite_rsvps.invite_id, invite_rsvps.guest_id))`.
+    A local Supabase/Postgres integration test was attempted for this
+    round specifically (to verify this class of bug can't hide behind
+    text-pattern tests again) and is genuinely unavailable in this
+    environment — Docker Desktop's backend process exits ~60s after
+    launch, consistent with missing virtualization support in this
+    sandbox. This is now the top scrutiny item — see #9 below.
 
 ## Specific areas to scrutinize
 
@@ -59,38 +150,129 @@ This brief is narrower: it's about what to *scrutinize*.
    is the `paid` flag only ever set from a verified server-side capture
    response, or is there any path where a client could mark an invite
    paid without a real, verified PayPal transaction?
-2. **Supabase RLS on the `paid` column** (`supabase/schema.sql`): does the
-   update policy actually restrict who can flip `paid`/`paypal_order_id`,
-   or could an authenticated client update it directly via the Supabase
-   client SDK, bypassing PayPal entirely?
-3. **Guest-facing paywall gate** (`src/app/invite/[id]/`,
-   `InviteClient.tsx`): confirm an unpaid invite truly can't leak its
-   content to a guest who has the link — check both the initial server
-   render and any client-side data fetching.
-4. **Migration/schema drift risk**: the payment-gating migration lives as
-   a SQL block in `schema.sql` that has to be manually pasted into the
-   Supabase SQL editor rather than run through a migration tool — flag if
-   this creates a real risk of the file and the live DB diverging over
-   time, and whether a proper migration setup (e.g. Supabase CLI
-   migrations) would be worth adopting.
-5. **`src/app/api/generate/route.ts`**: error handling when the AI
+2. **Supabase RLS on the `paid` column** (`supabase/schema.sql`,
+   `supabase/migrations/20260828000000_auth_ownership.sql`): as of this
+   batch, `invites` update requires `auth.uid() = owner_id` — an
+   authenticated client can no longer flip `paid`/`paypal_order_id` on
+   someone else's invite via the SDK directly. It CAN still flip it on
+   its OWN invite directly (nothing stops a host from client-side-calling
+   `.update({ paid: true })` on their own row instead of going through
+   PayPal) — that gap is real and is exactly what "PayPal integrity, next
+   batch" is meant to close. Worth confirming this reasoning holds once
+   the migration is actually applied and testable.
+3. **Guest-facing paywall gate AND the sanitized-payload boundary**
+   (`src/app/invite/[id]/`, `InviteClient.tsx`,
+   `src/lib/storage-queries.ts`'s `fetchPublicInvite()`/
+   `get_published_invite()`): two things worth independently confirming:
+   (a) an unpaid invite truly can't leak its content to a guest — check
+   both the initial server render and client-side fetching; (b) a
+   *published* invite's guest-facing read truly never includes
+   `answers`/`guestNames`/`owner_id`/`paypal_order_id` — `InviteClient.tsx`
+   now fetches BOTH the owner-scoped `getInvite()` (only ever succeeds
+   for the real owner) and the sanitized `getPublicInvite()` in parallel
+   and uses whichever one actually resolved; worth tracing that logic
+   specifically, since it's the newest and most structurally different
+   part of this batch. This is enforced by RLS + a SECURITY DEFINER
+   function now, not app-layer UI logic — worth confirming that holds
+   once the migration is actually applied, since right now it's reviewed
+   plus covered by a text-pattern regression test
+   (`src/lib/rls-policy.test.ts`) and mocked-client unit tests
+   (`src/lib/storage-queries.test.ts`), not exercised against real
+   Postgres. Also worth a fresh look at `src/lib/ownership.ts`'s
+   `resolveViewerRole()` specifically — that's the single source of truth
+   for "is this viewer the owner," and it's meant to be exhaustively
+   unit-tested (`ownership.test.ts`) rather than trusted by inspection
+   alone; a second pass at both the function and its test coverage is
+   worth the time.
+4. **Migration/schema drift risk** — partially addressed. A real
+   `supabase/migrations/` directory now exists (the auth_ownership
+   migration lives there as a proper versioned, timestamped file); the
+   older payment-gating migration is still just an inline SQL block at
+   the bottom of `schema.sql`, not moved into that folder — worth
+   deciding whether to retrofit it in for consistency, and whether the
+   project should actually adopt the Supabase CLI's migration tooling
+   (`supabase migration up` / `db push`) rather than manual SQL-editor
+   pastes, now that there's a real folder structure for it.
+5. **RLS is reviewed but not integration-tested — treat as a hard
+   pre-production blocker, not routine polish.** The auth_ownership
+   migration's policies are covered by two kinds of test, neither of
+   which stands up a real Postgres: `src/lib/storage.test.ts` and
+   `storage-queries.test.ts` verify the app-layer logic against a mocked
+   Supabase client; `src/lib/rls-policy.test.ts` is a text-pattern
+   regression guard that reads the migration SQL and asserts the
+   security-critical conditions are present. That caveat isn't
+   hypothetical: round 4's own `invite_rsvps` insert policy fix passed
+   review-by-reading AND every text-pattern test from that round, and
+   was still broken — an RLS-subquery-recursion bug that would have
+   silently rejected every legitimate anonymous RSVP (see "Round 5"
+   above). A Docker-based local Supabase instance was specifically
+   attempted to close this gap with a real integration test and isn't
+   available in this environment (Docker Desktop's backend exits ~60s
+   after launch). Concretely, once Postgres access exists: try the
+   `invite_rsvps` insert policy as the `anon` role directly — a valid
+   insert against a paid invite with no guest_id should succeed; against
+   a paid invite with a guest_id from a DIFFERENT invite should fail;
+   against an unpaid invite should fail. None of that is exercised
+   against a real database anywhere in this batch.
+6. **`src/app/api/generate/route.ts`**: error handling when the AI
    Gateway/provider call fails or isn't authenticated — does it fail
    gracefully for the user, or leak internal error detail?
-6. **i18n architecture** (`src/lib/i18n/`): it's a client-only
+7. **i18n architecture** (`src/lib/i18n/`): it's a client-only
    `localStorage`-based switcher with no SSR/URL-based locale routing —
    worth flagging if that has SEO or first-paint (flash of English before
    hydration) implications worth addressing later.
-7. General Next.js App Router correctness — server vs. client component
+8. General Next.js App Router correctness — server vs. client component
    boundaries, especially around `Navbar`/`Hero` which were converted to
-   client components specifically to support the language switcher.
-8. Anything else that looks like a genuine bug, security gap, or
-   accessibility issue — the above is a starting list, not an exhaustive
-   one.
+   client components specifically to support the language switcher, and
+   now also `src/proxy.ts` (this project's Next 16 `middleware.ts`
+   equivalent) and the three-way Supabase client split in
+   `src/lib/supabase/` (browser/server/admin) — worth confirming the
+   `server-only` guard on `admin.ts` actually does what it's supposed to
+   and the service-role key can't end up in a client bundle. (An earlier
+   revision of this brief flagged `storage.ts`'s browser client being
+   reused from a server Route Handler as a fragility worth a second look
+   — that's now fixed, not just flagged: every server-side caller uses
+   `storage.server.ts` and the session-aware server client instead. Grep
+   for `from "@/lib/storage"` vs `from "@/lib/storage.server"` to confirm
+   nothing server-side still imports the browser-facing module.)
+9. **Rounds 4 and 5, freshest and least-reviewed part of this batch —
+   start here.** `src/lib/safe-redirect.ts`'s `sanitizeRedirectPath()` —
+   worth trying to find a bypass the 26 existing test cases
+   (`safe-redirect.test.ts`) missed, since this is exactly the kind of
+   validator where one overlooked edge case reopens the whole class of
+   bug. `can_insert_rsvp()` and the `invite_rsvps` insert policy in
+   `supabase/migrations/20260828000000_auth_ownership.sql` — this is the
+   function that replaced round 4's broken inline-subquery version (see
+   "Round 5" above); confirm the SECURITY DEFINER + table-ownership
+   reasoning that lets it bypass RLS for its own internal queries is
+   actually correct for how this Supabase project's roles/ownership are
+   set up, since that reasoning has NOT been verified against a real
+   database in this batch at all — it's standard Postgres semantics
+   applied carefully, not something observed working. And the
+   `search_path = ''` / `public.*` qualification on all three SECURITY
+   DEFINER functions now (`resolve_invite_guest`, `get_published_invite`,
+   `can_insert_rsvp`) — confirm nothing inside any of the three still
+   resolves an unqualified name.
+10. Anything else that looks like a genuine bug, security gap, or
+    accessibility issue — the above is a starting list, not an
+    exhaustive one.
 
 ## What NOT to flag as issues
 
 - Missing PayPal live credentials, missing `AI_GATEWAY_API_KEY`, and the
-  unrun Supabase migration are all known, tracked in `PROJECT_STATUS.md`,
-  and waiting on the product owner — not something the code needs to
-  "fix" itself.
+  unrun Supabase migrations (both the payment-gating one and the new
+  auth_ownership one) are all known, tracked in `PROJECT_STATUS.md`, and
+  waiting on the product owner — not something the code needs to "fix"
+  itself.
 - Sparse i18n coverage beyond nav/hero — also known and in progress.
+- Existing invites having `owner_id = null` post-migration (no dashboard
+  visibility for them) — known, documented in `PROJECT_STATUS.md`'s
+  "Pending" list, a deliberate consequence of retrofitting auth onto data
+  that predates it, not a bug to silently paper over.
+- The 4 `npm run lint` failures a prior revision of this brief flagged
+  (`Countdown.tsx`, `PaywallPanel.tsx`, `Footer.tsx`, `LocaleContext.tsx`)
+  are fixed as of the second round — `npm run lint` is clean (exit 0).
+  `LocaleContext.tsx` specifically was rewritten to use
+  `useSyncExternalStore` instead of effect+setState for reading
+  `localStorage` — worth a look since it's a more involved change than
+  the other three's one-line fixes.

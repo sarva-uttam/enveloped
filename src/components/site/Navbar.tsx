@@ -4,9 +4,11 @@ import Link from "next/link";
 import { Globe } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { LOCALES, type LocaleCode } from "@/lib/i18n/translations";
+import { useAuth } from "@/lib/auth/AuthContext";
 
 export function Navbar() {
   const { locale, setLocale, t } = useLocale();
+  const { user, loading, signOut } = useAuth();
 
   const LINKS = [
     { href: "/templates", label: t("nav.templates") },
@@ -53,6 +55,26 @@ export function Navbar() {
           >
             {t("nav.myInvites")}
           </Link>
+          {!loading && (
+            <>
+              {user ? (
+                <button
+                  onClick={() => signOut()}
+                  title={user.email ?? undefined}
+                  className="hidden text-sm text-ink-soft transition hover:text-ink sm:inline"
+                >
+                  Sign out
+                </button>
+              ) : (
+                <Link
+                  href="/login"
+                  className="hidden text-sm text-ink-soft transition hover:text-ink sm:inline"
+                >
+                  Sign in
+                </Link>
+              )}
+            </>
+          )}
           <Link
             href="/survey"
             className="rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
