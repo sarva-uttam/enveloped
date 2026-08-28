@@ -88,23 +88,42 @@ create policy "invite_guests owner update" on invite_guests for update
 
 create policy "invite_rsvps owner read" on invite_rsvps for select
   using (auth.uid() = (select owner_id from invites where invites.id = invite_rsvps.invite_id));
-create policy "invite_rsvps public insert" on invite_rsvps for insert with check (true);
+
+-- Insert is NOT unconditional ("with check (true)") — the database
+-- itself, not just the app's submitRsvp(), enforces that the invite is
+-- paid and that a supplied guest_id actually belongs to the same
+-- invite. See the migration's comment on this policy for the reasoning.
+create policy "invite_rsvps insert on published invite" on invite_rsvps for insert
+  with check (
+    exists (select 1 from invites i where i.id = invite_rsvps.invite_id and i.paid = true)
+    and (
+      invite_rsvps.guest_id is null
+      or exists (
+        select 1 from invite_guests g
+        where g.id = invite_rsvps.guest_id and g.invite_id = invite_rsvps.invite_id
+      )
+    )
+  );
 
 -- Narrow, unauthenticated guest lookup — returns only the ONE matching
 -- guest's public fields for an exact (invite slug, guest slug) pair, on
 -- a PAID invite only, never the full list. This is how a guest sees
 -- their own personalized name/teaser without an account despite
 -- invite_guests being owner-only above.
+--
+-- search_path = '' (empty) plus fully-qualified public.* table
+-- references guard against search_path hijacking — see the migration's
+-- comment on this function for the full reasoning.
 create or replace function resolve_invite_guest(p_invite_slug text, p_guest_slug text)
 returns table (id uuid, name text, click_teaser text)
 language sql
 security definer
-set search_path = public
+set search_path = ''
 stable
 as $$
   select g.id, g.name, g.click_teaser
-  from invite_guests g
-  join invites i on i.id = g.invite_id
+  from public.invite_guests g
+  join public.invites i on i.id = g.invite_id
   where i.slug = p_invite_slug and g.slug = p_guest_slug and i.paid = true
   limit 1;
 $$;
@@ -130,7 +149,7 @@ returns table (
 )
 language sql
 security definer
-set search_path = public
+set search_path = ''
 stable
 as $$
   select
@@ -141,7 +160,7 @@ as $$
     case when i.paid then i.content end as content,
     case when i.paid then i.answers ->> 'eventDate' end as event_date,
     case when i.paid then i.answers ->> 'song' end as song
-  from invites i
+  from public.invites i
   where i.slug = p_slug
   limit 1;
 $$;

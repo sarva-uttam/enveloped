@@ -6,10 +6,14 @@ import { Mail, Loader2, CheckCircle2 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { supabase, supabaseConfigured } from "@/lib/supabase/client";
+import { sanitizeRedirectPath } from "@/lib/safe-redirect";
 
 function LoginForm() {
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || "/dashboard";
+  // next is attacker-controlled (anyone can craft /login?next=...) — see
+  // sanitizeRedirectPath's doc comment for the exact open-redirect this
+  // closes.
+  const next = sanitizeRedirectPath(searchParams.get("next"));
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");

@@ -101,14 +101,48 @@ create policy "invite_guests owner update" on invite_guests
 -- ---------------------------------------------------------------------
 -- 4. invite_rsvps — submitting stays open to guests (no accounts), but
 --    reading the RSVP list is now owner-only, same privacy reasoning as
---    the guest list above. The existing public insert policy is untouched.
+--    the guest list above.
+--
+--    The insert policy is NOT left as the original unconditional
+--    "with check (true)" — the app's submitRsvp() already refuses to
+--    submit against an unpaid invite before it ever issues an insert,
+--    but that is a client-side convenience, not a security boundary: the
+--    anon key is public, so anyone can call the Supabase REST/JS client
+--    directly and skip the app entirely. The database itself now
+--    enforces, independent of anything the browser does:
+--      1. the referenced invite is paid (no RSVPs on an unpublished
+--         invite, from anyone, authenticated or not);
+--      2. IF a guest_id is supplied, it must reference a guest row that
+--         actually belongs to the SAME invite_id being inserted against
+--         — otherwise a caller could cite a real guest_id that belongs
+--         to a DIFFERENT invite, misattributing an RSVP to someone else's
+--         guest list. guest_id remains optional (null is fine — RSVPs
+--         are collected on non-Platinum tiers too, which have no named
+--         guest list at all).
 -- ---------------------------------------------------------------------
 
 drop policy if exists "invite_rsvps public read" on invite_rsvps;
+drop policy if exists "invite_rsvps public insert" on invite_rsvps;
 
 create policy "invite_rsvps owner read" on invite_rsvps
   for select using (
     auth.uid() = (select owner_id from invites where invites.id = invite_rsvps.invite_id)
+  );
+
+create policy "invite_rsvps insert on published invite" on invite_rsvps
+  for insert
+  with check (
+    exists (
+      select 1 from invites i
+      where i.id = invite_rsvps.invite_id and i.paid = true
+    )
+    and (
+      invite_rsvps.guest_id is null
+      or exists (
+        select 1 from invite_guests g
+        where g.id = invite_rsvps.guest_id and g.invite_id = invite_rsvps.invite_id
+      )
+    )
   );
 
 -- ---------------------------------------------------------------------
@@ -127,18 +161,33 @@ create policy "invite_rsvps owner read" on invite_rsvps
 -- shows "not live yet" instead) — the data would already have been
 -- fetched over the wire before that UI decision, the same class of bug
 -- this whole migration exists to close elsewhere. Fixed here too.
+--
+-- `set search_path = ''` (empty, not `public`) plus fully-qualified
+-- `public.invite_guests`/`public.invites` table references: a
+-- SECURITY DEFINER function runs with the PRIVILEGES of the function's
+-- owner regardless of who calls it, but it still resolves unqualified
+-- object names using whatever `search_path` is active — if that path
+-- included a schema an unprivileged caller can create objects in (most
+-- setups keep `public` writable), a malicious caller could create a
+-- same-named object earlier in the path and have this function silently
+-- operate on THEIR table/view instead of the real one ("search_path
+-- hijacking"). An empty search_path plus explicit schema qualification
+-- on every table reference closes that off entirely — there's no
+-- unqualified name left for anything to hijack. Built-in types
+-- (text/uuid/boolean) and operators don't need qualifying; they resolve
+-- via pg_catalog regardless of search_path.
 -- ---------------------------------------------------------------------
 
 create or replace function resolve_invite_guest(p_invite_slug text, p_guest_slug text)
 returns table (id uuid, name text, click_teaser text)
 language sql
 security definer
-set search_path = public
+set search_path = ''
 stable
 as $$
   select g.id, g.name, g.click_teaser
-  from invite_guests g
-  join invites i on i.id = g.invite_id
+  from public.invite_guests g
+  join public.invites i on i.id = g.invite_id
   where i.slug = p_invite_slug and g.slug = p_guest_slug and i.paid = true
   limit 1;
 $$;
@@ -175,6 +224,9 @@ grant execute on function resolve_invite_guest(text, text) to anon, authenticate
 --               partnerNames, venue, city, colorMood, extraDetails) is
 --               intentionally NEVER selected here, at any point, for
 --               anyone but the owner.
+--
+-- `set search_path = ''` plus fully-qualified `public.invites` — same
+-- search_path-hijacking rationale as resolve_invite_guest() above.
 -- ---------------------------------------------------------------------
 
 create or replace function get_published_invite(p_slug text)
@@ -189,7 +241,7 @@ returns table (
 )
 language sql
 security definer
-set search_path = public
+set search_path = ''
 stable
 as $$
   select
@@ -200,7 +252,7 @@ as $$
     case when i.paid then i.content end as content,
     case when i.paid then i.answers ->> 'eventDate' end as event_date,
     case when i.paid then i.answers ->> 'song' end as song
-  from invites i
+  from public.invites i
   where i.slug = p_slug
   limit 1;
 $$;

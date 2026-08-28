@@ -70,10 +70,9 @@ describe("auth_ownership migration — security property regression guard", () =
     expect(ownerRead).toContain("auth.uid() = (select owner_id from invites");
   });
 
-  it("resolve_invite_guest only resolves for a PAID invite, returns exactly one minimal row, and cannot expose the full guest table", () => {
+  it("resolve_invite_guest only resolves for a PAID invite, returns exactly one minimal row, cannot expose the full guest table, and is hardened against search_path hijacking", () => {
     const body = functionBody("resolve_invite_guest");
     expect(body).toContain("security definer");
-    expect(body).toContain("set search_path = public");
     expect(body).toContain("limit 1");
     // The bug this specific check guards: an earlier version of this
     // function had no paid condition at all, so a guest link to an
@@ -83,13 +82,32 @@ describe("auth_ownership migration — security property regression guard", () =
     // named, minimal columns.
     expect(body).toMatch(/select g\.id, g\.name, g\.click_teaser/);
     expect(sql).toContain("grant execute on function resolve_invite_guest(text, text) to anon, authenticated");
+
+    // Hardening: an empty search_path plus schema-qualified table
+    // references closes off "search_path hijacking" (a caller creating
+    // a same-named object earlier in the path so the function silently
+    // operates on their table instead of the real one). `public` alone
+    // is NOT safe — that's the schema every ordinary role can typically
+    // create objects in.
+    expect(body).toContain("set search_path = ''");
+    expect(body).not.toMatch(/set search_path = public\b/);
+    expect(body).toContain("public.invite_guests");
+    expect(body).toContain("public.invites");
+    // Every bare (unqualified) reference to these tables should be gone
+    // from the FROM/JOIN clauses — "from invite_guests"/"join invites"
+    // without the "public." prefix would mean this check regressed.
+    expect(body).not.toMatch(/from invite_guests\b/);
+    expect(body).not.toMatch(/join invites\b/);
   });
 
-  it("get_published_invite() exists, is locked down (security definer, fixed search_path, explicit grants), and cannot leak answers/owner_id/paypal_order_id/guestNames", () => {
+  it("get_published_invite() exists, is locked down (security definer, empty search_path, qualified tables, explicit grants), and cannot leak answers/owner_id/paypal_order_id/guestNames", () => {
     const body = functionBody("get_published_invite");
 
     expect(body).toContain("security definer");
-    expect(body).toContain("set search_path = public");
+    expect(body).toContain("set search_path = ''");
+    expect(body).not.toMatch(/set search_path = public\b/);
+    expect(body).toContain("public.invites");
+    expect(body).not.toMatch(/from invites\b/); // must be "from public.invites", not bare
 
     // The exact leak this function exists to close: guestNames lives
     // inside `answers`, along with partnerNames/venue/city/colorMood/
@@ -128,5 +146,29 @@ describe("auth_ownership migration — security property regression guard", () =
     }
     expect(sql).not.toMatch(/create policy "invites public insert"/);
     expect(sql).not.toMatch(/create policy "invites public update"/);
+  });
+
+  it("invite_rsvps insert is NOT unconditional — it requires the invite to be paid, and any supplied guest_id to belong to that same invite", () => {
+    // The exact regression this guards: the original policy was
+    // `with check (true)` — anyone (the anon key is public) could insert
+    // an RSVP against ANY invite_id, published or not, and cite ANY
+    // guest_id regardless of which invite it actually belongs to.
+    expect(sql).not.toMatch(/create policy "invite_rsvps public insert" on invite_rsvps for insert with check \(true\)/);
+
+    const insert = policyBlock("invite_rsvps insert on published invite");
+
+    // Condition 1: the referenced invite must be paid — closes "anonymous
+    // users cannot insert against unpublished invitations" at the DB
+    // level, not just via the app's submitRsvp() check.
+    expect(insert).toMatch(/exists\s*\(\s*select 1 from invites i\s*where i\.id = invite_rsvps\.invite_id and i\.paid = true\s*\)/);
+
+    // Condition 2: a supplied guest_id must belong to the SAME invite —
+    // prevents citing a real guest_id that actually belongs to a
+    // different invite (cross-invite misattribution). null guest_id
+    // stays allowed (non-Platinum tiers have no named guest list).
+    expect(insert).toContain("invite_rsvps.guest_id is null");
+    expect(insert).toMatch(
+      /exists\s*\(\s*select 1 from invite_guests g\s*where g\.id = invite_rsvps\.guest_id and g\.invite_id = invite_rsvps\.invite_id\s*\)/
+    );
   });
 });

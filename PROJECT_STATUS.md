@@ -120,6 +120,53 @@ other guest's name and personal link. This batch replaces both.
   accident of how `@supabase/ssr`'s browser client degrades outside a
   real browser — fully replaced now, not patched).
 
+### Round 4: three more verified issues, fixed before merge
+
+A pre-merge review of `review/auth-ownership-foundation` found three more
+real issues — none of them in the "what a guest can read" data-boundary
+work above, all in adjacent surfaces the earlier rounds hadn't
+scrutinized as closely.
+
+1. **Open redirect via the auth `next` parameter.** `/login?next=...`
+   and `/auth/callback?next=...` both took the `next` value straight
+   from the URL and used it to build a redirect — a classic
+   attacker-controlled input. The specific trick that defeats naive
+   `${origin}${next}` string-prefixing: `next = "@evil.com"` turns that
+   into `"https://our-site.com@evil.com"`, a syntactically valid URL
+   whose actual HOST is `evil.com` (`our-site.com` becomes discarded
+   userinfo). Fixed with `sanitizeRedirectPath()`
+   (`src/lib/safe-redirect.ts`) — only an absolute internal path starting
+   with exactly one `/`, no backslashes, no embedded scheme, and a
+   strict safe-character allowlist (notably excluding `@` and `:`) is
+   accepted; anything else falls back to `/dashboard`. Both routes now
+   validate `next` through this before using it anywhere.
+2. **`invite_rsvps` insert policy was unconditional.** `with check
+   (true)` — since the anon key is public, anyone could insert an RSVP
+   row against ANY `invite_id` (published or not) and cite ANY
+   `guest_id` regardless of which invite it actually belonged to. The
+   app's `submitRsvp()` already refused to submit against an unpaid
+   invite before this fix, but that was a convenience, never a boundary
+   — the browser client can be driven directly, bypassing the app
+   entirely. The database itself now enforces, independent of the app:
+   the referenced invite must be `paid = true`, and a supplied
+   `guest_id` (still optional — non-Platinum tiers have no named guest
+   list) must belong to that same `invite_id`.
+3. **Both SECURITY DEFINER functions used `search_path = public` with
+   unqualified table references.** `public` is exactly the schema most
+   setups leave writable by ordinary roles — a caller able to create a
+   same-named object there could have made either function silently
+   operate on their object instead of the real `invites`/`invite_guests`
+   ("search_path hijacking"). Both functions now use `search_path = ''`
+   (empty) with every table reference fully qualified
+   (`public.invites`, `public.invite_guests`) — no unqualified name is
+   left for anything to shadow. Their `revoke`/`grant` statements are
+   unchanged.
+
+New tests: `src/lib/safe-redirect.test.ts` (26 cases — legitimate paths
+pass through, a wide range of malicious `next` values all fall back);
+`src/lib/rls-policy.test.ts` gained checks for the empty search_path,
+qualified table references, and the new RSVP insert conditions.
+
 ## Pending — needs a human to do these, not just code
 
 1. **Run the auth & ownership migration.**
@@ -210,13 +257,14 @@ other guest's name and personal link. This batch replaces both.
 | AI generation endpoint | `src/app/api/generate/route.ts` |
 | Auth (client state) | `src/lib/auth/AuthContext.tsx` |
 | Auth (login / callback) | `src/app/login/page.tsx`, `src/app/auth/callback/route.ts` |
+| Open-redirect guard | `src/lib/safe-redirect.ts` (`sanitizeRedirectPath`) |
 | Route protection | `src/proxy.ts` (Next 16's rename of `middleware.ts`) |
 | Ownership logic (unit-tested) | `src/lib/ownership.ts` |
 | Supabase clients (browser/server/admin) | `src/lib/supabase/client.ts`, `server.ts`, `admin.ts` |
 | Shared query logic (client-agnostic) | `src/lib/storage-queries.ts` — includes `PublicInvite`/`fetchPublicInvite()`, the sanitized non-owner read |
 | Browser-only storage ops | `src/lib/storage.ts` |
 | Server-only storage ops | `src/lib/storage.server.ts` |
-| Tests (`npm test`) | `src/lib/ownership.test.ts`, `storage.test.ts`, `storage-queries.test.ts`, `storage.server.test.ts`, `rls-policy.test.ts` |
+| Tests (`npm test`) | `src/lib/ownership.test.ts`, `storage.test.ts`, `storage-queries.test.ts`, `storage.server.test.ts`, `rls-policy.test.ts`, `safe-redirect.test.ts` |
 | Local dev server config | `.claude/launch.json` (`npm run dev`, port 3000) |
 
 ## Repo

@@ -101,6 +101,23 @@ This brief is narrower: it's about what to *scrutinize*.
     implementation instead of two to keep in sync — that's where
     `fetchPublicInvite()` (the sanitized read) and `fetchInvite()` (the
     now-owner-only full read) both live.
+  - Round 4 (pre-merge review of `review/auth-ownership-foundation`,
+    three more real issues, none overlapping the guest-list/answers work
+    above): (1) `/login`/`/auth/callback`'s `next` redirect parameter was
+    a genuine open redirect — `next = "@evil.com"` defeats the naive
+    `${origin}${next}` prefixing (turns into a valid URL whose real host
+    IS evil.com); fixed with `sanitizeRedirectPath()`
+    (`src/lib/safe-redirect.ts`), a strict allowlist validator. (2) the
+    `invite_rsvps` insert policy was `with check (true)` — unconditional;
+    the app's `submitRsvp()` paid-check was never a real boundary since
+    the anon key is public and can be driven directly; the database now
+    requires the referenced invite to be paid and any supplied guest_id
+    to belong to that same invite. (3) both SECURITY DEFINER functions
+    used `search_path = public` with unqualified table references —
+    `public` is exactly the schema most setups leave writable, so this
+    was a real search_path-hijacking exposure; both now use
+    `search_path = ''` with every table reference schema-qualified
+    (`public.invites`, `public.invite_guests`).
 
 ## Specific areas to scrutinize
 
@@ -160,10 +177,15 @@ This brief is narrower: it's about what to *scrutinize*.
    filters by the real owner_id, guest lookups only ever go through the
    RPC); `src/lib/rls-policy.test.ts` is a text-pattern regression guard
    that reads the migration SQL and asserts the security-critical
-   conditions are present — it says plainly in its own header that this
-   isn't proof the RLS is correct, just a guard against silently
-   reverting it. Actually running this against a real (or local Docker)
-   Postgres is still worth doing before trusting this fully.
+   conditions are present — now including the round-4 fixes (empty
+   search_path, qualified table references, the RSVP insert conditions)
+   — it says plainly in its own header that this isn't proof the RLS is
+   correct, just a guard against silently reverting it. Actually running
+   this against a real (or local Docker) Postgres is still worth doing
+   before trusting this fully — this specifically includes actually
+   trying to insert an `invite_rsvps` row against an unpaid invite or
+   with a mismatched `guest_id`/`invite_id` pair, which no test in this
+   batch exercises against a real database.
 6. **`src/app/api/generate/route.ts`**: error handling when the AI
    Gateway/provider call fails or isn't authenticated — does it fail
    gracefully for the user, or leak internal error detail?
@@ -185,9 +207,21 @@ This brief is narrower: it's about what to *scrutinize*.
    `storage.server.ts` and the session-aware server client instead. Grep
    for `from "@/lib/storage"` vs `from "@/lib/storage.server"` to confirm
    nothing server-side still imports the browser-facing module.)
-9. Anything else that looks like a genuine bug, security gap, or
-   accessibility issue — the above is a starting list, not an exhaustive
-   one.
+9. **Round 4's three fixes, freshest and least-reviewed part of this
+   batch**: `src/lib/safe-redirect.ts`'s `sanitizeRedirectPath()` —
+   worth trying to find a bypass the 26 existing test cases
+   (`safe-redirect.test.ts`) missed, since this is exactly the kind of
+   validator where one overlooked edge case reopens the whole class of
+   bug; the new `invite_rsvps` insert policy in
+   `supabase/migrations/20260828000000_auth_ownership.sql` — confirm the
+   `exists (...)` subqueries actually express "same invite" correctly
+   and there's no way to satisfy them with a guest_id/invite_id pair
+   that doesn't really match; and the `search_path = ''` / `public.*`
+   qualification on both SECURITY DEFINER functions — confirm nothing
+   inside either function body still resolves an unqualified name.
+10. Anything else that looks like a genuine bug, security gap, or
+    accessibility issue — the above is a starting list, not an
+    exhaustive one.
 
 ## What NOT to flag as issues
 
