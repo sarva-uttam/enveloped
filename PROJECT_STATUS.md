@@ -337,50 +337,199 @@ round — see REVIEW_BRIEF.md's prior "Specific areas to scrutinize" #2).
 - **Still sandbox-only, unchanged on purpose**: no live PayPal
   credentials, no code path enabling `NEXT_PUBLIC_PAYPAL_ENV=live`.
 
+## Round 7: all three migrations applied to the live project + verified against real infrastructure (2026-09-01)
+
+The three migrations that every prior round called out as "reviewed but
+never run against real Postgres — treat as a pre-production blocker" are
+now **applied to the live Supabase project `ravfwnqfxngphncuyyxo`** and
+their security-critical behavior has been exercised against the real
+database and the real PayPal **sandbox** API — not mocked clients, and
+not the privileged admin/MCP connection either (the RLS checks were run
+as genuine `anon` / `authenticated` / `service_role` REST callers).
+
+**Applied, in dependency order, via the Supabase MCP `apply_migration`:**
+
+| `schema_migrations` version | name | source |
+|---|---|---|
+| `20260825050021` | `enveloped_invites_schema` | (pre-existing base tables) |
+| `20260901114121` | `payment_gating` | the inline block at the bottom of `supabase/schema.sql` (`paid` / `paypal_order_id` columns) |
+| `20260901114159` | `auth_ownership` | `supabase/migrations/20260828000000_auth_ownership.sql`, verbatim |
+| `20260901114212` | `payment_integrity` | `supabase/migrations/20260829000000_payment_integrity.sql`, verbatim |
+
+> **Migration-history version drift — known, low-impact, worth fixing
+> before adopting `supabase db push`.** `apply_migration` stamped its own
+> timestamps (`20260901…`), so the recorded `schema_migrations` versions
+> do **not** match the `supabase/migrations/*.sql` filenames
+> (`20260828…`, `20260829…`), and `payment_gating` still has no file at
+> all (it lives only inline in `schema.sql`). The current workflow is
+> manual SQL application, so this is informational today. But if the
+> project ever switches to `supabase db push` / `supabase migration up`,
+> the CLI will see `20260828000000_auth_ownership` and
+> `20260829000000_payment_integrity` as *unapplied* and try to re-run
+> them — and several statements in them (`create policy …`, `create
+> trigger …`) are **not** `if not exists` and will error on a re-run.
+> Reconcile first: `supabase migration repair` to align the version
+> rows, and retrofit `payment_gating` into a real numbered file (this is
+> REVIEW_BRIEF.md scrutiny item #4).
+
+### Structural confirmation (`information_schema` / `pg_catalog`)
+
+- `invites` now has `owner_id uuid` (default `auth.uid()`, FK →
+  `auth.users`, `on delete cascade`), `paid boolean not null default
+  false`, `paypal_order_id text`.
+- `payments` exists with every column from the migration, including
+  `expected_amount` / `captured_amount` as `numeric(10,2)` (verified
+  `numeric_precision=10, numeric_scale=2` — the exact-match amount
+  comparison genuinely can't be defeated by float rounding), the
+  `status` / `tier` CHECK constraints, `unique (provider,
+  provider_order_id)`, and both FKs (`invitation_id` → `invites`,
+  `owner_id` → `auth.users`, both `on delete cascade`).
+- `invites_reject_client_paid_update` trigger exists on `invites`:
+  `BEFORE UPDATE … FOR EACH ROW EXECUTE FUNCTION
+  public.reject_client_paid_update()` (verified via `pg_trigger` —
+  `tgtype` decodes to BEFORE + ROW + UPDATE).
+- All four SECURITY DEFINER functions (`can_insert_rsvp`,
+  `resolve_invite_guest`, `get_published_invite`,
+  `reject_client_paid_update`) are present, owned by `postgres`,
+  `prosecdef = true`.
+- The old fully-public policies (`invites public read/insert`,
+  `invite_guests public *`, `invite_rsvps public *`) are **gone**;
+  `pg_policies` now shows exactly the owner-scoped set from the
+  migrations, plus `invite_rsvps insert on published invite` (→
+  `can_insert_rsvp(...)`) and `payments owner read own`. RLS is enabled
+  (not forced) on all four tables.
+
+### RLS / security behavior — tested as real `anon` / `authenticated` / `service_role` over the REST API
+
+| Check | Result |
+|---|---|
+| `anon` RSVP insert → **paid** invite, `guest_id` null | **201** (allowed) |
+| `anon` RSVP insert → **paid** invite, `guest_id` belonging to that same invite | **201** (allowed) |
+| `anon` RSVP insert → paid invite, `guest_id` from a **different** invite | **rejected** — `42501` new row violates RLS |
+| `anon` RSVP insert → **unpaid** invite | **rejected** — `42501` |
+| `authenticated` **owner**: `UPDATE invites SET paid = true` directly | **rejected** — `P0001 "paid and paypal_order_id can only be set by the payment system"` (the trigger) |
+| `authenticated` owner: `UPDATE invites SET category = …` (non-gated column) | **204** — succeeds, proving the block above is the trigger, not blanket RLS |
+| `service_role`: `UPDATE invites SET paid = true` | **204** — succeeds (this is the `markInvitePaid()` path) |
+| `anon` SELECT `payments` | `[]` — zero rows |
+| `authenticated` owner SELECT `payments` | own rows only |
+| `anon` INSERT `payments` | **rejected** — `42501` |
+| `authenticated` owner INSERT `payments` (even with a truthful `owner_id`) | **rejected** — `42501` |
+| `authenticated` owner UPDATE / DELETE `payments` | **0 rows affected** — no policy grants the operation, so the rows are invisible to it; nothing is modified |
+
+Note on the `return=representation` header: an `anon` RSVP insert made
+with `Prefer: return=representation` gets an RLS error on the *read-back*
+(`invite_rsvps` SELECT is owner-only), not on the write. The app's
+`submitRsvp()` uses a bare `.insert(...)` (no `.select()`), so this is a
+test-harness artifact, not a real gap — confirmed by reading
+`src/lib/storage.ts`.
+
+### Supabase security advisor
+
+`get_advisors` flags the SECURITY DEFINER functions as
+`anon`/`authenticated`-executable. For `can_insert_rsvp`,
+`resolve_invite_guest`, and `get_published_invite` this is **by design**
+— they are the entire non-owner read/RSVP path and are deliberately
+`grant execute … to anon, authenticated` with narrow, hand-picked
+returns. `reject_client_paid_update` is also flagged, but PostgREST does
+**not** actually expose it (a `returns trigger` function isn't in the
+schema cache — a direct `/rest/v1/rpc/reject_client_paid_update` call
+returns `PGRST202 "Could not find the function"`), so there is nothing
+callable there. No action taken; noted so a future advisor run isn't
+mistaken for a regression.
+
+### PayPal — real sandbox API + the real app routes (dev server, `NEXT_PUBLIC_PAYPAL_ENV=sandbox`)
+
+Verified end-to-end against `api-m.sandbox.paypal.com` with the app's
+actual `/api/paypal/orders` and `/api/paypal/orders/[orderId]/capture`
+route handlers, driven by a genuine authenticated Supabase session
+cookie:
+
+- **Order creation** (`POST /api/paypal/orders` as the authenticated
+  owner): a real PayPal sandbox order is created; a `payments` row lands
+  with `status = created`, `tier = gold`, `expected_amount = 79.00`
+  (from the server-side `TIERS` table via the invite's stored
+  `answers.tier`, **not** anything the request sent), and
+  `owner_id` / `invitation_id` matching the invite.
+- **Order-creation idempotency**: a second `POST` for the same invite
+  reused the *same* PayPal order id (the `findPendingPayment` →
+  `status = 'created'` reuse path), rather than opening a second
+  outstanding order.
+- **Capture of an un-approved order** (no buyer approval step): the real
+  PayPal API returns `422 UNPROCESSABLE_ENTITY / ORDER_NOT_APPROVED`,
+  the route marks the `payments` row `status = failed` with the reason
+  in `failure_reason`, and returns a **generic** `402` to the client
+  (specific reason server-log-only). The real capture network call and
+  its failure handling are exercised.
+- **Capture auth/ownership**: `401` when signed out, `404` for an order
+  id with no `payments` row, `403` when a *different* signed-in user
+  attempts the capture.
+- **Idempotent capture / "PayPal succeeded but the DB update failed"
+  recovery branch**: with a `payments` row in `status = 'captured'` (the
+  state a real verified capture leaves behind), `POST …/capture` returns
+  `200 {"status":"COMPLETED"}` **without calling PayPal again**, and
+  flips `invites.paid → true` + sets `invites.paypal_order_id`. Calling
+  it a second time stays `200 COMPLETED` and leaves the `payments` row
+  byte-for-byte unchanged (no double-processing, no second capture id).
+
+**Not exercised against real infrastructure — the one remaining gap:**
+the *happy-path* wallet flow — a real PayPal sandbox **buyer** approving
+the order in the hosted checkout UI, then a real
+`POST /v2/checkout/orders/{id}/capture` returning `COMPLETED`, run
+through `verifyCaptureResponse()` against a genuine PayPal capture body.
+That leg needs an interactive browser plus sandbox buyer credentials
+(developer.paypal.com/dashboard/sandbox/accounts) and there is no
+browser / headless-approval path available in this environment (a
+headless card-approval attempt via `confirm-payment-source` returned
+`UNPROCESSABLE_ENTITY`, most likely because Advanced Card Payments
+isn't enabled on this sandbox account).
+`verifyCaptureResponse()` itself remains covered only
+by its unit fixtures (`src/lib/paypal-verify.test.ts`, 18 cases). This
+is now the single item to run before trusting the paid→publish path in
+production — see "Pending" #2 below.
+
 ## Pending — needs a human to do these, not just code
 
-1. **Run the auth & ownership migration.**
-   `supabase/migrations/20260828000000_auth_ownership.sql` has **not**
-   been applied to the live database — until it is, invites have no
-   `owner_id` column and the old fully-public RLS policies are still
-   active (meaning the ownership bug this batch fixes at the app layer
-   isn't yet closed at the database layer). Steps:
-   - Supabase dashboard → SQL Editor → paste the file's contents → Run.
-   - Add `SUPABASE_SERVICE_ROLE_KEY` to `.env.local` (Project Settings >
-     API) — the PayPal capture route needs it now; it's already
-     referenced (blank) in both `.env.local` and `.env.example`.
-   - **Existing invites** (created before this batch) will have
-     `owner_id = null` after the migration. They stay publicly viewable
-     by guests (unchanged), but won't appear in anyone's dashboard and
-     can't be edited/deleted by anyone — there's no account to
-     retroactively attach them to. If any of those need to be reachable
-     from a dashboard, that's a manual decision (e.g. a one-off script
-     backfilling specific rows to a specific `owner_id`), not something
-     to automate silently.
-   - Confirm both `resolve_invite_guest` and `get_published_invite` show
-     up under Database > Functions with `EXECUTE` granted to `anon` —
-     between them, that's the entire non-owner read path (guest
-     personalization, and the invite content itself) post-migration.
-2. **Add PayPal credentials.** `.env.local` needs
-   `NEXT_PUBLIC_PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` from
-   [developer.paypal.com/dashboard](https://developer.paypal.com/dashboard/applications)
-   (start with a **Sandbox** app, not Live). Until set, the paywall
-   correctly shows "Payments aren't available right now" rather than
-   breaking. `PAYPAL_API_BASE_URL` and `NEXT_PUBLIC_PAYPAL_ENV` in
-   `.env.example` document the sandbox→live switch.
-3. **Run the payment integrity migration.**
-   `supabase/migrations/20260829000000_payment_integrity.sql` has **not**
-   been applied to the live database — until it is, there's no `payments`
-   table and the `invites_reject_client_paid_update` trigger doesn't
-   exist, so the code-level fixes described in "Payment integrity
-   foundation" above aren't actually enforced yet in production. Steps:
-   Supabase dashboard → SQL Editor → paste the file's contents → Run
-   (same process as the auth_ownership migration above; this one assumes
-   that migration is already applied, since it references
-   `invites.owner_id`). Also add `PAYPAL_MERCHANT_EMAIL` (Project's
-   PayPal account email) to `.env.local` if you want the payee-match
-   check enabled — optional, every other verification check applies
-   regardless.
+1. ~~**Run the auth & ownership migration.**~~ — **DONE 2026-09-01.**
+   Applied to `ravfwnqfxngphncuyyxo` as `schema_migrations` version
+   `20260901114159` (`auth_ownership`), from
+   `supabase/migrations/20260828000000_auth_ownership.sql` verbatim, and
+   verified against the live database — see "Round 7" above.
+   `SUPABASE_SERVICE_ROLE_KEY` is present and non-empty in `.env.local`.
+   - **Existing invites** — there were 3, all `paid = false` test rows
+     (`uttam-riyah-…`, `xcfcgs-…`, `test-paywall-check`). All now have
+     `owner_id = null` and, being unpaid, are unreadable by anyone
+     (no owner to match, and `get_published_invite()` returns
+     `content`/`tier` as null until `paid`). This is the documented
+     consequence, not a regression; left in place (not deleted — not
+     this task's call).
+   - `resolve_invite_guest` and `get_published_invite` confirmed present
+     with `EXECUTE` to `anon` (and flagged, as expected-by-design, by
+     the security advisor).
+2. **PayPal sandbox credentials are set; the live wallet happy-path is
+   the last unverified leg.** `.env.local` has
+   `NEXT_PUBLIC_PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` /
+   `PAYPAL_API_BASE_URL` (= `https://api-m.sandbox.paypal.com`) /
+   `NEXT_PUBLIC_PAYPAL_ENV` (= `sandbox`), and order-create + capture
+   were exercised against the real sandbox API (Round 7). What still
+   needs a human with a browser: sign in, create an invite, and complete
+   a checkout with a **PayPal sandbox buyer account**
+   ([developer.paypal.com/dashboard/sandbox/accounts](https://developer.paypal.com/dashboard/sandbox/accounts)),
+   confirming the capture returns `COMPLETED`, `verifyCaptureResponse()`
+   passes against the real body, `payments.captured_amount` / `currency`
+   are right, and `invites.paid` flips true. `PAYPAL_MERCHANT_EMAIL` is
+   still unset — optional; leaving it unset skips only the payee-match
+   check (surfaced as skipped, not silently passed).
+3. ~~**Run the payment integrity migration.**~~ — **DONE 2026-09-01.**
+   Applied to `ravfwnqfxngphncuyyxo` as `schema_migrations` version
+   `20260901114212` (`payment_integrity`), from
+   `supabase/migrations/20260829000000_payment_integrity.sql` verbatim.
+   The inline **payment-gating** block (`paid` / `paypal_order_id`) was
+   applied first, as version `20260901114121` (`payment_gating`). The
+   `payments` table, its RLS, and the `invites_reject_client_paid_update`
+   trigger are all live and verified as real `anon` / `authenticated` /
+   `service_role` callers — see "Round 7" above. **Migration-history
+   version drift** (recorded versions vs. `supabase/migrations/`
+   filenames) is a known follow-up — see the callout in "Round 7".
 4. **AI Gateway auth is unset.** `/api/generate` currently throws
    `GatewayAuthenticationError` in local dev — `AI_GATEWAY_API_KEY` (or a
    direct provider key) isn't configured yet, so AI generation doesn't
@@ -403,26 +552,22 @@ round — see REVIEW_BRIEF.md's prior "Specific areas to scrutinize" #2).
    `window` doesn't exist during SSR — `useSyncExternalStore` is React's
    own tool for exactly this); `Footer.tsx`'s unescaped apostrophe is
    escaped. `npm run lint` is clean (exit 0).
-8. **RLS is reviewed and covered by two kinds of test, still not
-   integration-tested against real Postgres — treat this as the single
-   highest-priority pre-production item, not routine polish.**
-   `src/lib/storage-queries.test.ts` tests the actual query logic
-   (mocked client) both storage.ts and storage.server.ts share;
-   `src/lib/rls-policy.test.ts` is a text-pattern regression guard over
-   the migration SQL itself — it says plainly in its own header that
-   this isn't proof the RLS is correct, just a guard against silently
-   reverting a known-fixed bug. That caveat isn't hypothetical: round 4
-   of this migration's own `invite_rsvps` insert policy fix passed
-   review-by-reading and every text-pattern test, and was STILL broken
-   (inline RLS-subquery recursion silently rejected every legitimate
-   anonymous RSVP — see "Round 5" above). A Docker-based local Supabase
-   instance was attempted for this round specifically to close that gap
-   with a real integration test and genuinely isn't available in this
-   environment (see Round 5's note) — this remains open. Actually
-   running the full migration against a real (or local Docker) Postgres
-   — `supabase start` locally, or `supabase test db` — is not optional
-   polish at this point; do it before trusting any of this in
-   production.
+8. ~~**RLS is reviewed and covered by two kinds of test, still not
+   integration-tested against real Postgres.**~~ — **DONE 2026-09-01, see
+   "Round 7" above.** The auth_ownership + payment_integrity policies,
+   the `can_insert_rsvp` RSVP-insert policy (the round-5 rewrite), and
+   the `invites_reject_client_paid_update` trigger were all exercised
+   against the live database as genuine `anon` / `authenticated` /
+   `service_role` REST callers — not mocked, not via the privileged
+   connection. Every case from Round 5's checklist passed: `anon` RSVP
+   insert succeeds against a paid invite (with or without a matching
+   `guest_id`), and is rejected for a cross-invite `guest_id` or an
+   unpaid invite. `src/lib/rls-policy.test.ts` stays as the cheap
+   text-pattern regression guard; it's now backed by a real run.
+   Still worth doing when convenient: fold a proper integration test
+   (`supabase start` + a seeded fixture, or a CI job hitting a throwaway
+   project) into the suite so this doesn't rely on a one-off manual
+   verification next time the policies change.
 
 ## Key files
 
@@ -431,7 +576,7 @@ round — see REVIEW_BRIEF.md's prior "Specific areas to scrutinize" #2).
 | i18n system | `src/lib/i18n/translations.ts`, `src/lib/i18n/LocaleContext.tsx` |
 | PayPal server-side | `src/lib/paypal.ts`, `src/lib/paypal-verify.ts`, `src/lib/payments.server.ts`, `src/app/api/paypal/**` |
 | Paywall UI | `src/components/invite/PaywallPanel.tsx` |
-| DB schema (+ pending migrations) | `supabase/schema.sql`, `supabase/migrations/` |
+| DB schema (all migrations applied to `ravfwnqfxngphncuyyxo` 2026-09-01) | `supabase/schema.sql`, `supabase/migrations/` |
 | AI generation endpoint | `src/app/api/generate/route.ts` |
 | Auth (client state) | `src/lib/auth/AuthContext.tsx` |
 | Auth (login / callback) | `src/app/login/page.tsx`, `src/app/auth/callback/route.ts` |
