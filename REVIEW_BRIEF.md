@@ -31,6 +31,23 @@ CSS/Tailwind for styling.
 breakdown — read that first for the "what's done vs. not done" picture.
 This brief is narrower: it's about what to *scrutinize*.
 
+## Update — 2026-09-01: migrations are live, RLS + PayPal verified against real infra
+
+All three pending migrations (payment-gating columns, `auth_ownership`,
+`payment_integrity`) are now **applied to the live Supabase project
+`ravfwnqfxngphncuyyxo`** and their security-critical behavior has been
+exercised against the real database and the real PayPal **sandbox** API
+— including as genuine `anon` / `authenticated` / `service_role` REST
+callers, not just the privileged connection. Full detail and the exact
+checks run are in `PROJECT_STATUS.md` → "Round 7". The "not verified
+against real Postgres / PayPal" caveats throughout the scrutiny list
+below are now **mostly closed** — the wording is left intact for
+history, with per-item notes on what remains. The **one** thing still
+unverified end-to-end: the PayPal *wallet happy path* (a real sandbox
+buyer approving checkout → real `COMPLETED` capture →
+`verifyCaptureResponse()` against a genuine body). Needs a browser +
+sandbox buyer account; still worth a reviewer's eyes.
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -60,17 +77,19 @@ This brief is narrower: it's about what to *scrutinize*.
   whether `?guest=` was *absent* from the URL — meaning stripping that
   param off a shared link made you "the owner." Both are fixed. See
   `PROJECT_STATUS.md`'s "Auth & ownership foundation" section for the
-  full design, and its "Pending" list for what's NOT yet done (the
-  migration hasn't been run against the live project yet as of this
-  writing — verify that before assuming any of this is actually live).
+  full design. **As of 2026-09-01 the `auth_ownership` migration IS
+  applied to the live project** and its RLS was verified as a real
+  `anon`/`authenticated` caller — see the "Update — 2026-09-01" block at
+  the top and `PROJECT_STATUS.md` → "Round 7".
 - **PayPal integrity was the deferred item this brief previously
   flagged — now addressed at the code level**, see "Round 6" below and
   "Payment integrity foundation (PayPal)" in `PROJECT_STATUS.md` for the
-  full design. Not yet enforced in *production*: the migration
-  (`supabase/migrations/20260829000000_payment_integrity.sql`) hasn't
-  been applied to the live database as of this writing — verify that
-  before assuming any of this is actually live, same caveat as the
-  auth_ownership migration above.
+  full design. **As of 2026-09-01 the `payment_integrity` migration IS
+  applied to the live database** — the `payments` table, its RLS, and
+  the `invites_reject_client_paid_update` trigger were verified as real
+  `anon`/`authenticated`/`service_role` callers, and the PayPal
+  order-create + capture routes against the real sandbox API. See the
+  "Update — 2026-09-01" block above.
 - **A second round found and fixed one more real leak, then a third
   found the fix was still incomplete**:
   - Round 2: the original `invites` read policy was `using (true)`
@@ -153,8 +172,10 @@ This brief is narrower: it's about what to *scrutinize*.
    as of round 6, the `paid` flag is only ever set from a verified
    server-side capture response — see "Round 6" and scrutiny item #10
    below for the full detail on what's now checked and what's still
-   worth independently confirming (none of it has been exercised against
-   a real database or PayPal sandbox call yet).
+   worth independently confirming. **2026-09-01: order-create + capture
+   are now exercised against the live DB and the real PayPal sandbox
+   API** (all but the wallet approval + genuine `COMPLETED` body) — see
+   scrutiny item #10 and `PROJECT_STATUS.md` → "Round 7".
 2. **Supabase RLS on the `paid` column** (`supabase/schema.sql`,
    `supabase/migrations/20260828000000_auth_ownership.sql`,
    `supabase/migrations/20260829000000_payment_integrity.sql`): as of
@@ -164,7 +185,11 @@ This brief is narrower: it's about what to *scrutinize*.
    an exception on any such change unless the connection is
    `service_role`. This is the gap round-6's own prior text here flagged
    as open; see scrutiny item #10 for what's worth independently
-   confirming about the fix (chiefly: unverified against real Postgres).
+   confirming. **2026-09-01: verified on the live DB** — a real
+   `authenticated` owner's direct `UPDATE invites SET paid = true` is
+   rejected by the trigger (`P0001`), a non-gated column update by the
+   same owner succeeds, and the `service_role` path (`markInvitePaid()`)
+   succeeds.
 3. **Guest-facing paywall gate AND the sanitized-payload boundary**
    (`src/app/invite/[id]/`, `InviteClient.tsx`,
    `src/lib/storage-queries.ts`'s `fetchPublicInvite()`/
@@ -219,6 +244,10 @@ This brief is narrower: it's about what to *scrutinize*.
    a paid invite with a guest_id from a DIFFERENT invite should fail;
    against an unpaid invite should fail. None of that is exercised
    against a real database anywhere in this batch.
+   **2026-09-01 update:** this is now done — the three `anon` RSVP-insert
+   cases (paid/no-guest → allowed, cross-invite guest → rejected, unpaid
+   → rejected) were run against the live database as a real `anon`
+   caller and all passed. See `PROJECT_STATUS.md` → "Round 7".
 6. **`src/app/api/generate/route.ts`**: error handling when the AI
    Gateway/provider call fails or isn't authenticated — does it fail
    gracefully for the user, or leak internal error detail?
@@ -251,9 +280,10 @@ This brief is narrower: it's about what to *scrutinize*.
    "Round 5" above); confirm the SECURITY DEFINER + table-ownership
    reasoning that lets it bypass RLS for its own internal queries is
    actually correct for how this Supabase project's roles/ownership are
-   set up, since that reasoning has NOT been verified against a real
-   database in this batch at all — it's standard Postgres semantics
-   applied carefully, not something observed working. And the
+   set up. **2026-09-01: this IS now observed working** — `can_insert_rsvp`
+   and its policy were exercised against the live database as a real
+   `anon` caller (all four cases pass); the SECURITY DEFINER +
+   table-ownership bypass reasoning holds in practice. And the
    `search_path = ''` / `public.*` qualification on all three SECURITY
    DEFINER functions now (`resolve_invite_guest`, `get_published_invite`,
    `can_insert_rsvp`) — confirm nothing inside any of the three still
@@ -290,19 +320,31 @@ This brief is narrower: it's about what to *scrutinize*.
     `src/lib/paypal-verify.test.ts`, `src/lib/payments.server.test.ts`,
     `src/app/api/paypal/orders/route.test.ts`,
     `src/app/api/paypal/orders/[orderId]/capture/route.test.ts` — all
-    against mocked clients/PayPal responses, none against a real
-    database or PayPal sandbox call.
+    against mocked clients/PayPal responses.
+    **2026-09-01 update:** (b), (c) and (d) are now verified against the
+    live database + real PayPal sandbox — order-create binds tier/amount
+    server-side, the atomic claim + `status`-guarded transitions behave,
+    the `payments` RLS and `invites_reject_client_paid_update` trigger
+    block every anon/authenticated write path, and the idempotent
+    "already captured" recovery branch flips `invites.paid` without
+    re-calling PayPal and is a true no-op on repeat. Still only unit-
+    tested: `verifyCaptureResponse()` against a *genuine* `COMPLETED`
+    capture body (needs a browser + sandbox buyer to approve a real
+    order). See `PROJECT_STATUS.md` → "Round 7".
 11. Anything else that looks like a genuine bug, security gap, or
     accessibility issue — the above is a starting list, not an
     exhaustive one.
 
 ## What NOT to flag as issues
 
-- Missing PayPal live credentials, missing `AI_GATEWAY_API_KEY`, and the
-  unrun Supabase migrations (the auth_ownership one and the payment
-  integrity one) are all known, tracked in `PROJECT_STATUS.md`, and
-  waiting on the product owner — not something the code needs to "fix"
-  itself.
+- Missing PayPal live credentials and missing `AI_GATEWAY_API_KEY` are
+  known, tracked in `PROJECT_STATUS.md`, and waiting on the product
+  owner. The Supabase migrations (auth_ownership, payment_integrity, and
+  the payment-gating columns) are **applied to the live project as of
+  2026-09-01** — see `PROJECT_STATUS.md` → "Round 7". One follow-up
+  there: the recorded `schema_migrations` versions don't match the
+  `supabase/migrations/` filenames, so reconcile with `supabase
+  migration repair` before ever using `supabase db push`.
 - PayPal sandbox mode itself (`NEXT_PUBLIC_PAYPAL_ENV=sandbox`, no live
   credentials configured) is deliberate, not a gap — see "Context not
   visible from the code alone" above.
