@@ -40,7 +40,12 @@ export function Countdown({ date, accent }: { date: string; accent: string }) {
   ];
 
   return (
-    <div className="flex justify-center gap-4">
+    // Static label, no aria-live: announcing a live-updating per-second
+    // countdown to assistive tech would be intrusive, not helpful — a
+    // sighted-equivalent "read it once" experience is the goal here, not
+    // a running commentary (Stage 4 accessibility pass, see
+    // PROJECT_STATUS.md — this is a deliberate choice, not an omission).
+    <div className="flex justify-center gap-4" role="group" aria-label="Countdown to the event">
       {cells.map((c) => (
         <div key={c.label} className="flex w-16 flex-col items-center rounded-xl border border-line bg-paper-raised/70 py-3">
           <span className="font-display text-2xl" style={{ color: accent }}>

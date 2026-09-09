@@ -109,6 +109,16 @@ to production will require. Neither migration exists anywhere but this
 repository and a local test database so far; neither has been applied to
 the live project.
 
+Stage 4 (application-layer only, no database change) replaced the public
+`/invite/[id]` page's client-only loading with server rendering: a
+published invitation's wording is now present in the initial HTML,
+before any hydration or authentication check, and owner-management/
+PayPal code no longer reaches a guest's browser at all. See
+`PROJECT_STATUS.md`'s "Stage 4" section for the full server/client split,
+the security boundary, and a documented trade-off (an owner viewing
+their own invite link temporarily lost their management view — see that
+section's "Remaining risks").
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”

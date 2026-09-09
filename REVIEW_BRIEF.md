@@ -130,6 +130,22 @@ directly — worth independently confirming this actually closes the gap
 `tests/integration/publication-authorization.test.ts`, not just
 reasoned about).
 
+## Update — 2026-09-09: Stage 4 server-renders the public invitation
+
+Application-layer only, no database change. `/invite/[id]` is now an
+async Server Component; the public invitation's wording is present in
+the initial HTML instead of requiring client-side auth + two/three
+sequential fetches first. **New scrutiny item — see #16 below.**
+Worth a reviewer's attention specifically: `src/app/invite/[id]/InviteClient.tsx`
+(now exporting `OwnerPreview`) is retained but deliberately NOT imported
+by `page.tsx` — an owner visiting their own invite link currently sees
+the same public/unavailable view a guest would, having lost the
+paywall/share-panel UI that used to live there. This is documented as a
+real, deliberate trade-off (see that file's header comment and
+PROJECT_STATUS.md's Stage 4 "Remaining risks"), not an oversight — worth
+independently confirming it reads as intentional, and that nothing else
+in the app still assumes the owner view is reachable at this URL.
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -496,6 +512,29 @@ reasoned about).
     NOT yet applied to the live project — confirm it stays that way, and
     see PROJECT_STATUS.md's Stage 3 "Production rollout and rollback"
     section before it ever is.
+16. **Server-rendered public invitation** (Stage 4,
+    `src/app/invite/[id]/page.tsx`, `src/lib/invite-view-model.ts`,
+    `src/components/invite/PublicInviteView.tsx`/`UnavailableInvite.tsx`)
+    — worth confirming independently: (a) `page.tsx` genuinely never
+    imports `getInviteServer` (the owner-only read) or anything from
+    `supabase.auth` — grep for both; (b) `buildPublicInviteViewModel()`
+    genuinely collapses every "not viewable" reason (missing, unpublished,
+    invalid guest token) into the same `null` result, and `page.tsx`
+    genuinely renders the identical `UnavailableInvite` output for all of
+    them — `page.test.tsx`'s "a missing invitation and an unpublished one
+    render the IDENTICAL safe unavailable HTML" test asserts this by
+    direct string equality, worth spot-checking that assertion is
+    actually meaningful (not comparing two accidentally-empty strings);
+    (c) `InviteViewModel`'s field list is genuinely exhaustive — no path
+    by which a raw `PublicInvite`/database row reaches a client
+    component's props instead of going through the model; (d) the
+    bundle-composition claim in PROJECT_STATUS.md's Stage 4 "Performance"
+    section (PayPal/owner-management code absent from every built chunk)
+    is reproducible — `npm run build` then `grep -r "PaywallPanel\|sandbox.paypal.com" .next/static/chunks/`
+    should return nothing; (e) the owner-preview regression (see the
+    "Update — 2026-09-09: Stage 4" note above) is acceptable as a
+    temporary state, not something that should have been silently
+    avoided by re-mounting `OwnerPreview` on the public route instead.
 
 ## What NOT to flag as issues
 

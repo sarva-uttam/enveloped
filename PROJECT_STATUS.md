@@ -1138,6 +1138,248 @@ either to production requires, at minimum:
    automatically cleared by such a rollback and would need an explicit
    decision about what to do with them.
 
+## Stage 4 — server-rendered public invitation foundation (2026-09-09)
+
+Replaces the client-only `/invite/[id]` loading architecture with a
+server-rendered one. No database change — Stage 3's schema and RLS are
+untouched; this stage is entirely application-layer. No visual redesign,
+no composition schema/component registry (still future work).
+
+### The problem this replaces
+
+Before this stage, `src/app/invite/[id]/page.tsx` rendered nothing but
+`<InviteClient />`, a fully client-side component. Every visit — guest,
+owner, demo, doesn't matter — hit a blank screen until: `AuthProvider`
+resolved `supabase.auth.getUser()` (a real network round trip, gating
+render even for a public page nobody needed authenticated for), AND
+both `getInvite()` (owner-only) and `getPublicInvite()` (sanitized) had
+resolved client-side, AND, if a `?guest=` param was present, a third
+sequential fetch (`getGuestEntry()`) had also resolved. Only once ALL of
+that settled did `resolveViewerRole()` decide what to show — meaning the
+actual invitation wording was never present in the HTML a crawler,
+a slow connection, or JavaScript-disabled browser ever saw, and even a
+fast connection saw nothing for at least one full round trip.
+
+### New architecture
+
+`src/app/invite/[id]/page.tsx` is now an async Server Component. Per
+request (never cached or shared — `export const dynamic =
+"force-dynamic"`, explicit rather than incidental):
+
+1. Validates `id` (and `guest`, if present) against `isValidSlug()`
+   (`src/lib/invite-view-model.ts`) — a conservative allowlist
+   (`^[a-z0-9][a-z0-9-]{0,127}$`) matching every real slug shape this app
+   generates. An invalid shape never reaches a database call at all —
+   "high-confidence input validation", not passing arbitrary route/query
+   values through.
+2. Fetches ONLY the sanitized public read (`getPublicInviteServer()`) and,
+   when relevant, the sanitized guest resolution
+   (`getGuestEntryServer()`) — never `getInviteServer()` (the owner-only
+   read) and never `supabase.auth.getUser()`. Both calls are wrapped in
+   one `React.cache()`-memoized helper (`loadInviteData`) so
+   `generateMetadata()` and the page component share a single underlying
+   fetch per request instead of duplicating it — the same request-scoped
+   (never cross-request) memoization pattern already used for
+   `checkAdmin()` in Stage 2.
+3. Builds an `InviteViewModel` (`src/lib/invite-view-model.ts`,
+   `buildPublicInviteViewModel()`/`buildDemoInviteViewModel()`) — a pure,
+   dependency-free function, exhaustively unit-tested on its own,
+   completely separate from any React/Next.js code. Returns `null` for
+   EVERY reason an invitation might not be viewable — doesn't exist,
+   exists but unpublished, or the RPC otherwise returned no content —
+   collapsed into one path on purpose: "one safe unavailable response"
+   falls out of the code structure itself rather than needing separate
+   branches to keep in sync. `InviteViewModel` is deliberately narrow and
+   flat (inviteId/guestId/guestName/tier/content/eventDate/song/isDemo)
+   — the seam a future versioned composition renderer (still not built)
+   will replace, not the presentation components, which never see
+   anything richer than this.
+4. Renders either `PublicInviteView` (the model exists) or
+   `UnavailableInvite` (it doesn't) inside a `<main>` landmark — the
+   ONLY two possible outcomes, both plain server-rendered JSX (HTTP 200
+   either way — neither ever called Next's `notFound()`, matching the
+   pre-existing behavior of the old NotFound/NotPublishedYet components
+   this replaces).
+
+### Server/client split
+
+**Server-rendered, no "use client":** `page.tsx`,
+`src/components/invite/PublicInviteView.tsx` (the invitation's static
+content — headline, welcome message, event details, closing line — a
+faithful restructuring of the deleted `InviteCanvas.tsx`'s markup, not a
+redesign), `src/components/invite/UnavailableInvite.tsx`,
+`src/components/site/FloatingMotif.tsx` (had no client-only behavior at
+all — hooks, browser APIs, nothing — so its "use client" directive was
+simply removed; it renders identically either way and is now part of the
+initial HTML on Gold/Platinum invites instead of appearing only after
+hydration).
+
+**Client islands, unchanged in behavior:** `Countdown` (a real
+`setInterval`), `RsvpForm` (form state + submission), `MusicToggle`
+(toggle state), `OpeningBurst` (canvas-confetti, an imperative browser
+API). **New client island:** `AnimateIn.tsx` — a thin framer-motion
+wrapper around the existing scroll-reveal animation, taking already-
+rendered content as `children`. This is what keeps Framer Motion off the
+actual content-RENDERING path while preserving the existing entrance
+animation: a Client Component's `children`, when it originates from a
+parent Server Component's render, is not re-executed on the client —
+it's already-rendered content this component only wraps with motion
+timing. The text is in the initial HTML either way; `AnimateIn` only
+controls when it becomes visually revealed once JS hydrates.
+
+**Retired:** `src/components/invite/InviteCanvas.tsx` (deleted) — its
+entire rendering responsibility moved to `PublicInviteView`, and nothing
+else imported it.
+
+**Retained, but disconnected from the public route:**
+`src/app/invite/[id]/InviteClient.tsx`, trimmed and now exporting
+`OwnerPreview` (previously the default export, previously also handling
+the guest path). `page.tsx` does not import it. See its own extensive
+header comment for the full reasoning, summarized here: the owner's
+management view (paywall/awaiting-publication status, share panel,
+per-guest link list) depends on knowing who's signed in and on
+`PaywallPanel`, which loads the PayPal SDK — mounting either
+unconditionally on the public route, even just to check "is this viewer
+the owner", would ship owner-management and PayPal-loading code to every
+guest visitor, which this stage's performance requirements explicitly
+rule out. Kept (not deleted) because its behavior hasn't been moved
+anywhere else yet — see "Remaining risks" below for the real, deliberate
+consequence of this.
+
+### Public-data and guest-token security
+
+Unchanged data boundary from Stage 3 (`get_published_invite()`/
+`resolve_invite_guest()`, gated on `published_at`), newly enforced at
+the application layer too: `InviteViewModel` structurally cannot carry
+`answers`/`owner_id`/`paypal_order_id`/private payment records/
+administrator information/`paid` itself — those keys don't exist on the
+type, proven by `invite-view-model.test.ts` asserting the model's exact
+key set, and by `page.test.tsx` rendering a deliberately "leaky" mocked
+`PublicInvite` (extra `ownerId`/`paypal_order_id`/raw `answers` fields
+simulating a hypothetical future bug) and asserting none of it appears
+in the rendered HTML. An invalid or non-matching guest token resolves to
+`guestEntry: null`, which `buildPublicInviteViewModel()` treats
+identically to "no token supplied" — the base invitation still renders,
+unpersonalized, never an error or a different code path a prober could
+distinguish. A published invitation with NO guest token still renders in
+full — existing, intended behavior, confirmed and preserved: the current
+data model has no "guest-only, base link forbidden" flag on an
+invitation (Platinum's per-guest links are an additional personalization
+layer, not an access restriction), and this stage does not invent one.
+
+### RSVP under the Stage 3 publication rules
+
+Preserved exactly, and re-verified explicitly: `PublicInviteView` passes
+`RsvpForm` only `inviteId` (the slug) and `guestId` (from a resolved
+guest entry, never a raw token) — the same minimal shape as before this
+stage, confirmed by `invite-view-model.test.ts` (the only thing that
+determines what `RsvpForm` ever receives) and by `page.test.tsx`
+(confirms the RSVP section appears/doesn't per tier as expected). The
+actual accept/reject decision remains entirely database-side —
+`can_insert_rsvp()` (Stage 3) re-verifies both IDs regardless of what the
+client sends; nothing here trusts them. An unpaid but published
+invitation still allows RSVP; a paid but unpublished one is still
+inaccessible and still rejects RSVP — proven at the database level
+already by `tests/integration/published-invite.test.ts` (Stage 3,
+unmodified, still passing), and at the application level by this stage's
+`page.test.tsx` ("paid + unpublished does NOT render").
+
+### Metadata
+
+`generateMetadata()` no longer falls back to `getInviteServer()` (the
+owner-only read) at all — a deliberate, small behavior change from
+before this stage, where an OWNER's own unpublished invite would show
+its real title/description in their own browser tab (since RLS meant
+only the true owner's request could ever succeed there). Now, metadata
+comes exclusively from the same sanitized public read the page itself
+uses, via the same `React.cache()`-shared `loadInviteData()` call — an
+unpublished invitation's metadata is `{}` regardless of who's asking,
+falling back to the root layout's generic title/description, matching
+"unpublished/unavailable invitations must not leak... through page
+title/description/Open Graph". A valid guest token still leads the
+title with their click-teaser line, exactly as before.
+
+### Performance
+
+The measurable change: `renderToStaticMarkup()`-rendered output now
+contains the full invitation wording — headline, welcome message, event
+details, closing line — with zero data fetching required first
+(`page.test.tsx` proves this directly: the HTML string already contains
+"Priya & Devansh" etc. from a single awaited call to the page function,
+no `useEffect`/client fetch involved). The old three-fetch client
+waterfall (owner read + public read, always both; guest resolution,
+conditionally) and the `AuthProvider`-gated blank screen are both gone
+from the public rendering path entirely.
+
+Bundle composition, verified by building both this stage and the Stage 3
+commit (`363c23d`) in an isolated worktree and diffing
+`.next/diagnostics/route-bundle-stats.json` plus grepping
+`.next/static/chunks/`: at Stage 3, `/invite/[id]`'s first-load JS was
+882,497 bytes across 9 chunks, and one of those chunks — genuinely part
+of the invite route's own first-load set, not a coincidentally-shared
+one — contained the literal strings `sandbox.paypal.com` and
+`web-sdk/v6/core` (`PaywallPanel`'s PayPal SDK loader), confirming
+PayPal-related code was shipped to every guest's browser. At this stage,
+`/invite/[id]` is 864,866 bytes across the same 9-chunk count (~17.6 KB
+smaller), and grepping the ENTIRE `.next/static/chunks/` directory for
+`PaywallPanel`/`sandbox.paypal.com`/`OwnerPreview`/`AwaitingPublication`
+returns zero matches anywhere in the build — not lazy-loaded, not
+deferred, genuinely absent, because nothing in the route tree imports
+`InviteClient.tsx` anymore and Next's bundler excludes what nothing
+references.
+
+### Accessibility foundation (not the full redesign)
+
+Added or fixed, all low-risk and visually unchanged: a `<main>` landmark
+around the page's content (there wasn't one before); `FloatingMotif`'s
+decorative emoji now `aria-hidden="true"` (previously announced to
+screen readers on every render, on both this page and the homepage's
+Hero, since this is a shared component); the gallery color-swatch grid
+also `aria-hidden="true"`; event details now a real `<dl>`/`<dt>`/`<dd>`
+instead of two stacked, semantically-unrelated `<div>`s; RSVP's accept/
+decline buttons expose `aria-pressed` (previously color-only selection
+state); the RSVP name input gets a real `aria-label` (previously
+placeholder-only, which disappears once typing starts and isn't a
+reliable accessible name); the RSVP confirmation uses `role="status"` so
+it's announced automatically; `MusicToggle` exposes `aria-pressed`;
+every interactive control (RSVP buttons/input, MusicToggle, the
+retained `CopyLink` in `OwnerPreview`) gained a `focus-visible` ring
+where one wasn't already present. `Countdown` gained a static
+`aria-label`/`role="group"` — deliberately NOT `aria-live`, since
+announcing a per-second-updating countdown to assistive tech would be
+disruptive, not helpful; this is a considered choice, not an oversight.
+No reduced-motion support and no full animation redesign — still
+explicitly future work.
+
+### What was not built (explicitly out of scope this stage)
+
+Per the objective: no visual redesign, no versioned composition schema
+or component registry (`InviteViewModel` is the seam that will connect
+to one later, not an implementation of one), no private/guest preview
+system, no cultural packs, no changes to pricing or PayPal behavior
+(`src/lib/tiers.ts` and the PayPal order/capture routes are untouched),
+and `/survey` remains fully reachable and functional — the self-service
+flow is preserved exactly, unaffected by any of this stage's changes.
+
+### Remaining risks
+
+The one real, deliberate trade-off from this stage: an OWNER visiting
+their own invitation's URL while signed in now sees exactly what a guest
+would (the public view, or the unavailable state) — they have
+temporarily lost the paywall/awaiting-publication status message and the
+share panel/guest-link list that used to appear on this same URL. This
+is documented in `InviteClient.tsx`'s own header comment and is a direct
+consequence of this stage's performance requirement (never load owner-
+management/PayPal code on the public guest page) combined with not
+building a replacement surface for it yet. The owner can still see and
+delete their invites from `/dashboard`; they cannot yet get the
+paywall/share-panel experience anywhere. A dedicated owner-management
+surface (a distinct authenticated route, e.g. `/dashboard/invite/[id]`,
+rather than overloading the public URL again) is the recommended fix —
+see "Recommended Stage 5 scope" for how this relates to (but is
+distinct from) the guest-facing private preview work already planned
+for Stage 5.
+
 ## Key files
 
 | Area | Path |
