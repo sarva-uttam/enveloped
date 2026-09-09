@@ -11,21 +11,33 @@
  *
  * Kept dependency-free (no Supabase/React imports) so it's trivial to unit
  * test in isolation — see ownership.test.ts.
+ *
+ * Stage 3 (2026-09-09, see PROJECT_STATUS.md and
+ * supabase/migrations/20260909150000_publication_payment_split.sql): the
+ * gating input is `isPublished`, not `isPaid` — published_at, not paid,
+ * is the actual database-level access gate now, and this function must
+ * track that exactly (it previously took `isPaid` here, which is why the
+ * kind names below already said "published"/"unpublished" even before
+ * this fix — the NAMES were always about publication, only the INPUT
+ * driving them was, until now, wrongly payment-derived).
  */
 
 export type ViewerRole =
   | { kind: "demo" }
   | { kind: "not-found" }
-  | { kind: "owner-unpublished" } // owner, invite not yet paid — show paywall
-  | { kind: "owner-published" } // owner, invite paid — show share/manage panel
-  | { kind: "guest-unpublished" } // non-owner, invite not yet paid — nothing to see
+  | { kind: "owner-unpublished" } // owner, invite not yet published — show publish/payment status
+  | { kind: "owner-published" } // owner, invite published — show share/manage panel
+  | { kind: "guest-unpublished" } // non-owner, invite not yet published — nothing to see
   | { kind: "guest-published"; guestSlug: string | null };
 
 export interface ResolveViewerRoleParams {
   isDemo: boolean;
   /** true = row exists, false = confirmed missing, null = still loading */
   storedExists: boolean | null;
-  isPaid: boolean;
+  /** Whether published_at is set — THE access gate. Never derived from
+   *  `paid`; payment and publication are independent (see PROJECT_STATUS.md's
+   *  Stage 3 section). */
+  isPublished: boolean;
   /** The signed-in viewer's user id, or null if not authenticated. */
   currentUserId: string | null;
   /** The invite row's owner_id. null for legacy rows created before auth existed. */
@@ -34,7 +46,7 @@ export interface ResolveViewerRoleParams {
 }
 
 export function resolveViewerRole(params: ResolveViewerRoleParams): ViewerRole | null {
-  const { isDemo, storedExists, isPaid, currentUserId, ownerId, guestSlug } = params;
+  const { isDemo, storedExists, isPublished, currentUserId, ownerId, guestSlug } = params;
 
   if (isDemo) return { kind: "demo" };
   if (storedExists === null) return null; // still loading
@@ -43,8 +55,8 @@ export function resolveViewerRole(params: ResolveViewerRoleParams): ViewerRole |
   const isOwner = currentUserId !== null && ownerId !== null && currentUserId === ownerId;
 
   if (isOwner) {
-    return isPaid ? { kind: "owner-published" } : { kind: "owner-unpublished" };
+    return isPublished ? { kind: "owner-published" } : { kind: "owner-unpublished" };
   }
 
-  return isPaid ? { kind: "guest-published", guestSlug } : { kind: "guest-unpublished" };
+  return isPublished ? { kind: "guest-published", guestSlug } : { kind: "guest-unpublished" };
 }

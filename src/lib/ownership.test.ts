@@ -4,7 +4,7 @@ import { resolveViewerRole } from "./ownership";
 const BASE = {
   isDemo: false,
   storedExists: true as const,
-  isPaid: true,
+  isPublished: true,
   currentUserId: null as string | null,
   ownerId: null as string | null,
   guestSlug: null as string | null,
@@ -70,20 +70,24 @@ describe("resolveViewerRole", () => {
     expect(role?.kind).not.toMatch(/^owner/);
   });
 
-  it("the real owner still gets the owner-unpublished (paywall) view when unpaid", () => {
+  // --- Stage 3: publication, not payment, is the gate. isPublished
+  // drives every "*-published"/"*-unpublished" role below — never
+  // `paid`, which no longer participates in this decision at all. ---
+
+  it("the real owner still gets the owner-unpublished view when NOT published — regardless of payment status", () => {
     const role = resolveViewerRole({
       ...BASE,
-      isPaid: false,
+      isPublished: false,
       currentUserId: "host-1",
       ownerId: "host-1",
     });
     expect(role).toEqual({ kind: "owner-unpublished" });
   });
 
-  it("a guest hitting an unpaid invite gets guest-unpublished, never the paywall", () => {
+  it("a guest hitting an unpublished invite gets guest-unpublished, never the paywall", () => {
     const role = resolveViewerRole({
       ...BASE,
-      isPaid: false,
+      isPublished: false,
       currentUserId: null,
       ownerId: "host-1",
       guestSlug: "priya-ab12",
@@ -91,7 +95,7 @@ describe("resolveViewerRole", () => {
     expect(role).toEqual({ kind: "guest-unpublished" });
   });
 
-  it("a guest with a valid slug on a paid invite gets guest-published carrying that slug", () => {
+  it("a guest with a valid slug on a published invite gets guest-published carrying that slug", () => {
     const role = resolveViewerRole({
       ...BASE,
       currentUserId: null,
@@ -99,5 +103,17 @@ describe("resolveViewerRole", () => {
       guestSlug: "priya-ab12",
     });
     expect(role).toEqual({ kind: "guest-published", guestSlug: "priya-ab12" });
+  });
+
+  it("payment/publication independence: the owner sees owner-published for a PUBLISHED invite even though isPaid isn't part of this function's input at all anymore — publication alone decides it", () => {
+    // isPublished: true (from BASE) with no isPaid field present —
+    // demonstrates the type itself no longer has a payment concept to
+    // accidentally couple back in.
+    const role = resolveViewerRole({
+      ...BASE,
+      currentUserId: "host-1",
+      ownerId: "host-1",
+    });
+    expect(role).toEqual({ kind: "owner-published" });
   });
 });

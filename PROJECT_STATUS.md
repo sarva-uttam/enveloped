@@ -913,6 +913,231 @@ changed. Fixing this remains explicitly scoped to a later, dedicated
 stage — not folded into this one, and not implied to be "next" just
 because an admin identity now exists to eventually act on it.
 
+## Stage 3 — separate publication from payment (2026-09-09)
+
+Fixes exactly the Stage 0 defect flagged above.
+`supabase/migrations/20260909150000_publication_payment_split.sql`
+(new, forward-only — none of the eight prior migrations are rewritten)
+makes `published_at` the sole public-access gate for an invitation.
+`paid` continues to record payment status only.
+
+### Publication lifecycle
+
+`invites.published_at` — `null` until an administrator explicitly
+publishes the invitation; a real timestamp from then on, until an
+administrator explicitly unpublishes it. Nothing else ever sets it:
+
+- `publish_invite(p_invite_id uuid)` and `unpublish_invite(p_invite_id
+  uuid)` (both SECURITY DEFINER, both require `is_admin()` internally,
+  both `grant execute ... to authenticated` with an explicit `revoke
+  ... from anon`) are the only two ways it changes. `publish_invite()`
+  sets it to exactly `now()`; `unpublish_invite()` sets it to exactly
+  `null`. Neither ever touches `paid`/`paypal_order_id`.
+- The `invites_reject_client_paid_update` trigger (originally from
+  `20260901114212_payment_integrity.sql`) now also protects
+  `published_at`, hardened with a transaction-local flag
+  (`enveloped.publish_action`) rather than a bare `is_admin()` check —
+  see "A gap found and closed while writing this migration" below for
+  exactly why that distinction matters.
+
+### Payment lifecycle
+
+Unchanged by this stage. `paid`/`paypal_order_id` remain
+service-role-only, set exclusively by `markInvitePaid()`
+(`src/lib/storage.server.ts`) after a verified PayPal capture
+(`src/app/api/paypal/orders/[orderId]/capture/route.ts` — its
+verification logic, `src/lib/paypal-verify.ts`, is untouched). Confirmed,
+not just asserted: `markInvitePaid()`'s update payload has no
+`published_at` key, and — independently — the trigger above would reject
+`published_at` being set together with `paid` from anything but a
+genuine admin/service-role path anyway. `invite_payment_records` (the
+offline-payment ledger — cash, bank transfer, mobile money, or a
+manually-recorded PayPal payment) remains exactly what Stage 0 recovered
+it as: a record-keeping table with admin-only RLS (Stage 2), still not
+wired to any write path in the app. No offline-payment UI was built this
+stage — recording an offline payment today means a direct, trusted
+insert into that table, the same tier of operation as the admin-bootstrap
+procedure in `supabase/migrations/README.md`.
+
+### Why independent
+
+The owner's explicit business rule, implemented exactly: payment must
+never automatically publish an invitation, and publication must never
+automatically mark an invitation paid. An administrator may publish an
+invitation that hasn't been paid for yet (e.g. a comped or trust-based
+arrangement); a paid invitation stays private until an administrator
+actively publishes it (e.g. final review before it goes out to guests).
+The two states are tracked, changed, and authorized completely
+separately — there is no code path anywhere in this stage where setting
+one has a side effect on the other.
+
+### Who can publish
+
+Only a user with a row in `app_admins` (Stage 2), calling
+`publish_invite()`/`unpublish_invite()` through their own authenticated
+session — never the service-role key from the browser, never the
+invitation's owner (an owner has no special access to these functions;
+owning an invitation and being an administrator are unrelated). A
+minimal proof of this reaching all the way to the database, not a UI: no
+admin publishing interface was built this stage (out of scope, see
+"What was not built" below) — the RPC + authorization is what exists;
+`src/app/admin/` still shows only Stage 2's placeholder page.
+
+### A gap found and closed while writing this migration
+
+While designing the trigger's `published_at` exception, an
+`is_admin()`-only version was tried first and found insufficient by
+testing it directly against this local stack: an administrator who
+ALSO happens to own the invitation in question can reach the trigger
+through a perfectly ordinary raw `.update()` call (`invites`' owner-
+scoped RLS lets an owner's own client update their own row regardless of
+admin status — Stage 2 deliberately added no "admin may update any
+invite" policy). Under an `is_admin()`-only trigger check, that raw
+update would have been accepted with whatever timestamp the client sent
+— including a backdated one — silently defeating the "`publish_invite()`
+always sets `now()`, never a client-supplied value" guarantee. Verified
+directly: with the simpler version, an admin who owned an invite could
+set `published_at` to an arbitrary past date via a plain `.update()`,
+bypassing the function entirely.
+
+Fixed with a transaction-local `set_config('enveloped.publish_action',
+'granted', true)` flag, set by `publish_invite()`/`unpublish_invite()`
+immediately before their own `UPDATE` and checked by the trigger instead
+of re-deriving admin status on its own. The practical effect:
+`published_at` can now be changed ONLY by code running inside those two
+functions — never by any raw client update, regardless of who the caller
+is or what RLS would otherwise let them touch. Verified fixed against
+this same local stack before the migration was considered done — see
+`tests/integration/publication-authorization.test.ts`'s "even an
+ADMINISTRATOR's own client cannot set published_at via a raw table
+update" test.
+
+A second, smaller platform-default surprise was hit and fixed the same
+way Stage 2 already documented for table grants: Supabase grants EXECUTE
+on every newly-created `public.*` function to `anon`/`authenticated`/
+`service_role` by default (`ALTER DEFAULT PRIVILEGES`), which
+`revoke all on function ... from public` does NOT undo (that only
+removes the implicit "every role" grant, not this separate, role-
+specific one). `publish_invite()`/`unpublish_invite()` add an explicit
+`revoke execute ... from anon` so "unavailable to anonymous users" is
+literally true (unreachable), not merely "reachable but always rejected
+by the internal `is_admin()` check."
+
+### Legacy-row backfill
+
+Runs once, inside the migration, between disabling and re-enabling the
+`published_at` trigger (a raw migration-context connection has neither
+`service_role` standing nor the `enveloped.publish_action` flag, so it
+would otherwise be rejected by the very protection this migration just
+added). Four rules, matching the documented compatibility principle
+exactly:
+
+1. **Paid, non-generator invitations that were publicly visible under
+   the OLD rule** (`generator_kind is null` reduced the old guard to
+   simply `paid` — so `paid = true and generator_kind is null` is
+   exactly the set of rows that were already guest-visible a moment
+   before this migration ran) **receive a backfilled `published_at`**,
+   so an already-shared guest link doesn't silently go offline. The
+   value prefers, in order: (1) the matching captured PayPal payment's
+   own `updated_at` (`payments.status = 'captured'` for that
+   `invitation_id`) — the real, verified moment payment succeeded; (2)
+   otherwise the invite's own `updated_at` — the best remaining signal
+   for a row that predates the `payments` table. Never `now()` (a
+   fabricated "just now" for something possibly shared long ago), never
+   `created_at` (invite creation time, not payment time).
+2. **Generator invitations that already have `published_at`** — untouched
+   by construction (the backfill's `WHERE` clause only ever targets rows
+   where `published_at IS NULL`).
+3. **Paid generator invitations without `published_at`** — untouched by
+   construction too (`WHERE` requires `generator_kind IS NULL`); these
+   were never guaranteed public before Stage 3 either, so auto-publishing
+   them now would be a new grant of visibility this migration must not
+   make unilaterally.
+4. **Unpaid invitations** — never touched, published or not (`WHERE`
+   requires `paid = true`).
+
+Tested against seeded rows on the local stack, not live data (see
+`tests/integration/legacy-backfill.test.ts` below) — the live project has
+no rows this rule would even apply to today (Stage 0's Round 7 recorded
+exactly 4 live rows, all `paid = false`), but the migration is written
+generically, not against today's specific live snapshot.
+
+### PayPal and offline-payment behavior
+
+- **PayPal capture confirmed to only record payment state** — see the
+  "Payment lifecycle" note above. `src/lib/paypal-verify.ts`'s
+  verification logic (order id, `custom_id`, capture status, currency,
+  exact amount, optional payee) is completely untouched by this stage.
+- **PayPal remains sandbox-only and fixed-tier-priced** — this stage does
+  NOT remove or change `src/lib/tiers.ts`'s fixed Bronze/Silver/Gold/
+  Platinum pricing, and does NOT add support for a concierge
+  `requests.agreed_price` PayPal flow. `POST /api/paypal/orders` still
+  prices strictly from the invite's stored `answers.tier` against the
+  fixed table — a concierge sale at an arbitrary agreed price still has
+  no PayPal path at all; recording such a payment today means a direct,
+  trusted `invite_payment_records` insert (see "Who can publish" above
+  for the equivalent trust tier). Building real concierge-price PayPal
+  support is explicitly future work, not started here.
+- **`invite_payment_records` stays record-keeping only** — Stage 2 gave
+  administrators RLS access to it; this stage does not add any UI or
+  app-layer write path to it. No behavior change there.
+
+### What was not built (explicitly out of scope this stage)
+
+Per the objective: no generator UI, no request-management UI, no private
+preview system, no cultural packs, no invitation redesign, and no
+complete admin publishing interface. `src/app/admin/` is still exactly
+Stage 2's placeholder — this stage proves the database operation and its
+authorization work end to end via `tests/integration/`, not via any new
+page or button.
+
+### Production rollout and rollback
+
+Neither `20260909120000_admin_identity.sql` nor
+`20260909150000_publication_payment_split.sql` has been applied to the
+live project (`ravfwnqfxngphncuyyxo`) — both exist only in this
+repository and against the local Supabase stack, verified there
+repeatedly (`npm run test:db`, full stop/start/reset cycles). Applying
+either to production requires, at minimum:
+
+1. Reviewing both migrations against the CURRENT live schema (a
+   `list_migrations` check — Stage 0/1's reconciliation is what makes
+   this possible to do confidently) before running them, since the live
+   project may have drifted further since 2026-09-09.
+2. Running `20260909120000_admin_identity.sql` first (Stage 3 depends on
+   `is_admin()` existing), then bootstrapping the real first
+   administrator per `supabase/migrations/README.md`'s procedure, before
+   or immediately after applying `20260909150000_publication_payment_split.sql`
+   — an administrator must exist to exercise `publish_invite()` at all,
+   though the migration itself does not require one to exist to apply
+   cleanly.
+3. Understanding the real behavior change to the self-service flow
+   BEFORE applying: today, a self-service PayPal payment does not
+   directly gate anything at the database level (the app's own UI reads
+   `paid`, not `published_at`), but once this migration is live, a
+   self-service payer's invite will need an administrator to publish it
+   — payment alone will no longer make it guest-visible. This is the
+   owner's explicit rule ("payment must never automatically publish"),
+   not a regression, but it is a real, user-facing change to how the
+   self-service product currently behaves and should not surprise
+   whoever is fielding support requests when it ships.
+4. Running the legacy backfill's effect against the real live rows
+   mentally (or on a copy) first — trivial today (all 4 known live rows
+   are unpaid, so the backfill is a no-op for all of them right now),
+   but re-check before applying if the live row count/state has changed.
+5. **Rollback**: both migrations are additive (new table, new columns,
+   new functions, a widened trigger) — nothing destructive to roll back
+   by dropping data. If `20260909150000` needs to be reverted after
+   applying, the safe path is a new forward-only migration that restores
+   `get_published_invite()`/`resolve_invite_guest()`/`can_insert_rsvp()`
+   to their `20260905091530`-era bodies (gate on `paid` again) — never
+   editing this file in place post-application, consistent with this
+   project's "forward-only, never rewrite an applied migration" rule
+   throughout. `published_at` values written in the meantime (via real
+   `publish_invite()` calls, or the backfill) would NOT be
+   automatically cleared by such a rollback and would need an explicit
+   decision about what to do with them.
+
 ## Key files
 
 | Area | Path |

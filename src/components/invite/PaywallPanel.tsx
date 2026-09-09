@@ -168,10 +168,11 @@ export function PaywallPanel({
   return (
     <div className="mx-auto max-w-md rounded-2xl border border-line bg-paper-raised p-8 text-center">
       <Lock className="mx-auto h-6 w-6 text-ink-soft" />
-      <h2 className="mt-4 font-display text-2xl">Publish this invite</h2>
+      <h2 className="mt-4 font-display text-2xl">Complete your order</h2>
       <p className="mt-2 text-sm text-ink-soft">
-        This is a preview. Pay ${tier.price} to unlock sharing — the guest
-        links only work once it&apos;s published.
+        This is a preview. Pay ${tier.price} to complete your order — our
+        team publishes it from there, and guest links start working once
+        it&apos;s live.
       </p>
 
       {status === "loading" && (

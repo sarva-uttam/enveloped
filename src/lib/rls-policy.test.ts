@@ -340,3 +340,88 @@ describe("app_admins — the admin membership table itself", () => {
     expect(allMigrationsSql).toContain("grant execute on function public.is_admin() to anon, authenticated");
   });
 });
+
+// ---------------------------------------------------------------------
+// 20260909150000_publication_payment_split.sql — Stage 3, added
+// 2026-09-09. Corrects the payment/publication coupling defect the
+// tests above (and PROJECT_STATUS.md's Stage 0 section) document as a
+// known, tracked issue: published_at becomes the sole public-access
+// gate, paid no longer participates in it at all.
+// ---------------------------------------------------------------------
+
+const publicationSplitSql = readFileSync(
+  path.resolve(migrationsDir, "20260909150000_publication_payment_split.sql"),
+  "utf8"
+).toLowerCase();
+
+function publicationSplitFunctionBody(functionName: string): string {
+  const startMarker = `create or replace function ${functionName.toLowerCase()}`;
+  const start = publicationSplitSql.indexOf(startMarker);
+  if (start === -1) throw new Error(`function "${functionName}" not found in 20260909150000`);
+  const bodyEnd = publicationSplitSql.indexOf("$$;", start);
+  if (bodyEnd === -1) throw new Error(`could not find end of function "${functionName}" body`);
+  return publicationSplitSql.slice(start, bodyEnd + 3);
+}
+
+describe("20260909150000_publication_payment_split — published_at is the sole public-access gate", () => {
+  it("get_published_invite()/resolve_invite_guest()/can_insert_rsvp() all gate on published_at, and the old i.paid-based gate is gone", () => {
+    for (const fn of ["get_published_invite", "resolve_invite_guest", "can_insert_rsvp"]) {
+      const body = publicationSplitFunctionBody(fn);
+      expect(body, `${fn} should reference published_at`).toContain("published_at");
+      expect(body, `${fn} should not gate on i.paid and (...)`).not.toMatch(/i\.paid and \(/);
+      expect(body, `${fn} should not gate on paid = true`).not.toMatch(/\.paid = true/);
+    }
+  });
+
+  it("get_published_invite() still cannot leak answers/owner_id/paypal_order_id/guestNames — the sanitization property survives the gate correction", () => {
+    const body = publicationSplitFunctionBody("get_published_invite");
+    expect(body).not.toContain("guestnames");
+    expect(body).not.toContain("partnernames");
+    expect(body).not.toContain("extradetails");
+    expect(body).not.toContain("colormood");
+    expect(body).not.toContain("owner_id");
+    expect(body).not.toContain("paypal_order_id");
+  });
+
+  it("publish_invite()/unpublish_invite() both require is_admin(), are security definer with empty search_path, touch ONLY published_at, and are granted to authenticated only (anon explicitly revoked, countering Supabase's default-privilege auto-grant)", () => {
+    for (const fn of ["public.publish_invite", "public.unpublish_invite"]) {
+      const body = publicationSplitFunctionBody(fn);
+      expect(body, `${fn} should check is_admin()`).toContain("public.is_admin()");
+      expect(body, `${fn} should be security definer`).toContain("security definer");
+      expect(body, `${fn} should set search_path = ''`).toContain("set search_path = ''");
+      expect(body, `${fn} should never touch paid`).not.toContain("paid =");
+      expect(body, `${fn} should never touch paypal_order_id`).not.toContain("paypal_order_id");
+    }
+
+    for (const fn of ["public.publish_invite(uuid)", "public.unpublish_invite(uuid)"]) {
+      expect(publicationSplitSql).toContain(`grant execute on function ${fn} to authenticated`);
+      expect(publicationSplitSql).toContain(`revoke execute on function ${fn} from anon`);
+    }
+  });
+
+  it("reject_client_paid_update() protects published_at via the transaction-local publish_action flag, not a bare is_admin() check — closes the admin-owns-their-own-invite backdating gap found while writing this migration", () => {
+    const body = publicationSplitFunctionBody("public.reject_client_paid_update");
+    expect(body).toContain("new.published_at is distinct from old.published_at");
+    expect(body).toContain("enveloped.publish_action");
+    // The old, insufficient guard (is_admin() alone, with no
+    // transaction-local flag) must not have crept back in.
+    expect(body).not.toMatch(/and not public\.is_admin\(\)\s*then/);
+    // paid/paypal_order_id keep their original service_role-only guard —
+    // no is_admin() exception was ever added for those.
+    expect(body).toContain("'paid and paypal_order_id can only be set by the payment system'");
+  });
+
+  it("the legacy backfill only ever targets paid, non-generator, not-yet-published rows — never an unpaid or already-published/generator row", () => {
+    const backfillMatch = publicationSplitSql.match(/-- begin legacy backfill[\s\S]*?-- end legacy backfill/);
+    expect(backfillMatch, "BEGIN/END LEGACY BACKFILL markers should exist").not.toBeNull();
+    const block = backfillMatch![0];
+
+    expect(block).toContain("i.paid = true");
+    expect(block).toContain("i.generator_kind is null");
+    expect(block).toContain("i.published_at is null");
+    // Never a fabricated timestamp — must prefer a real, existing signal.
+    expect(block).not.toMatch(/published_at\s*=\s*now\(\)/);
+    expect(block).toContain("i.updated_at");
+    expect(block).toContain("p.status = 'captured'");
+  });
+});

@@ -8,10 +8,25 @@ import { createInviteFixture, createGuestFixture, cleanupRunFixtures } from "./h
  * can_insert_rsvp(). All three are SECURITY DEFINER functions called
  * exactly as the real anon client calls them (src/lib/storage-queries.ts).
  * See tests/integration/README.md.
+ *
+ * Stage 3 (2026-09-09) rewrote every test in this file: `published_at`,
+ * not `paid`, is now the sole public-access gate — see
+ * supabase/migrations/20260909150000_publication_payment_split.sql and
+ * PROJECT_STATUS.md's Stage 3 section. This file previously contained
+ * three tests that intentionally asserted the Stage-0-documented
+ * payment/publication coupling DEFECT as current behavior; per the
+ * project's own convention (rewrite, don't silently delete, when a
+ * tracked defect is actually fixed), those three scenarios are replaced
+ * below by "payment/publication independence — the corrected behavior",
+ * covering all four paid × published combinations explicitly.
  */
 
 const runId = makeRunId();
 let owner: TestUser;
+
+function isoNow() {
+  return new Date().toISOString();
+}
 
 beforeAll(async () => {
   owner = await createTestUser(runId, "guest-owner");
@@ -21,12 +36,13 @@ afterAll(async () => {
   await cleanupRunFixtures(runId);
 }, 30_000);
 
-describe("get_published_invite() — the sanitized public payload", () => {
-  it("a PAID invite returns tier/content/event_date/song, and the row structurally cannot carry answers/owner_id/paypal_order_id", async () => {
+describe("get_published_invite() — published_at is the sole gate", () => {
+  it("a PUBLISHED invite returns tier/content/event_date/song/published_at, and the row structurally cannot carry answers/owner_id/paypal_order_id", async () => {
     const invite = await createInviteFixture({
       slug: `stage1-${runId}-published`,
       ownerId: owner.userId,
       paid: true,
+      publishedAt: isoNow(),
       tier: "gold",
       content: { headline: "Real Headline" },
       answers: { eventDate: "2027-06-01T18:00:00Z", song: "Our Song", guestNames: "Should Never Appear" },
@@ -39,7 +55,7 @@ describe("get_published_invite() — the sanitized public payload", () => {
     expect(data).not.toBeNull();
     const row = data as Record<string, unknown>;
 
-    expect(row.paid).toBe(true);
+    expect(row.published_at).not.toBeNull();
     expect(row.tier).toBe("gold");
     expect((row.content as { headline: string }).headline).toBe("Real Headline");
     expect(row.event_date).toBe("2027-06-01T18:00:00Z");
@@ -49,20 +65,29 @@ describe("get_published_invite() — the sanitized public payload", () => {
     expect(keys).not.toContain("answers");
     expect(keys).not.toContain("owner_id");
     expect(keys).not.toContain("paypal_order_id");
+    // Private payment records / preview tokens / administrator
+    // information have no representation in this row at all — asserted
+    // structurally (these keys can never appear, there is no code path
+    // that would add them) rather than by value.
+    expect(keys).not.toContain("invite_payment_records");
+    expect(keys).not.toContain("preview_token");
+    expect(keys).not.toContain("created_by_admin_id");
+    expect(keys).not.toContain("app_admins");
     expect(JSON.stringify(row)).not.toContain("Should Never Appear");
   });
 
-  it("an UNPAID invite returns paid:false with tier/content/event_date/song all null — not a partial payload", async () => {
+  it("an UNPUBLISHED invite returns published_at:null with tier/content/event_date/song all null — not a partial payload — regardless of paid status", async () => {
     const invite = await createInviteFixture({
-      slug: `stage1-${runId}-unpaid`,
+      slug: `stage1-${runId}-unpublished`,
       ownerId: owner.userId,
       paid: false,
+      publishedAt: null,
     });
 
     const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
     const row = data as Record<string, unknown>;
 
-    expect(row.paid).toBe(false);
+    expect(row.published_at).toBeNull();
     expect(row.tier).toBeNull();
     expect(row.content).toBeNull();
     expect(row.event_date).toBeNull();
@@ -77,72 +102,86 @@ describe("get_published_invite() — the sanitized public payload", () => {
     expect(data).toBeNull();
   });
 
-  /**
-   * KNOWN, TRACKED DEFECT — these three tests intentionally assert
-   * CURRENT (defective) database behavior, not desired behavior. See
-   * PROJECT_STATUS.md's Stage 0 section and
-   * supabase/migrations/20260905091530_generator_payment_publish_split.sql's
-   * header for the full account: despite that migration's name, `paid`
-   * remains a hard, unconditional AND — `published_at` only ever narrows
-   * visibility further for a generator invite, it never substitutes for
-   * `paid`. When this is eventually fixed (a real, explicitly-scoped
-   * migration — NOT part of Stage 1), update these three assertions to
-   * match the corrected behavior; do not delete them silently, since
-   * they are the regression guard for whichever fix lands.
-   */
-  describe("payment/publication coupling — captured as existing behavior, not desired behavior", () => {
-    it("published (published_at set) but UNPAID: still returns nulled content — publication alone does not unlock visibility", async () => {
+  describe("payment/publication independence — the corrected behavior (all four combinations)", () => {
+    it("unpaid + unpublished → inaccessible (nulled content)", async () => {
       const invite = await createInviteFixture({
-        slug: `stage1-${runId}-published-not-paid`,
+        slug: `stage1-${runId}-unpaid-unpublished`,
         ownerId: owner.userId,
         paid: false,
-        generatorKind: "test-generator",
-        publishedAt: new Date().toISOString(),
-        content: { headline: "Should stay hidden" },
+        publishedAt: null,
+        content: { headline: "Must stay hidden" },
       });
-
       const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
-      const row = data as Record<string, unknown>;
-      expect(row.paid).toBe(false);
-      expect(row.content).toBeNull(); // the defect: published_at is ignored when paid is false
+      expect((data as Record<string, unknown>).content).toBeNull();
     });
 
-    it("paid but a generator invite NOT YET published (published_at null): still returns nulled content", async () => {
+    it("paid + unpublished → inaccessible (nulled content) — payment alone never unlocks visibility", async () => {
       const invite = await createInviteFixture({
-        slug: `stage1-${runId}-paid-not-published`,
+        slug: `stage1-${runId}-paid-unpublished`,
         ownerId: owner.userId,
         paid: true,
-        generatorKind: "test-generator",
         publishedAt: null,
-        content: { headline: "Should also stay hidden" },
+        content: { headline: "Must stay hidden despite payment" },
       });
-
       const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
       const row = data as Record<string, unknown>;
       expect(row.paid).toBe(true);
-      expect(row.content).toBeNull(); // paid alone isn't enough for a generator invite either
+      expect(row.content).toBeNull();
     });
 
-    it("paid AND published (both set) on a generator invite: content finally visible — the only combination that works today", async () => {
+    it("unpaid + published → publicly accessible — an administrator may publish an unpaid invitation", async () => {
       const invite = await createInviteFixture({
-        slug: `stage1-${runId}-paid-and-published`,
+        slug: `stage1-${runId}-unpaid-published`,
         ownerId: owner.userId,
-        paid: true,
-        generatorKind: "test-generator",
-        publishedAt: new Date().toISOString(),
-        content: { headline: "Finally visible" },
+        paid: false,
+        publishedAt: isoNow(),
+        content: { headline: "Visible though unpaid" },
       });
-
       const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
       const row = data as Record<string, unknown>;
-      expect((row.content as { headline: string })?.headline).toBe("Finally visible");
+      expect(row.paid).toBe(false);
+      expect((row.content as { headline: string })?.headline).toBe("Visible though unpaid");
+    });
+
+    it("paid + published → publicly accessible", async () => {
+      const invite = await createInviteFixture({
+        slug: `stage1-${runId}-paid-published`,
+        ownerId: owner.userId,
+        paid: true,
+        publishedAt: isoNow(),
+        content: { headline: "Visible and paid" },
+      });
+      const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
+      const row = data as Record<string, unknown>;
+      expect(row.paid).toBe(true);
+      expect((row.content as { headline: string })?.headline).toBe("Visible and paid");
+    });
+
+    it("a generator invite behaves identically — published_at alone gates it, generator_kind no longer participates in the visibility decision at all", async () => {
+      const invite = await createInviteFixture({
+        slug: `stage1-${runId}-generator-unpaid-published`,
+        ownerId: owner.userId,
+        paid: false,
+        generatorKind: "test-generator",
+        publishedAt: isoNow(),
+        content: { headline: "Generator invite, unpaid, published" },
+      });
+      const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
+      const row = data as Record<string, unknown>;
+      expect((row.content as { headline: string })?.headline).toBe("Generator invite, unpaid, published");
+      expect(row.generator_kind).toBe("test-generator");
     });
   });
 });
 
-describe("resolve_invite_guest() — guest resolution follows the live rules", () => {
-  it("resolves a guest's name/teaser on a PAID invite by exact (invite slug, guest slug) match", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-guest-paid`, ownerId: owner.userId, paid: true });
+describe("resolve_invite_guest() — gated on published_at, not paid", () => {
+  it("valid guest token on an UNPAID + PUBLISHED invite resolves", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-guest-unpaid-published`,
+      ownerId: owner.userId,
+      paid: false,
+      publishedAt: isoNow(),
+    });
     const guest = await createGuestFixture(invite.id, `stage1-${runId}-guest-slug-a`, "Priya Guest");
 
     const { data } = await createAnonClient()
@@ -155,8 +194,13 @@ describe("resolve_invite_guest() — guest resolution follows the live rules", (
     expect(row.id).toBe(guest.id);
   });
 
-  it("a guest link on an UNPAID invite resolves to nothing, even with a real guest row present", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-guest-unpaid`, ownerId: owner.userId, paid: false });
+  it("guest token on a PAID + UNPUBLISHED invite does NOT resolve, even with a real guest row present", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-guest-paid-unpublished`,
+      ownerId: owner.userId,
+      paid: true,
+      publishedAt: null,
+    });
     const guest = await createGuestFixture(invite.id, `stage1-${runId}-guest-slug-b`, "Rohan Guest");
 
     const { data } = await createAnonClient()
@@ -165,8 +209,13 @@ describe("resolve_invite_guest() — guest resolution follows the live rules", (
     expect(data).toBeNull();
   });
 
-  it("a wrong guest slug on a paid invite resolves to nothing — never a fuzzy or partial match", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-guest-wrong-slug`, ownerId: owner.userId, paid: true });
+  it("a wrong guest slug on a published invite resolves to nothing — never a fuzzy or partial match", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-guest-wrong-slug`,
+      ownerId: owner.userId,
+      paid: true,
+      publishedAt: isoNow(),
+    });
     await createGuestFixture(invite.id, `stage1-${runId}-real-guest-slug`, "Real Guest");
 
     const { data } = await createAnonClient()
@@ -176,9 +225,14 @@ describe("resolve_invite_guest() — guest resolution follows the live rules", (
   });
 });
 
-describe("RSVP insertion — can_insert_rsvp() follows the live rules", () => {
-  it("anon can RSVP on a paid invite with no guest_id (non-Platinum tiers have no named guest list)", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-rsvp-paid-no-guest`, ownerId: owner.userId, paid: true });
+describe("RSVP insertion — can_insert_rsvp() gated on published_at, not paid", () => {
+  it("RSVP on an UNPAID + PUBLISHED invite is allowed, with no guest_id (non-Platinum tiers have no named guest list)", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-unpaid-published`,
+      ownerId: owner.userId,
+      paid: false,
+      publishedAt: isoNow(),
+    });
 
     const { error } = await createAnonClient()
       .from("invite_rsvps")
@@ -186,8 +240,13 @@ describe("RSVP insertion — can_insert_rsvp() follows the live rules", () => {
     expect(error).toBeNull();
   });
 
-  it("anon can RSVP on a paid invite citing a guest_id that belongs to that SAME invite", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-rsvp-paid-own-guest`, ownerId: owner.userId, paid: true });
+  it("RSVP citing a guest_id that belongs to the SAME published invite is allowed", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-published-own-guest`,
+      ownerId: owner.userId,
+      paid: false,
+      publishedAt: isoNow(),
+    });
     const guest = await createGuestFixture(invite.id, `stage1-${runId}-rsvp-guest-own`);
 
     const { error } = await createAnonClient()
@@ -196,9 +255,19 @@ describe("RSVP insertion — can_insert_rsvp() follows the live rules", () => {
     expect(error).toBeNull();
   });
 
-  it("anon RSVP citing a guest_id from a DIFFERENT invite is rejected", async () => {
-    const inviteA = await createInviteFixture({ slug: `stage1-${runId}-rsvp-invite-a`, ownerId: owner.userId, paid: true });
-    const inviteB = await createInviteFixture({ slug: `stage1-${runId}-rsvp-invite-b`, ownerId: owner.userId, paid: true });
+  it("RSVP citing a guest_id from a DIFFERENT invite is rejected, even when both invites are published", async () => {
+    const inviteA = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-invite-a`,
+      ownerId: owner.userId,
+      paid: true,
+      publishedAt: isoNow(),
+    });
+    const inviteB = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-invite-b`,
+      ownerId: owner.userId,
+      paid: true,
+      publishedAt: isoNow(),
+    });
     const guestOfA = await createGuestFixture(inviteA.id, `stage1-${runId}-rsvp-guest-cross`);
 
     const { error } = await createAnonClient()
@@ -207,8 +276,13 @@ describe("RSVP insertion — can_insert_rsvp() follows the live rules", () => {
     expect(error).not.toBeNull();
   });
 
-  it("anon RSVP against an UNPAID invite is rejected outright", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-rsvp-unpaid`, ownerId: owner.userId, paid: false });
+  it("RSVP on a PAID + UNPUBLISHED invite is rejected — payment alone never unlocks RSVP either", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-paid-unpublished`,
+      ownerId: owner.userId,
+      paid: true,
+      publishedAt: null,
+    });
 
     const { error } = await createAnonClient()
       .from("invite_rsvps")
@@ -216,8 +290,27 @@ describe("RSVP insertion — can_insert_rsvp() follows the live rules", () => {
     expect(error).not.toBeNull();
   });
 
+  it("RSVP on an unpaid + unpublished invite is rejected too", async () => {
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-unpaid-unpublished`,
+      ownerId: owner.userId,
+      paid: false,
+      publishedAt: null,
+    });
+
+    const { error } = await createAnonClient()
+      .from("invite_rsvps")
+      .insert({ invite_id: invite.id, guest_id: null, name: "Should Fail Too", status: "yes" });
+    expect(error).not.toBeNull();
+  });
+
   it("RSVPs are write-only from anon's perspective — anon cannot read back the list it just wrote to", async () => {
-    const invite = await createInviteFixture({ slug: `stage1-${runId}-rsvp-write-only`, ownerId: owner.userId, paid: true });
+    const invite = await createInviteFixture({
+      slug: `stage1-${runId}-rsvp-write-only`,
+      ownerId: owner.userId,
+      paid: false,
+      publishedAt: isoNow(),
+    });
     const anon = createAnonClient();
     await anon.from("invite_rsvps").insert({ invite_id: invite.id, guest_id: null, name: "Write Only", status: "yes" });
 

@@ -98,9 +98,16 @@ culturally-extensible model described below).
 A database-backed administrator identity (`app_admins` + `is_admin()`)
 and a server-protected `/admin` placeholder were added in Stage 2 —
 `PROJECT_STATUS.md`'s "Stage 2" section has the full design, including
-how to bootstrap the first administrator. That migration exists only in
-this repository and against a local test database so far; it has not
-been applied to the live project.
+how to bootstrap the first administrator. Stage 3 then separated
+publication from payment: `published_at`, not `paid`, is now the sole
+gate on what a guest can see — an administrator may publish an unpaid
+invitation, and a paid invitation stays private until one does —
+correcting the Stage 0-documented defect where the two were conflated.
+See `PROJECT_STATUS.md`'s "Stage 3" section for the full publication/
+payment lifecycle, the legacy-row backfill rule, and what applying this
+to production will require. Neither migration exists anywhere but this
+repository and a local test database so far; neither has been applied to
+the live project.
 
 ## Generation philosophy
 

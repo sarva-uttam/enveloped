@@ -80,6 +80,20 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
  * the capture route safely retry just this step (see the capture route's
  * "already captured, recover the invite flip" branch) without needing to
  * first check whether the previous attempt actually got this far.
+ *
+ * Stage 3 confirmation (2026-09-09, see PROJECT_STATUS.md): this
+ * function sets ONLY paid/paypal_order_id, exactly as it always has —
+ * it does not, and must never, touch published_at. Payment must never
+ * automatically publish an invitation; that's the owner's explicit
+ * business rule this stage implements. Verified, not just asserted: the
+ * update payload literally has no published_at key, and the database's
+ * own invites_reject_client_paid_update trigger would reject
+ * publish_at/paid being set together from anything but this exact
+ * service-role path anyway (see
+ * supabase/migrations/20260909150000_publication_payment_split.sql).
+ * Publishing remains an administrator-only action via
+ * publish_invite()/unpublish_invite() — never triggered by this
+ * function, directly or indirectly.
  */
 export async function markInvitePaid(invitationId: string, paypalOrderId: string): Promise<boolean> {
   if (!supabaseAdminConfigured || !supabaseAdmin) return false;

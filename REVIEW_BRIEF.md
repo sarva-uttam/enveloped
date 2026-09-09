@@ -110,6 +110,26 @@ reasoning holds here too. This migration has **not** been applied to the
 live project; it exists only in the repository and against the local
 Supabase stack from Stage 1.
 
+## Update — 2026-09-09: Stage 3 separates publication from payment
+
+Fixes the payment/publication coupling defect scrutiny item #12 (below)
+was written about — `published_at` is now the sole public-access gate
+(`supabase/migrations/20260909150000_publication_payment_split.sql`),
+`paid` records payment status only. **New scrutiny item — see #15
+below.** Also NOT applied to the live project; local-only, same as
+Stage 2's migration. One thing worth a reviewer's specific attention:
+this migration found and fixed a real gap in its own first draft — an
+`is_admin()`-only trigger exception would have let an administrator who
+also owns an invitation backdate `published_at` via a raw client update,
+bypassing the `publish_invite()`/`unpublish_invite()` functions' `now()`-
+only guarantee entirely. Fixed with a transaction-local
+`enveloped.publish_action` flag those two functions set immediately
+before their own update, which the trigger checks instead of `is_admin()`
+directly — worth independently confirming this actually closes the gap
+(verified against the local stack in
+`tests/integration/publication-authorization.test.ts`, not just
+reasoned about).
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -448,6 +468,34 @@ Supabase stack from Stage 1.
     is NOT yet applied to the live project — confirm it stays that way
     until the owner deliberately runs the bootstrap procedure in
     `supabase/migrations/README.md`.
+15. **Publication/payment split** (Stage 3,
+    `supabase/migrations/20260909150000_publication_payment_split.sql`)
+    — worth confirming independently: (a) `get_published_invite()`/
+    `resolve_invite_guest()`/`can_insert_rsvp()` genuinely gate on
+    `published_at` alone now — no residual `paid`/`generator_kind`
+    condition anywhere in any of the three (checked in this batch via
+    both a text-pattern guard and real Postgres in
+    `tests/integration/published-invite.test.ts`, covering all four
+    paid × published combinations); (b) `publish_invite()`/
+    `unpublish_invite()` genuinely cannot be reached by anon
+    (`revoke execute ... from anon` — needed because Supabase's default
+    privileges grant EXECUTE to anon on every new function otherwise;
+    worth confirming this revoke is still present and effective, not
+    just assumed); (c) the transaction-local `enveloped.publish_action`
+    flag actually prevents an administrator's own raw client update from
+    setting `published_at` — this is the subtlest part of the whole
+    migration and the one place a naive `is_admin()`-only trigger check
+    would have quietly failed (see the "Update — 2026-09-09: Stage 3"
+    note above for the exact gap found); (d) `markInvitePaid()`
+    genuinely never sets `published_at`, and the legacy backfill
+    genuinely never auto-publishes an unpaid or paid-generator-without-
+    published_at row — both asserted in
+    `tests/integration/legacy-backfill.test.ts`/
+    `publication-authorization.test.ts` against real Postgres, not just
+    reasoned about in the migration's comments; (e) this migration is
+    NOT yet applied to the live project — confirm it stays that way, and
+    see PROJECT_STATUS.md's Stage 3 "Production rollout and rollback"
+    section before it ever is.
 
 ## What NOT to flag as issues
 

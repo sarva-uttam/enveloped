@@ -43,6 +43,7 @@ project's `schema_migrations` table records as that migration's version.
 | `20260905084115` | `generator_composition` | Applied live on or before 2026-09-05. File **reconstructed** — see its header. |
 | `20260905091530` | `generator_payment_publish_split` | Applied live on or before 2026-09-05. File **reconstructed** — see its header. |
 | `20260909120000` | `admin_identity` | **Stage 2, local-only** — written new, not reconstructed. NOT applied to the live project (`ravfwnqfxngphncuyyxo`) as of this writing; verified only against the local Supabase stack. See "Bootstrapping the first administrator" below and PROJECT_STATUS.md's Stage 2 section. |
+| `20260909150000` | `publication_payment_split` | **Stage 3, local-only** — written new, not reconstructed. NOT applied to the live project as of this writing. Corrects the Stage-0-documented payment/publication coupling defect: `published_at` becomes the sole public-access gate. See PROJECT_STATUS.md's Stage 3 section (publication/payment lifecycle, legacy backfill rule, production rollout requirements). |
 
 The first seven filenames match the versions recorded in the live
 project's `schema_migrations` table exactly. Every table, column
@@ -134,10 +135,13 @@ apply it manually against the live project (or a branch/preview project)
 the same way every migration through `20260905091530` has been applied —
 then keep this table current.
 
-`20260909120000_admin_identity.sql` (Stage 2) is the first migration
-written this way: authored fresh, verified repeatedly against the local
-stack, and deliberately left unapplied to the live project pending owner
-review — see below.
+`20260909120000_admin_identity.sql` (Stage 2) and
+`20260909150000_publication_payment_split.sql` (Stage 3) are the first
+migrations written this way: authored fresh, verified repeatedly against
+the local stack, and deliberately left unapplied to the live project
+pending owner review — see below, and PROJECT_STATUS.md's Stage 3
+section ("Production rollout and rollback") for what applying the second
+one specifically will require.
 
 ## Bootstrapping the first administrator
 

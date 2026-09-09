@@ -95,7 +95,7 @@ export function InviteClient() {
     : resolveViewerRole({
         isDemo: !!demo,
         storedExists: demo ? true : Boolean(ownerInvite) || Boolean(publicInvite),
-        isPaid: demo ? true : Boolean(ownerInvite?.paid ?? publicInvite?.paid),
+        isPublished: demo ? true : Boolean(ownerInvite?.publishedAt ?? publicInvite?.publishedAt),
         currentUserId: user?.id ?? null,
         // null when only the sanitized public read succeeded — that
         // path never learns the real owner_id, which is exactly the
@@ -131,7 +131,7 @@ export function InviteClient() {
     guestList = ownerInvite.guestList;
     guestName = guestEntry?.name;
     guestId = guestEntry?.id;
-  } else if (publicInvite?.paid && publicInvite.content) {
+  } else if (publicInvite?.publishedAt && publicInvite.content) {
     tier = publicInvite.tier || "bronze";
     content = publicInvite.content;
     eventDate = publicInvite.eventDate ?? undefined;
@@ -147,8 +147,15 @@ export function InviteClient() {
 
   if (typeof window !== "undefined") origin = window.location.origin;
 
-  // Owner previewing their own unpublished invite: show the design, gate
-  // sharing behind payment. No demo invites are ever unpaid.
+  // Owner previewing their own unpublished invite. Payment and
+  // publication are independent (Stage 3, see PROJECT_STATUS.md) — an
+  // administrator publishes, payment alone never does, so the two
+  // sub-states here need different messaging: unpaid still shows the
+  // payment panel (paying is still a real step, it just no longer
+  // implies publication), paid-but-not-yet-published shows a plain
+  // status message instead, since there is nothing left for the owner
+  // themselves to do to make it go live. No demo invites are ever
+  // unpublished.
   if (role.kind === "owner-unpublished") {
     return (
       <div className="flex min-h-screen flex-col">
@@ -158,11 +165,15 @@ export function InviteClient() {
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-center px-6 py-16">
-          <PaywallPanel
-            inviteId={params.id}
-            tier={getTier(tier)}
-            onPaid={async () => setOwnerInvite(await getInvite(params.id))}
-          />
+          {ownerInvite?.paid ? (
+            <AwaitingPublication />
+          ) : (
+            <PaywallPanel
+              inviteId={params.id}
+              tier={getTier(tier)}
+              onPaid={async () => setOwnerInvite(await getInvite(params.id))}
+            />
+          )}
         </div>
       </div>
     );
@@ -239,6 +250,26 @@ function NotPublishedYet() {
       <p className="max-w-sm text-sm text-ink-soft">
         The person who made it hasn&apos;t published it yet. Check back
         soon, or reach out to them directly.
+      </p>
+    </div>
+  );
+}
+
+/**
+ * Shown to the OWNER when their invite is paid but not yet published.
+ * Deliberately not a "payment required" message — payment is already
+ * done here; the actual reason it isn't live is that publication is an
+ * administrator action (see PROJECT_STATUS.md's Stage 3 section), not
+ * something a self-service payment ever triggers automatically.
+ */
+function AwaitingPublication() {
+  return (
+    <div className="mx-auto max-w-md rounded-2xl border border-line bg-paper-raised p-8 text-center">
+      <Clock className="mx-auto h-6 w-6 text-ink-soft" />
+      <h2 className="mt-4 font-display text-2xl">Payment received</h2>
+      <p className="mt-2 text-sm text-ink-soft">
+        Your invite is ready and awaiting publication. We&apos;ll let you
+        know as soon as it&apos;s live — guest links won&apos;t work until then.
       </p>
     </div>
   );

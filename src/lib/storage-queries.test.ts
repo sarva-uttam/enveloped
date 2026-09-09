@@ -128,6 +128,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
         id: "row-1",
         slug: "priya-devansh",
         paid: true,
+        published_at: "2026-11-01T00:00:00Z",
         tier: "gold",
         content: { headline: "Priya & Devansh" },
         event_date: "2026-12-01T18:00:00Z",
@@ -143,6 +144,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
       invitesRowId: "row-1",
       slug: "priya-devansh",
       paid: true,
+      publishedAt: "2026-11-01T00:00:00Z",
       tier: "gold",
       content: { headline: "Priya & Devansh" },
       eventDate: "2026-12-01T18:00:00Z",
@@ -156,6 +158,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
         id: "row-1",
         slug: "priya-devansh",
         paid: true,
+        published_at: "2026-11-01T00:00:00Z",
         tier: "gold",
         content: { headline: "Priya & Devansh" },
         event_date: "2026-12-01T18:00:00Z",
@@ -173,7 +176,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
 
     expect(result).not.toBeNull();
     const keys = Object.keys(result!);
-    expect(keys).toEqual(["invitesRowId", "slug", "paid", "tier", "content", "eventDate", "song"]);
+    expect(keys).toEqual(["invitesRowId", "slug", "paid", "publishedAt", "tier", "content", "eventDate", "song"]);
     expect(keys).not.toContain("answers");
     expect(keys).not.toContain("owner_id");
     expect(keys).not.toContain("ownerId");
@@ -182,17 +185,27 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
     expect(JSON.stringify(result)).not.toContain("Aria Thompson");
   });
 
-  it("an unpublished invite resolves to paid:false with content/tier/eventDate/song all null — never partial content", async () => {
+  it("an unpublished invite resolves to publishedAt:null with content/tier/eventDate/song all null — never partial content, regardless of paid status", async () => {
     const client = makeClient({
-      rpc: { id: "row-1", slug: "unpaid-invite", paid: false, tier: null, content: null, event_date: null, song: null },
+      rpc: {
+        id: "row-1",
+        slug: "unpublished-invite",
+        paid: true, // paid is intentionally true here — must not affect the outcome at all
+        published_at: null,
+        tier: null,
+        content: null,
+        event_date: null,
+        song: null,
+      },
     });
 
-    const result = await fetchPublicInvite(asClient(client), "unpaid-invite");
+    const result = await fetchPublicInvite(asClient(client), "unpublished-invite");
 
     expect(result).toEqual({
       invitesRowId: "row-1",
-      slug: "unpaid-invite",
-      paid: false,
+      slug: "unpublished-invite",
+      paid: true,
+      publishedAt: null,
       tier: null,
       content: null,
       eventDate: null,

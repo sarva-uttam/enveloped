@@ -71,6 +71,13 @@ export function getInviteIndex(): string[] {
  * owner_id is intentionally NOT sent from the client — the invites table
  * defaults it to auth.uid() server-side, so a client can never claim
  * ownership on someone else's behalf even if this code had a bug.
+ *
+ * Stage 3 note (2026-09-09, see PROJECT_STATUS.md): the insert below
+ * also sends no `paid` or `published_at` — both are left to their
+ * column defaults (false / null), so every newly-created invite starts
+ * unpaid AND unpublished. Publication is an administrator-only action
+ * (publish_invite()) and is never triggered by creating or paying for
+ * an invite, self-service or otherwise.
  */
 export async function saveInvite(
   invite: Omit<StoredInvite, "ownerId" | "internalId">
@@ -196,6 +203,7 @@ export async function getMyInvites(): Promise<StoredInvite[]> {
     ),
     createdAt: row.created_at,
     paid: Boolean(row.paid),
+    publishedAt: row.published_at ?? null,
     ownerId: row.owner_id ?? null,
   }));
 }
@@ -231,7 +239,13 @@ export function forgetInvite(id: string) {
  * resolve the internal id RSVPs need as a foreign key, then inserts.
  * Also refuses to submit against an unpublished invite — the RSVP form
  * shouldn't even be reachable there, but this makes it impossible
- * regardless of what the client sends.
+ * regardless of what the client sends. Gated on `publishedAt` (Stage 3),
+ * not `paid` — an unpaid-but-published invite accepts RSVPs, a
+ * paid-but-unpublished one does not; see PROJECT_STATUS.md's Stage 3
+ * section. The database's own can_insert_rsvp() enforces the same rule
+ * independently — see supabase/migrations/20260909150000_publication_payment_split.sql
+ * — so this check is a client-side convenience, not the real boundary,
+ * same as it always was.
  */
 export async function submitRsvp(
   inviteSlug: string,
@@ -242,7 +256,7 @@ export async function submitRsvp(
   if (!supabaseConfigured || !supabase) return false;
 
   const invite = await fetchPublicInvite(supabase, inviteSlug);
-  if (!invite || !invite.paid) return false;
+  if (!invite || !invite.publishedAt) return false;
 
   const { error } = await supabase.from("invite_rsvps").insert({
     invite_id: invite.invitesRowId,

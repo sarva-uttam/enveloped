@@ -111,6 +111,9 @@ export function SurveyFlow({
         guestList,
         createdAt: new Date().toISOString(),
         paid: false,
+        // Never published at creation — publication is an administrator
+        // action (Stage 3), never automatic on creation or payment.
+        publishedAt: null,
       });
     } catch (err) {
       setLoading(false);

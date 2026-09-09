@@ -26,6 +26,13 @@ export interface StoredInvite {
   guestList: GuestEntry[];
   createdAt: string;
   paid: boolean;
+  /** ISO timestamp, or null if not yet published. THE gate for public
+   *  visibility as of Stage 3 (supabase/migrations/
+   *  20260909150000_publication_payment_split.sql) — `paid` records
+   *  payment status only and no longer implies anything about whether
+   *  guests can see this invite. See src/lib/ownership.ts, which reads
+   *  this (not `paid`) to decide owner-published vs owner-unpublished. */
+  publishedAt: string | null;
   /** The host who created this invite, or null for legacy invites created
    *  before auth existed. Compare against the signed-in user's id to
    *  determine ownership — see src/lib/ownership.ts. Never inferred from
@@ -72,6 +79,7 @@ export async function fetchInvite(client: SupabaseClient, id: string): Promise<S
     guestList,
     createdAt: inviteRow.created_at,
     paid: Boolean(inviteRow.paid),
+    publishedAt: inviteRow.published_at ?? null,
     ownerId: inviteRow.owner_id ?? null,
   };
 }
@@ -101,9 +109,14 @@ export async function fetchGuestEntry(
  * The sanitized, minimal payload a non-owner (guest or anonymous
  * visitor) is allowed to see for an invite. Deliberately does NOT
  * include: answers (raw survey input — guestNames, partnerNames, venue,
- * city, colorMood, extraDetails), the full guest list, owner_id, or
- * paypal_order_id. `tier`/`content`/`eventDate`/`song` are null unless
- * `paid` is true; `invitesRowId`/`slug`/`paid` are always present so the
+ * city, colorMood, extraDetails), the full guest list, owner_id,
+ * paypal_order_id, private payment records, preview tokens, or
+ * administrator information. `tier`/`content`/`eventDate`/`song` are
+ * null unless `publishedAt` is non-null — as of Stage 3
+ * (supabase/migrations/20260909150000_publication_payment_split.sql),
+ * `publishedAt` is the SOLE gate; `paid` is returned for informational
+ * purposes only and no longer implies anything about visibility.
+ * `invitesRowId`/`slug`/`paid`/`publishedAt` are always present so the
  * app can distinguish "doesn't exist" from "exists but not published
  * yet" without a second, more permissive query.
  */
@@ -112,7 +125,13 @@ export interface PublicInvite {
    *  not the slug); not sensitive on its own. */
   invitesRowId: string;
   slug: string;
+  /** Payment status only — informational. Does NOT gate visibility; see
+   *  publishedAt below for that. */
   paid: boolean;
+  /** ISO timestamp, or null if not yet published. THE public-access
+   *  gate — see src/lib/ownership.ts, which reads this (not `paid`) to
+   *  decide guest-published vs guest-unpublished. */
+  publishedAt: string | null;
   tier: TierId | null;
   content: GeneratedInviteContent | null;
   eventDate: string | null;
@@ -123,23 +142,21 @@ export interface PublicInvite {
  * The ONLY way a non-owner reads invite data — everything it returns is
  * safe to hand to a guest or anonymous visitor. Backed by the
  * get_published_invite() SECURITY DEFINER function, which does its own
- * `paid` check internally (bypassing RLS deliberately, the same pattern
- * as fetchGuestEntry/resolve_invite_guest above) rather than relying on
- * a table-level policy — see that function's SQL comment for why a
- * table-level "paid = true" policy alone isn't safe here (RLS is
- * row-level, and `answers` needed column-level protection instead).
+ * `published_at` check internally (bypassing RLS deliberately, the same
+ * pattern as fetchGuestEntry/resolve_invite_guest above) rather than
+ * relying on a table-level policy — see that function's SQL comment for
+ * why a table-level policy alone isn't safe here (RLS is row-level, and
+ * `answers` needed column-level protection instead).
  *
- * Stage 0 note (2026-09-09, see PROJECT_STATUS.md): the live
- * get_published_invite() RPC actually returns three more columns than
- * this function maps — generator_kind, generator_content, composition
- * (supabase/migrations/20260905091530_generator_payment_publish_split.sql).
- * They are deliberately left unmapped here; wiring them through is an
- * application-behavior change and out of scope for a reconciliation
- * stage. See InviteGeneratorFields in src/lib/types.ts for their shape.
- * Also unresolved, carried forward unchanged: that same RPC still ANDs
- * every generator-aware column on `i.paid`, not `published_at` — an
- * admin-published-but-unpaid concierge invite is invisible to guests via
- * this function exactly as an unpublished one is. Not fixed here.
+ * Stage 3 note (2026-09-09, see PROJECT_STATUS.md): fixed the
+ * payment/publication coupling defect flagged in Stage 0 —
+ * `get_published_invite()` now gates every generator-aware column on
+ * `published_at is not null` alone; `paid`/`generator_kind` no longer
+ * participate in the visibility decision at all. `generator_kind`,
+ * `generator_content`, and `composition` remain unmapped here (see
+ * InviteGeneratorFields in src/lib/types.ts) — wiring them through is
+ * still a separate, later application-behavior change, unrelated to the
+ * access-rule correction this stage makes.
  */
 export async function fetchPublicInvite(client: SupabaseClient, slug: string): Promise<PublicInvite | null> {
   const { data, error } = await client.rpc("get_published_invite", { p_slug: slug }).maybeSingle();
@@ -149,6 +166,7 @@ export async function fetchPublicInvite(client: SupabaseClient, slug: string): P
     id: string;
     slug: string;
     paid: boolean;
+    published_at: string | null;
     tier: string | null;
     content: GeneratedInviteContent | null;
     event_date: string | null;
@@ -159,6 +177,7 @@ export async function fetchPublicInvite(client: SupabaseClient, slug: string): P
     invitesRowId: row.id,
     slug: row.slug,
     paid: Boolean(row.paid),
+    publishedAt: row.published_at ?? null,
     tier: (row.tier as TierId | null) ?? null,
     content: row.content,
     eventDate: row.event_date,

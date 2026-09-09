@@ -177,21 +177,47 @@ describe("trigger", () => {
 });
 
 describe("functions", () => {
-  it("all five SECURITY DEFINER functions exist, hardened with empty search_path", async () => {
+  it("all seven SECURITY DEFINER functions exist, hardened with empty search_path", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ proname: string; prosecdef: boolean; config: string[] | null }>(
       `select proname, prosecdef, proconfig as config
        from pg_proc
        where pronamespace = 'public'::regnamespace
-         and proname in ('can_insert_rsvp', 'resolve_invite_guest', 'get_published_invite', 'reject_client_paid_update', 'is_admin')`
+         and proname in ('can_insert_rsvp', 'resolve_invite_guest', 'get_published_invite', 'reject_client_paid_update', 'is_admin', 'publish_invite', 'unpublish_invite')`
     );
 
-    expect(rows).toHaveLength(5);
+    expect(rows).toHaveLength(7);
     for (const row of rows) {
       expect(row.prosecdef, `${row.proname} should be SECURITY DEFINER`).toBe(true);
       expect(row.config ?? [], `${row.proname} should set search_path = ''`).toContain('search_path=""');
     }
   });
+
+  it.each(["publish_invite", "unpublish_invite"])(
+    "%s(uuid) returns boolean, is granted to authenticated only (never anon), and rejects a non-admin caller",
+    async (fnName) => {
+      const pool = getPgPool();
+      const { rows } = await pool.query<{ args: string; result: string }>(
+        `select pg_get_function_arguments(oid) as args, pg_get_function_result(oid) as result
+         from pg_proc
+         where pronamespace = 'public'::regnamespace and proname = $1`,
+        [fnName]
+      );
+      expect(rows).toHaveLength(1);
+      expect(rows[0].args).toContain("uuid");
+      expect(rows[0].result).toBe("boolean");
+
+      const { rows: grants } = await pool.query<{ grantee: string; privilege_type: string }>(
+        `select grantee, privilege_type
+         from information_schema.role_routine_grants
+         where routine_schema = 'public' and routine_name = $1`,
+        [fnName]
+      );
+      const granted = new Set(grants.map((g) => `${g.grantee}:${g.privilege_type}`));
+      expect(granted.has("authenticated:EXECUTE"), `${fnName} should grant EXECUTE to authenticated`).toBe(true);
+      expect(granted.has("anon:EXECUTE"), `${fnName} should NOT grant EXECUTE to anon`).toBe(false);
+    }
+  );
 
   it("is_admin() takes no arguments, returns boolean, and only anon/authenticated are granted EXECUTE (never a raw SELECT grant on app_admins)", async () => {
     const pool = getPgPool();
@@ -223,7 +249,7 @@ describe("functions", () => {
     // behavioral tests in admin.test.ts, not a grant check here.
   });
 
-  it("get_published_invite() returns the live 10-column shape, not the original 7-column one", async () => {
+  it("get_published_invite() returns the Stage 3 11-column shape (adds published_at), not the Stage 0-recovered 10-column one", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ args: string }>(
       `select pg_get_function_result(oid) as args
@@ -232,8 +258,29 @@ describe("functions", () => {
     );
     expect(rows).toHaveLength(1);
     const returnType = rows[0].args;
-    for (const col of ["id", "slug", "paid", "tier", "content", "event_date", "song", "generator_kind", "generator_content", "composition"]) {
+    for (const col of ["id", "slug", "paid", "published_at", "tier", "content", "event_date", "song", "generator_kind", "generator_content", "composition"]) {
       expect(returnType).toContain(col);
+    }
+  });
+
+  it("get_published_invite()/resolve_invite_guest()/can_insert_rsvp() all gate on published_at now, never on paid", async () => {
+    const pool = getPgPool();
+    const { rows } = await pool.query<{ proname: string; src: string }>(
+      `select p.proname, pg_get_functiondef(p.oid) as src
+       from pg_proc p
+       where p.pronamespace = 'public'::regnamespace
+         and p.proname in ('get_published_invite', 'resolve_invite_guest', 'can_insert_rsvp')`
+    );
+    expect(rows).toHaveLength(3);
+    for (const row of rows) {
+      const src = row.src.toLowerCase();
+      expect(src, `${row.proname} should reference published_at`).toContain("published_at");
+      // get_published_invite() still SELECTS i.paid as an informational
+      // returned column (unchanged in meaning) — that's fine and
+      // expected. What must be gone is `paid` ever gating (AND-ing)
+      // visibility: the old `i.paid and (...)`/`i.paid = true` patterns.
+      expect(src, `${row.proname} should not gate on i.paid and (...)`).not.toMatch(/i\.paid and \(/);
+      expect(src, `${row.proname} should not gate on paid = true`).not.toMatch(/\.paid = true/);
     }
   });
 });

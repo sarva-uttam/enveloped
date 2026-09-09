@@ -37,6 +37,7 @@ describe("saveInvite", () => {
     guestList: [],
     createdAt: new Date().toISOString(),
     paid: false,
+    publishedAt: null,
   };
 
   it("throws NotAuthenticatedError and never touches the database when there's no session", async () => {
@@ -59,6 +60,12 @@ describe("saveInvite", () => {
     expect(insert).toHaveBeenCalledTimes(1);
     const insertedRow = insert.mock.calls[0][0];
     expect(insertedRow).not.toHaveProperty("owner_id");
+    // Stage 3: paid/published_at are also never sent by the client —
+    // both are left to their column defaults (false / null), so a
+    // newly-created invite starts unpaid AND unpublished; publication
+    // is never triggered by creating (or paying for) an invite.
+    expect(insertedRow).not.toHaveProperty("paid");
+    expect(insertedRow).not.toHaveProperty("published_at");
   });
 });
 
@@ -95,27 +102,37 @@ describe("submitRsvp", () => {
   // an invite at all), which also means RSVPs against an unpublished
   // invite are now refused outright, not just hidden by the UI.
 
-  it("refuses to submit against an unpublished invite, even if the client sends a guestId", async () => {
+  it("refuses to submit against an unpublished invite, even if it's paid and even if the client sends a guestId", async () => {
     mockClient.rpc.mockReturnValue({
       maybeSingle: vi.fn().mockResolvedValue({
-        data: { id: "row-1", slug: "unpaid-invite", paid: false, tier: null, content: null, event_date: null, song: null },
+        data: {
+          id: "row-1",
+          slug: "paid-unpublished-invite",
+          paid: true, // paid is intentionally true — must not matter
+          published_at: null,
+          tier: null,
+          content: null,
+          event_date: null,
+          song: null,
+        },
         error: null,
       }),
     });
 
-    const ok = await submitRsvp("unpaid-invite", "guest-1", "Aria", "yes");
+    const ok = await submitRsvp("paid-unpublished-invite", "guest-1", "Aria", "yes");
 
     expect(ok).toBe(false);
     expect(mockClient.from).not.toHaveBeenCalled();
   });
 
-  it("on a published invite, inserts scoped to the invite id resolved from the sanitized RPC, not a raw table read", async () => {
+  it("on a published invite, inserts scoped to the invite id resolved from the sanitized RPC, not a raw table read — even when the invite is UNPAID", async () => {
     mockClient.rpc.mockReturnValue({
       maybeSingle: vi.fn().mockResolvedValue({
         data: {
           id: "row-1",
           slug: "priya-devansh",
-          paid: true,
+          paid: false, // unpaid is intentionally the case here — must not matter
+          published_at: "2026-11-01T00:00:00Z",
           tier: "gold",
           content: { headline: "h" },
           event_date: null,
