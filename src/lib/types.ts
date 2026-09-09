@@ -60,3 +60,135 @@ export interface GeneratedInviteContent {
   closingLine: string;
   suggestedPalette: string[];
 }
+
+// ---------------------------------------------------------------------
+// Concierge / generator schema — recovered from the live database during
+// Stage 0 of the browser-generator-v2 rebuild (2026-09-09). See
+// PROJECT_STATUS.md's Stage 0 section and supabase/migrations/README.md
+// for the full account. These types describe tables and `invites`
+// columns that already exist live (`requests`, `templates`,
+// `invite_payment_records`, plus request_id/occasion/generator_kind/
+// design_spec/generator_content/composition/published_at/
+// created_by_admin_id on `invites`) but that NO application code in this
+// repository reads or writes yet — no route, component, or storage
+// function is wired to them. They exist here purely so future stages have
+// an accurate starting shape instead of re-deriving it from the database
+// by hand. Adding these types changes no runtime behavior: nothing
+// imports them yet.
+// ---------------------------------------------------------------------
+
+/**
+ * Which specific sub-event within a multi-part wedding an invite/request/
+ * template is for. This exact vocabulary is what the live database's
+ * CHECK constraints enforce today — but it is NOT the permanent domain
+ * model. Product direction is general events through reusable cultural
+ * packs, with weddings as the primary but not exclusive market; this
+ * Hindu-wedding-specific enum is expected to be replaced by a later,
+ * explicitly-scoped migration, not extended in place.
+ */
+export type Occasion = "haldi" | "sangeet_mehendi" | "wedding_day" | "reception";
+
+export type RequestStatus =
+  | "new"
+  | "contacted"
+  | "quoted"
+  | "awaiting_payment"
+  | "paid"
+  | "in_progress"
+  | "delivered"
+  | "archived";
+
+export type PreferredChannel = "whatsapp" | "email" | "instagram";
+
+/**
+ * A concierge intake record — a prospective client's request, captured
+ * before any invite exists. Mirrors the live `requests` table exactly
+ * (supabase/migrations/20260905073155_requests_and_templates.sql).
+ * `agreedPrice`/`agreedCurrency` exist so a concierge sale is never tied
+ * to the fixed self-service `TIERS` pricing (src/lib/tiers.ts).
+ */
+export interface ConciergeRequest {
+  id: string;
+  referenceCode: string;
+  status: RequestStatus;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  preferredChannel: PreferredChannel;
+  category: EventCategory;
+  eventDate: string | null;
+  tierInterest: TierId | null;
+  notes: string | null;
+  requestedOccasions: Occasion[];
+  agreedPrice: number | null;
+  agreedCurrency: string;
+  internalNotes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TemplateStatus = "draft" | "active" | "retired";
+
+/**
+ * A reusable design template a generator can select from, rather than
+ * free-generating markup. Mirrors the live `templates` table exactly
+ * (supabase/migrations/20260905073155_requests_and_templates.sql).
+ */
+export interface InviteTemplate {
+  id: string;
+  name: string;
+  category: EventCategory;
+  occasion: Occasion | null;
+  minTier: TierId;
+  styleTags: string[];
+  palette: string[];
+  fontPairing: string | null;
+  layoutComponent: string;
+  animationPreset: string | null;
+  musicAllowed: boolean;
+  thumbnailUrl: string | null;
+  status: TemplateStatus;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type OfflinePaymentMethod = "cash" | "bank_transfer" | "mobile_money" | "paypal_manual" | "other";
+
+/**
+ * A ledger entry for a payment taken outside PayPal (cash, bank transfer,
+ * mobile money, or a manually-recorded PayPal payment) — the
+ * concierge-payment counterpart to the PayPal-only `payments` table
+ * (see payments.server.ts). Mirrors the live `invite_payment_records`
+ * table exactly
+ * (supabase/migrations/20260905091530_generator_payment_publish_split.sql).
+ */
+export interface InvitePaymentRecord {
+  id: string;
+  inviteId: string;
+  method: OfflinePaymentMethod;
+  referenceNote: string;
+  recordedBy: string;
+  recordedAt: string;
+}
+
+/**
+ * The generator/concierge-specific columns that exist on the live
+ * `invites` table but that no current storage function reads — see
+ * src/lib/storage-queries.ts's `StoredInvite`/`PublicInvite`, neither of
+ * which maps these yet (a deliberate Stage 0 decision: extending either
+ * type's actual runtime mapping is an application-behavior change, out of
+ * scope for a reconciliation stage — see PROJECT_STATUS.md). Kept as its
+ * own type, not merged into `StoredInvite`, so it's obvious at a glance
+ * which fields are live-but-unwired.
+ */
+export interface InviteGeneratorFields {
+  requestId: string | null;
+  occasion: Occasion | null;
+  generatorKind: string | null;
+  designSpec: unknown | null;
+  generatorContent: unknown | null;
+  composition: unknown | null;
+  publishedAt: string | null;
+  createdByAdminId: string | null;
+}

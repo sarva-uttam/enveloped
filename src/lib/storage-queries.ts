@@ -35,7 +35,7 @@ export interface StoredInvite {
 
 /**
  * Looks up the FULL invite row by slug — OWNER-ONLY. Under RLS (see
- * supabase/migrations/20260828000000_auth_ownership.sql), a non-owner
+ * supabase/migrations/20260901114159_auth_ownership.sql), a non-owner
  * caller (anonymous or a different authenticated user) always gets null
  * back here, regardless of paid status — the raw table, including
  * `answers` (raw survey input — partner names, venue, city, and
@@ -128,6 +128,18 @@ export interface PublicInvite {
  * a table-level policy — see that function's SQL comment for why a
  * table-level "paid = true" policy alone isn't safe here (RLS is
  * row-level, and `answers` needed column-level protection instead).
+ *
+ * Stage 0 note (2026-09-09, see PROJECT_STATUS.md): the live
+ * get_published_invite() RPC actually returns three more columns than
+ * this function maps — generator_kind, generator_content, composition
+ * (supabase/migrations/20260905091530_generator_payment_publish_split.sql).
+ * They are deliberately left unmapped here; wiring them through is an
+ * application-behavior change and out of scope for a reconciliation
+ * stage. See InviteGeneratorFields in src/lib/types.ts for their shape.
+ * Also unresolved, carried forward unchanged: that same RPC still ANDs
+ * every generator-aware column on `i.paid`, not `published_at` — an
+ * admin-published-but-unpaid concierge invite is invisible to guests via
+ * this function exactly as an unpublished one is. Not fixed here.
  */
 export async function fetchPublicInvite(client: SupabaseClient, slug: string): Promise<PublicInvite | null> {
   const { data, error } = await client.rpc("get_published_invite", { p_slug: slug }).maybeSingle();

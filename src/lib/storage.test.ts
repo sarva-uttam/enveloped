@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // enforcement (what runs before a request even reaches Postgres) using a
 // mocked Supabase client — they intentionally do NOT stand up a real
 // database, so they don't exercise the RLS policies in
-// supabase/migrations/20260828000000_auth_ownership.sql themselves. That
+// supabase/migrations/20260901114159_auth_ownership.sql themselves. That
 // migration is reviewed by eye and by a human running it against a real
 // (or local) Postgres — see PROJECT_STATUS.md for that caveat. What these
 // tests DO verify: the app never even attempts a write while

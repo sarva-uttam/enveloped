@@ -48,6 +48,49 @@ buyer approving checkout → real `COMPLETED` capture →
 `verifyCaptureResponse()` against a genuine body). Needs a browser +
 sandbox buyer account; still worth a reviewer's eyes.
 
+## Update — 2026-09-09: Stage 0 repository/live database reconciliation
+
+Before this date, `supabase/migrations/` held only two files and
+`supabase/schema.sql` described a database that was **three migrations
+behind** the live project — `list_migrations` on `ravfwnqfxngphncuyyxo`
+recorded seven applied `schema_migrations` versions; this repository
+accounted for only four, and two of those under different filenames. The
+three unaccounted-for versions (`requests_and_templates`,
+`generator_composition`, `generator_payment_publish_split`, all applied
+live on or before 2026-09-05) had added tables `requests`, `templates`,
+`invite_payment_records` and eight new columns on `invites`
+(`request_id`/`occasion`/`generator_kind`/`design_spec`/
+`generator_content`/`composition`/`published_at`/`created_by_admin_id`) —
+none of it present anywhere in this repository.
+
+**The source code that produced this schema (a live column comment names
+it: `invites.server.ts` / `generateHinduInvite`) could not be found and is
+treated as lost** — a documented, exhaustive read-only search covered this
+repository's full git history (every ref, reflog, stash, and dangling
+object), every other local checkout of this project, and every
+locally-retrievable Claude session transcript. See `PROJECT_STATUS.md`'s
+"Missing browser-generator-v1 source" for the full account. This means
+Stage 0 could reconstruct the **schema** with high confidence (every
+object was read directly from the live database) but not the **exact
+per-migration statement grouping** for the three 2026-09-05 versions
+(medium confidence, inferred from column ordinal position and naming) or
+the application code that used these columns at all.
+
+All seven migrations now have a versioned file whose filename matches its
+live `schema_migrations` version exactly; `supabase/schema.sql` was
+rebuilt from verified live state. See `supabase/migrations/README.md` for
+the current file-by-file status and `PROJECT_STATUS.md`'s "Stage 0"
+section for the full validation record. **Two known issues, both
+pre-existing and neither introduced nor fixed by this reconciliation**
+(Stage 0 was documentation/reconciliation only — no behavioral migration
+was written or applied): (1) `get_published_invite()` does not actually
+decouple payment from publication despite `generator_payment_publish_split`'s
+name — every generator-aware column is still gated on `i.paid` as a hard
+AND; (2) the recovered `occasion` vocabulary
+(`haldi`/`sangeet_mehendi`/`wedding_day`/`reception`) is Hindu-wedding-
+specific, not the general, culturally-extensible model the product
+direction calls for. Both are new scrutiny items — see #12 and #13 below.
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -177,8 +220,8 @@ sandbox buyer account; still worth a reviewer's eyes.
    API** (all but the wallet approval + genuine `COMPLETED` body) — see
    scrutiny item #10 and `PROJECT_STATUS.md` → "Round 7".
 2. **Supabase RLS on the `paid` column** (`supabase/schema.sql`,
-   `supabase/migrations/20260828000000_auth_ownership.sql`,
-   `supabase/migrations/20260829000000_payment_integrity.sql`): as of
+   `supabase/migrations/20260901114159_auth_ownership.sql`,
+   `supabase/migrations/20260901114212_payment_integrity.sql`): as of
    round 6, an authenticated owner can no longer flip
    `paid`/`paypal_order_id` on their OWN invite directly via the client
    SDK either — a new `invites_reject_client_paid_update` trigger raises
@@ -214,15 +257,20 @@ sandbox buyer account; still worth a reviewer's eyes.
    unit-tested (`ownership.test.ts`) rather than trusted by inspection
    alone; a second pass at both the function and its test coverage is
    worth the time.
-4. **Migration/schema drift risk** — partially addressed. A real
-   `supabase/migrations/` directory now exists (the auth_ownership
-   migration lives there as a proper versioned, timestamped file); the
-   older payment-gating migration is still just an inline SQL block at
-   the bottom of `schema.sql`, not moved into that folder — worth
-   deciding whether to retrofit it in for consistency, and whether the
-   project should actually adopt the Supabase CLI's migration tooling
-   (`supabase migration up` / `db push`) rather than manual SQL-editor
-   pastes, now that there's a real folder structure for it.
+4. **Migration/schema drift risk** — addressed by the Stage 0
+   reconciliation (2026-09-09; see "Update — 2026-09-09" above and
+   `PROJECT_STATUS.md`'s "Stage 0" section). `supabase/migrations/` now
+   holds seven files whose filenames match every version Supabase's
+   `list_migrations` records live, including three (`requests_and_
+   templates`, `generator_composition`, `generator_payment_publish_split`)
+   that existed live since on-or-before 2026-09-05 with no file, and no
+   recoverable source, anywhere in this repository before Stage 0. The
+   project still does not use the Supabase CLI's migration tooling
+   (`supabase db push` / `migration up`) — every migration to date,
+   including all seven now on file, was applied by hand (dashboard SQL
+   editor or the Supabase MCP `apply_migration`) — see
+   `supabase/migrations/README.md` for the current workflow and what
+   adopting the CLI would require.
 5. **RLS is reviewed but not integration-tested — treat as a hard
    pre-production blocker, not routine polish.** The auth_ownership
    migration's policies are covered by two kinds of test, neither of
@@ -275,7 +323,7 @@ sandbox buyer account; still worth a reviewer's eyes.
    (`safe-redirect.test.ts`) missed, since this is exactly the kind of
    validator where one overlooked edge case reopens the whole class of
    bug. `can_insert_rsvp()` and the `invite_rsvps` insert policy in
-   `supabase/migrations/20260828000000_auth_ownership.sql` — this is the
+   `supabase/migrations/20260901114159_auth_ownership.sql` — this is the
    function that replaced round 4's broken inline-subquery version (see
    "Round 5" above); confirm the SECURITY DEFINER + table-ownership
    reasoning that lets it bypass RLS for its own internal queries is
@@ -311,7 +359,7 @@ sandbox buyer account; still worth a reviewer's eyes.
     2-5; (d) the `payments` table's RLS (no insert/update/delete policy
     for anon/authenticated at all) and the new
     `invites_reject_client_paid_update` trigger
-    (`supabase/migrations/20260829000000_payment_integrity.sql`) actually
+    (`supabase/migrations/20260901114212_payment_integrity.sql`) actually
     close the "owner flips their own `paid` flag directly" gap this
     brief previously flagged as scrutiny item #2 — also unverified
     against real Postgres. `custom_id` is set to the invitation's
@@ -334,6 +382,33 @@ sandbox buyer account; still worth a reviewer's eyes.
 11. Anything else that looks like a genuine bug, security gap, or
     accessibility issue — the above is a starting list, not an
     exhaustive one.
+12. **`get_published_invite()`'s payment/publication coupling defect**
+    (`supabase/migrations/20260905091530_generator_payment_publish_split.sql`)
+    — recovered and documented, not fixed, by the 2026-09-09 Stage 0
+    reconciliation. Every generator-aware output column is gated
+    `i.paid AND (i.generator_kind IS NULL OR i.published_at IS NOT NULL)`
+    — `published_at` only ever narrows visibility further for a generator
+    invite; `paid` remains a hard, unconditional AND. This directly
+    contradicts the concierge-first product requirement that payment
+    state and publication state stay independent (a client-approved,
+    admin-published invite must not require PayPal payment to become
+    visible). `resolve_invite_guest()`/`can_insert_rsvp()` have no
+    awareness of `published_at` at all either. Worth confirming this
+    reading against the function's live definition directly, and worth
+    scoping the correct fix (likely: an OR, not an AND, once "published"
+    and "paid" are meant to each independently unlock visibility) before
+    any Stage 1+ work builds further on top of the current behavior.
+13. **Hindu-wedding-specific `occasion` vocabulary** — `invites.occasion`,
+    `templates.occasion`, and `requests.requested_occasions` are all
+    CHECK-constrained to exactly `{haldi, sangeet_mehendi, wedding_day,
+    reception}` (recovered from live, `supabase/migrations/
+    20260905084115_generator_composition.sql`). Per explicit product
+    direction, weddings are the primary market but the permanent domain
+    model must support general events through reusable cultural packs —
+    this fixed enum is not that model and was reproduced verbatim by
+    Stage 0 (documentation only, no schema correction). Worth flagging
+    early since three separate tables now depend on this exact constraint
+    text, which will need a coordinated migration to generalize.
 
 ## What NOT to flag as issues
 

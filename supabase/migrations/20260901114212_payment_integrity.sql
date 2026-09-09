@@ -7,11 +7,15 @@
 -- the client SDK, bypassing PayPal entirely (see REVIEW_BRIEF.md,
 -- "Specific areas to scrutinize" #2 from the auth_ownership review).
 --
--- NOT applied to the live project yet — same process as the prior
--- migration: paste into the Supabase SQL editor (or `supabase db push`
--- once the project is linked) only after explicit review/approval.
+-- APPLIED to the live project (ravfwnqfxngphncuyyxo) on 2026-09-01 via
+-- Supabase `apply_migration`, recorded as schema_migrations version
+-- 20260901114212 — see PROJECT_STATUS.md's "Round 7" for verification
+-- against real anon/authenticated/service_role callers. This filename was
+-- renamed from its original 20260829000000_payment_integrity.sql during
+-- the Stage 0 repo/live reconciliation (2026-09-09) to match that
+-- recorded version exactly — the SQL body below is untouched.
 --
--- Assumes supabase/migrations/20260828000000_auth_ownership.sql (owner_id,
+-- Assumes supabase/migrations/20260901114159_auth_ownership.sql (owner_id,
 -- ownership-scoped RLS) is already applied.
 
 -- ---------------------------------------------------------------------

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
 /**
@@ -20,9 +20,14 @@ import path from "node:path";
  * production.
  */
 
+// Stage 0 (2026-09-09) renamed this file from 20260828000000_auth_ownership.sql
+// to 20260901114159_auth_ownership.sql to match the version Supabase's
+// schema_migrations actually recorded for it — see
+// supabase/migrations/README.md. The SQL body this test reads is
+// otherwise unchanged.
 const migrationPath = path.resolve(
   __dirname,
-  "../../supabase/migrations/20260828000000_auth_ownership.sql"
+  "../../supabase/migrations/20260901114159_auth_ownership.sql"
 );
 const sql = readFileSync(migrationPath, "utf8").toLowerCase();
 
@@ -202,5 +207,90 @@ describe("auth_ownership migration — security property regression guard", () =
 
     expect(sql).toContain("revoke all on function can_insert_rsvp(uuid, uuid) from public");
     expect(sql).toContain("grant execute on function can_insert_rsvp(uuid, uuid) to anon, authenticated");
+  });
+});
+
+// ---------------------------------------------------------------------
+// 2026-09-05 migrations — added during Stage 0 (2026-09-09) reconciliation.
+// These three files are RECONSTRUCTED from live database introspection,
+// not sourced from an original script — see
+// supabase/migrations/README.md and each file's own header for exactly
+// what "reconstructed" means and its confidence level. The regression
+// guard below is scoped to what Stage 0 can actually assert with
+// confidence: the function that superseded the one covered above, and
+// that the three new tables carry no policy anywhere in the migration
+// set. It deliberately does NOT assert the publish/payment coupling is
+// fixed — it isn't; see the next test.
+// ---------------------------------------------------------------------
+
+const migrationsDir = path.resolve(__dirname, "../../supabase/migrations");
+const allMigrationsSql = readdirSync(migrationsDir)
+  .filter((f) => f.endsWith(".sql"))
+  .map((f) => readFileSync(path.join(migrationsDir, f), "utf8").toLowerCase())
+  .join("\n");
+
+const publishSplitSql = readFileSync(
+  path.resolve(migrationsDir, "20260905091530_generator_payment_publish_split.sql"),
+  "utf8"
+).toLowerCase();
+
+function publishSplitFunctionBody(functionName: string): string {
+  const startMarker = `create or replace function ${functionName.toLowerCase()}`;
+  const start = publishSplitSql.indexOf(startMarker);
+  if (start === -1) throw new Error(`function "${functionName}" not found in 20260905091530`);
+  const bodyEnd = publishSplitSql.indexOf("$$;", start);
+  if (bodyEnd === -1) throw new Error(`could not find end of function "${functionName}" body`);
+  return publishSplitSql.slice(start, bodyEnd + 3);
+}
+
+describe("20260905091530_generator_payment_publish_split — the get_published_invite() actually live today", () => {
+  it("still cannot leak answers/owner_id/paypal_order_id/guestNames, still security definer + empty search_path + qualified tables, same properties as the version it replaces", () => {
+    const body = publishSplitFunctionBody("get_published_invite");
+
+    expect(body).toContain("security definer");
+    expect(body).toContain("set search_path = ''");
+    expect(body).not.toMatch(/set search_path = public\b/);
+    expect(body).toContain("public.invites");
+    expect(body).not.toMatch(/from invites\b/);
+
+    expect(body).not.toContain("guestnames");
+    expect(body).not.toContain("partnernames");
+    expect(body).not.toContain("extradetails");
+    expect(body).not.toContain("colormood");
+    expect(body).not.toContain("owner_id");
+    expect(body).not.toContain("paypal_order_id");
+
+    expect(body).not.toMatch(/select\s+\*/);
+    expect(body).not.toMatch(/i\.answers(?!\s*->>)/);
+    expect(body).toContain(`i.answers ->> 'eventdate'`);
+    expect(body).toContain(`i.answers ->> 'song'`);
+
+    expect(sql).toContain("grant execute on function get_published_invite(text) to anon, authenticated");
+  });
+
+  it("KNOWN, TRACKED DEFECT — despite this migration's name, publication is still hard-coupled to payment: i.paid is an unconditional AND, published_at only ever narrows further. This test intentionally documents CURRENT live behavior, not desired behavior — see PROJECT_STATUS.md's Stage 0 section. A future migration that actually separates the two should update this assertion, not delete it silently.", () => {
+    const body = publishSplitFunctionBody("get_published_invite");
+
+    expect(body).toMatch(
+      /i\.paid and \(i\.generator_kind is null or i\.published_at is not null\)/
+    );
+    // resolve_invite_guest() and can_insert_rsvp() (defined in
+    // 20260901114159_auth_ownership.sql, unchanged since) have no
+    // awareness of published_at at all — still gate on paid alone.
+    const guestFnStart = sql.indexOf("create or replace function resolve_invite_guest");
+    const guestFnEnd = sql.indexOf("$$;", guestFnStart);
+    expect(sql.slice(guestFnStart, guestFnEnd)).not.toContain("published_at");
+    const rsvpFnStart = sql.indexOf("create or replace function can_insert_rsvp");
+    const rsvpFnEnd = sql.indexOf("$$;", rsvpFnStart);
+    expect(sql.slice(rsvpFnStart, rsvpFnEnd)).not.toContain("published_at");
+  });
+});
+
+describe("requests, templates, invite_payment_records — deny-all by default, unchanged by Stage 0", () => {
+  it("all three have RLS enabled and carry NO create-policy statement anywhere in the migration set — a future admin-access policy must be added deliberately, never silently reintroduced as `using (true)`", () => {
+    for (const table of ["requests", "templates", "invite_payment_records"]) {
+      expect(allMigrationsSql).toContain(`alter table ${table} enable row level security`);
+      expect(allMigrationsSql).not.toMatch(new RegExp(`create policy [^;]*on ${table}\\b`));
+    }
   });
 });

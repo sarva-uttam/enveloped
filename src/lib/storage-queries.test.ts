@@ -6,10 +6,10 @@ import { fetchInvite, fetchGuestEntry, fetchPublicInvite } from "./storage-queri
 // — testing them here with a mocked client covers both call paths at
 // once. These tests verify the app never does anything that WOULD leak
 // data even if RLS were somehow bypassed (defense in depth) — the actual
-// RLS enforcement itself is reviewed in supabase/migrations/
-// 20260828000000_auth_ownership.sql and its accompanying policy-text
-// regression test (rls-policy.test.ts), not exercised against a real
-// Postgres here.
+// RLS enforcement itself is reviewed in
+// supabase/migrations/20260901114159_auth_ownership.sql and its
+// accompanying policy-text regression test (rls-policy.test.ts), not
+// exercised against a real Postgres here.
 
 function makeClient(overrides: {
   invitesSelect?: unknown;

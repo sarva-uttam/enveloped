@@ -6,11 +6,15 @@
 -- still see their own personalized invite (name + click-teaser) without
 -- being able to read anyone else's.
 --
--- NOT applied to the live project yet. Run this file's contents against
--- the connected Supabase project (SQL editor, or `supabase db push` once
--- the project is linked) only after explicit review/approval — see
--- PROJECT_STATUS.md for the exact steps and a note on what pre-existing
--- rows (created before auth existed) look like afterward.
+-- APPLIED to the live project (ravfwnqfxngphncuyyxo) on 2026-09-01 via
+-- Supabase `apply_migration`, recorded as schema_migrations version
+-- 20260901114159 — see PROJECT_STATUS.md's "Round 7" for verification
+-- against real anon/authenticated/service_role callers, and a note on
+-- what pre-existing rows (created before auth existed) look like
+-- afterward. This filename was renamed from its original
+-- 20260828000000_auth_ownership.sql during the Stage 0 repo/live
+-- reconciliation (2026-09-09) to match that recorded version exactly —
+-- the SQL body below is untouched.
 --
 -- This migration assumes the base schema in supabase/schema.sql (tables
 -- `invites`, `invite_guests`, `invite_rsvps`) and the earlier payment-

@@ -78,6 +78,23 @@ Before production release, the remaining work includes broader end-to-end covera
 
 See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for implementation evidence and [REVIEW_BRIEF.md](./REVIEW_BRIEF.md) for the independent-review history and security decisions.
 
+### Database schema
+
+`supabase/migrations/*.sql` is the versioned source of truth for the
+schema; `supabase/schema.sql` is a generated reference snapshot (see
+[supabase/migrations/README.md](./supabase/migrations/README.md) for the
+workflow). As of a 2026-09-09 reconciliation, the live database is ahead
+of the self-service flow described above — it also carries a concierge
+intake table (`requests`), a design-template catalogue (`templates`), an
+offline-payment ledger (`invite_payment_records`), and generator-oriented
+columns on `invites` (`design_spec`, `generator_content`, `composition`,
+`published_at`, and others), none of which the current application code
+reads or writes yet. `PROJECT_STATUS.md`'s "Stage 0" section has the full
+account, including a known defect (publication and payment are not yet
+independent for these columns) and a known limitation (the recovered
+`occasion` vocabulary is Hindu-wedding-specific, not the general,
+culturally-extensible model described below).
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”
@@ -124,12 +141,35 @@ Never commit real credentials. The expected variables and safety notes are docum
 
 ## Product direction
 
-Enveloped is being designed for two complementary service levels:
+Enveloped's primary business model is concierge-led: a client sends a
+request, the admin discusses the event and agrees on a price outside the
+application, the admin creates and controls the invitation, the client
+receives a private preview, and publication happens only after approval.
+Payment state and publication state are meant to remain independent, and
+PayPal is optional rather than mandatory.
 
-- **Instant creation:** the platform generates and publishes a controlled invitation experience automatically.
-- **Concierge creation:** complex or premium requests enter an owner workflow for human-assisted design and approval.
+A simpler self-service flow — survey → AI generation → fixed-tier PayPal
+checkout, described elsewhere in this README and still fully working in
+the current code — predates this concierge-first direction. **It is being
+preserved, not deleted, and is intended to be disabled from public use
+once the concierge-first flow is ready** — a later, explicitly-scoped
+change, not yet made. It must not control the primary architecture: any
+future generation, publication, or payment work is designed around the
+concierge model first.
 
-The website remains the source of truth for the survey, order, payment state, files, decisions, and delivery. Messaging channels such as WhatsApp can support reminders and customer communication, but should not become the system of record.
+The website remains the source of truth for requests, invitations, order,
+payment state, files, decisions, and delivery. Messaging channels such as
+WhatsApp can support reminders and customer communication, but should not
+become the system of record.
+
+**Weddings are the primary market and product focus**, but the domain
+model is meant to support general events (holidays, vacations, hotel
+packages, birthdays, and others already present in the category list
+above) through reusable **cultural packs**, not a single hardcoded
+tradition. See `PROJECT_STATUS.md`'s "Stage 0" section for a known
+limitation in the current live schema this direction has not yet reached
+(a Hindu-wedding-specific `occasion` vocabulary, recovered as-is from the
+live database rather than corrected).
 
 ## Repository note
 

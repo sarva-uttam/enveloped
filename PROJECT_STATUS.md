@@ -56,7 +56,7 @@ other guest's name and personal link. This batch replaces both.
   unauthenticated `/dashboard` and `/survey` requests to `/login`; the app
   layer double-checks (`getMyInvites()` returns `[]` without a session,
   `saveInvite()` throws `NotAuthenticatedError`); Postgres RLS is the real
-  boundary (`supabase/migrations/20260828000000_auth_ownership.sql`) —
+  boundary (`supabase/migrations/20260901114159_auth_ownership.sql`) —
   owner-only insert/update/delete on `invites`, owner-only read/write on
   `invite_guests`/`invite_rsvps`.
 - **The raw `invites` table has NO public read policy at all — owner-only,
@@ -246,7 +246,7 @@ specific gap was explicitly flagged as deferred in the auth_ownership
 round — see REVIEW_BRIEF.md's prior "Specific areas to scrutinize" #2).
 
 - **New `payments` table**
-  (`supabase/migrations/20260829000000_payment_integrity.sql`) — one row
+  (`supabase/migrations/20260901114212_payment_integrity.sql`) — one row
   per PayPal order attempt: `invitation_id`, `owner_id`, `provider`/
   `provider_order_id`/`provider_capture_id`, `tier`, `expected_amount`/
   `captured_amount` (`numeric(10,2)`, not floating point), `currency`,
@@ -353,24 +353,22 @@ as genuine `anon` / `authenticated` / `service_role` REST callers).
 |---|---|---|
 | `20260825050021` | `enveloped_invites_schema` | (pre-existing base tables) |
 | `20260901114121` | `payment_gating` | the inline block at the bottom of `supabase/schema.sql` (`paid` / `paypal_order_id` columns) |
-| `20260901114159` | `auth_ownership` | `supabase/migrations/20260828000000_auth_ownership.sql`, verbatim |
-| `20260901114212` | `payment_integrity` | `supabase/migrations/20260829000000_payment_integrity.sql`, verbatim |
+| `20260901114159` | `auth_ownership` | `supabase/migrations/20260828000000_auth_ownership.sql`, verbatim (at the time — see the Stage 0 note below) |
+| `20260901114212` | `payment_integrity` | `supabase/migrations/20260829000000_payment_integrity.sql`, verbatim (at the time — see the Stage 0 note below) |
 
-> **Migration-history version drift — known, low-impact, worth fixing
-> before adopting `supabase db push`.** `apply_migration` stamped its own
-> timestamps (`20260901…`), so the recorded `schema_migrations` versions
-> do **not** match the `supabase/migrations/*.sql` filenames
-> (`20260828…`, `20260829…`), and `payment_gating` still has no file at
-> all (it lives only inline in `schema.sql`). The current workflow is
-> manual SQL application, so this is informational today. But if the
-> project ever switches to `supabase db push` / `supabase migration up`,
-> the CLI will see `20260828000000_auth_ownership` and
-> `20260829000000_payment_integrity` as *unapplied* and try to re-run
-> them — and several statements in them (`create policy …`, `create
-> trigger …`) are **not** `if not exists` and will error on a re-run.
-> Reconcile first: `supabase migration repair` to align the version
-> rows, and retrofit `payment_gating` into a real numbered file (this is
-> REVIEW_BRIEF.md scrutiny item #4).
+> **Migration-history version drift — RESOLVED by the Stage 0
+> reconciliation (2026-09-09).** At the time this round ran, `apply_migration`
+> had stamped its own timestamps (`20260901…`), which did **not** match
+> this repository's `supabase/migrations/*.sql` filenames (`20260828…`,
+> `20260829…`), and `payment_gating` had no file at all. Stage 0 renamed
+> the two existing files to their recorded versions
+> (`20260901114159_auth_ownership.sql`, `20260901114212_payment_integrity.sql`
+> — SQL bodies unchanged) and added `20260901114121_payment_gating.sql`.
+> All seven live `schema_migrations` versions (this round's four plus
+> three more discovered during Stage 0 — see "Stage 0" below) now have a
+> matching filename in `supabase/migrations/`. `supabase migration
+> repair` was NOT run — proving it unnecessary was part of Stage 0's own
+> validation, not assumed; see `supabase/migrations/README.md`.
 
 ### Structural confirmation (`information_schema` / `pg_catalog`)
 
@@ -492,9 +490,14 @@ production — see "Pending" #2 below.
 1. ~~**Run the auth & ownership migration.**~~ — **DONE 2026-09-01.**
    Applied to `ravfwnqfxngphncuyyxo` as `schema_migrations` version
    `20260901114159` (`auth_ownership`), from
-   `supabase/migrations/20260828000000_auth_ownership.sql` verbatim, and
+   `supabase/migrations/20260828000000_auth_ownership.sql` verbatim at the
+   time (renamed to `20260901114159_auth_ownership.sql` by Stage 0 to match
+   this recorded version — SQL body unchanged), and
    verified against the live database — see "Round 7" above.
-   `SUPABASE_SERVICE_ROLE_KEY` is present and non-empty in `.env.local`.
+   ~~`SUPABASE_SERVICE_ROLE_KEY` is present and non-empty in `.env.local`.`~~ —
+   **no longer true as of the Stage 0 reconciliation (2026-09-09): this
+   key is currently unset in `.env.local`.** See "Stage 0" below and
+   Pending item 9.
    - **Existing invites** — there were 3, all `paid = false` test rows
      (`uttam-riyah-…`, `xcfcgs-…`, `test-paywall-check`). All now have
      `owner_id = null` and, being unpaid, are unreadable by anyone
@@ -522,7 +525,9 @@ production — see "Pending" #2 below.
 3. ~~**Run the payment integrity migration.**~~ — **DONE 2026-09-01.**
    Applied to `ravfwnqfxngphncuyyxo` as `schema_migrations` version
    `20260901114212` (`payment_integrity`), from
-   `supabase/migrations/20260829000000_payment_integrity.sql` verbatim.
+   `supabase/migrations/20260829000000_payment_integrity.sql` verbatim at
+   the time (renamed to `20260901114212_payment_integrity.sql` by Stage 0
+   to match this recorded version — SQL body unchanged).
    The inline **payment-gating** block (`paid` / `paypal_order_id`) was
    applied first, as version `20260901114121` (`payment_gating`). The
    `payments` table, its RLS, and the `invites_reject_client_paid_update`
@@ -568,6 +573,161 @@ production — see "Pending" #2 below.
    (`supabase start` + a seeded fixture, or a CI job hitting a throwaway
    project) into the suite so this doesn't rely on a one-off manual
    verification next time the policies change.
+9. **`SUPABASE_SERVICE_ROLE_KEY` is unset in `.env.local`.** Confirmed
+   2026-09-09 by variable-name-only inspection (no value read or
+   printed). Consequence: `supabaseAdminConfigured` is `false`
+   (`src/lib/supabase/admin.ts`), so every function in
+   `src/lib/payments.server.ts` and `markInvitePaid()` in
+   `storage.server.ts` no-ops, and `POST /api/paypal/orders` 502s on
+   every attempt locally — the entire payment path is dead until this is
+   restored. This is a local environment gap, not a code or migration
+   issue; restoring the value is outside the scope of any repository
+   change. See `.env.example`'s note on this variable.
+10. **Missing browser-generator-v1 source code — confirmed unrecoverable,
+    schema recovered instead.** See "Stage 0" below for the full account.
+
+## Stage 0 — Repository/live database reconciliation (2026-09-09)
+
+Before this, `supabase/migrations/` (2 files) and `supabase/schema.sql`
+described a database three migrations behind the actual live project.
+Supabase's `list_migrations` (read-only) showed **seven** applied
+`schema_migrations` versions; this repository's history accounted for only
+four of them (and only two as real migration files — the other two
+under different, pre-Stage-0 filenames). The three unaccounted-for
+versions — `20260905073155` (`requests_and_templates`), `20260905084115`
+(`generator_composition`), `20260905091530`
+(`generator_payment_publish_split`) — had created live tables `requests`,
+`templates`, and `invite_payment_records`, plus eight new columns on
+`invites` (`request_id`, `occasion`, `generator_kind`, `design_spec`,
+`generator_content`, `composition`, `published_at`,
+`created_by_admin_id`), none of which existed anywhere in this repository.
+
+### Missing browser-generator-v1 source code
+
+A live column comment on `invites.created_by_admin_id` reads *"Which admin
+account ran the Generator for this invite (invites.server.ts
+generateHinduInvite)."* That file and function do not exist in this
+repository. Per explicit owner instruction, Stage 0 performed one final
+read-only search before concluding the code is genuinely lost:
+
+- **This repository's full git history** — every ref (`git rev-list
+  --all --objects`), every commit's diff (`git log --all -p -S<symbol>`
+  for `generateHinduInvite`, `invites.server`, `generator_kind`,
+  `design_spec`, `requests_and_templates`, `generator_composition`,
+  `generator_payment_publish_split`, `invite_payment_records`), every
+  ref's reflog, `git stash list`, and `git fsck --full --unreachable
+  --no-reflog` (three dangling objects found — a superseded pre-`--amend`
+  commit and its tree/blob, unrelated to the generator; no dangling
+  object matches any generator symbol). No hits anywhere.
+- **Other local checkouts.** Two directories elsewhere on disk share this
+  project's exact package name (`digital-invite-app`) in their path —
+  `/mnt/c/Development1/Digital-E-invite` and `/mnt/c/Digital-E-invite` —
+  but both are a **different, unrelated project**
+  (`ai-digital-invitation-platform`, remote
+  `github.com/monsieur-zordi/Digital-E-invite`, a different
+  task-numbering scheme). No generator symbols anywhere in their tracked
+  files or history. A third checkout,
+  `/mnt/c/Users/uttam/OneDrive/Desktop/Enveloped`, IS this same
+  repository (`origin` = `sarva-uttam/enveloped`, `HEAD` at `77245d7`,
+  one commit behind `master` at the time) — its working tree shows every
+  tracked file as locally modified, but diffing confirms this is pure
+  CRLF/LF line-ending noise (e.g. a 65-line file reporting 65
+  insertions/65 deletions), not real content; no generator symbol appears
+  in that diff at all, and its `supabase/migrations/` holds only the same
+  two files this repository already had.
+- **Claude session transcripts**, local and on the Windows filesystem
+  (`~/.claude/projects/`, `/mnt/c/Users/uttam/.claude/projects/`),
+  including three Windows-side project sessions that did work under
+  paths named `Enveloped`/`Project-Enveloped`/`Digital-Invite-Website` —
+  none contain the generator symbols in their transcript text.
+
+**Conclusion: the source for browser-generator-v1 (`invites.server.ts`,
+`generateHinduInvite`, and whatever applied the three 2026-09-05
+migrations) could not be found anywhere searched and is treated as lost.**
+Its schema survives live and has been reconstructed into this repository
+(see below); the code that produced and consumed it has not. If a copy
+turns up later (a machine not searched here, an export, a colleague's
+copy), it would materially change Stage 1's scope — see the recommended
+Stage 1 scope for how to fold it back in if so.
+
+### What Stage 0 did
+
+- Recovered the exact live SQL for all three missing migrations via
+  read-only inspection (`information_schema`/`pg_catalog` column,
+  constraint, index, and function definitions; `pg_get_functiondef()` for
+  `get_published_invite()`'s exact live body) and added them as
+  `supabase/migrations/20260905073155_requests_and_templates.sql`,
+  `20260905084115_generator_composition.sql`, and
+  `20260905091530_generator_payment_publish_split.sql`.
+- Recovered `payment_gating` (previously only an unversioned inline block
+  in `schema.sql`) as its own file,
+  `supabase/migrations/20260901114121_payment_gating.sql`.
+- Reconstructed the genesis migration,
+  `supabase/migrations/20260825050021_enveloped_invites_schema.sql`
+  (base `invites`/`invite_guests`/`invite_rsvps` tables and their
+  original, fully-public RLS policies — later replaced by
+  `auth_ownership`), since no versioned file for it existed either.
+- Renamed the two existing migration files to match the versions Supabase
+  actually recorded: `20260828000000_auth_ownership.sql` →
+  `20260901114159_auth_ownership.sql`,
+  `20260829000000_payment_integrity.sql` →
+  `20260901114212_payment_integrity.sql`. Their SQL bodies are untouched;
+  only their header comments were corrected (they previously said "NOT
+  applied to the live project yet," which stopped being true on
+  2026-09-01).
+- Rebuilt `supabase/schema.sql` from the verified live state — it
+  previously still described a three-migrations-behind database and, in
+  its own header, incorrectly claimed those migrations were "NOT applied
+  there yet" (they had been, since Round 7).
+- See `supabase/migrations/README.md` (new) for the ongoing workflow this
+  established.
+
+**Every recovered migration file documents two known pre-existing issues,
+neither introduced nor fixed by Stage 0** (Stage 0 is documentation and
+reconciliation only — no behavioral migration was written or applied):
+
+1. **Payment/publication coupling defect.** Despite its name,
+   `generator_payment_publish_split`'s `get_published_invite()` does not
+   actually decouple payment from publication — every generator-aware
+   column is gated `i.paid AND (i.generator_kind IS NULL OR
+   i.published_at IS NOT NULL)`; `paid` is still an unconditional AND. A
+   published-but-unpaid concierge invite is invisible to guests, exactly
+   like an unpublished one. `resolve_invite_guest()`/`can_insert_rsvp()`
+   have no awareness of `published_at` at all. This directly contradicts
+   the concierge-first product requirement that payment state and
+   publication state remain separate.
+2. **Hindu-wedding-specific occasion vocabulary.** `invites.occasion` /
+   `templates.occasion` / `requests.requested_occasions` are constrained
+   to `{haldi, sangeet_mehendi, wedding_day, reception}`. Per explicit
+   product direction, Enveloped's permanent domain model must support
+   general events through reusable cultural packs — weddings-first, not
+   wedding-only. This fixed enum is not that model and is expected to be
+   replaced by a later migration, not part of Stage 0.
+
+### Self-service survey/generator — preserved, to be disabled later
+
+Per explicit owner decision, the existing self-service flow
+(`/survey`, `SurveyFlow.tsx`, `/api/generate`, `saveInvite()`, the
+`TIERS`-priced PayPal checkout) is **preserved as working code** — none of
+it is deleted. It is intended to be **disabled from public use** once the
+concierge-first flow is ready, but **Stage 0 makes no behavioral change**:
+`/survey` remains reachable and functional exactly as before this
+reconciliation. Disabling it (a route guard, a feature flag, or removing
+its nav entry) is scoped to a later stage, not Stage 0.
+
+### Product direction — wedding-first, culturally extensible
+
+Recorded here as an explicit decision, not yet implemented in code:
+Enveloped's primary market and product focus is weddings, but the
+permanent domain model must support general events (holidays, vacations,
+hotel packages, birthdays — already present in
+`src/lib/categories.ts`/`EventCategory`) through **reusable cultural
+packs**, not a single hardcoded tradition. The live `occasion` vocabulary
+recovered in Stage 0 (`haldi`/`sangeet_mehendi`/`wedding_day`/`reception`)
+is a Hindu-wedding-specific placeholder inherited from whatever produced
+it, not this permanent model — see the payment/publication and occasion
+notes above. Redesigning the occasion/cultural-pack model is scoped to a
+later stage.
 
 ## Key files
 

@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // Same rationale as storage.server.test.ts: every function here goes
 // through the ADMIN (service-role) client, never the session-aware one —
 // deliberate, since `payments` has no anon/authenticated write policy at
-// all (see supabase/migrations/20260829000000_payment_integrity.sql), so
+// all (see supabase/migrations/20260901114212_payment_integrity.sql), so
 // the browser is structurally unable to write to this table under any
 // circumstances. vitest.setup.ts mocks `server-only` so this file can be
 // imported at all outside Next.js's build.

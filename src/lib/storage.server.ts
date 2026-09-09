@@ -72,7 +72,7 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
  * keep working exactly as before. See src/lib/supabase/admin.ts for why
  * that's safe and what it does/doesn't change about payment integrity.
  * Also the one write path exempted from the invites_reject_client_paid_update
- * trigger (supabase/migrations/20260829000000_payment_integrity.sql),
+ * trigger (supabase/migrations/20260901114212_payment_integrity.sql),
  * since it runs as service_role.
  *
  * Idempotent by design: setting paid=true / paypal_order_id on a row
