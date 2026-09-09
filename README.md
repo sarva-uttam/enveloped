@@ -95,6 +95,13 @@ independent for these columns) and a known limitation (the recovered
 `occasion` vocabulary is Hindu-wedding-specific, not the general,
 culturally-extensible model described below).
 
+A database-backed administrator identity (`app_admins` + `is_admin()`)
+and a server-protected `/admin` placeholder were added in Stage 2 —
+`PROJECT_STATUS.md`'s "Stage 2" section has the full design, including
+how to bootstrap the first administrator. That migration exists only in
+this repository and against a local test database so far; it has not
+been applied to the live project.
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”

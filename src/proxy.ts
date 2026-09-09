@@ -9,7 +9,17 @@ import { createServerClient } from "@supabase/ssr";
 // authentication guide's own caution: proxy/middleware "should not be your
 // only line of defense."
 
-const PROTECTED_PREFIXES = ["/dashboard", "/survey"];
+// /admin is included here for the same reason /dashboard and /survey
+// are: an optimistic, session-presence-only bounce to /login for a
+// visitor with no session at all. This check cannot and does not know
+// whether a signed-in visitor is an ADMINISTRATOR — that requires a real
+// database round trip (the is_admin() function), which does not belong
+// in Proxy (see the file-level comment above, and Next's own guidance
+// that Proxy "should not be your only line of defense" and isn't meant
+// for slow data fetching). The actual admin authorization boundary is
+// src/app/admin/layout.tsx, which re-verifies both facts server-side on
+// every request regardless of what happens here.
+const PROTECTED_PREFIXES = ["/dashboard", "/survey", "/admin"];
 
 export async function proxy(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -55,5 +65,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/survey/:path*"],
+  matcher: ["/dashboard/:path*", "/survey/:path*", "/admin/:path*"],
 };

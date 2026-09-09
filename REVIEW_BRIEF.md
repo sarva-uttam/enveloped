@@ -91,6 +91,25 @@ AND; (2) the recovered `occasion` vocabulary
 specific, not the general, culturally-extensible model the product
 direction calls for. Both are new scrutiny items — see #12 and #13 below.
 
+## Update — 2026-09-09: Stage 2 admin identity and authorization boundary
+
+A database-backed administrator identity (`app_admins` + `is_admin()`,
+`supabase/migrations/20260909120000_admin_identity.sql`) and a server-
+protected `/admin` placeholder (`src/app/admin/`) were added. No
+generator, request-management, template-editor, invitation-editor,
+payment interface, or publication workflow was built — see
+`PROJECT_STATUS.md`'s "Stage 2" section for the full design. **New
+scrutiny item — see #14 below.** Key points for a reviewer: `app_admins`
+has no insert/update/delete policy for any role at all, including an
+administrator's own client — admin membership can only be granted by a
+trusted, service-role/direct-database write (see
+`supabase/migrations/README.md`'s bootstrap procedure), never through the
+app. `is_admin()` is SECURITY DEFINER for the same structural reason
+`can_insert_rsvp()` needed to be (Round 5) — worth confirming that
+reasoning holds here too. This migration has **not** been applied to the
+live project; it exists only in the repository and against the local
+Supabase stack from Stage 1.
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -409,6 +428,26 @@ direction calls for. Both are new scrutiny items — see #12 and #13 below.
     Stage 0 (documentation only, no schema correction). Worth flagging
     early since three separate tables now depend on this exact constraint
     text, which will need a coordinated migration to generalize.
+14. **Admin identity and authorization boundary** (Stage 2,
+    `supabase/migrations/20260909120000_admin_identity.sql`,
+    `src/lib/auth/admin.server.ts`, `src/app/admin/`) — worth confirming
+    independently: (a) `app_admins` genuinely has no INSERT/UPDATE/DELETE
+    policy for any role — verified in this batch via both a text-pattern
+    guard (`src/lib/rls-policy.test.ts`) and real Postgres as
+    anon/authenticated/admin callers
+    (`tests/integration/admin.test.ts`, tests 8/9 specifically — an
+    administrator's own client cannot grant admin rights to anyone,
+    including itself); (b) `is_admin()`'s SECURITY DEFINER + empty
+    search_path + fully-qualified `public.app_admins` reasoning is sound
+    — same pattern as `can_insert_rsvp()`, not a new one; (c)
+    `src/app/admin/layout.tsx` genuinely re-derives both authentication
+    and admin status from the database on every request rather than
+    trusting anything cached/client-supplied, and `src/proxy.ts`'s
+    `/admin` entry is genuinely just an optimistic session-presence
+    redirect, not a security check masquerading as one; (d) the migration
+    is NOT yet applied to the live project — confirm it stays that way
+    until the owner deliberately runs the bootstrap procedure in
+    `supabase/migrations/README.md`.
 
 ## What NOT to flag as issues
 

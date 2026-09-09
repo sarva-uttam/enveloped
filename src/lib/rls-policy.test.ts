@@ -286,11 +286,57 @@ describe("20260905091530_generator_payment_publish_split — the get_published_i
   });
 });
 
-describe("requests, templates, invite_payment_records — deny-all by default, unchanged by Stage 0", () => {
-  it("all three have RLS enabled and carry NO create-policy statement anywhere in the migration set — a future admin-access policy must be added deliberately, never silently reintroduced as `using (true)`", () => {
+describe("requests, templates, invite_payment_records — deny-all to ordinary roles, admin-gated since Stage 2", () => {
+  it("all three have RLS enabled, and every policy on them is gated on is_admin() — never a bare `using (true)` or a role-membership check bypassing the hardened function", () => {
     for (const table of ["requests", "templates", "invite_payment_records"]) {
       expect(allMigrationsSql).toContain(`alter table ${table} enable row level security`);
-      expect(allMigrationsSql).not.toMatch(new RegExp(`create policy [^;]*on ${table}\\b`));
+
+      const policyMatches = [...allMigrationsSql.matchAll(new RegExp(`create policy "[^"]*" on ${table}[^;]*;`, "g"))];
+      // Stage 0/1 asserted zero policies here; Stage 2 deliberately added
+      // exactly four (select/insert/update/delete), all admin-gated —
+      // see 20260909120000_admin_identity.sql. This regression guard now
+      // protects THAT property instead: every policy that exists on
+      // these tables calls is_admin(), and none is a bare `using (true)`.
+      expect(policyMatches.length, `"${table}" should have exactly 4 admin policies`).toBe(4);
+      for (const match of policyMatches) {
+        expect(match[0]).toContain("is_admin()");
+        expect(match[0]).not.toMatch(/using \(true\)/);
+      }
     }
+  });
+});
+
+describe("app_admins — the admin membership table itself", () => {
+  it("has RLS enabled, and no create-policy statement anywhere grants INSERT/UPDATE/DELETE to anyone — the structural guarantee that no client, admin included, can grant admin rights", () => {
+    expect(allMigrationsSql).toContain("alter table app_admins enable row level security");
+
+    const policyMatches = [...allMigrationsSql.matchAll(/create policy "[^"]*" on app_admins[^;]*;/g)];
+    expect(policyMatches).toHaveLength(1);
+    expect(policyMatches[0][0]).toContain("app_admins admin read");
+    expect(policyMatches[0][0]).toContain("for select");
+    expect(policyMatches[0][0]).toContain("is_admin()");
+
+    // Belt and braces: no "for insert"/"for update"/"for delete" policy
+    // text exists anywhere against app_admins in the whole migration set.
+    expect(allMigrationsSql).not.toMatch(/create policy "[^"]*" on app_admins for insert/);
+    expect(allMigrationsSql).not.toMatch(/create policy "[^"]*" on app_admins for update/);
+    expect(allMigrationsSql).not.toMatch(/create policy "[^"]*" on app_admins for delete/);
+  });
+
+  it("is_admin() is SECURITY DEFINER, hardened with empty search_path and a fully-qualified table reference, and only EXECUTE is granted — never a raw SELECT grant that would let a client bypass the function", () => {
+    const startMarker = "create or replace function public.is_admin()";
+    const start = allMigrationsSql.indexOf(startMarker);
+    expect(start, "is_admin() definition should exist").toBeGreaterThan(-1);
+    const bodyEnd = allMigrationsSql.indexOf("$$;", start);
+    const body = allMigrationsSql.slice(start, bodyEnd + 3);
+
+    expect(body).toContain("security definer");
+    expect(body).toContain("set search_path = ''");
+    expect(body).not.toMatch(/set search_path = public\b/);
+    expect(body).toContain("public.app_admins");
+    expect(body).not.toMatch(/from app_admins\b/); // must be "from public.app_admins", not bare
+
+    expect(allMigrationsSql).toContain("revoke all on function public.is_admin() from public");
+    expect(allMigrationsSql).toContain("grant execute on function public.is_admin() to anon, authenticated");
   });
 });

@@ -113,6 +113,19 @@ export async function createPaymentFixture(params: {
   return data as { id: string; [key: string]: unknown };
 }
 
+/** Grants admin membership the ONLY way it can be granted — a direct
+ *  service-role insert into app_admins, mirroring the documented manual
+ *  bootstrap procedure (PROJECT_STATUS.md's Stage 2 section). Never do
+ *  this through an ordinary authenticated client; there is no policy
+ *  that would allow it (see 20260909120000_admin_identity.sql). */
+export async function grantAdmin(userId: string, note = "test fixture"): Promise<void> {
+  const admin = createServiceRoleClient();
+  const { error } = await admin.from("app_admins").insert({ user_id: userId, note });
+  if (error) {
+    throw new Error(`grantAdmin(${userId}) failed: ${error.message}`);
+  }
+}
+
 /** Deletes every row whose slug/reference_code/provider_order_id starts
  *  with the given run prefix, across every table a test file might have
  *  written to. Service-role only (RLS would otherwise block most of
@@ -131,10 +144,11 @@ export async function cleanupRunFixtures(runId: string): Promise<void> {
   await admin.from("requests").delete().like("reference_code", `${prefix}%`);
   await admin.from("invite_payment_records").delete().like("reference_note", `${prefix}%`);
 
-  // auth.users rows created by createTestUser() aren't cleaned up here —
-  // they're wiped along with everything else by the next `db:reset`,
-  // and Supabase's local GoTrue has no ordinary-role delete path anyway
-  // (only the admin API, which would need the user id list threaded
-  // through here for marginal benefit on a database that's about to be
-  // reset regardless).
+  // auth.users rows created by createTestUser() — and any app_admins row
+  // granted via grantAdmin() against one of them — aren't cleaned up
+  // here either, same reasoning: both are wiped along with everything
+  // else by the next `db:reset` (app_admins.user_id cascades ON DELETE
+  // when its auth.users row goes), and there's no per-row identifier to
+  // match on cheaply the way slug/reference_code prefixes work for the
+  // tables above.
 }

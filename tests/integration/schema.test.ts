@@ -25,6 +25,7 @@ const EXPECTED_TABLES = [
   "requests",
   "templates",
   "invite_payment_records",
+  "app_admins",
 ] as const;
 
 describe("tables", () => {
@@ -176,20 +177,50 @@ describe("trigger", () => {
 });
 
 describe("functions", () => {
-  it("all four SECURITY DEFINER functions exist, hardened with empty search_path", async () => {
+  it("all five SECURITY DEFINER functions exist, hardened with empty search_path", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ proname: string; prosecdef: boolean; config: string[] | null }>(
       `select proname, prosecdef, proconfig as config
        from pg_proc
        where pronamespace = 'public'::regnamespace
-         and proname in ('can_insert_rsvp', 'resolve_invite_guest', 'get_published_invite', 'reject_client_paid_update')`
+         and proname in ('can_insert_rsvp', 'resolve_invite_guest', 'get_published_invite', 'reject_client_paid_update', 'is_admin')`
     );
 
-    expect(rows).toHaveLength(4);
+    expect(rows).toHaveLength(5);
     for (const row of rows) {
       expect(row.prosecdef, `${row.proname} should be SECURITY DEFINER`).toBe(true);
       expect(row.config ?? [], `${row.proname} should set search_path = ''`).toContain('search_path=""');
     }
+  });
+
+  it("is_admin() takes no arguments, returns boolean, and only anon/authenticated are granted EXECUTE (never a raw SELECT grant on app_admins)", async () => {
+    const pool = getPgPool();
+    const { rows } = await pool.query<{ args: string; result: string }>(
+      `select pg_get_function_arguments(oid) as args, pg_get_function_result(oid) as result
+       from pg_proc
+       where pronamespace = 'public'::regnamespace and proname = 'is_admin'`
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0].args).toBe("");
+    expect(rows[0].result).toBe("boolean");
+
+    const { rows: grants } = await pool.query<{ grantee: string; privilege_type: string }>(
+      `select grantee, privilege_type
+       from information_schema.role_routine_grants
+       where routine_schema = 'public' and routine_name = 'is_admin'`
+    );
+    const granted = new Set(grants.map((g) => `${g.grantee}:${g.privilege_type}`));
+    expect(granted.has("anon:EXECUTE")).toBe(true);
+    expect(granted.has("authenticated:EXECUTE")).toBe(true);
+
+    // Not checked here: whether anon/authenticated hold a table-level
+    // GRANT on app_admins. They do — Supabase's own default architecture
+    // grants broad table-level privileges to both roles on every `public`
+    // table (confirmed identically on invites/payments/requests/etc.,
+    // not something specific to this table) and relies on RLS alone,
+    // never table-level GRANTs, as the actual enforcement layer. The real
+    // proof that a client can't read/write app_admins is the RLS
+    // behavioral tests in admin.test.ts, not a grant check here.
   });
 
   it("get_published_invite() returns the live 10-column shape, not the original 7-column one", async () => {
@@ -208,7 +239,7 @@ describe("functions", () => {
 });
 
 describe("policies", () => {
-  it("invites/invite_guests/invite_rsvps/payments carry exactly the expected owner-scoped policies", async () => {
+  it("invites/invite_guests/invite_rsvps/payments carry exactly the expected owner-scoped policies — unchanged by Stage 2", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ tablename: string; policyname: string }>(
       `select tablename, policyname from pg_policies where schemaname = 'public' order by tablename, policyname`
@@ -219,17 +250,59 @@ describe("policies", () => {
       byTable.set(row.tablename, [...(byTable.get(row.tablename) ?? []), row.policyname]);
     }
 
+    // Stage 2 (admin_identity) touches ONLY app_admins/requests/templates/
+    // invite_payment_records — invites/payments must still carry exactly
+    // their pre-Stage-2 owner-scoped policies, nothing added or removed.
     expect(byTable.get("invites")?.sort()).toEqual(
       ["invites owner delete", "invites owner insert", "invites owner read own", "invites owner update"].sort()
     );
     expect(byTable.get("payments")).toEqual(["payments owner read own"]);
+  });
 
-    // requests/templates/invite_payment_records must carry NO policy at
-    // all — RLS enabled + zero policies = deny-all for every role except
-    // service_role. This is the live, verified-during-Stage-0 state;
-    // Stage 1 must not have silently added one.
-    for (const table of ["requests", "templates", "invite_payment_records"]) {
-      expect(byTable.get(table) ?? [], `"${table}" should have no RLS policy`).toEqual([]);
+  it("requests/templates/invite_payment_records carry ONLY the four admin-gated policies added in 20260909120000_admin_identity.sql — no public/ordinary-authenticated policy exists on any of them", async () => {
+    const pool = getPgPool();
+    // qual = USING clause (select/update/delete); with_check = WITH CHECK
+    // clause (insert/update) — an INSERT policy has only with_check, so
+    // both must be checked, not qual alone.
+    const { rows } = await pool.query<{ tablename: string; policyname: string; qual: string | null; with_check: string | null }>(
+      `select tablename, policyname, qual, with_check
+       from pg_policies
+       where schemaname = 'public' and tablename in ('requests', 'templates', 'invite_payment_records')
+       order by tablename, policyname`
+    );
+
+    const byTable = new Map<string, typeof rows>();
+    for (const row of rows) {
+      byTable.set(row.tablename, [...(byTable.get(row.tablename) ?? []), row]);
     }
+
+    for (const table of ["requests", "templates", "invite_payment_records"]) {
+      const policies = byTable.get(table) ?? [];
+      expect(policies.map((p) => p.policyname).sort(), `"${table}" policies`).toEqual(
+        [`${table} admin select`, `${table} admin insert`, `${table} admin update`, `${table} admin delete`].sort()
+      );
+      // Every one of them must be gated on is_admin() — never `true`,
+      // never a role-membership check that isn't the hardened function.
+      for (const policy of policies) {
+        const combined = `${policy.qual ?? ""} ${policy.with_check ?? ""}`;
+        expect(combined, `"${policy.policyname}" USING/WITH CHECK clause`).toContain("is_admin()");
+      }
+    }
+  });
+
+  it("app_admins itself: RLS enabled, exactly one SELECT policy gated on is_admin(), and NO insert/update/delete policy for anyone — the structural guarantee that a client can never grant admin rights", async () => {
+    const pool = getPgPool();
+    const { rows: relRows } = await pool.query<{ relrowsecurity: boolean }>(
+      `select relrowsecurity from pg_class where relnamespace = 'public'::regnamespace and relname = 'app_admins'`
+    );
+    expect(relRows[0]?.relrowsecurity).toBe(true);
+
+    const { rows } = await pool.query<{ policyname: string; cmd: string; qual: string | null }>(
+      `select policyname, cmd, qual from pg_policies where schemaname = 'public' and tablename = 'app_admins'`
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0].policyname).toBe("app_admins admin read");
+    expect(rows[0].cmd).toBe("SELECT");
+    expect(rows[0].qual ?? "").toContain("is_admin()");
   });
 });

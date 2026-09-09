@@ -4,10 +4,12 @@ Real, repeatable tests that apply every file in `supabase/migrations/` to
 a clean, disposable, **local** PostgreSQL/Supabase stack and then verify
 actual database behavior — real RLS decisions, real trigger rejections,
 real RPC output — as genuine `anon`/`authenticated`/`service_role`
-PostgREST callers. This is what Stage 1 of the browser-generator-v2
-rebuild (2026-09-09) added; see `PROJECT_STATUS.md`'s Stage 1 section for
-the full account and `supabase/migrations/README.md` for what each
-migration file's own provenance/confidence is.
+PostgREST callers. Stage 1 of the browser-generator-v2 rebuild
+(2026-09-09) built this test system; Stage 2 (same day) extended it to
+cover the new administrator identity in `admin.test.ts` — see
+`PROJECT_STATUS.md`'s Stage 1 and Stage 2 sections for the full account,
+and `supabase/migrations/README.md` for what each migration file's own
+provenance/confidence is.
 
 ## Prerequisites
 
@@ -52,7 +54,7 @@ npm run test:db
 ```
 
 This is `supabase db reset && vitest run --config vitest.integration.config.ts`
-— **always resets the local database first**, reapplying all seven
+— **always resets the local database first**, reapplying all eight
 migrations from scratch, then runs every file under `tests/integration/`.
 The reset-first behavior is deliberate and is the actual guarantee behind
 "a failed test must not leave state that affects the next run": whatever
@@ -104,13 +106,14 @@ or through another helper) before doing anything else.
    immediately and identically, rather than each test discovering the
    same problem separately mid-run.
 
-Combined with the fact that all seven migration files in
-`supabase/migrations/` were, per Stage 0/Stage 1's own rules, never
-applied to the live project by this repository's tooling in the first
-place (they document what's already live, or in this stage's case,
-Postgres/RLS behavior verified against a disposable local copy) — there
-is no command in this repo, this document, or `package.json` that reaches
-the live project `ravfwnqfxngphncuyyxo`.
+Combined with the fact that none of the eight migration files in
+`supabase/migrations/` were applied to the live project by this
+repository's tooling (the first seven document what's already live,
+verified read-only; the eighth, Stage 2's `admin_identity`, is a new
+migration deliberately left unapplied there — see
+`supabase/migrations/README.md`) — there is no command in this repo, this
+document, or `package.json` that reaches the live project
+`ravfwnqfxngphncuyyxo`.
 
 ## Resetting / stopping the local environment
 
@@ -147,7 +150,7 @@ as the actual proof; a passing `rls-policy.test.ts` alone is not.
 - `schema.test.ts` — every expected table/column (in exact live ordinal
   order)/constraint/foreign key/index/trigger/function exists, with the
   right shape, after a fresh `supabase db reset` — the literal proof that
-  all seven migrations apply in order to an empty database and produce
+  all eight migrations apply in order to an empty database and produce
   the schema `supabase/migrations/README.md` claims they do.
 - `ownership-rls.test.ts` — raw `invites` is never publicly readable; an
   owner can read/write only their own invite; a different signed-in user
@@ -155,9 +158,12 @@ as the actual proof; a passing `rls-policy.test.ts` alone is not.
   `paid`/`paypal_order_id` trigger rejects a client's own update but not
   service_role's; `payments` refuses insert/update/delete from anon and
   authenticated alike (read-only, owner-scoped); `requests`/`templates`/
-  `invite_payment_records` deny all ordinary access (RLS on, zero
-  policies); a third, unrelated authenticated user can't read anything
-  through any of these paths either.
+  `invite_payment_records` deny all ORDINARY access (anon/authenticated —
+  as of Stage 2 these three do carry policies, but every one is gated on
+  `is_admin()`, so this remains true for anyone who isn't an
+  administrator; see `admin.test.ts` for the admin-can-access half); a
+  third, unrelated authenticated user can't read anything through any of
+  these paths either.
 - `published-invite.test.ts` — `get_published_invite()`'s sanitized
   payload (paid vs. unpaid, and structurally excludes `answers`/
   `owner_id`/`paypal_order_id`); `resolve_invite_guest()`'s exact-match,
@@ -171,6 +177,24 @@ as the actual proof; a passing `rls-policy.test.ts` alone is not.
   behavior, not aspirational tests for the fix; update them (don't
   silently delete them) when that fix actually lands, in a later,
   explicitly-scoped stage.
+- `admin.test.ts` (Stage 2) — the administrator identity/authorization
+  boundary: anon and an ordinary authenticated user both report
+  `is_admin() = false`; a service-role insert into `app_admins` (the only
+  way admin membership can ever be granted — see
+  `supabase/migrations/README.md`'s bootstrap section) makes a user report
+  `true`; an administrator can select/insert/update/delete on
+  `requests`/`templates`/`invite_payment_records`, an ordinary
+  authenticated user and anon cannot; no client — including an
+  administrator's own — can insert, update, or delete an `app_admins` row
+  under any circumstance, proving admin membership can't be granted or
+  revoked through normal client-facing RLS access, even by an existing
+  administrator; `app_admins` content never appears in
+  `get_published_invite()`'s response. This file exercises the database
+  directly (as anon/authenticated/admin PostgREST callers) — it does not
+  go through the Next.js app or `/admin` at all; the app's own
+  `checkAdmin()` orchestration is covered separately by
+  `src/lib/auth/admin.server.test.ts` (a fast, mocked unit test, part of
+  `npm test`, not this suite).
 
 ## Troubleshooting (WSL / Docker)
 

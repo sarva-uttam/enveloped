@@ -788,6 +788,131 @@ as a secondary, fast, Docker-free check — see
 test can and can't prove. All 117 pre-existing unit tests still pass
 unmodified.
 
+## Stage 2 — single-admin identity and security boundary (2026-09-09)
+
+A database-backed administrator identity, the minimum RLS an
+administrator needs to manage `requests`/`templates`/
+`invite_payment_records`, and a server-protected `/admin` placeholder
+that proves the boundary works end to end. **No generator, request-
+management interface, template editor, invitation editor, payment
+interface, or publication workflow was built** — those remain explicitly
+out of scope; see "Recommended Stage 3 scope" below.
+
+### Architecture
+
+- **`app_admins`** (new table, `supabase/migrations/20260909120000_admin_identity.sql`)
+  — one row per administrator, keyed to `auth.users.id`. RLS enabled;
+  exactly one policy exists on it (`select`, gated on `is_admin()`), and
+  **no insert/update/delete policy exists for any role at all, including
+  an administrator's own client.** Granting admin membership is
+  structurally impossible through the Supabase client SDK — see
+  "Bootstrapping the first administrator" in
+  `supabase/migrations/README.md` for the one way it actually happens: a
+  trusted, service-role/direct-database write, run manually by a human.
+  Adding a second, third, ... administrator is "insert one more row" —
+  no schema change, ever.
+- **`is_admin()`** (SECURITY DEFINER, `search_path = ''`, fully-qualified
+  `public.app_admins`) — the one hardened check. SECURITY DEFINER is
+  necessary here, not a stylistic choice: `app_admins` has no self-
+  referential SELECT policy an ordinary caller could use (only the
+  `is_admin()`-gated one, which would be circular for `is_admin()` itself
+  to depend on), so a SECURITY INVOKER version would see zero rows for
+  literally everyone and always return `false` — the same class of bug
+  `can_insert_rsvp()` (Round 5, `20260901114159_auth_ownership.sql`) was
+  built to avoid. `auth.uid()` is `NULL` for anonymous callers, and
+  `null = user_id` is never true under SQL's three-valued logic, so
+  anonymous and ordinary authenticated callers both get `false` with no
+  special-casing.
+- **Server-side authorization**: `src/lib/auth/admin.server.ts`'s
+  `checkAdmin()` — the only place this app decides "is the current caller
+  an administrator." Calls `is_admin()` through the session-aware server
+  client (real cookies, real RLS), fails **closed** on every edge case
+  (no session, Supabase misconfigured, the RPC itself errors) — never
+  defaults to `true`. Its decision logic is extracted into a pure
+  function, `deriveAdminCheckResult()`, exhaustively unit-tested in
+  `admin.server.test.ts` — the same pure-core/thin-I/O-wrapper pattern
+  already used by `src/lib/ownership.ts` and `src/lib/paypal-verify.ts`.
+- **`/admin`** (`src/app/admin/layout.tsx` + `page.tsx`) — the layout is
+  the actual boundary: it calls `checkAdmin()` on every request, redirects
+  a signed-out visitor to `/login?next=/admin` (reusing the existing
+  `sanitizeRedirectPath()` — no new redirect-validation logic was
+  written), renders a plain "Access denied" message for an authenticated
+  non-admin, and only then renders `children`. Any future page under
+  `src/app/admin/*` inherits this automatically — it's the reusable
+  authorization boundary the objective asked for, not a one-off check
+  copy-pasted per page. `page.tsx` itself does no check of its own; it
+  trusts the layout, matching how every other route in this app already
+  works (one boundary, not one per page).
+- **`src/proxy.ts`** — `/admin` was added to `PROTECTED_PREFIXES` next to
+  `/dashboard`/`/survey`: an *optimistic*, session-presence-only bounce to
+  login for a visitor with no session cookie at all. This is explicitly
+  NOT an admin check — Proxy has no business doing a database round trip
+  (see the file's own comment, and Next's authentication guide, read
+  during Stage 0: Proxy "should not be your only line of defense" and
+  isn't meant for slow data fetching). Deleting `src/proxy.ts` entirely
+  would not create a security hole — `/admin/layout.tsx` alone still
+  correctly gates every request.
+
+### Authentication vs. authorization, and why a webpage is never the boundary
+
+**Authentication** answers "who is this?" — Supabase Auth (GoTrue),
+unchanged by this stage, already answers it: a valid session cookie means
+a real, signed-in `auth.users` row. **Authorization** answers "what is
+this identity allowed to do?" — that is what Stage 2 actually adds.
+Before this stage, "signed in" and "authorized as owner" were already
+correctly kept separate for invitations (`src/lib/ownership.ts`); Stage 2
+extends the same discipline to a new, coarser-grained identity
+("administrator") rather than conflating "has a session" with "is
+allowed to see `/admin`."
+
+**The `/admin` page existing, or being reachable, or rendering a nice UI,
+proves nothing about whether a given caller may see it.** The real
+boundary is Postgres RLS via `is_admin()` — the same principle this
+project has followed since the very first `auth_ownership` migration:
+`src/proxy.ts`'s redirect is convenience, `checkAdmin()`'s server-side
+call is a real check, but the fact that a database round trip is even
+*possible* for a given caller (RLS letting them see/act on a row) is the
+only thing that can't be talked around by skipping the page, calling an
+API route directly, or a future bug in the page component's own logic.
+Concretely: even if `src/app/admin/page.tsx` were deleted and every
+`/admin/*` route removed from the app entirely, `app_admins`/`requests`/
+`templates`/`invite_payment_records` would still correctly refuse every
+non-admin caller — the database enforces this independent of whether any
+UI exists to exercise it. `tests/integration/admin.test.ts` proves this
+directly by calling the database as `anon`/`authenticated`/admin clients,
+never through the Next.js app at all.
+
+### What's still NOT applied to the live project
+
+`20260909120000_admin_identity.sql` exists only in this repository and
+against the local Supabase stack — it has **not** been applied to
+`ravfwnqfxngphncuyyxo`, and no live administrator was created, per this
+stage's explicit safety restrictions. Every database interaction this
+stage performed — writing the migration, running `npm run db:reset`
+repeatedly, all 69 integration tests (45 pre-existing from Stage 1, 3 new
+assertions added to `schema.test.ts` to describe the new table/function/
+policies, and 21 new in `admin.test.ts`) — targeted the local, disposable
+stack exclusively (see
+`tests/integration/helpers/local-env.ts`'s loopback-only guard, unchanged
+from Stage 1). Applying this migration to the live project, and running
+the manual bootstrap procedure for the real first administrator, are
+follow-up actions for the owner to perform deliberately — see
+`supabase/migrations/README.md`'s "Bootstrapping the first administrator"
+section for the exact, safe procedure. No UUID, password, token, or
+service-role key was read, printed, or committed anywhere in this stage.
+
+### Remaining known defect, unchanged by this stage
+
+The payment/publication coupling defect from Stage 0
+(`get_published_invite()` still hard-ANDs on `paid`, `published_at` never
+substitutes for it — see the Stage 0 section above and
+`20260905091530_generator_payment_publish_split.sql`'s header) is
+**untouched by Stage 2**. Nothing in the admin identity or authorization
+work reads or writes `invites`/`payments`, and no policy on those tables
+changed. Fixing this remains explicitly scoped to a later, dedicated
+stage — not folded into this one, and not implied to be "next" just
+because an admin identity now exists to eventually act on it.
+
 ## Key files
 
 | Area | Path |
