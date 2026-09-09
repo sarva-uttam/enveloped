@@ -729,6 +729,65 @@ it, not this permanent model — see the payment/publication and occasion
 notes above. Redesigning the occasion/cultural-pack model is scoped to a
 later stage.
 
+## Stage 1 — Local Supabase integration-test foundation (2026-09-09)
+
+Testing infrastructure only — no admin role, no RLS policy change, no
+publication/payment separation, no generator UI. Added
+`tests/integration/` (45 tests across `schema.test.ts`,
+`ownership-rls.test.ts`, `published-invite.test.ts`), `supabase/config.toml`
+(new — `supabase init`, ports moved to the 55xxx range, see its own
+comment and `tests/integration/README.md`'s troubleshooting section for
+why), `vitest.integration.config.ts` (a config separate from
+`vitest.config.ts` on purpose, so `npm test` stays fast/dependency-free),
+and two new npm-script-only `devDependencies`: `pg`/`@types/pg` (a plain
+Postgres client, used only for direct `information_schema`/`pg_catalog`
+introspection in `schema.test.ts`). The Supabase CLI itself is a
+documented prerequisite, not an npm dependency — see
+`tests/integration/README.md`.
+
+**These tests run against a local, disposable Docker-backed Postgres
+only** — `npm run db:start` / `npm run test:db` — never the live project.
+`tests/integration/helpers/local-env.ts` never reads `.env.local` or any
+live credential at all (the only source of connection info is
+`supabase status`, asking the local Docker daemon what it started) and
+refuses to return anything unless every resolved URL is loopback-only;
+see that file and `tests/integration/README.md`'s "How these tests are
+guaranteed not to target production" for the full mechanism.
+
+**A real bug in Stage 0's reconstruction was found and fixed by this
+stage's own validation**, exactly the kind of thing text-pattern
+guards can't catch: `20260905091530_generator_payment_publish_split.sql`'s
+`create or replace function get_published_invite(...)` failed against a
+real, freshly-migrated Postgres with `cannot change return type of
+existing function (SQLSTATE 42P13)` — `create or replace function` cannot
+change an existing function's `returns table (...)` column list (7 columns
+from `auth_ownership` → 10 columns here); only `drop function` first
+allows that. Fixed by adding `drop function if exists
+get_published_invite(text);` immediately before the `create or replace`
+in that file. The function's body is unchanged and still matches the live
+project exactly (verified via `pg_get_functiondef()` during Stage 0) —
+only the missing statement needed to actually *reach* that state from an
+empty database was added. The real, lost browser-generator-v1 migration
+must have done the equivalent, or the live database itself could never
+have reached its current state either. All seven migrations now apply
+cleanly, in order, to a fresh local database — proven repeatedly during
+this stage (`npm run test:db`, `npm run db:reset`, and a full
+stop/start cycle all exercised).
+
+**Known, tracked defect captured as an explicit regression guard, not
+fixed:** three tests in `published-invite.test.ts` assert the CURRENT
+payment/publication coupling behavior (published-but-unpaid stays
+invisible; paid-but-unpublished stays invisible; only paid-AND-published
+is visible) — intentionally documenting the existing defect from Stage 0
+rather than correcting it, per this stage's explicit scope. Update these
+assertions (don't delete them) when that fix eventually lands.
+
+`src/lib/rls-policy.test.ts` (text-pattern guard) is unchanged and kept
+as a secondary, fast, Docker-free check — see
+`tests/integration/README.md`'s comparison table for what each kind of
+test can and can't prove. All 117 pre-existing unit tests still pass
+unmodified.
+
 ## Key files
 
 | Area | Path |

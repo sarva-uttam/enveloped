@@ -89,6 +89,25 @@ alter table invite_payment_records enable row level security;
 -- the payment/publication split its name implies. search_path = '' plus
 -- fully-qualified public.invites — same search_path-hijacking rationale as
 -- this function's original definition.
+--
+-- Bug found and fixed by Stage 1's local-database replay (2026-09-09,
+-- see tests/integration/): `create or replace function` cannot change an
+-- existing function's `returns table (...)` column list — Postgres
+-- rejects it with "cannot change return type of existing function"
+-- (SQLSTATE 42P13) — only the function BODY can change under `create or
+-- replace`, not its output shape. The original 7-column
+-- get_published_invite() from 20260901114159_auth_ownership.sql must be
+-- dropped first. This is a correction to how this RECONSTRUCTED file
+-- reaches the verified live end-state (see this file's own header and
+-- supabase/migrations/README.md for what "reconstructed" means) — the
+-- function body below is unchanged and still matches the live database
+-- exactly (verified via pg_get_functiondef() during Stage 0); only the
+-- missing statement needed to actually reach that state from a fresh
+-- database has been added. The real (lost) browser-generator-v1 migration
+-- must have done the equivalent, or the live database itself could never
+-- have reached its current state either.
+drop function if exists get_published_invite(text);
+
 create or replace function get_published_invite(p_slug text)
 returns table (
   id uuid,

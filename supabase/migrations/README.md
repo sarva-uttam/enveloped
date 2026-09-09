@@ -1,5 +1,24 @@
 # Migration workflow
 
+## Verified applying cleanly, in order, to an empty database (Stage 1, 2026-09-09)
+
+All seven files below now apply cleanly, in order, to a fresh local
+Postgres — proven repeatedly by `npm run test:db` / `npm run db:reset`
+(see `tests/integration/README.md`), not just asserted. Getting here
+required one real fix: `20260905091530_generator_payment_publish_split.sql`'s
+`get_published_invite()` redefinition failed against real Postgres with
+`cannot change return type of existing function (SQLSTATE 42P13)` —
+`create or replace function` cannot change an existing function's
+`returns table (...)` shape (7 columns → 10 columns here); a `drop
+function if exists get_published_invite(text);` was missing before it.
+Added, with the function's body left exactly as it was (still verified
+against the live project's `pg_get_functiondef()` output from Stage 0) —
+see that file's own header for the full account. This is exactly the
+class of error a from-scratch replay catches and a read-only introspection
+diff (Stage 0's own validation method) cannot, since the live database
+never had to replay its own history from empty — it just already was
+whatever it was.
+
 ## What's authoritative
 
 **This directory (`supabase/migrations/*.sql`) is the versioned, ordered

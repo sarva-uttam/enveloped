@@ -139,6 +139,22 @@ npm run build
 
 Never commit real credentials. The expected variables and safety notes are documented in `.env.example`.
 
+### Database integration tests
+
+`npm test` above is fast and dependency-free by design — it never touches
+a database. Real Postgres/RLS behavior (as genuine `anon`/`authenticated`/
+`service_role` callers) is covered separately, against a local, disposable
+Docker-backed Supabase stack, never the live project:
+
+```bash
+npm run db:start   # once, or after npm run db:stop
+npm run test:db    # resets the local database, applies all migrations, runs the suite
+```
+
+See [tests/integration/README.md](./tests/integration/README.md) for
+prerequisites, the full script list, how these tests are guaranteed never
+to reach the live project, and WSL/Docker troubleshooting.
+
 ## Product direction
 
 Enveloped's primary business model is concierge-led: a client sends a

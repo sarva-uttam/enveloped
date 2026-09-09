@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "db:start": "supabase start --exclude realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
+    "db:stop": "supabase stop --no-backup",
+    "db:reset": "supabase db reset",
+    "test:db": "supabase db reset && vitest run --config vitest.integration.config.ts",
+    "test:all": "npm test && npm run test:db"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.81",
@@ -29,10 +34,12 @@
     "@tailwindcss/postcss": "^4",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "pg": "^8.23.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.11"
