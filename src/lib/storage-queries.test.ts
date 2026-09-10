@@ -149,6 +149,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
       content: { headline: "Priya & Devansh" },
       eventDate: "2026-12-01T18:00:00Z",
       song: "Perfect — Ed Sheeran",
+      composition: null,
     });
   });
 
@@ -176,7 +177,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
 
     expect(result).not.toBeNull();
     const keys = Object.keys(result!);
-    expect(keys).toEqual(["invitesRowId", "slug", "paid", "publishedAt", "tier", "content", "eventDate", "song"]);
+    expect(keys).toEqual(["invitesRowId", "slug", "paid", "publishedAt", "tier", "content", "eventDate", "song", "composition"]);
     expect(keys).not.toContain("answers");
     expect(keys).not.toContain("owner_id");
     expect(keys).not.toContain("ownerId");
@@ -210,6 +211,7 @@ describe("fetchPublicInvite — the sanitized public/guest payload", () => {
       content: null,
       eventDate: null,
       song: null,
+      composition: null,
     });
   });
 

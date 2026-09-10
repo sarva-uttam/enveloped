@@ -43,9 +43,11 @@ export interface InviteViewModel {
    *  (2026-09-10, see PROJECT_STATUS.md) introduces the one case where
    *  this can be false: a private preview token can unlock an
    *  UNPUBLISHED invitation's content (buildPreviewInviteViewModel()) —
-   *  PublicInviteView uses this, not isDemo or inviteId, to decide
-   *  whether RSVP is offered at all: "never enable RSVP for an
-   *  unpublished preview." */
+   *  every route passes this straight through as the composition
+   *  renderer's `canRsvp` prop (Stage 6, see
+   *  src/components/composition/CompositionRenderer.tsx /
+   *  RsvpSection in sections.tsx), which decides whether RSVP is
+   *  offered at all: "never enable RSVP for an unpublished preview." */
   isPublished: boolean;
 }
 
@@ -116,8 +118,9 @@ export function buildDemoInviteViewModel(demo: DemoInvite): InviteViewModel {
     song: demo.song,
     isDemo: true,
     // Demos are always "viewable" — the local, no-database equivalent of
-    // published — so RSVP (gated on isPublished, not isDemo, in
-    // PublicInviteView) stays exactly as available as it always was.
+    // published — so RSVP (gated on isPublished, not isDemo, in the
+    // composition renderer's RsvpSection) stays exactly as available as
+    // it always was.
     isPublished: true,
   };
 }
@@ -168,10 +171,11 @@ export function buildPreviewInviteViewModel(preview: PreviewInvite | null): Invi
  * Builds the view model an invitation's OWNER sees for their own
  * invitation, from the owner-only read (getInviteServer()/StoredInvite —
  * never a raw row handed to any OTHER caller) — Stage 5, used by
- * src/app/dashboard/invite/[id]/page.tsx. Reuses the same
- * PublicInviteView presentation component the public route and preview
- * route use, so an owner previewing their own unpublished invitation
- * sees genuinely the same rendering their eventual guests will, not a
+ * src/app/dashboard/invite/[id]/page.tsx. Reuses the same trusted
+ * composition renderer (Stage 6, src/components/composition/
+ * CompositionRenderer.tsx) the public route and preview route use, so
+ * an owner previewing their own unpublished invitation sees genuinely
+ * the same rendering their eventual guests will, not a
  * separately-maintained "owner preview" markup that could drift out of
  * sync with it.
  *

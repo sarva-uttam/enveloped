@@ -329,7 +329,7 @@ describe("get_invite_preview() — the sanitized, anonymous-reachable access fun
     expect(row!.published_at).toBeNull();
   });
 
-  it("the returned row structurally excludes every private field — only id/slug/paid/published_at/tier/content/event_date/song", async () => {
+  it("the returned row structurally excludes every private field — only id/slug/paid/published_at/tier/content/event_date/song/composition (Stage 6 added composition — see PROJECT_STATUS.md's Stage 6 section)", async () => {
     const invite = await createInviteFixture({
       slug: `stage1-${runId}-no-leak`,
       ownerId: ordinaryUser.userId,
@@ -341,7 +341,7 @@ describe("get_invite_preview() — the sanitized, anonymous-reachable access fun
     const row = data as Record<string, unknown>;
 
     expect(Object.keys(row).sort()).toEqual(
-      ["id", "slug", "paid", "published_at", "tier", "content", "event_date", "song"].sort()
+      ["id", "slug", "paid", "published_at", "tier", "content", "event_date", "song", "composition"].sort()
     );
     expect(JSON.stringify(row)).not.toContain("Should Never Appear");
     expect(row).not.toHaveProperty("answers");

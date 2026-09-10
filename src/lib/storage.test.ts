@@ -38,6 +38,7 @@ describe("saveInvite", () => {
     createdAt: new Date().toISOString(),
     paid: false,
     publishedAt: null,
+    composition: null,
   };
 
   it("throws NotAuthenticatedError and never touches the database when there's no session", async () => {

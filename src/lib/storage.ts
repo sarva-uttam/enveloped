@@ -205,6 +205,7 @@ export async function getMyInvites(): Promise<StoredInvite[]> {
     paid: Boolean(row.paid),
     publishedAt: row.published_at ?? null,
     ownerId: row.owner_id ?? null,
+    composition: row.composition ?? null,
   }));
 }
 

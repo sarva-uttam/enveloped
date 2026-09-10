@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { getInvitePreviewServer } from "@/lib/storage.server";
 import { buildPreviewInviteViewModel } from "@/lib/invite-view-model";
 import { isValidPreviewTokenFormat } from "@/lib/preview-tokens.server";
+import { resolveComposition } from "@/lib/composition/resolve";
 import { PreviewBanner } from "@/components/invite/PreviewBanner";
-import { PublicInviteView } from "@/components/invite/PublicInviteView";
+import { CompositionRenderer } from "@/components/composition/CompositionRenderer";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
 
 /**
@@ -31,6 +32,16 @@ import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
  * (the owner-only read) or admin.server.ts — a preview token is its own,
  * independent credential, unrelated to whether the VIEWER happens to
  * also be signed in as the owner or an administrator.
+ *
+ * Stage 6 (2026-09-10, see PROJECT_STATUS.md's Stage 6 section): renders
+ * through the same trusted composition renderer
+ * (src/components/composition/CompositionRenderer.tsx) the public and
+ * owner-management routes use — "public invitation, private preview and
+ * owner-management surfaces must use the same composition renderer."
+ * `preview.composition` (raw, unvalidated jsonb) is resolved via
+ * src/lib/composition/resolve.ts exactly like the other two routes: a
+ * present-but-invalid composition renders the same UnavailableInvite as
+ * a rejected token, never a fallback to legacy content.
  */
 
 export const dynamic = "force-dynamic";
@@ -74,20 +85,28 @@ export default async function PreviewPage({ params }: Props) {
   // reaches get_invite_preview() at all.
   const preview = isValidPreviewTokenFormat(token) ? await getInvitePreviewServer(token) : null;
   const model = buildPreviewInviteViewModel(preview);
+  const composition = resolveComposition(model, preview?.composition ?? null);
 
   return (
     <main>
-      {model ? (
+      {composition && model ? (
         <>
           {/* isPublished only — never the token itself, which this
               component tree never receives in the first place (only
-              `model`, built server-side from the RPC result, is passed
-              down; `token` stays a local variable in this function and
-              is never threaded into any component prop, so it cannot
-              appear in serialized client-component props even by
-              accident). */}
+              `model`/`composition`, built server-side from the RPC
+              result, are passed down; `token` stays a local variable in
+              this function and is never threaded into any component
+              prop, so it cannot appear in serialized client-component
+              props even by accident). */}
           <PreviewBanner isPublished={model.isPublished} />
-          <PublicInviteView model={model} />
+          <CompositionRenderer
+            composition={composition}
+            inviteId={model.inviteId}
+            guestId={model.guestId}
+            guestName={model.guestName}
+            song={model.song}
+            canRsvp={model.isPublished}
+          />
         </>
       ) : (
         <UnavailableInvite homeHref="/" homeLabel="Go to Enveloped" />

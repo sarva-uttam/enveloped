@@ -1691,6 +1691,483 @@ today — a preview is read-only, as required), and the request-management
 UI that would let an administrator find an invitation to issue a preview
 link for without needing its raw uuid.
 
+## Stage 6 — versioned composition schema, renderer registry, and wedding-first cultural-pack foundation (2026-09-10)
+
+Builds the deterministic core of the browser invitation generator:
+
+> Structured invitation data → validated composition → trusted component
+> registry → server-rendered invitation.
+
+Two new, forward-only migrations. No change to `published_at`'s role as
+the sole public gate, to `paid`'s independence from it, or to any prior
+migration's behavior except the two CHECK constraints Part C's own scope
+specifically targets (see "Event and wedding model" below). Neither
+migration is applied to the live project.
+
+### Composition architecture
+
+Before this stage, an invitation's presentation was either the legacy
+`GeneratedInviteContent` shape (`content` — headline/subheadline/welcome
+message/a flat event-details list/closing line/a suggested palette) or,
+for generator-era rows, an entirely unread `composition` jsonb column
+(Stage 0 recovered it live but confirmed "no application code in this
+repository reads or writes yet"). This stage makes `composition` the
+one real, structured representation every invitation renders from —
+`InviteViewModel` (Stage 4/5) still exists and is unchanged in shape,
+but it now feeds INTO a composition rather than being the thing
+rendered directly:
+
+```
+raw composition jsonb (or none)
+        │
+        ▼
+resolveComposition(model, rawComposition)   src/lib/composition/resolve.ts
+        │
+        ├─ rawComposition present  → parseComposition() (Zod) → valid → render it
+        │                                                    → invalid → UnavailableInvite (NEVER falls back to legacy)
+        │
+        └─ rawComposition absent   → adaptLegacyContentToComposition(model)  (always valid)
+                        │
+                        ▼
+        InvitationComposition (validated, trusted)
+                        │
+                        ▼
+        CompositionRenderer  →  registry lookup per section  →  server-rendered HTML
+```
+
+The single most important rule (Part F, followed exactly): a REAL,
+present composition that fails validation is a hard failure, not a
+signal to fall back to `content` — `resolveComposition()`'s own
+docstring states this, and `page.test.tsx`'s "an invalid-but-present
+composition never falls back to legacy content" class of test (see each
+route's test file) proves it. Only the ABSENCE of a composition
+triggers the legacy adapter.
+
+### Schema version and validation rules
+
+`src/lib/composition/schema.ts` — `InvitationCompositionSchema`, a
+strict, versioned Zod schema. `schemaVersion` is a `z.literal(1)`
+today (`COMPOSITION_SCHEMA_VERSION`) — any other value, or a missing
+one, fails validation outright (schema.test.ts, "invalid schema
+versions fail"). Every object in the document — the top level, every
+section, every nested item (schedule entries, gallery items) — is
+`.strict()`: an unrecognized key doesn't get silently dropped (Zod's
+default), it fails the whole document ("reject unknown dangerous
+fields," not "ignore fields we didn't expect").
+
+Safety is structural, not conventional:
+- every free-text field goes through `safeText()` — rejects any `<`/`>`
+  outright (so no HTML tag of any kind can survive), plus
+  `javascript:`-looking and inline-event-handler-looking substrings as
+  defense in depth;
+- every URL (`mapLink.url`, `gallery[].imageUrl`) goes through
+  `safeUrl()` — an allowlist of `https:`/`http:`/`mailto:`/`tel:`
+  protocols or an internal `/path`, never `javascript:`/`data:`/
+  anything else;
+- every "which visual treatment" choice — `themeTokens.paletteId`,
+  `designPackId`, `featureConfig.ambientMotif`, `locale`, `dir`,
+  `eventCategory`, `weddingContext.occasionId` — is a closed `z.enum(…)`
+  built directly from a trusted TypeScript registry (never a
+  hand-duplicated list that could drift), so an unregistered value is
+  rejected by construction, not by a runtime check that could be
+  forgotten;
+- section `type` is one of exactly fifteen literal strings
+  (`z.discriminatedUnion("type", […])`) — never a free string a
+  database row could turn into an arbitrary component/class/import.
+
+Limits (`LIMITS` in schema.ts, Part B's "sensible limits"): short/
+medium/long text (200/600/2000 chars), up to 24 sections per
+composition, up to 12 schedule entries, up to 12 gallery items — all
+centralized in one object so tests assert against the real numbers,
+never a second hardcoded copy. No Tailwind class list or raw CSS is
+ever accepted anywhere in the schema — `themeTokens` is a palette ID
+(resolved server-side against a trusted registry, see "Theme tokens"
+below) plus an optional hex-only override, nothing else.
+
+**Trusted section vocabulary** (Part B's starting fifteen, all
+implemented): opening, greeting, intro, welcome, story, schedule,
+dateTime, venue, mapLink, dressCode, gallery, rsvp, music, closing,
+customText. Every section carries a stable `id` (a conservative
+lowercase-hyphen slug), a known `type`, Zod-validated `data`, and an
+explicit `enabled` boolean — a disabled section is validated exactly
+like an enabled one but never rendered (CompositionRenderer.test.tsx).
+Order is the array's own order — no separate numeric `order` field to
+drift out of sync with it; duplicate section ids are rejected
+(`superRefine`), so ordering is always deliberate and unambiguous.
+
+### Event and wedding model
+
+`supabase/migrations/20260910130000_wedding_event_taxonomy.sql` — Part
+C. Replaces the permanent Hindu-wedding-only CHECK constraint on
+`invites.occasion` (`haldi`/`sangeet_mehendi`/`wedding_day`/`reception`
+only, flagged a KNOWN LIMITATION since Stage 0) with a general,
+extensible model:
+
+- a new `event_types` lookup table (`id` text primary key — the stable
+  MACHINE IDENTIFIER, never display text, as database truth — `label`,
+  `is_legacy`, `sort_order`), RLS-enabled with a single public-read
+  policy (it's vocabulary, not sensitive), no write policy for anyone
+  but a trusted migration/service-role;
+- `invites.occasion` becomes a real FOREIGN KEY into `event_types`
+  (scalar FKs are fully supported by Postgres directly — the textbook
+  fix for a hardcoded enum);
+- `templates.occasion` gets the identical fix;
+- `requests.requested_occasions` (a text ARRAY, which Postgres cannot
+  constrain with a plain FK) gets a `BEFORE INSERT OR UPDATE` trigger
+  (`check_requested_occasions_valid()`) validating every array element
+  against `event_types`, the array-shaped substitute for the FK;
+- a new `invites.occasion_custom_label` column, usable only when
+  `occasion = 'custom'` (its own CHECK constraint, mirrored by
+  `WeddingContextSchema`'s `superRefine()` at the application layer —
+  the same rule enforced twice, deliberately) — "allow safe custom
+  display labels while keeping stable internal identifiers."
+
+The vocabulary itself (`src/lib/composition/event-types.ts`, the single
+TypeScript source of truth the migration's seed data mirrors exactly —
+`tests/integration/wedding-event-taxonomy.test.ts` asserts the two
+never drift apart, in both directions): `engagement`, `haldi`,
+`mehendi`, `sangeet`, `civil_ceremony`, `religious_ceremony`, `nikah`,
+`wedding_ceremony`, `reception`, `dinner`, `custom` — plus the four
+ORIGINAL values preserved verbatim (`haldi`/`reception` folded into the
+list above as ordinary, non-legacy entries since they're perfectly
+general terms; `sangeet_mehendi`/`wedding_day` kept reachable but
+flagged `isLegacy: true`, since the new vocabulary splits/renames them
+— an EXISTING row using either legacy id keeps meaning exactly what it
+always meant, never reinterpreted, never migrated automatically).
+"A wedding may contain multiple events" is supported two ways: several
+separate invitations (each its own link, each scoped to one occasion
+via `invites.occasion`) for one conceptual wedding, and/or one
+invitation's own `schedule` section holding several dated entries, each
+optionally tagged with its own `eventTypeId` — neither requires a
+"weddings" table of its own, and neither forces a cultural pack to use
+every event type it doesn't need (`supportedEventTypeIds` per pack, see
+below). `custom` plus `event_types` being a plain lookup table (new
+rows, not new migrations) is what keeps this "capable of adding
+birthdays and corporate events later without redesigning the core"
+(Part C requirement 10) — a birthday-specific event type is a future
+INSERT, not a schema change.
+
+### Cultural packs implemented
+
+`src/lib/composition/cultural-packs.ts` — Part D. A pack is METADATA
+and STRUCTURAL DEFAULTS only: supported event types, a suggested
+section order, wording GUIDANCE (for whoever authors real copy — never
+rendered to a guest verbatim, never treated as actual content), a
+palette id, a motif id, a motion id, and optional, neutral ceremony
+terminology. Two packs are defined this stage:
+
+- **`neutral-classic`** — the respectful default for civil ceremonies,
+  interfaith couples, or any wedding (or non-wedding category) that
+  doesn't want a specific cultural framing. Wording guidance
+  deliberately says: avoid assuming a specific family structure,
+  religious tradition, or gendered role.
+- **`hindu-wedding`** — a starting point for a multi-event Hindu
+  wedding (haldi/mehendi/sangeet/wedding ceremony/reception). Wording
+  guidance is explicit that Hindu wedding customs vary widely by region
+  and family, and that ritual names/order must be confirmed with the
+  client — never invented. `ceremonyTerminology` supplies only common,
+  editable naming (e.g. "Haldi", "Mehendi") — no religious claim is
+  hardcoded as universal truth, and everything here remains editable by
+  the administrator and client when authoring a real composition.
+
+Neither pack produces final visual artwork this stage — both reuse
+already-approved, existing palette tokens (`src/lib/composition/theme.ts`
+— the same CSS custom-property references `src/lib/tiers.ts` has always
+used for the four pricing tiers, plus two new entries for these two
+packs, all still resolved server-side from a closed id, never a raw
+CSS/class string a composition could carry).
+
+**Future packs, explicitly not registered, not selectable** (documented
+in cultural-packs.ts's own comment, so the next addition has an obvious
+place to land): Muslim wedding (nikah-centered), Christian wedding,
+civil wedding (distinct from neutral-classic if a dedicated framing
+proves useful), Mauritian multicultural wedding (the product's own home
+market — see the `mfe` Kreol Morisien locale already in
+`src/lib/i18n/translations.ts`), birthday, corporate. `designPackId` in
+the Zod schema is a `z.enum` built directly from `CULTURAL_PACKS`'s own
+keys — a future-pack id is rejected by validation, not merely absent
+from a UI, proven directly by schema.test.ts and cultural-packs.test.ts
+both asserting every one of the six future ids above is currently
+REJECTED.
+
+### Renderer registry and section components
+
+`src/components/composition/registry.tsx` — a plain, static object
+literal mapping each of the fifteen known `SectionType` strings to a
+statically-imported React component (`src/components/composition/
+sections.tsx`). Never a dynamic import, never `require(dbString)`,
+never any mechanism that could resolve an arbitrary component name from
+data — every value in the registry is a component this file itself
+imports by name at the top. `resolveSectionComponent()` is the one,
+unconditionally-safe lookup (`undefined` for an unknown type, never a
+throw) `CompositionRenderer.tsx` calls — exercised directly (bypassing
+TypeScript's own guarantee that this can't normally happen) by
+registry.test.ts's "unknown registry types fail safely."
+
+`CompositionRenderer.tsx` replaces the old, monolithic
+`PublicInviteView.tsx` (deleted this stage): walks a validated
+composition's `sections`, dispatches each enabled one to its registered
+component, wrapped in the existing Stage-4 `AnimateIn` scroll-reveal
+(active only when `featureConfig.motion` is set). Two sections get
+special placement matching the pre-Stage-6 layout: `greeting` renders
+un-animated, before the sequence (a personalized banner that should
+already be visible); `music` renders as a fixed-position overlay
+outside the centered column (unaffected by DOM nesting — `position:
+fixed` doesn't care). Nine of the fifteen components
+(opening/greeting/welcome/dateTime/schedule/gallery/rsvp/music/closing)
+are close structural ports of the deleted component's own markup — same
+visible text, same conditions, same per-section classNames — so a
+legacy-content invitation renders equivalent output to before (NOT
+byte-identical DOM — see sections.tsx's own comment on the one
+deliberate structural difference: spacing now lives on the renderer's
+wrapper rather than merged into each section's own top-level className,
+adding one harmless extra `<div>` per section, invisible to every
+existing text/attribute-based test). The other six
+(intro/story/venue/mapLink/dressCode/customText) are new, minimal
+structural blocks — no legacy invitation ever produces them; they exist
+for a real, richer composition to use. No large page-builder dependency
+was added — every component is a few lines of plain JSX reusing this
+project's existing Tailwind vocabulary.
+
+Used identically by all three rendering surfaces — public
+(`/invite/[id]`), private preview (`/preview/[token]`), and
+owner-management (`/dashboard/invite/[id]`) — each now builds its own
+`InviteViewModel` (unchanged Stage 4/5 logic) plus reads its own raw
+`composition` column, resolves the two into a composition via
+`resolveComposition()`, and renders through the identical
+`CompositionRenderer`. RSVP availability is gated on `canRsvp` (built
+from `model.isPublished`, itself unchanged Stage 5 logic) INSIDE the
+`RsvpSection` component itself, independent of what a composition's own
+`rsvp` section says — a static document has no way to know an
+invitation's current publication state, so this is re-checked at render
+time regardless, preserving Stage 5's "never enable RSVP for an
+unpublished preview" exactly. Guest personalization is injected purely
+from render context (`ctx.guestName`), never stored in a section's own
+data — a composition is one shared document for every viewer.
+
+### Legacy compatibility
+
+`src/lib/composition/legacy-adapter.ts` — Part F, `adaptLegacyContentToComposition()`.
+Explicitly, permanently temporary (its own header comment says so): it
+exists only because pre-Stage-6 rows (every self-service invite ever
+created, including by the still-fully-functional `/survey` flow) have
+`content` but no real `composition`. Field-by-field mapping (documented
+exhaustively in the file's own header, exercised by
+legacy-adapter.test.ts): headline/subheadline → `opening`; a resolved
+guest name → a `greeting` section (present/absent only, never carrying
+the name itself); welcomeMessage → `welcome`; eventDate (when set AND
+tier isn't bronze — the exact pre-Stage-6 condition) → `dateTime`;
+eventDetails → `schedule`, unconditionally; suggestedPalette (gold/
+platinum only) → `gallery`, as color-swatch-only items; RSVP (tier
+isn't bronze AND isPublished — Stage 5's rule, carried through exactly)
+→ `rsvp`; song (gold/platinum only) → `music`; closingLine → `closing`.
+Fails safely: the adapter always builds its own draft, then re-validates
+it through the same `parseComposition()` every other caller uses before
+returning — a defensive check (this function fully controls every
+field it writes, there's no untrusted input to reject in the expected
+case), proven by legacy-adapter.test.ts's "returns null rather than
+throwing" tests using deliberately oversized content. No database
+rewrite: existing rows keep `composition: null` forever unless a future
+administrator action gives them a real one — the adapter runs on every
+request instead, a deliberate, documented trade-off given this stage's
+"no full editor UI" restriction.
+
+### Server-side authoring and authorization
+
+`src/lib/composition-admin.server.ts` — Part G, the same fail-closed,
+`checkAdmin()`-gated shape as Stage 5's `preview-admin.server.ts`:
+- `validateComposition()` — pure, no I/O, the one gate between
+  arbitrary data and anything this project stores or renders.
+- `buildCompositionFromPack()` — seeds a fresh draft from a trusted
+  pack's defaults; returns `null` for any unregistered pack id (the
+  OTHER place "future pack identifiers cannot be falsely selected"
+  is enforced, not just at Zod-validation time).
+- `saveInviteComposition()` — checks `checkAdmin()` FIRST (before
+  touching the proposed composition at all — reject an unauthorized
+  caller before doing any work on, or revealing anything about, their
+  input), then validates, then calls the database function below
+  through the SESSION-AWARE server client — never the service-role
+  client, so the real authorization decision is `is_admin()` reading
+  the caller's own session.
+
+`supabase/migrations/20260910140000_composition_authoring.sql` — Part
+G/H:
+- extends the existing `reject_client_paid_update()` trigger (already
+  guarding `paid`/`paypal_order_id`/`published_at` since Stage 0/3) with
+  a THIRD, independent guard: `composition`, `design_spec`,
+  `generator_content`, `generator_kind`, `occasion`,
+  `occasion_custom_label` can now only change via `service_role` or a
+  new transaction-local `enveloped.composition_action` flag — never a
+  plain owner/anonymous/unrelated-user PostgREST update, proven directly
+  by `tests/integration/composition-authoring.test.ts` against every one
+  of those four caller types, including an administrator's OWN raw
+  client (composition can only be set through the function below, same
+  design as `publish_invite()`/`unpublish_invite()`);
+- `admin_save_invite_composition(p_invite_id, p_composition, p_occasion,
+  p_occasion_custom_label)` — `is_admin()`-gated, `SECURITY DEFINER`,
+  full-replacement semantics (not a partial patch — appropriate for this
+  stage's "no editor UI" scope). Does NOT re-validate composition
+  SHAPE (that's `validateComposition()`'s job, already done before this
+  is ever called) — the one thing it DOES enforce is that `p_occasion`,
+  when supplied, is a real, registered `event_types` id.
+
+No public composition API exists — the only caller is the minimal admin
+control path this stage adds nothing new to (Stage 5's
+`PreviewLinkTool.tsx`/`/admin` remain the only admin-only UI; no
+composition-authoring UI was built, per this stage's own restriction).
+
+### Database/RPC changes
+
+`get_published_invite()` (Stage 3) already returned `composition`,
+unused until now — no migration change needed there. `get_invite_preview()`
+(Stage 5) did NOT yet return it — `20260910140000_composition_authoring.sql`
+drops and recreates it (required for a `returns table (...)` shape
+change, the same SQLSTATE 42P13 lesson from Stage 1) with `composition
+jsonb` added, returned UNCONDITIONALLY (a preview token's own
+authorization already doesn't gate on `published_at`, see Stage 5 —
+consistent). `PublicInvite`/`PreviewInvite`/`StoredInvite`
+(`src/lib/storage-queries.ts`) all gained a `composition: unknown | null`
+field, mapped straight through from the RPC/table row, always RAW and
+UNVALIDATED — every caller must pass it through
+`resolveComposition()`/`parseComposition()` before ever rendering it;
+none of the three sanitized reads validates it themselves, by design
+(validation is a rendering-time concern, and the exact same raw value
+needs to reach the owner's, the guest's, and the preview viewer's
+`resolveComposition()` call unmodified).
+
+Confirmed NOT exposed through any public/preview RPC, structurally (not
+in either function's `returns table (...)` shape at all): raw request
+answers, owner IDs, payment details, PayPal identifiers, admin
+membership, preview token hashes, internal notes, or any composition
+data for an invitation that isn't published (public RPC) or whose token
+doesn't match (preview RPC) — proven directly by
+`tests/integration/composition-authoring.test.ts`'s "an UNPUBLISHED
+invite's composition is null through the public RPC, even if one is
+saved" and the exact-key-set assertions in both that file and the
+updated `private-preview.test.ts`.
+
+### Security and bundle isolation
+
+Verified against the real production build, not just reasoned about:
+`/invite/[id]` and `/preview/[token]` remain byte-identical in
+first-load JS (865,689 bytes, 9 chunks — a ~96-byte increase from Stage
+5's 865,593, from the composition renderer's small additional logic,
+still smaller than the pre-Stage-4 882,497 baseline);
+`/dashboard/invite/[id]` remains the ONLY route whose one extra chunk
+contains `OwnerManagementBar`/`sandbox.paypal.com` strings, grepped
+across every chunk in the entire build. The three-way isolation Stage 5
+established (public/preview/owner) holds exactly as before — Stage 6's
+composition renderer is used by all three, but the renderer itself
+carries no owner-management or PayPal code, so sharing it introduces no
+new leak path.
+
+### What was not built (explicitly out of scope this stage)
+
+Per the task: no full admin drag-and-drop editor (the "minimal admin
+control" restriction — no composition-authoring UI exists at all yet,
+only the server-only functions a future one would call into, mirroring
+how Stage 5's `PreviewLinkTool.tsx` became the UI for
+`preview-admin.server.ts`), no approval workflow, no final visual
+designs (both cultural packs reuse existing palette tokens), no
+advanced animation, no AI generation changes, no media/upload pipeline
+(gallery items remain color-swatch-only or, for a future real
+composition, a trusted URL — no upload surface was added), no
+production deployment.
+
+### Confirmation production was untouched
+
+No migration applied to production, no live administrator bootstrapped,
+no production data/user/config modified, `.env.local` untouched, no
+secrets printed, no deployment, no merge to `master`, no pull request.
+Both of this stage's migrations are verified only against the local
+Supabase stack, exactly like Stages 2, 3, and 5's before them.
+
+### Remaining risks and owner decisions
+
+- **The legacy adapter is a standing, permanent-until-migrated cost.**
+  Every pre-Stage-6 invitation (and every new self-service one — Part F
+  said not to change `/survey`, and this stage didn't) re-derives its
+  composition on every single request rather than having one stored.
+  Cheap today (pure, dependency-free, no I/O), but a future stage should
+  decide whether to eventually backfill real compositions for these rows
+  or keep the adapter indefinitely.
+- **`buildCompositionFromPack()`'s generated defaults are placeholder
+  copy** ("You're Invited", "We would be honored to have you join
+  us.") — meant to be edited before publishing, not final wording; there
+  is no guard today preventing an administrator from accidentally
+  publishing an un-edited default (a future editor surface's job, not
+  this stage's).
+- **No composition versioning/migration mechanism is exercised yet** —
+  `COMPOSITION_SCHEMA_VERSION` is `1` everywhere, and the schema itself
+  is the only thing gating it. See "How future schema versions will be
+  migrated" below for the intended shape once a `2` actually exists.
+- **Cultural-pack wording guidance is advisory only** — nothing enforces
+  that an administrator actually follows a pack's own "confirm with the
+  client, never invent" guidance; this is a process/training concern
+  this stage's scope doesn't reach.
+
+### How future schema versions will be migrated
+
+Not built this stage (no `2` exists yet to migrate to or from), but the
+seam is deliberate: `schemaVersion` is a real, validated, required field
+on every stored composition (never inferred), so a future
+`InvitationCompositionSchemaV2` can coexist with `InvitationCompositionSchemaV1`
+in `src/lib/composition/schema.ts`, and `parseComposition()` (or a
+`parseCompositionAny()` successor) can branch on the stored
+`schemaVersion` before picking which schema to validate against — the
+same discriminated-shape pattern this stage's own `SectionSchema`
+already uses for section `type`. A future migration would then be a
+pure, testable `migrateCompositionV1ToV2()` function (the same shape as
+`legacy-adapter.ts`'s `adaptLegacyContentToComposition()`, which is
+effectively "migrate legacy `content` to composition v1" already), run
+either lazily at read time (like the legacy adapter) or as a one-time
+backfill, administrator-triggered through the same
+`admin_save_invite_composition()` boundary — never a client-triggered
+migration, and never a silent reinterpretation of stored data (the same
+principle Part C's event-taxonomy migration already followed for
+existing `occasion` values).
+
+### Why arbitrary HTML/CSS/JavaScript is forbidden
+
+Stated as a hard requirement in the task and enforced structurally, not
+by convention, for three compounding reasons: (1) this is
+GUEST-FACING, publicly-reachable rendering — the public route, the
+preview route, and (indirectly, since a composition an owner sees is
+the same one their guests eventually will) the owner route all render
+whatever a stored composition contains, to an anonymous audience with
+no login and no trust relationship with whoever authored it; (2) the
+authoring boundary itself (`admin_save_invite_composition()`) is
+currently administrator-only, but the schema's safety must not depend
+on that staying true forever — a future, more permissive authoring
+surface (a client-facing editor, say) must inherit the exact same
+guarantees without a design change, which only holds if the schema
+itself, not the caller's identity, is what makes injection impossible;
+(3) `dangerouslySetInnerHTML` (or any equivalent) is never used anywhere
+in this rendering path — every section component receives already-typed,
+already-validated fields (a string, a hex color, an enum, a validated
+URL) and interpolates them as ordinary React children/attributes, which
+React itself escapes — so even a schema bug that let something
+HTML-shaped through the Zod layer would still render as inert text, not
+executable markup. Three independent layers (validation rejects it,
+authorship is trusted, and React's own escaping is the last line of
+defense), not one.
+
+### Recommended Stage 7 scope
+
+Two candidate directions, both explicitly out of this stage's own
+scope: (1) the concierge approval workflow Stage 5 already recommended
+(a client-facing approve/reject surface reading from `/preview/[token]`,
+and the request-management UI to find an invitation without its raw
+uuid) — now naturally paired with a minimal composition-authoring
+control (mirroring `PreviewLinkTool.tsx`'s own minimal shape) so an
+administrator can actually call `saveInviteComposition()`/
+`buildCompositionFromPack()` through something other than a script; (2)
+extending `/survey` (or a new concierge-intake equivalent) to synthesize
+a real composition at creation time instead of relying on the legacy
+adapter indefinitely — reducing, invitation by invitation, how much
+rendering permanently depends on Part F's deliberately-temporary code
+path.
+
 ## Key files
 
 | Area | Path |
@@ -1715,6 +2192,12 @@ link for without needing its raw uuid.
 | Private preview links (Stage 5) | `supabase/migrations/20260910120000_private_preview_links.sql`, `src/lib/preview-tokens.server.ts`, `src/lib/preview-admin.server.ts`, `src/app/preview/[token]/page.tsx`, `src/components/invite/PreviewBanner.tsx`, `src/app/api/admin/invite-previews/route.ts`, `src/app/admin/PreviewLinkTool.tsx` |
 | Owner-management route (Stage 5) | `src/app/dashboard/invite/[id]/page.tsx`, `OwnerManagementBar.tsx`, `src/lib/owner-invite-view-model.ts` |
 | Stage 5 tests | `src/lib/preview-tokens.server.test.ts`, `preview-admin.server.test.ts`, `src/app/preview/[token]/page.test.tsx`, `src/app/dashboard/invite/[id]/page.test.tsx`, `src/app/api/admin/invite-previews/route.test.ts`, `tests/integration/private-preview.test.ts` |
+| Composition schema/vocabulary (Stage 6) | `src/lib/composition/schema.ts`, `event-types.ts`, `theme.ts`, `cultural-packs.ts`, `legacy-adapter.ts`, `resolve.ts` |
+| Composition renderer (Stage 6) | `src/components/composition/registry.tsx`, `sections.tsx`, `CompositionRenderer.tsx` |
+| Composition authoring (Stage 6) | `src/lib/composition-admin.server.ts` (admin-only; no UI built yet) |
+| Event taxonomy migration (Stage 6) | `supabase/migrations/20260910130000_wedding_event_taxonomy.sql` |
+| Composition authoring/protection migration (Stage 6) | `supabase/migrations/20260910140000_composition_authoring.sql` |
+| Stage 6 tests | `src/lib/composition/schema.test.ts`, `legacy-adapter.test.ts`, `cultural-packs.test.ts`, `event-types.test.ts`, `src/components/composition/CompositionRenderer.test.tsx`, `src/lib/composition-admin.server.test.ts`, `tests/integration/wedding-event-taxonomy.test.ts`, `tests/integration/composition-authoring.test.ts` |
 
 ## Repo
 

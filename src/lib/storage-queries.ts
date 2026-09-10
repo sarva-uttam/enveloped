@@ -38,6 +38,15 @@ export interface StoredInvite {
    *  determine ownership — see src/lib/ownership.ts. Never inferred from
    *  the presence/absence of a `?guest=` query param. */
   ownerId: string | null;
+  /** Stage 6 (see PROJECT_STATUS.md's Stage 6 section): the validated
+   *  composition document, or null for every invitation that predates
+   *  Stage 6 (or was never given one) — see
+   *  src/lib/composition/resolve.ts, which falls back to
+   *  src/lib/composition/legacy-adapter.ts when this is null. Raw,
+   *  UNVALIDATED jsonb — the owner-only read has no reason to validate
+   *  it before handing it to the same resolveComposition() every other
+   *  surface uses, which validates it itself. */
+  composition: unknown | null;
 }
 
 /**
@@ -81,6 +90,7 @@ export async function fetchInvite(client: SupabaseClient, id: string): Promise<S
     paid: Boolean(inviteRow.paid),
     publishedAt: inviteRow.published_at ?? null,
     ownerId: inviteRow.owner_id ?? null,
+    composition: inviteRow.composition ?? null,
   };
 }
 
@@ -136,6 +146,12 @@ export interface PublicInvite {
   content: GeneratedInviteContent | null;
   eventDate: string | null;
   song: string | null;
+  /** Stage 6 (see PROJECT_STATUS.md's Stage 6 section) — raw,
+   *  UNVALIDATED jsonb, null unless publishedAt is set (gated by
+   *  get_published_invite() itself, same as tier/content/eventDate/
+   *  song). Never rendered directly — always passed through
+   *  src/lib/composition/resolve.ts first. */
+  composition: unknown | null;
 }
 
 /**
@@ -171,6 +187,7 @@ export async function fetchPublicInvite(client: SupabaseClient, slug: string): P
     content: GeneratedInviteContent | null;
     event_date: string | null;
     song: string | null;
+    composition: unknown | null;
   };
 
   return {
@@ -182,6 +199,7 @@ export async function fetchPublicInvite(client: SupabaseClient, slug: string): P
     content: row.content,
     eventDate: row.event_date,
     song: row.song,
+    composition: row.composition ?? null,
   };
 }
 
@@ -206,6 +224,14 @@ export interface PreviewInvite {
   content: GeneratedInviteContent;
   eventDate: string | null;
   song: string | null;
+  /** Stage 6 (see PROJECT_STATUS.md's Stage 6 section) — raw,
+   *  UNVALIDATED jsonb, returned UNCONDITIONALLY here (unlike
+   *  PublicInvite's, this is never gated on publishedAt — token
+   *  possession is the authorization for a preview regardless of
+   *  publication state, the same reasoning get_invite_preview() already
+   *  applies to tier/content/eventDate/song). Never rendered directly —
+   *  always passed through src/lib/composition/resolve.ts first. */
+  composition: unknown | null;
 }
 
 /**
@@ -234,6 +260,7 @@ export async function fetchInvitePreview(client: SupabaseClient, token: string):
     content: GeneratedInviteContent;
     event_date: string | null;
     song: string | null;
+    composition: unknown | null;
   };
 
   return {
@@ -245,5 +272,6 @@ export async function fetchInvitePreview(client: SupabaseClient, token: string):
     content: row.content,
     eventDate: row.event_date,
     song: row.song,
+    composition: row.composition ?? null,
   };
 }

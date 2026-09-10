@@ -155,6 +155,20 @@ is now deleted (its behavior moved, not left disconnected) — the owner
 view lives at `/dashboard/invite/[id]` instead, with a real server-side
 ownership check.
 
+## Update — 2026-09-10: Stage 6 adds a versioned composition schema, trusted renderer registry, and wedding-first cultural-pack foundation
+
+Two new, forward-only migrations (an `event_types` lookup table
+replacing the Hindu-wedding-only `occasion` CHECK constraints; a
+`composition`-field protection trigger + `admin_save_invite_composition()`
+— NOT applied to the live project). **New scrutiny item — see #18
+below.** The old monolithic `PublicInviteView.tsx` is deleted; all
+three rendering surfaces (public/preview/owner-management) now render
+through `CompositionRenderer.tsx` + a per-section-type trusted
+component registry, fed either by a real, Zod-validated `composition`
+or — for every pre-existing invitation — a legacy adapter synthesizing
+one from the old `content` shape on every request (deliberately
+temporary, see `legacy-adapter.ts`'s own header).
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -574,6 +588,35 @@ ownership check.
     confirm the response is indistinguishable from a nonexistent slug;
     (g) this migration is NOT yet applied to the live project — confirm
     it stays that way.
+18. **Composition schema, renderer registry, and event taxonomy** (Stage
+    6, `src/lib/composition/schema.ts`, `src/components/composition/
+    registry.tsx`/`CompositionRenderer.tsx`, `src/lib/composition/
+    legacy-adapter.ts`, `src/lib/composition-admin.server.ts`,
+    `supabase/migrations/20260910130000_wedding_event_taxonomy.sql`,
+    `supabase/migrations/20260910140000_composition_authoring.sql`) —
+    worth confirming independently: (a) every free-text field in
+    `schema.ts` genuinely rejects `<`/`>` and `javascript:`-looking
+    content, and every URL field genuinely allowlists protocols — try a
+    few payloads by hand, not just trusting schema.test.ts; (b) the
+    renderer registry (`SECTION_REGISTRY`) is genuinely a static object
+    literal with no dynamic `require`/import-by-string anywhere in the
+    render path — grep for it; (c) `resolveComposition()` genuinely
+    never falls back to legacy `content` rendering when a REAL,
+    present-but-invalid composition fails validation — it should render
+    the same `UnavailableInvite` as a missing invitation, not a
+    partially-correct page; (d) the generator-field trigger extension
+    genuinely blocks a direct owner update to `composition` (and
+    `occasion`/`design_spec`/`generator_content`/`generator_kind`) —
+    `tests/integration/composition-authoring.test.ts` proves this
+    against real Postgres, worth spot-checking by hand too; (e)
+    `designPackId`'s `z.enum` genuinely only contains `neutral-classic`
+    and `hindu-wedding` — every other pack name mentioned anywhere in
+    `cultural-packs.ts`'s comments should be REJECTED by
+    `InvitationCompositionSchema`, not merely absent from a UI; (f) no
+    section component anywhere uses `dangerouslySetInnerHTML` or an
+    equivalent — grep for it across `src/components/composition/`; (g)
+    both new migrations are NOT yet applied to the live project —
+    confirm they stay that way.
 
 ## What NOT to flag as issues
 

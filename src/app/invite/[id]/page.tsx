@@ -3,13 +3,17 @@ import { cache } from "react";
 import { DEMO_INVITES } from "@/lib/demo-invites";
 import { getGuestEntryServer, getPublicInviteServer } from "@/lib/storage.server";
 import { buildDemoInviteViewModel, buildPublicInviteViewModel, isValidSlug } from "@/lib/invite-view-model";
-import { PublicInviteView } from "@/components/invite/PublicInviteView";
+import { resolveComposition } from "@/lib/composition/resolve";
+import { CompositionRenderer } from "@/components/composition/CompositionRenderer";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
 
 /**
- * The server-rendered public invitation route — Stage 4 (2026-09-09, see
- * PROJECT_STATUS.md's Stage 4 section for the full account of what this
- * replaces and why).
+ * The server-rendered public invitation route — Stage 4 (2026-09-09)
+ * introduced server rendering; Stage 6 (2026-09-10, see
+ * PROJECT_STATUS.md's Stage 6 section) replaces the monolithic
+ * `PublicInviteView` with the trusted composition renderer
+ * (src/components/composition/CompositionRenderer.tsx) — the same
+ * renderer /preview/[token] and /dashboard/invite/[id] now use too.
  *
  * Every request is rendered fresh, per-request, never cached or shared
  * across invitations/guests/sessions — required given a single URL
@@ -23,16 +27,9 @@ import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
  * supabase.auth.getUser() (no authentication check gates anything a
  * guest sees — this is a PUBLIC page); fetch the raw `invites` table
  * (getInviteServer(), the owner-only read, is never imported here);
- * import or mount any owner-management UI at all. Stage 4 kept that
- * behavior (the share panel, guest link list, paywall/awaiting-
- * publication status) disconnected-but-preserved in this same directory,
- * as a documented trade-off; Stage 5 (2026-09-10, see PROJECT_STATUS.md's
- * Stage 5 section) gave it a real home instead —
- * src/app/dashboard/invite/[id]/, a separate, authenticated route with
- * its own bundle — and deleted the disconnected file
- * (./InviteClient.tsx) that used to live here, now that its behavior has
- * been safely moved rather than merely disconnected. This route still
- * never imports anything from that route, in either direction.
+ * import or mount any owner-management UI at all — see
+ * src/app/dashboard/invite/[id]/ for that, a fully separate route with
+ * its own bundle.
  */
 
 export const dynamic = "force-dynamic";
@@ -106,7 +103,10 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   // it reads as a message, not a link, when previewed in WhatsApp/
   // iMessage/etc. guestEntry (not the model) is used here since
   // clickTeaser is a metadata-only concern, not part of what's rendered
-  // inside the page body.
+  // inside the page body. Metadata is still built from `model.content`
+  // (Stage 4/5's sanitized shape), never from the raw `composition` —
+  // there is no reason metadata generation needs to validate a whole
+  // composition document just to read a headline/subheadline.
   const title = guestEntry?.clickTeaser ?? model.content.headline;
   const description = guestEntry?.clickTeaser ? model.content.headline : model.content.subheadline;
 
@@ -123,9 +123,38 @@ export default async function InvitePage({ params, searchParams }: Props) {
   const { guest } = await searchParams;
 
   const demo = DEMO_INVITES[id];
-  const model = demo
-    ? buildDemoInviteViewModel(demo)
-    : buildPublicInviteViewModel(await loadInviteData(id, guest ?? null));
 
-  return <main>{model ? <PublicInviteView model={model} /> : <UnavailableInvite />}</main>;
+  // rawComposition stays null for a demo invite (demos have no database
+  // row at all, so there is nothing to read) — resolveComposition()
+  // treats that exactly like any other composition-less invitation and
+  // falls back to the legacy adapter, which is what a demo invite
+  // always used anyway.
+  let model, rawComposition: unknown;
+  if (demo) {
+    model = buildDemoInviteViewModel(demo);
+    rawComposition = null;
+  } else {
+    const { publicInvite, guestEntry } = await loadInviteData(id, guest ?? null);
+    model = buildPublicInviteViewModel({ publicInvite, guestEntry });
+    rawComposition = publicInvite?.composition ?? null;
+  }
+
+  const composition = resolveComposition(model, rawComposition);
+
+  return (
+    <main>
+      {composition && model ? (
+        <CompositionRenderer
+          composition={composition}
+          inviteId={model.inviteId}
+          guestId={model.guestId}
+          guestName={model.guestName}
+          song={model.song}
+          canRsvp={model.isPublished}
+        />
+      ) : (
+        <UnavailableInvite />
+      )}
+    </main>
+  );
 }

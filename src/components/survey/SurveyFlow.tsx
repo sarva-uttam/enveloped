@@ -114,6 +114,12 @@ export function SurveyFlow({
         // Never published at creation — publication is an administrator
         // action (Stage 3), never automatic on creation or payment.
         publishedAt: null,
+        // A self-service invite has no real composition at creation
+        // time — it renders through src/lib/composition/legacy-adapter.ts
+        // from `content` above until Stage 7's authoring surface (or a
+        // future administrator) gives it a real one. See
+        // PROJECT_STATUS.md's Stage 6 section.
+        composition: null,
       });
     } catch (err) {
       setLoading(false);

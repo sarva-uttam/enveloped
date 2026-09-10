@@ -48,7 +48,7 @@ describe("tables", () => {
 });
 
 describe("invites columns — exact live ordinal order (see supabase/migrations/README.md's cross-check)", () => {
-  it("has exactly the 19 expected columns in the exact order every migration added them", async () => {
+  it("has exactly the 20 expected columns in the exact order every migration added them — Stage 6 (2026-09-10, see PROJECT_STATUS.md's Stage 6 section) adds occasion_custom_label at the end, appended by supabase/migrations/20260910130000_wedding_event_taxonomy.sql, after every pre-existing column", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ column_name: string }>(
       `select column_name
@@ -77,6 +77,7 @@ describe("invites columns — exact live ordinal order (see supabase/migrations/
       "composition",
       "published_at",
       "created_by_admin_id",
+      "occasion_custom_label",
     ]);
   });
 });
@@ -93,10 +94,21 @@ describe("constraints", () => {
     const byName = new Map(rows.map((r) => [r.conname, r.def]));
 
     expect(byName.get("invites_tier_check")).toContain("'bronze'::text");
-    expect(byName.get("invites_occasion_check")).toContain("'haldi'::text");
     expect(byName.get("payments_expected_amount_check")).toContain("> (0)::numeric");
-    expect(byName.get("requests_requested_occasions_check")).toContain("<@ ARRAY");
     expect(byName.get("invite_payment_records_method_check")).toContain("'cash'::text");
+    // Stage 6 (2026-09-10, see PROJECT_STATUS.md's Stage 6 section):
+    // invites_occasion_check (a hardcoded Hindu-wedding-only enum) and
+    // requests_requested_occasions_check (the array equivalent) are both
+    // GONE — replaced by an extensible event_types lookup table, a real
+    // FOREIGN KEY for the scalar case (invites.occasion — see the FK
+    // test below) and a trigger for the array case (requests — see the
+    // trigger test below), never a hardcoded CHECK again. Their absence
+    // here is the point of the migration, not a regression to flag.
+    expect(byName.has("invites_occasion_check")).toBe(false);
+    expect(byName.has("requests_requested_occasions_check")).toBe(false);
+    // The new CHECK this same migration adds: occasion_custom_label may
+    // only be set alongside occasion = 'custom'.
+    expect(byName.get("invites_occasion_custom_label_requires_custom")).toContain("occasion = 'custom'::text");
   });
 
   it("every expected foreign key exists with the correct ON DELETE behavior", async () => {
@@ -116,6 +128,23 @@ describe("constraints", () => {
     expect(byName.get("invite_guests_invite_id_fkey")).toMatch(/REFERENCES invites\(id\).*ON DELETE CASCADE/);
     expect(byName.get("invite_rsvps_guest_id_fkey")).toMatch(/REFERENCES invite_guests\(id\).*ON DELETE SET NULL/);
     expect(byName.get("invite_payment_records_invite_id_fkey")).toMatch(/REFERENCES invites\(id\).*ON DELETE CASCADE/);
+    // Stage 6 — the two scalar-column replacements for the dropped
+    // invites_occasion_check/templates_occasion_check CHECK constraints.
+    expect(byName.get("invites_occasion_fkey")).toContain("REFERENCES event_types(id)");
+    expect(byName.get("templates_occasion_fkey")).toContain("REFERENCES event_types(id)");
+  });
+
+  it("Stage 6: requests.requested_occasions is validated by a trigger, not a CHECK constraint — the array-of-FK substitute Postgres doesn't support directly", async () => {
+    const pool = getPgPool();
+    const { rows } = await pool.query<{ tgname: string; def: string }>(
+      `select tgname, pg_get_triggerdef(oid) as def
+       from pg_trigger
+       where not tgisinternal and tgrelid = 'public.requests'::regclass`
+    );
+    const trigger = rows.find((r) => r.tgname === "requests_check_occasions");
+    expect(trigger).toBeDefined();
+    expect(trigger!.def).toContain("BEFORE INSERT OR UPDATE");
+    expect(trigger!.def).toContain("check_requested_occasions_valid");
   });
 
   it("every expected UNIQUE constraint exists", async () => {

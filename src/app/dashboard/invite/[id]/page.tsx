@@ -5,8 +5,9 @@ import { getInviteServer } from "@/lib/storage.server";
 import { sanitizeRedirectPath } from "@/lib/safe-redirect";
 import { isValidSlug, buildOwnerInviteViewModel } from "@/lib/invite-view-model";
 import { buildOwnerManagementViewModel } from "@/lib/owner-invite-view-model";
+import { resolveComposition } from "@/lib/composition/resolve";
 import { OwnerManagementBar } from "./OwnerManagementBar";
-import { PublicInviteView } from "@/components/invite/PublicInviteView";
+import { CompositionRenderer } from "@/components/composition/CompositionRenderer";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
 
 /**
@@ -38,6 +39,15 @@ import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
  *      "another authenticated user must receive a safe denied/not-found
  *      response," never a distinguishable one, the same principle
  *      /invite/[id] already applies to "missing" vs. "unpublished."
+ *
+ * Stage 6 (2026-09-10, see PROJECT_STATUS.md's Stage 6 section): the
+ * invitation's own content renders through the same trusted composition
+ * renderer the public and preview routes use — an owner previewing their
+ * own unpublished invitation sees genuinely the same rendering their
+ * eventual guests will, not a separately-maintained approximation.
+ * `invite.composition` (the owner-only read's raw, unvalidated jsonb) is
+ * resolved via src/lib/composition/resolve.ts exactly like the other two
+ * routes.
  */
 
 export const dynamic = "force-dynamic";
@@ -85,10 +95,24 @@ export default async function ManageInvitePage({ params }: Props) {
     );
   }
 
+  const model = buildOwnerInviteViewModel(invite);
+  const composition = resolveComposition(model, invite.composition);
+
   return (
     <main>
       <OwnerManagementBar initial={buildOwnerManagementViewModel(invite)} />
-      <PublicInviteView model={buildOwnerInviteViewModel(invite)} />
+      {composition ? (
+        <CompositionRenderer
+          composition={composition}
+          inviteId={model.inviteId}
+          guestId={model.guestId}
+          guestName={model.guestName}
+          song={model.song}
+          canRsvp={model.isPublished}
+        />
+      ) : (
+        <UnavailableInvite homeHref="/dashboard" homeLabel="Back to my invites" />
+      )}
     </main>
   );
 }

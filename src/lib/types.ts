@@ -1,3 +1,5 @@
+import type { EventTypeId } from "./composition/event-types";
+
 export type TierId = "bronze" | "silver" | "gold" | "platinum";
 
 export type EventCategory =
@@ -79,14 +81,18 @@ export interface GeneratedInviteContent {
 
 /**
  * Which specific sub-event within a multi-part wedding an invite/request/
- * template is for. This exact vocabulary is what the live database's
- * CHECK constraints enforce today — but it is NOT the permanent domain
- * model. Product direction is general events through reusable cultural
- * packs, with weddings as the primary but not exclusive market; this
- * Hindu-wedding-specific enum is expected to be replaced by a later,
- * explicitly-scoped migration, not extended in place.
+ * template is for. Stage 6 (2026-09-10, see PROJECT_STATUS.md's Stage 6
+ * section) replaced the old, permanently Hindu-wedding-only four-value
+ * enum this type used to be with the general, extensible vocabulary
+ * defined once in src/lib/composition/event-types.ts — re-exported here
+ * (not redefined) so every pre-existing consumer of `Occasion`
+ * (ConciergeRequest/InviteTemplate below) picks up the wider vocabulary
+ * automatically, from the single source of truth. See that file's own
+ * header for the full design rationale, including exactly which of the
+ * original four values are preserved as first-class vs. flagged
+ * legacy-only.
  */
-export type Occasion = "haldi" | "sangeet_mehendi" | "wedding_day" | "reception";
+export type Occasion = EventTypeId;
 
 export type RequestStatus =
   | "new"
@@ -174,17 +180,20 @@ export interface InvitePaymentRecord {
 
 /**
  * The generator/concierge-specific columns that exist on the live
- * `invites` table but that no current storage function reads — see
- * src/lib/storage-queries.ts's `StoredInvite`/`PublicInvite`, neither of
- * which maps these yet (a deliberate Stage 0 decision: extending either
- * type's actual runtime mapping is an application-behavior change, out of
- * scope for a reconciliation stage — see PROJECT_STATUS.md). Kept as its
- * own type, not merged into `StoredInvite`, so it's obvious at a glance
- * which fields are live-but-unwired.
+ * `invites` table. As of Stage 6 (2026-09-10, see PROJECT_STATUS.md's
+ * Stage 6 section), `composition` (and, alongside it, `occasion`/
+ * `occasionCustomLabel`) IS finally read and rendered — see
+ * `StoredInvite.composition` in src/lib/storage-queries.ts and
+ * src/lib/composition/resolve.ts. `requestId`/`generatorKind`/
+ * `designSpec`/`generatorContent`/`createdByAdminId` remain unmapped by
+ * any current storage function (unchanged since Stage 0) — kept as
+ * their own type, not merged into `StoredInvite`, so it's obvious at a
+ * glance which fields are still live-but-unwired versus actually used.
  */
 export interface InviteGeneratorFields {
   requestId: string | null;
   occasion: Occasion | null;
+  occasionCustomLabel: string | null;
   generatorKind: string | null;
   designSpec: unknown | null;
   generatorContent: unknown | null;

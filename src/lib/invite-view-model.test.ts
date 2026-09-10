@@ -27,6 +27,7 @@ const PUBLISHED: PublicInvite = {
   content: CONTENT,
   eventDate: "2026-11-01T18:00:00Z",
   song: "Perfect",
+  composition: null,
 };
 
 describe("buildPublicInviteViewModel", () => {
@@ -138,6 +139,7 @@ describe("buildPreviewInviteViewModel", () => {
     content: CONTENT,
     eventDate: "2026-11-01T18:00:00Z",
     song: "Perfect",
+    composition: null,
   };
 
   it("returns null for a token that didn't resolve to anything — the RPC/fetch layer already collapsed every reason (invalid, malformed, rotated, revoked) into 'no row'", () => {
@@ -198,6 +200,7 @@ describe("buildOwnerInviteViewModel", () => {
     paid: false,
     publishedAt: null,
     ownerId: "owner-1",
+    composition: null,
   };
 
   it("builds a full model even when unpublished — the owner is always entitled to see their own invitation", () => {

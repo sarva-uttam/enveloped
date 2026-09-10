@@ -129,6 +129,23 @@ the RLS/RPC boundary, and the noindex/no-referrer privacy protections.
 Like Stage 2–4's migrations, Stage 5's is verified only against the
 local Supabase stack and not yet applied to the live project.
 
+Stage 6 builds the deterministic core of the browser invitation
+generator: structured invitation data → a strict, versioned composition
+schema → a trusted server-renderable component registry →
+server-rendered output — never arbitrary stored HTML/CSS/JavaScript.
+It also replaces the permanently Hindu-wedding-only event vocabulary
+(flagged as a known limitation since Stage 0) with a general,
+extensible `event_types` lookup table, and adds a two-pack cultural
+foundation (a culturally neutral default, and a Hindu wedding starting
+point) that later Muslim/Christian/civil/Mauritian-multicultural/
+birthday/corporate packs can register into without a schema change. See
+`PROJECT_STATUS.md`'s "Stage 6" section for the full composition
+architecture, the trusted renderer registry, the legacy-content
+adapter, and why arbitrary markup is structurally impossible to store.
+Both of this stage's migrations are, like every stage since Stage 2,
+verified only against the local Supabase stack and not yet applied to
+the live project.
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”
@@ -216,10 +233,12 @@ become the system of record.
 model is meant to support general events (holidays, vacations, hotel
 packages, birthdays, and others already present in the category list
 above) through reusable **cultural packs**, not a single hardcoded
-tradition. See `PROJECT_STATUS.md`'s "Stage 0" section for a known
-limitation in the current live schema this direction has not yet reached
-(a Hindu-wedding-specific `occasion` vocabulary, recovered as-is from the
-live database rather than corrected).
+tradition. Stage 0 flagged a known limitation in the then-live
+schema working against this direction (a Hindu-wedding-specific
+`occasion` vocabulary, recovered as-is rather than corrected); Stage 6
+replaces it — locally, not yet on the live project — with the general
+`event_types` model and a two-pack cultural foundation described in
+`PROJECT_STATUS.md`'s "Stage 6" section.
 
 ## Repository note
 
