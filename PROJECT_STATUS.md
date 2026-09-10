@@ -1380,6 +1380,317 @@ see "Recommended Stage 5 scope" for how this relates to (but is
 distinct from) the guest-facing private preview work already planned
 for Stage 5.
 
+**Resolved in Stage 5** (see that section below): `/dashboard/invite/[id]`
+now exists, re-hosting this exact behavior with the ownership check
+moved server-side. `InviteClient.tsx` itself is deleted as of Stage 5 —
+its behavior was genuinely moved, not left disconnected — so the
+specific file reference above is now historical.
+
+## Stage 5 — secure private preview and owner-management separation (2026-09-10)
+
+Adds tokenized, read-only private preview links (`/preview/[token]`) so a
+concierge client can review an invitation — published or not — without
+an account, and a dedicated authenticated owner-management route
+(`/dashboard/invite/[id]`) that re-hosts what Stage 4 disconnected from
+the public invitation page. One new, forward-only migration; no change
+to any prior migration, to `published_at`'s role as the sole public
+gate, or to `paid`'s independence from it. Neither this stage's
+migration nor Stage 2/3's is applied to the live project.
+
+### Preview-token architecture
+
+A preview credential is a single, cryptographically random 256-bit
+value (`node:crypto`'s `randomBytes(32)`, base64url-encoded — 43
+characters, directly usable as a `/preview/[token]` path segment with no
+escaping), generated ONLY in trusted Node server code
+(`src/lib/preview-tokens.server.ts`) and never anywhere in SQL. Only its
+SHA-256 hex hash is ever stored (`invite_previews.token_hash`) — the raw
+token exists in memory for exactly as long as it takes to hash it and
+return it once to the administrator who created it, then is gone: never
+logged (verified by `preview-admin.server.test.ts`'s "never logs the raw
+token, on any path" test), never written to any table, never persisted
+in the browser beyond one component's in-memory state
+(`PreviewLinkTool.tsx`, no `localStorage`/`sessionStorage` write
+anywhere in it).
+
+Creation and verification deliberately hash in two different places, for
+two different reasons: creation hashes in Node, BEFORE the raw token is
+ever sent to Postgres at all — not even as a transient RPC argument that
+could appear in a connection-level query log — because that path is a
+trusted, authenticated, low-volume administrator action where keeping
+the raw token out of the database entirely is the stronger guarantee.
+Verification (`get_invite_preview(p_token text)`) instead accepts the
+RAW token and hashes it INSIDE the SECURITY DEFINER function itself,
+using Postgres's own `pgcrypto` (`encode(digest(p_token, 'sha256'),
+'hex')`) — because that path is anonymous-reachable and high-volume (any
+guest with a valid link, or an attacker guessing), and a single, minimal-
+surface, atomic hash-and-compare inside one trusted function is the
+safer shape for something `anon` can invoke arbitrarily, rather than
+trusting every future caller to hash correctly before calling. Both
+computations independently produce byte-identical output for the same
+input (verified directly by `tests/integration/private-preview.test.ts`'s
+first test, and by `preview-tokens.server.test.ts` against Node's own
+`createHash`) — this is what makes a token created one way actually
+redeemable the other way.
+
+`isValidPreviewTokenFormat()` (same file) rejects anything that isn't
+exactly 43 base64url characters before a route ever calls the database —
+the same "high-confidence input validation before a DB call" principle
+Stage 4 established for `isValidSlug()`.
+
+### Database migration and RLS
+
+One new table, `invite_previews` (`supabase/migrations/
+20260910120000_private_preview_links.sql`): `invite_id` is the PRIMARY
+KEY (not just unique) — "one active preview link per invitation" is
+enforced structurally, not by convention, since a second row for the
+same invitation is literally impossible to insert. `token_hash` is
+`unique` (efficiently searchable via a real index, and a second,
+schema-level collision guarantee). `revoked_at` (nullable — null means
+active) and `rotated_at`/`created_at`/`created_by` cover the required
+audit timestamps. RLS is enabled with **zero policies for any role** —
+the same deny-all-by-construction posture as `app_admins` (Stage 2):
+anonymous and ordinary-authenticated reads, and ALL direct writes
+(insert/update/delete), are denied for everyone, including an
+administrator's own ordinary client — proven directly by
+`tests/integration/private-preview.test.ts`'s RLS section, including the
+specific case of an administrator attempting a raw insert and still
+being rejected. Every legitimate operation goes through one of four
+`SECURITY DEFINER` functions instead, each independently re-checking
+`is_admin()` (writes) or a hashed-token match (the one read), matching
+this project's established `set search_path = ''` / fully-qualified
+`public.*` pattern against search-path hijacking.
+
+`get_invite_preview()` never gates on `published_at` — token possession
+is the entire authorization for a preview, by design ("work for
+unpublished and published invitations"). It returns the same shape of
+restraint as `get_published_invite()` (no `answers`/`owner_id`/
+`paypal_order_id`, and here also no `token_hash`, structurally — these
+are not in the function's `returns table (...)` at all), plus
+`published_at` itself (returned, not gated on) so the preview page can
+honestly show whether the invitation is also live at its own public URL.
+`get_published_invite()`'s own definition is untouched by this
+migration — a preview token has zero effect on what the ordinary
+`/invite/[id]` path returns, proven directly by an integration test.
+
+### Token creation, rotation, and revocation
+
+`src/lib/preview-admin.server.ts` — `createPreviewLink()`,
+`rotatePreviewLink()`, `revokePreviewLink()`, each: re-verifies
+`checkAdmin()` (the same real, database-backed `is_admin()` check every
+other admin surface in this project uses) before doing anything else;
+generates/hashes a token only on success; calls the matching
+`admin_*_invite_preview()` SQL function through the SESSION-AWARE server
+client (never the service-role client — the service-role key is never
+referenced by this module, let alone sent to a browser); fails CLOSED
+on every error path (`ok: false` with a specific reason — `not-admin`,
+`already-exists`, `invite-not-found`, `not-found`, or `database-error` —
+never a default success). The raw token is returned exactly once, from
+the return value of a successful create/rotate call, and nowhere else.
+
+Reachable through one minimal, deliberately bare admin-only control:
+`src/app/api/admin/invite-previews/route.ts` (re-checks `checkAdmin()`
+itself too, defense-in-depth) plus `src/app/admin/PreviewLinkTool.tsx` —
+paste an invitation's internal uuid, click Create/Rotate/Revoke, the raw
+token (as a full `/preview/...` URL) is shown once in component state
+and never persisted anywhere in the browser either. This is explicitly
+NOT the request-management UI or the concierge admin editor — no
+invitation search/browse exists; an administrator supplies the uuid
+directly, permitted by this stage's own scope ("a minimal admin-only
+control may be added if required, but avoid designing the generator
+interface").
+
+### Preview route behavior
+
+`src/app/preview/[token]/page.tsx` — its own route, not folded into
+`/invite/[id]` (the task's own instruction, followed literally: one URL
+shape, one credential type, no risk of a preview token ever interacting
+with `?guest=` handling or a future public-route caching decision).
+Async Server Component, `force-dynamic`, never calls
+`supabase.auth.getUser()` (there is no code path in this file that could
+even check a session — "never require the client to sign in" is a
+structural fact here, not a UX choice), never imports `getInviteServer()`
+or anything admin-related. Validates token format before the one
+database call (`getInvitePreviewServer()` → `get_invite_preview()`),
+builds an `InviteViewModel` via the new `buildPreviewInviteViewModel()`
+(`src/lib/invite-view-model.ts`) — reusing the SAME `PublicInviteView`
+presentation component the public and owner-management routes use, so a
+preview is a genuinely faithful rendering of what guests will eventually
+see, not a separately-maintained approximation. `PreviewBanner.tsx`
+(server-rendered, no client JS) shows the required "Preview" indicator
+and honestly reflects whether the invitation is also independently
+published — computed from the RPC's own `published_at`, nothing
+sensitive disclosed beyond what the link's own possessor already has
+access to.
+
+An invalid, malformed, rotated, or revoked token all produce the
+IDENTICAL response — `UnavailableInvite` (Stage 4's existing "one safe
+unavailable response" component, reused as-is, with a
+`homeHref`/`homeLabel` addition that changes only where its one link
+goes, never what it says) — proven by a test asserting a malformed-token
+render and a valid-but-rejected-token render are byte-for-byte the same
+HTML.
+
+RSVP is enabled or disabled based on the invitation's REAL publication
+state, not on being in preview mode at all: `InviteViewModel` gained an
+`isPublished` field (true for every pre-Stage-5 caller — the public
+route and demo invites — a no-op change there, confirmed by the existing
+Stage 4 test suite passing unmodified in substance) that
+`buildPreviewInviteViewModel()` sets to the actual `published_at`
+result. `PublicInviteView` now gates its RSVP section on `isPublished`,
+not just tier — an unpublished invitation viewed via a preview token (or
+by its own owner before publication, see below) never gets a working-
+looking RSVP form that would only fail server-side anyway; a published
+invitation viewed the same way still allows RSVP, exactly as it would at
+its own public URL. Guest personalization is structurally impossible
+through this path — `get_invite_preview()` has no guest-token parameter
+at all, and `buildPreviewInviteViewModel()` always sets `guestId`/
+`guestName` to `undefined`. The raw token itself is never threaded into
+any component prop — `page.tsx` uses it only as a local variable to make
+one database call, then discards it; only the already-sanitized `model`
+(built server-side) is passed to `PreviewBanner`/`PublicInviteView`.
+
+### Metadata and privacy protections
+
+`generateMetadata()` for `/preview/[token]` is a plain, synchronous,
+constant function — it never reads the token and never touches the
+database, so there is no code path by which a real headline, date, or
+name could ever reach a `<title>`, a social-preview card, or a synced
+browser-history tab title. Sets `robots: { index: false, follow: false
+}` and `referrer: "no-referrer"` unconditionally; omits the `openGraph`
+block entirely rather than filling it with generic text, so a link-
+unfurling bot has nothing invitation-shaped to render. `/dashboard/
+invite/[id]` also sets `robots: { index: false, follow: false }` — an
+authenticated management surface, not content meant to be discovered.
+No `sitemap.ts`/`robots.ts` exists anywhere in this project (confirmed
+by search before writing this section), so "do not include preview URLs
+in a sitemap" is trivially, structurally true — there is nothing that
+enumerates routes for one to list. No analytics integration exists in
+this project either (confirmed by the same search) — "ensure tokens
+cannot leak through analytics" has nothing to guard against yet, but is
+worth re-checking the day analytics is actually added, since a naive
+`pathname`-based event would capture the raw token verbatim.
+
+**Infrastructure access logs are explicitly NOT covered by any of the
+above and must be treated as sensitive.** Vercel's (or any other
+host's/CDN's/reverse proxy's) request/access logs record the full
+request path, including a preview token — noindex/nofollow/referrer
+policy only affect browser and crawler behavior, not what infrastructure
+itself logs. Anyone with access to those logs can read a token verbatim
+for as long as the log retention window keeps it. This is a real,
+inherent property of putting a bearer credential in a URL path (the only
+practical way to make a link "just work" with no login), not a defect
+this stage introduces — but it is why rotation/revocation exist as real,
+immediately-effective operations rather than decorative ones, and it
+belongs explicitly in any future production runbook for who may access
+raw infrastructure logs.
+
+### Owner-management route behavior
+
+`src/app/dashboard/invite/[id]/page.tsx` — the real authorization
+boundary, server-side, checked in this exact order: (1) is there a real
+session at all (`createServerSupabaseClient()` + `auth.getUser()`) — if
+not, `redirect()` to `/login?next=...` (the existing, already-audited
+`sanitizeRedirectPath()`, so this redirect target can't be turned into
+an open redirect either); (2) does `getInviteServer(id)` — the
+OWNER-ONLY read, gated by `invites`' own `owner_id` RLS policy from
+Stage 0/Auth — return a row for the now-confirmed signed-in caller? A
+different, genuinely authenticated user's request for someone else's
+invite gets exactly the same `null` here as a slug that doesn't exist at
+all, and BOTH render the identical `UnavailableInvite` response (with
+`/dashboard`-scoped copy) — "another authenticated user must receive a
+safe denied/not-found response," never a distinguishable one, proven by
+a test asserting the two renders are byte-identical. `proxy.ts`'s
+existing `/dashboard/:path*` optimistic redirect still covers this route
+too (it's a prefix match), but is not what this page relies on — deleted
+entirely, this page would still correctly gate every request on its own.
+
+`OwnerManagementBar.tsx` (Stage 4's `OwnerPreview`, hardened and
+relocated — `InviteClient.tsx` is deleted this stage, its behavior
+genuinely moved rather than merely disconnected) no longer performs its
+own ownership check: Stage 4's version independently fetched via the
+browser client and treated "did that return a row" as a second,
+redundant, client-side authorization decision. It now trusts a
+server-verified `initial` prop completely — a new, deliberately narrow
+`OwnerInviteViewModel` (`src/lib/owner-invite-view-model.ts`: `inviteId`/
+`tier`/`paid`/`publishedAt`/`guestList` only, never the raw `answers`
+survey blob or `content`) built server-side from the same
+`getInviteServer()` call that already proved ownership. The one
+remaining client-side fetch (`getInvite()`, after a completed PayPal
+payment, to refresh the UI) is a legitimate post-action refresh, not a
+second authorization boundary — and its result is narrowed through the
+same `buildOwnerManagementViewModel()` builder before ever reaching
+component state, so the wider raw invite value never lives in state,
+only in a local variable for the instant it takes to narrow it. The
+invitation's own content is rendered via the SAME `PublicInviteView`
+component the public and preview routes use, built from a new
+`buildOwnerInviteViewModel()` (`src/lib/invite-view-model.ts`) — an
+owner previewing their own unpublished invitation sees genuinely the
+same rendering their eventual guests will.
+
+### Public-route isolation
+
+`/dashboard/invite/[id]` is a fully separate route from `/invite/[id]`
+and `/preview/[token]` — neither imports anything from it, in either
+direction. Verified two ways against the actual production build (not
+just reasoned about): (1) each route's real RSC client-reference
+manifest was decoded directly — `/invite/[id]` and `/preview/[token]`
+resolve to the IDENTICAL four client chunks; `/dashboard/invite/[id]`
+resolves to those same four PLUS one additional chunk, and only that one
+extra chunk contains the strings `OwnerManagementBar` and
+`sandbox.paypal.com` (grepped across every chunk in `.next/static/
+chunks/` — those strings appear in exactly one file, total, across the
+whole build). (2) `.next/diagnostics/route-bundle-stats.json`'s own
+first-load byte counts: `/invite/[id]` and `/preview/[token]` are both
+865,593 bytes across 9 chunks — byte-for-byte identical, not just close
+— while `/dashboard/invite/[id]` is 875,304 bytes across 10 chunks. This
+is Next's bundler doing what it always does (exclude a module with zero
+importers from a given route's build), the same mechanism Stage 4
+already relied on and verified — Stage 5 re-verifies it holds for the
+now-three-way split (public / preview / owner-management) instead of
+Stage 4's two-way one.
+
+### What was not built (explicitly out of scope this stage)
+
+Per the task: no composition generator, no request-management UI, no
+final invitation animation system, no cultural packs, no approval
+workflow. `PreviewLinkTool.tsx` is the one, explicitly-permitted minimal
+exception — deliberately not a search/browse interface. Pricing/PayPal
+behavior is unchanged (`src/lib/tiers.ts` and the PayPal order/capture
+routes are untouched). `/survey` remains fully reachable, unaffected.
+
+### Remaining risks and decisions
+
+- **Infrastructure access logs remain the one channel these protections
+  don't cover** (see above) — a real production rollout needs an
+  explicit decision about who can read raw request logs and for how
+  long, before real preview links are issued.
+- **No expiry.** A preview link is valid until an administrator
+  rotates or revokes it — there is no automatic time-based expiration.
+  This matches the task's scope (rotation/revocation were required;
+  expiry was not) but is worth a deliberate decision before production
+  use, not a silent gap.
+- **The minimal admin control has no invitation lookup/search.** An
+  administrator must already know (or separately look up, e.g. via the
+  local database directly) an invitation's internal uuid to issue a
+  preview link for it — acceptable for this stage's scope, not for a
+  real concierge workflow, which needs the (explicitly out-of-scope)
+  request-management UI.
+- **One preview link per invitation, not per reviewer.** If a concierge
+  client shares their preview link further, there is no way to tell
+  multiple viewers apart or revoke just one of them — rotating/revoking
+  affects the single shared link entirely. Acceptable for a first
+  version; a future iteration could consider per-recipient tokens if
+  that need materializes.
+
+### Recommended Stage 6 scope
+
+The concierge approval workflow that connects these two pieces: a
+client-facing way to approve/reject from their preview view (still none
+today — a preview is read-only, as required), and the request-management
+UI that would let an administrator find an invitation to issue a preview
+link for without needing its raw uuid.
+
 ## Key files
 
 | Area | Path |
@@ -1400,6 +1711,10 @@ for Stage 5.
 | Server-only storage ops | `src/lib/storage.server.ts` |
 | Tests (`npm test`) | `src/lib/ownership.test.ts`, `storage.test.ts`, `storage-queries.test.ts`, `storage.server.test.ts`, `rls-policy.test.ts`, `safe-redirect.test.ts`, `paypal-verify.test.ts`, `payments.server.test.ts`, `src/app/api/paypal/orders/route.test.ts`, `src/app/api/paypal/orders/[orderId]/capture/route.test.ts` |
 | Local dev server config | `.claude/launch.json` (`npm run dev`, port 3000) |
+| Server-rendered public invitation (Stage 4) | `src/app/invite/[id]/page.tsx`, `src/lib/invite-view-model.ts`, `src/components/invite/PublicInviteView.tsx`/`UnavailableInvite.tsx`/`AnimateIn.tsx` |
+| Private preview links (Stage 5) | `supabase/migrations/20260910120000_private_preview_links.sql`, `src/lib/preview-tokens.server.ts`, `src/lib/preview-admin.server.ts`, `src/app/preview/[token]/page.tsx`, `src/components/invite/PreviewBanner.tsx`, `src/app/api/admin/invite-previews/route.ts`, `src/app/admin/PreviewLinkTool.tsx` |
+| Owner-management route (Stage 5) | `src/app/dashboard/invite/[id]/page.tsx`, `OwnerManagementBar.tsx`, `src/lib/owner-invite-view-model.ts` |
+| Stage 5 tests | `src/lib/preview-tokens.server.test.ts`, `preview-admin.server.test.ts`, `src/app/preview/[token]/page.test.tsx`, `src/app/dashboard/invite/[id]/page.test.tsx`, `src/app/api/admin/invite-previews/route.test.ts`, `tests/integration/private-preview.test.ts` |
 
 ## Repo
 

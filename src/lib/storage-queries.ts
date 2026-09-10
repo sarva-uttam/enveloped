@@ -184,3 +184,66 @@ export async function fetchPublicInvite(client: SupabaseClient, slug: string): P
     song: row.song,
   };
 }
+
+/**
+ * The sanitized payload a valid, unrevoked PRIVATE PREVIEW TOKEN unlocks
+ * — Stage 5 (2026-09-10, see PROJECT_STATUS.md). Structurally the same
+ * shape of restraint as PublicInvite (no answers/owner_id/
+ * paypal_order_id/token hashes), with one deliberate difference:
+ * tier/content/eventDate/song are ALWAYS populated here, never withheld
+ * behind a publishedAt check — token possession is the authorization for
+ * a preview, independent of whether the invitation has actually been
+ * published yet (that's the entire point of a preview link). `paid`/
+ * `publishedAt` are still returned, informationally, so the preview page
+ * can show a "not necessarily published" indicator honestly.
+ */
+export interface PreviewInvite {
+  invitesRowId: string;
+  slug: string;
+  paid: boolean;
+  publishedAt: string | null;
+  tier: TierId;
+  content: GeneratedInviteContent;
+  eventDate: string | null;
+  song: string | null;
+}
+
+/**
+ * The ONLY way a raw preview token is ever redeemed for invitation data.
+ * Backed by get_invite_preview() (supabase/migrations/
+ * 20260910120000_private_preview_links.sql), which hashes `token`
+ * INSIDE itself (SECURITY DEFINER, trusted boundary) and compares
+ * against invite_previews.token_hash — this function never sees, stores,
+ * or needs to know the stored hash, only the raw token a caller supplies
+ * and whatever sanitized row (or nothing) comes back. An invalid,
+ * malformed, rotated, or revoked token all produce the identical `null`
+ * here — resolve_invite_guest()'s "no distinguishing why" pattern,
+ * carried over deliberately (see invite-view-model.ts's
+ * buildPreviewInviteViewModel()).
+ */
+export async function fetchInvitePreview(client: SupabaseClient, token: string): Promise<PreviewInvite | null> {
+  const { data, error } = await client.rpc("get_invite_preview", { p_token: token }).maybeSingle();
+
+  if (error || !data) return null;
+  const row = data as {
+    id: string;
+    slug: string;
+    paid: boolean;
+    published_at: string | null;
+    tier: string;
+    content: GeneratedInviteContent;
+    event_date: string | null;
+    song: string | null;
+  };
+
+  return {
+    invitesRowId: row.id,
+    slug: row.slug,
+    paid: Boolean(row.paid),
+    publishedAt: row.published_at ?? null,
+    tier: (row.tier as TierId) ?? "bronze",
+    content: row.content,
+    eventDate: row.event_date,
+    song: row.song,
+  };
+}

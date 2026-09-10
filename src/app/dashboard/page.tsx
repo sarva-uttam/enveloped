@@ -89,8 +89,15 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    {/* Stage 5 (see PROJECT_STATUS.md): points at the
+                        owner-management route, not the public
+                        /invite/[id] — that's where the paywall/share-
+                        panel/awaiting-publication status actually lives
+                        now, and it's the same server-verified-ownership
+                        route regardless of which invite in this list is
+                        clicked. */}
                     <Link
-                      href={`/invite/${invite.id}`}
+                      href={`/dashboard/invite/${invite.id}`}
                       className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-ink hover:text-ink"
                     >
                       Open <ArrowUpRight className="h-3.5 w-3.5" />

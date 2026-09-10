@@ -23,10 +23,16 @@ import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
  * supabase.auth.getUser() (no authentication check gates anything a
  * guest sees — this is a PUBLIC page); fetch the raw `invites` table
  * (getInviteServer(), the owner-only read, is never imported here);
- * import or mount anything from ./InviteClient.tsx (the owner-management
- * UI — share panel, guest link list, paywall/awaiting-publication status
- * — is NOT wired into this route in this stage; see InviteClient.tsx's
- * own header comment for exactly why and what that costs).
+ * import or mount any owner-management UI at all. Stage 4 kept that
+ * behavior (the share panel, guest link list, paywall/awaiting-
+ * publication status) disconnected-but-preserved in this same directory,
+ * as a documented trade-off; Stage 5 (2026-09-10, see PROJECT_STATUS.md's
+ * Stage 5 section) gave it a real home instead —
+ * src/app/dashboard/invite/[id]/, a separate, authenticated route with
+ * its own bundle — and deleted the disconnected file
+ * (./InviteClient.tsx) that used to live here, now that its behavior has
+ * been safely moved rather than merely disconnected. This route still
+ * never imports anything from that route, in either direction.
  */
 
 export const dynamic = "force-dynamic";

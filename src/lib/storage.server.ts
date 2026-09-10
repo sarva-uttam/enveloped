@@ -1,7 +1,15 @@
 import "server-only";
 import { createServerSupabaseClient } from "./supabase/server";
 import { supabaseAdmin, supabaseAdminConfigured } from "./supabase/admin";
-import { fetchInvite, fetchGuestEntry, fetchPublicInvite, type StoredInvite, type PublicInvite } from "./storage-queries";
+import {
+  fetchInvite,
+  fetchGuestEntry,
+  fetchPublicInvite,
+  fetchInvitePreview,
+  type StoredInvite,
+  type PublicInvite,
+  type PreviewInvite,
+} from "./storage-queries";
 
 /**
  * Server-only data access — for Server Components and Route Handlers.
@@ -51,6 +59,22 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
   const client = await createServerSupabaseClient();
   if (!client) return null;
   return fetchPublicInvite(client, slug);
+}
+
+/**
+ * Server-side redemption of a private preview token — Stage 5 (see
+ * PROJECT_STATUS.md). Deliberately uses the same session-aware SERVER
+ * client as every other read here, not the service-role client: the
+ * underlying get_invite_preview() function is granted to anon AND
+ * authenticated (see the migration), so this works identically whether
+ * or not the visitor happens to have a session — "never require the
+ * client to sign in" for preview access is enforced by the grant, not by
+ * this function special-casing anonymous callers.
+ */
+export async function getInvitePreviewServer(token: string): Promise<PreviewInvite | null> {
+  const client = await createServerSupabaseClient();
+  if (!client) return null;
+  return fetchInvitePreview(client, token);
 }
 
 /**

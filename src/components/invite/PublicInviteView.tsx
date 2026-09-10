@@ -43,7 +43,15 @@ export function PublicInviteView({ model }: { model: InviteViewModel }) {
   const meta = getTier(tier);
   const accent = meta.colorVar;
   const hasMotion = tier !== "bronze";
-  const hasRsvp = tier !== "bronze";
+  // Stage 5 (see PROJECT_STATUS.md): gated on model.isPublished, not
+  // just tier — "never enable RSVP for an unpublished preview." This is
+  // a no-op change for every pre-Stage-5 caller (the public route's
+  // buildPublicInviteViewModel() and demo's buildDemoInviteViewModel()
+  // both always set isPublished: true), and is what makes an unpublished
+  // invitation viewed via a private preview token, or by its own owner
+  // before publication, correctly omit RSVP entirely rather than show a
+  // form that would only fail server-side anyway.
+  const hasRsvp = tier !== "bronze" && model.isPublished;
   const hasMusic = tier === "gold" || tier === "platinum";
   const hasGallery = tier === "gold" || tier === "platinum";
   const isPlatinum = tier === "platinum";

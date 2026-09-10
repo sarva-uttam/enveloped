@@ -146,6 +146,15 @@ PROJECT_STATUS.md's Stage 4 "Remaining risks"), not an oversight — worth
 independently confirming it reads as intentional, and that nothing else
 in the app still assumes the owner view is reachable at this URL.
 
+## Update — 2026-09-10: Stage 5 adds private preview links and a real owner-management route
+
+One new, forward-only migration (`invite_previews` + four functions —
+NOT applied to the live project). **New scrutiny item — see #17 below.**
+Resolves Stage 4's disclosed trade-off: `src/app/invite/[id]/InviteClient.tsx`
+is now deleted (its behavior moved, not left disconnected) — the owner
+view lives at `/dashboard/invite/[id]` instead, with a real server-side
+ownership check.
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -535,6 +544,36 @@ in the app still assumes the owner view is reachable at this URL.
     "Update — 2026-09-09: Stage 4" note above) is acceptable as a
     temporary state, not something that should have been silently
     avoided by re-mounting `OwnerPreview` on the public route instead.
+17. **Private preview links and owner-management separation** (Stage 5,
+    `supabase/migrations/20260910120000_private_preview_links.sql`,
+    `src/lib/preview-tokens.server.ts`, `src/lib/preview-admin.server.ts`,
+    `src/app/preview/[token]/page.tsx`, `src/app/dashboard/invite/[id]/`)
+    — worth confirming independently: (a) `invite_previews` genuinely has
+    zero RLS policies for any role — try a raw insert/update/select as
+    each of anon/an ordinary authenticated user/an administrator's own
+    client and confirm every one is denied (the integration test suite
+    does this; worth reproducing by hand too); (b) a token's raw value is
+    never persisted anywhere — grep the diff for `token_hash` write sites
+    and confirm the raw token variable never reaches a table, a log line,
+    or `localStorage`/`sessionStorage`; (c) `get_invite_preview()`
+    genuinely never gates on `published_at`, and `get_published_invite()`
+    is genuinely unmodified by this migration (diff the two); (d)
+    rotation/revocation genuinely take effect immediately — the
+    integration suite proves this against a real Postgres, worth
+    spot-checking the specific assertions rather than trusting the
+    migration's own comments; (e) the bundle-isolation claim in
+    PROJECT_STATUS.md's Stage 5 "Public-route isolation" section
+    (`/invite/[id]` and `/preview/[token]` share byte-identical first-load
+    JS; `/dashboard/invite/[id]` is the only route pulling in the
+    PayPal/owner-management chunk) is reproducible — `npm run build` then
+    compare `.next/diagnostics/route-bundle-stats.json` entries for the
+    three routes; (f) `/dashboard/invite/[id]`'s ownership check is
+    genuinely server-side and genuinely collapses "doesn't exist" and
+    "belongs to someone else" into one response — try requesting another
+    real user's invitation slug while signed in as a different user and
+    confirm the response is indistinguishable from a nonexistent slug;
+    (g) this migration is NOT yet applied to the live project — confirm
+    it stays that way.
 
 ## What NOT to flag as issues
 

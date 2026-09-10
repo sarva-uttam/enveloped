@@ -116,8 +116,18 @@ before any hydration or authentication check, and owner-management/
 PayPal code no longer reaches a guest's browser at all. See
 `PROJECT_STATUS.md`'s "Stage 4" section for the full server/client split,
 the security boundary, and a documented trade-off (an owner viewing
-their own invite link temporarily lost their management view — see that
-section's "Remaining risks").
+their own invite link temporarily lost their management view).
+
+Stage 5 adds one more forward-only migration: secure, tokenized,
+read-only preview links (`/preview/[token]`) let a concierge client
+review an invitation — published or not — without an account, and a
+dedicated authenticated `/dashboard/invite/[id]` route resolves Stage
+4's trade-off by re-hosting the owner-management view there instead of
+on the public page. See `PROJECT_STATUS.md`'s "Stage 5" section for the
+preview-token design (256-bit, one-way-hashed, rotatable, revocable),
+the RLS/RPC boundary, and the noindex/no-referrer privacy protections.
+Like Stage 2–4's migrations, Stage 5's is verified only against the
+local Supabase stack and not yet applied to the live project.
 
 ## Generation philosophy
 

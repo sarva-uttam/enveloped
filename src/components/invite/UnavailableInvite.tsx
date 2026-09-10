@@ -13,8 +13,25 @@ import { Clock } from "lucide-react";
  * non-existence) or "not published yet" (confirms existence) separately;
  * this replaces both of the pre-Stage-4 NotFound/NotPublishedYet
  * components, which leaked exactly that distinction.
+ *
+ * Stage 5 (2026-09-10, see PROJECT_STATUS.md): reused, unmodified in
+ * substance, for two more "collapse every reason into one safe response"
+ * cases — an invalid/malformed/rotated/revoked private preview token
+ * (src/app/preview/[token]/page.tsx), and, in the owner-management route
+ * (src/app/dashboard/invite/[id]/page.tsx), BOTH "this invite doesn't
+ * exist" and "you're signed in, but this isn't your invite" collapsed
+ * into the same response — "another authenticated user must receive a
+ * safe denied/not-found response," never a distinguishable one.
+ * `homeHref`/`homeLabel` are the only variation allowed: where the one
+ * action link goes, not what the message says about why it's here.
  */
-export function UnavailableInvite() {
+export function UnavailableInvite({
+  homeHref = "/",
+  homeLabel = "Go to Enveloped",
+}: {
+  homeHref?: string;
+  homeLabel?: string;
+}) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
       <Clock className="h-6 w-6 text-ink-soft" aria-hidden="true" />
@@ -24,8 +41,8 @@ export function UnavailableInvite() {
         yet. Double-check the link you were sent, or reach out to
         whoever shared it with you.
       </p>
-      <Link href="/" className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper">
-        Go to Enveloped
+      <Link href={homeHref} className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper">
+        {homeLabel}
       </Link>
     </div>
   );
