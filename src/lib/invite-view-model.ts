@@ -35,6 +35,15 @@ export interface InviteViewModel {
   content: GeneratedInviteContent;
   eventDate: string | undefined;
   song: string | undefined;
+  /** Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part F) — a real,
+   *  playable audio URL, when one exists. Only ever set today for the
+   *  `demo-platinum` demo invite (pointing at this project's synthesized
+   *  test tone, public/audio/README.md); `undefined` for every real
+   *  self-service or legacy invitation, none of which has ever stored a
+   *  playable audio URL. A real, admin-authored composition supplies its
+   *  own music via the composition schema's own `music` section instead,
+   *  never through this field. */
+  musicSrc: string | undefined;
   isDemo: boolean;
   /** Whether the underlying invitation is actually published. True for
    *  every public-route model (buildPublicInviteViewModel() only ever
@@ -96,6 +105,7 @@ export function buildPublicInviteViewModel(params: {
     content: publicInvite.content,
     eventDate: publicInvite.eventDate ?? undefined,
     song: publicInvite.song ?? undefined,
+    musicSrc: undefined,
     isDemo: false,
     // This builder only ever returns non-null when publishedAt is set
     // (see the guard above) — isPublished is therefore always true for
@@ -116,6 +126,7 @@ export function buildDemoInviteViewModel(demo: DemoInvite): InviteViewModel {
     content: demo.content,
     eventDate: demo.eventDate,
     song: demo.song,
+    musicSrc: demo.musicSrc,
     isDemo: true,
     // Demos are always "viewable" — the local, no-database equivalent of
     // published — so RSVP (gated on isPublished, not isDemo, in the
@@ -162,6 +173,7 @@ export function buildPreviewInviteViewModel(preview: PreviewInvite | null): Invi
     content: preview.content,
     eventDate: preview.eventDate ?? undefined,
     song: preview.song ?? undefined,
+    musicSrc: undefined,
     isDemo: false,
     isPublished: Boolean(preview.publishedAt),
   };
@@ -198,6 +210,7 @@ export function buildOwnerInviteViewModel(stored: StoredInvite): InviteViewModel
     content: stored.content,
     eventDate: stored.answers.eventDate || undefined,
     song: stored.answers.song || undefined,
+    musicSrc: undefined,
     isDemo: false,
     isPublished: Boolean(stored.publishedAt),
   };

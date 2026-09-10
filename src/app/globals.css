@@ -79,3 +79,66 @@ body {
 .animate-shimmer {
   animation: shimmer 3s ease-in-out infinite;
 }
+
+/* Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part B/D). */
+
+/* Global reduced-motion safety net for every plain-CSS decorative
+   animation in this project (FloatingMotif's `drift`, the `glow-pulse`
+   below, and `shimmer` — kept defensively even though its only former
+   user, the pre-Stage-7 MusicToggle, is gone) — independent of, and in
+   addition to, the JS-level useReducedMotion() check Framer Motion
+   elements use (src/lib/motion/useReducedMotion.ts). A user who set this
+   OS/browser preference gets it honored even for the parts of the page
+   that have no JavaScript motion logic to check it at all. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift,
+  .animate-shimmer,
+  .animate-glow-pulse {
+    animation: none !important;
+  }
+}
+
+/* "Avoid making the invitation invisible when JavaScript fails" — every
+   Framer Motion scroll-reveal element (AnimateIn.tsx) renders its
+   `initial` (pre-reveal, e.g. opacity: 0) state as real inline styles in
+   the server-rendered HTML; only client JS ever flips it to its
+   revealed state. `scripting: none` is a real, well-supported media
+   feature meaning "no scripting available on this browsing context at
+   all" (not merely "hasn't run yet") — when it matches, no JS will EVER
+   run to complete the reveal, so this override forces every such
+   element to its fully-visible, final resting state instead, using
+   !important specifically because it must win over the inline style
+   Framer Motion itself sets. AnimateIn.tsx tags every motion element it
+   renders with the `data-motion-reveal` attribute this rule targets. */
+@media (scripting: none) {
+  [data-motion-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* AtmosphericEffect.tsx (Part D) — the neutral-classic pack's "soft
+   paper glow" treatment: a few slow-pulsing, blurred radial highlights,
+   not emoji/particles. */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(0.96); }
+  50% { opacity: 0.32; transform: scale(1.04); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 6s ease-in-out infinite;
+}
+
+/* Pauses every decorative CSS animation this project defines when the
+   page is hidden (backgrounded tab, minimized window, locked screen) —
+   toggled via the `data-effects-paused` attribute AtmosphericEffect.tsx
+   sets on its own wrapper in response to the Page Visibility API, not a
+   guess based on scroll/focus. `animation-play-state: paused` (not
+   `display: none`/`visibility: hidden`) keeps the element and its
+   current frame in place, so nothing jumps or resets when the page
+   becomes visible again — it simply resumes exactly where it left off. */
+[data-effects-paused="true"] .animate-drift,
+[data-effects-paused="true"] .animate-glow-pulse,
+[data-effects-paused="true"] .animate-shimmer {
+  animation-play-state: paused;
+}

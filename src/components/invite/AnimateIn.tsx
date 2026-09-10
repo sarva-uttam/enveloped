@@ -2,6 +2,9 @@
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import type { MotionPresetId } from "@/lib/composition/schema";
+import { MOTION_PRESET_DEFINITIONS } from "@/lib/motion/presets";
+import { useReducedMotion } from "@/lib/motion/useReducedMotion";
 
 /**
  * The ONLY reason any part of the invitation's static content tree
@@ -17,28 +20,48 @@ import type { ReactNode } from "react";
  * in the initial server HTML either way, this only controls when it
  * becomes visually revealed once JS hydrates.
  *
- * `active=false` renders a plain <div> with no animation at all — same
- * as the pre-Stage-4 `hasMotion` flag on Bronze tier.
+ * Stage 7 (2026-09-10, see PROJECT_STATUS.md's Stage 7 section, Part B):
+ * `preset` selects one of the TRUSTED, hardcoded animation definitions
+ * in src/lib/motion/presets.ts by name — never raw Framer Motion
+ * config from composition data. `active=false`, a "none" preset, OR the
+ * viewer preferring reduced motion ALL render a plain, immediately-
+ * visible `<div>` — three independent ways to land at the same safe,
+ * fully-visible fallback (the tier-driven flag from Stage 4, an
+ * explicit per-section author choice, and the viewer's own OS/browser
+ * preference, checked here via useReducedMotion() regardless of what
+ * either of the other two say).
+ *
+ * `data-motion-reveal` on the animated branch is what
+ * src/app/globals.css's `@media (scripting: none)` rule targets to keep
+ * content visible if JavaScript never runs at all (not merely "hasn't
+ * run yet") — see that rule's own comment for the full mechanism.
  */
 export function AnimateIn({
   active,
+  preset = "fade",
   className,
   children,
 }: {
   active: boolean;
+  preset?: MotionPresetId;
   className?: string;
   children: ReactNode;
 }) {
-  if (!active) {
+  const reducedMotion = useReducedMotion();
+
+  if (!active || reducedMotion || preset === "none") {
     return <div className={className}>{children}</div>;
   }
 
+  const def = MOTION_PRESET_DEFINITIONS[preset];
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      data-motion-reveal="true"
+      initial={def.initial}
+      whileInView={def.animate}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6 }}
+      transition={def.transition}
       className={className}
     >
       {children}

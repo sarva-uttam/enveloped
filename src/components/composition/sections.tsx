@@ -1,15 +1,18 @@
 import { Countdown } from "@/components/invite/Countdown";
 import { RsvpForm } from "@/components/invite/RsvpForm";
-import { MusicToggle } from "@/components/invite/MusicToggle";
-import type { CompositionSection } from "@/lib/composition/schema";
+import { AudioPlayer } from "@/components/experience/AudioPlayer";
+import { StaggeredSchedule } from "@/components/experience/StaggeredSchedule";
+import type { CompositionSection, MotionPresetId } from "@/lib/composition/schema";
 
 /**
  * The trusted section components — Stage 6 (see PROJECT_STATUS.md's
  * Stage 6 section, Part E). "Build simple structural section components
  * only. Visual refinement comes later" — every component here is plain,
- * server-renderable JSX (no "use client") except where it wraps an
- * EXISTING client island unchanged (Countdown/RsvpForm/MusicToggle,
- * already established in Stage 4/5). Each component receives only
+ * server-renderable JSX (no "use client") except where it wraps a
+ * client island — Countdown/RsvpForm unchanged since Stage 4/5;
+ * AudioPlayer, new in Stage 7, replaces the old, non-functional
+ * MusicToggle (see MusicSection's own comment below). Each component
+ * receives only
  * `data` (this section's own, already-Zod-validated payload — never a
  * raw, unvalidated value) and `ctx` (the render context every route
  * builds — see CompositionRenderer.tsx), and returns plain JSX or
@@ -52,6 +55,12 @@ export interface SectionRenderContext {
    *  is necessary but not sufficient — this is the second, decisive
    *  check. */
   canRsvp: boolean;
+  /** Stage 7 — the CURRENT section's own trusted motionPreset (set
+   *  per-section by CompositionRenderer). Only ScheduleSection actually
+   *  reads it, to decide whether to stagger its individual entries; the
+   *  outer AnimateIn wrapper consumes the same value independently for
+   *  the whole-section reveal. */
+  motionPreset: MotionPresetId;
 }
 
 type SectionProps<T extends CompositionSection["type"]> = {
@@ -122,7 +131,21 @@ export function StorySection({ data }: SectionProps<"story">) {
   );
 }
 
+/**
+ * Stage 7 (Part E — "staggered schedule"): the `<dl>` markup is the same
+ * server-rendered structure as before; when this section's own
+ * motionPreset is "stagger", `StaggeredSchedule` (a client island) adds
+ * a per-entry sequential reveal ON TOP of that already-present markup —
+ * document order and heading/`<dl>` semantics are untouched, and it
+ * degrades to the plain list under reduced motion. Any other preset
+ * just renders the plain list (the outer AnimateIn still gives the
+ * whole block its reveal).
+ */
 export function ScheduleSection({ data, ctx }: SectionProps<"schedule">) {
+  if (ctx.motionPreset === "stagger") {
+    return <StaggeredSchedule entries={data.entries} accent={ctx.accent} />;
+  }
+
   return (
     <dl className="grid gap-3 sm:grid-cols-2">
       {data.entries.map((entry) => (
@@ -202,8 +225,28 @@ export function RsvpSection({ data, ctx }: SectionProps<"rsvp">) {
   );
 }
 
+/**
+ * Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part F): renders a
+ * REAL AudioPlayer only when the section actually carries a trusted
+ * `src` — "do not render a fake control when music is unavailable."
+ * Every pre-Stage-7 composition (adapted by legacy-adapter.ts from old
+ * `content`/`song` data, which never included a playable URL) has
+ * `data.src: null` here, so this renders NOTHING for them — a real,
+ * deliberate behavior change from the old, always-fake `MusicToggle`,
+ * documented in PROJECT_STATUS.md's Stage 7 "Remaining design issues."
+ */
 export function MusicSection({ data, ctx }: SectionProps<"music">) {
-  return <MusicToggle song={data.label || ctx.song || "Our song"} accent={ctx.accent} />;
+  if (!data.src) return null;
+  return (
+    <AudioPlayer
+      src={data.src}
+      title={data.title ?? data.label ?? null}
+      credit={data.credit}
+      loop={data.loop}
+      startVolume={data.startVolume}
+      accent={ctx.accent}
+    />
+  );
 }
 
 export function ClosingSection({ data }: SectionProps<"closing">) {

@@ -31,6 +31,7 @@ function model(overrides: Partial<InviteViewModel> = {}): InviteViewModel {
     content: CONTENT,
     eventDate: "2027-01-01T18:00:00Z",
     song: "Perfect",
+    musicSrc: undefined,
     isDemo: false,
     isPublished: true,
     ...overrides,
@@ -105,13 +106,25 @@ describe("adaptLegacyContentToComposition — mapping", () => {
     );
   });
 
-  it("adds a music section (from song) only for gold/platinum", () => {
-    expect(adaptLegacyContentToComposition(model({ tier: "gold", song: "Perfect" }))!.sections.some((s) => s.type === "music")).toBe(
-      true
-    );
-    expect(adaptLegacyContentToComposition(model({ tier: "silver", song: "Perfect" }))!.sections.some((s) => s.type === "music")).toBe(
-      false
-    );
+  it("Stage 7: adds a music section ONLY when there is a real, playable musicSrc — never from a `song` title alone", () => {
+    // A song TITLE with no playable source (every real self-service /
+    // legacy invitation) produces NO music section at all — the old
+    // always-fake toggle is gone. See PROJECT_STATUS.md's Stage 7 section.
+    for (const tier of ["silver", "gold", "platinum"] as const) {
+      expect(
+        adaptLegacyContentToComposition(model({ tier, song: "Perfect", musicSrc: undefined }))!.sections.some((s) => s.type === "music")
+      ).toBe(false);
+    }
+
+    // A real playable source (today only demo-platinum's synthesized
+    // test tone) DOES produce a music section, carrying that exact src.
+    const withSource = adaptLegacyContentToComposition(
+      model({ tier: "platinum", song: "Our tune", musicSrc: "/audio/sample-test-tone.wav" })
+    )!;
+    const music = withSource.sections.find((s) => s.type === "music");
+    expect(music).toBeDefined();
+    expect(music!.type === "music" && music!.data.src).toBe("/audio/sample-test-tone.wav");
+    expect(music!.type === "music" && music!.data.title).toBe("Our tune");
   });
 
   it("maps closingLine into the closing section, always present", () => {

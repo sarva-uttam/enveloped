@@ -50,8 +50,13 @@ import { COMPOSITION_SCHEMA_VERSION, parseComposition } from "./schema";
  *     pre-Stage-6 `hasRsvp` condition, preserved exactly (Stage 5's
  *     "never enable RSVP for an unpublished preview" requirement flows
  *     through unchanged).
- *   - song + tier is gold/platinum → "music" — the exact pre-Stage-6
- *     `hasMusic` condition.
+ *   - musicSrc (Stage 7 — a real playable URL; today only ever set on
+ *     the `demo-platinum` demo invite) → "music" with that source. Every
+ *     other legacy/self-service invitation has no playable audio URL
+ *     anywhere, so NO music section is produced for it — the pre-Stage-7
+ *     always-present but always-fake "Play our song" toggle is gone for
+ *     them (see the `hasMusic` comment below and PROJECT_STATUS.md's
+ *     Stage 7 "Remaining design issues").
  *   - content.closingLine → "closing" (always present).
  * NOT synthesized from legacy content at all (no legacy field maps to
  * them): "intro", "story", "venue", "mapLink", "dressCode",
@@ -74,31 +79,51 @@ import { COMPOSITION_SCHEMA_VERSION, parseComposition } from "./schema";
  * unvalidated legacy rendering.
  */
 export function adaptLegacyContentToComposition(model: InviteViewModel): InvitationComposition | null {
-  const { content, tier, guestName, eventDate, song, isDemo, isPublished } = model;
+  const { content, tier, guestName, eventDate, song, musicSrc, isDemo, isPublished } = model;
   const meta = getTier(tier);
   const hasMotion = tier !== "bronze";
   const hasGallery = tier === "gold" || tier === "platinum";
-  const hasMusic = tier === "gold" || tier === "platinum";
+  // Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part F): a music
+  // section is emitted ONLY when there is a real, playable source —
+  // `model.musicSrc`, which is set for exactly one thing today, the
+  // `demo-platinum` demo invite pointing at this project's own
+  // synthesized test tone (public/audio/README.md). No real
+  // self-service or legacy invitation has ever stored a playable audio
+  // URL anywhere, so for every one of them this is `undefined` and no
+  // music section is produced at all — the old, always-present but
+  // always-fake "Play our song" toggle is simply gone for them.
+  const hasMusic = Boolean(musicSrc);
   const hasRsvp = tier !== "bronze" && isPublished;
   const hasDateTime = Boolean(eventDate) && tier !== "bronze";
 
+  // Stage 7 (Part E) — each section gets a deliberate, TRUSTED
+  // motionPreset (src/lib/composition/schema.ts's MOTION_PRESETS,
+  // resolved by src/lib/motion/presets.ts): a "ceremonial" settle for
+  // the opening moment, "stagger" for the schedule (its own component
+  // additionally staggers the individual entries), "petals" for the
+  // ambient gallery, "glow" for the soft close — never arbitrary
+  // animation config, just a name from a fixed list. Every one of these
+  // still degrades to an instant, fully-visible render under reduced
+  // motion or a no-motion composition (AnimateIn.tsx).
   const sections: CompositionSection[] = [];
 
   sections.push({
     id: "opening",
     type: "opening",
     enabled: true,
+    motionPreset: "ceremonial",
     data: { eyebrow: `${meta.name} Invitation`, headline: content.headline, subheadline: content.subheadline },
   });
 
   if (guestName) {
-    sections.push({ id: "greeting", type: "greeting", enabled: true, data: {} });
+    sections.push({ id: "greeting", type: "greeting", enabled: true, motionPreset: "fade", data: {} });
   }
 
   sections.push({
     id: "welcome",
     type: "welcome",
     enabled: true,
+    motionPreset: "fade",
     data: { message: content.welcomeMessage },
   });
 
@@ -107,6 +132,7 @@ export function adaptLegacyContentToComposition(model: InviteViewModel): Invitat
       id: "date-time",
       type: "dateTime",
       enabled: true,
+      motionPreset: "rise",
       data: { eventDate },
     });
   }
@@ -115,6 +141,7 @@ export function adaptLegacyContentToComposition(model: InviteViewModel): Invitat
     id: "schedule",
     type: "schedule",
     enabled: true,
+    motionPreset: "stagger",
     data: {
       entries: content.eventDetails.map((d, i) => ({
         id: `schedule-${i}`,
@@ -130,6 +157,7 @@ export function adaptLegacyContentToComposition(model: InviteViewModel): Invitat
       id: "gallery",
       type: "gallery",
       enabled: true,
+      motionPreset: "petals",
       data: {
         items: content.suggestedPalette
           .concat(content.suggestedPalette)
@@ -140,17 +168,24 @@ export function adaptLegacyContentToComposition(model: InviteViewModel): Invitat
   }
 
   if (hasRsvp) {
-    sections.push({ id: "rsvp", type: "rsvp", enabled: true, data: {} });
+    sections.push({ id: "rsvp", type: "rsvp", enabled: true, motionPreset: "rise", data: {} });
   }
 
-  if (hasMusic) {
-    sections.push({ id: "music", type: "music", enabled: true, data: { label: song || "Our song" } });
+  if (hasMusic && musicSrc) {
+    sections.push({
+      id: "music",
+      type: "music",
+      enabled: true,
+      motionPreset: "none",
+      data: { src: musicSrc, title: song ?? null, credit: null, loop: false, startVolume: 0.6 },
+    });
   }
 
   sections.push({
     id: "closing",
     type: "closing",
     enabled: true,
+    motionPreset: "glow",
     data: { message: content.closingLine },
   });
 

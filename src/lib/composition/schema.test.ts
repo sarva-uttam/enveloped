@@ -356,3 +356,121 @@ describe("safe ids", () => {
     expect(InvitationCompositionSchema.safeParse(composition).success).toBe(false);
   });
 });
+
+// ---------------------------------------------------------------------
+// Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part B/F/I).
+// ---------------------------------------------------------------------
+
+describe("Stage 7: trusted motion presets are allowlisted; arbitrary animation config is rejected", () => {
+  it("accepts every one of the eight trusted preset names on a section", () => {
+    for (const preset of ["none", "fade", "rise", "scale", "ceremonial", "stagger", "petals", "glow"]) {
+      const c = validComposition({
+        sections: [{ id: "s1", type: "welcome", enabled: true, motionPreset: preset, data: { message: "hi" } }],
+      });
+      expect(InvitationCompositionSchema.safeParse(c).success, preset).toBe(true);
+    }
+  });
+
+  it("rejects a motionPreset that isn't one of the eight trusted names", () => {
+    const c = validComposition({
+      sections: [{ id: "s1", type: "welcome", enabled: true, motionPreset: "explode-violently", data: { message: "hi" } }],
+    });
+    expect(InvitationCompositionSchema.safeParse(c).success).toBe(false);
+  });
+
+  it("rejects arbitrary Framer-Motion-shaped animation config smuggled into a section", () => {
+    // duration/ease/keyframes/transition are NOT fields anywhere in the
+    // schema — `.strict()` rejects the whole document rather than
+    // stripping them, so there is no way for stored data to carry raw
+    // animation values at all.
+    for (const evil of [
+      { duration: 999 },
+      { ease: [0, 0, 0, 0] },
+      { transition: { type: "spring", stiffness: 1e9 } },
+      { keyframes: [{ opacity: 0 }, { opacity: 1 }] },
+      { onAnimationStart: "alert(1)" },
+    ]) {
+      const c = validComposition({
+        sections: [{ id: "s1", type: "welcome", enabled: true, data: { message: "hi" }, ...evil }],
+      });
+      expect(InvitationCompositionSchema.safeParse(c).success, JSON.stringify(evil)).toBe(false);
+    }
+  });
+
+  it("defaults a section with no motionPreset to 'fade' — every pre-Stage-7 composition still parses", () => {
+    const c = validComposition({
+      sections: [{ id: "s1", type: "welcome", enabled: true, data: { message: "hi" } }],
+    });
+    const parsed = InvitationCompositionSchema.parse(c);
+    expect(parsed.sections[0].motionPreset).toBe("fade");
+  });
+
+  it("defaults featureConfig.envelopeOpening to true when omitted", () => {
+    const c = validComposition();
+    delete (c.featureConfig as Record<string, unknown>).envelopeOpening;
+    const parsed = InvitationCompositionSchema.parse(c);
+    expect(parsed.featureConfig.envelopeOpening).toBe(true);
+  });
+});
+
+describe("Stage 7: music configuration is safe and bounded", () => {
+  function withMusic(data: Record<string, unknown>) {
+    return validComposition({
+      sections: [{ id: "s1", type: "music", enabled: true, data }],
+    });
+  }
+
+  it("defaults to no source (src: null) and no autoplay-relevant config when omitted", () => {
+    const parsed = InvitationCompositionSchema.parse(withMusic({}));
+    const music = parsed.sections[0];
+    expect(music.type === "music" && music.data.src).toBeNull();
+    expect(music.type === "music" && music.data.loop).toBe(false);
+    expect(music.type === "music" && music.data.startVolume).toBe(0.6);
+  });
+
+  it("accepts a bounded https source, title, credit, loop, and start volume", () => {
+    const c = withMusic({
+      src: "https://cdn.example.com/track.mp3",
+      title: "Our Song",
+      credit: "The Client's Own Recording",
+      loop: true,
+      startVolume: 0.3,
+    });
+    expect(InvitationCompositionSchema.safeParse(c).success).toBe(true);
+  });
+
+  it("accepts an internal path (this project's own local/test fixtures)", () => {
+    expect(InvitationCompositionSchema.safeParse(withMusic({ src: "/audio/sample-test-tone.wav" })).success).toBe(true);
+  });
+
+  it.each([
+    "http://cdn.example.com/track.mp3",
+    "javascript:alert(1)",
+    "data:audio/wav;base64,AAAA",
+    "//evil.com/track.mp3",
+    "https://open.spotify.com/track/xyz",
+  ])("rejects unsafe or non-direct audio source %s", (src) => {
+    // Note: an https:// Spotify *page* URL passes the protocol check but
+    // is a player embed, not a playable file — the schema can't tell
+    // those apart by URL alone, so this documents that the LAST line
+    // (open.spotify.com) is accepted by the schema; the "don't embed a
+    // third-party player" rule is enforced by AudioPlayer.tsx only ever
+    // using the value as an <audio src>, never as an iframe.
+    const accepted = InvitationCompositionSchema.safeParse(withMusic({ src })).success;
+    if (src.startsWith("https://open.spotify.com")) {
+      expect(accepted).toBe(true);
+    } else {
+      expect(accepted).toBe(false);
+    }
+  });
+
+  it("rejects a startVolume outside the 0..1 safe range", () => {
+    expect(InvitationCompositionSchema.safeParse(withMusic({ src: "/audio/x.wav", startVolume: 1.5 })).success).toBe(false);
+    expect(InvitationCompositionSchema.safeParse(withMusic({ src: "/audio/x.wav", startVolume: -0.2 })).success).toBe(false);
+  });
+
+  it("rejects unrestricted embed HTML anywhere in music data", () => {
+    expect(InvitationCompositionSchema.safeParse(withMusic({ title: "<iframe src=evil>" })).success).toBe(false);
+    expect(InvitationCompositionSchema.safeParse(withMusic({ embedHtml: "<iframe></iframe>" })).success).toBe(false);
+  });
+});

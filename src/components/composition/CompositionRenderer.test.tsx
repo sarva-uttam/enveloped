@@ -9,9 +9,15 @@ import { SECTION_TYPES, InvitationCompositionSchema, COMPOSITION_SCHEMA_VERSION,
  * direct-render + renderToStaticMarkup approach as the route-level
  * page.test.tsx files (no jsdom needed — see that file's own header
  * comment for the full reasoning, unchanged here).
+ *
+ * `baseComposition` takes loose DRAFT input (motionPreset/music-config
+ * fields may be omitted — Stage 7's schema defaults fill them in) and
+ * returns the fully-parsed, validated composition.
  */
 
-function baseComposition(overrides: Partial<InvitationComposition> = {}): InvitationComposition {
+type CompositionDraft = Record<string, unknown>;
+
+function baseComposition(overrides: CompositionDraft = {}): InvitationComposition {
   const draft = {
     schemaVersion: COMPOSITION_SCHEMA_VERSION,
     templateId: null,
@@ -164,5 +170,71 @@ describe("CompositionRenderer — stable section ordering", () => {
     const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
     expect(html.indexOf("FIRST")).toBeLessThan(html.indexOf("SECOND"));
     expect(html.indexOf("SECOND")).toBeLessThan(html.indexOf("THIRD"));
+  });
+});
+
+// ---------------------------------------------------------------------
+// Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part D/E/F/I).
+// ---------------------------------------------------------------------
+
+describe("CompositionRenderer — Stage 7 music section", () => {
+  it("renders NO music control when the music section has no src (every legacy/self-service invitation)", () => {
+    const composition = baseComposition({
+      sections: [{ id: "music", type: "music", enabled: true, data: {} }],
+    });
+    const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
+    expect(html).not.toContain("<audio");
+    expect(html).not.toContain("Play music");
+  });
+
+  it("renders a real <audio> element (no autoplay) when the music section carries a trusted src", () => {
+    const composition = baseComposition({
+      sections: [
+        { id: "music", type: "music", enabled: true, data: { src: "/audio/sample-test-tone.wav", title: "Sample" } },
+      ],
+    });
+    const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
+    expect(html).toContain('<audio');
+    expect(html).toContain('src="/audio/sample-test-tone.wav"');
+    expect(html).not.toContain("autoplay");
+  });
+});
+
+describe("CompositionRenderer — Stage 7 schedule stagger keeps semantics", () => {
+  it("the 'stagger' preset still renders a <dl> with real <dt>/<dd> pairs, in order", () => {
+    const composition = baseComposition({
+      sections: [
+        {
+          id: "schedule",
+          type: "schedule",
+          enabled: true,
+          motionPreset: "stagger",
+          data: {
+            entries: [
+              { id: "e1", eventTypeId: null, label: "Mehendi", value: "Friday 4pm" },
+              { id: "e2", eventTypeId: null, label: "Ceremony", value: "Saturday 11am" },
+            ],
+          },
+        },
+      ],
+    });
+    const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
+    expect(html).toContain("<dl");
+    expect(html).toContain("<dt");
+    expect(html).toContain("<dd");
+    expect(html).toContain("Mehendi");
+    expect(html).toContain("Friday 4pm");
+    expect(html.indexOf("Mehendi")).toBeLessThan(html.indexOf("Ceremony"));
+  });
+});
+
+describe("CompositionRenderer — Stage 7 atmospheric effect is decorative-only", () => {
+  it("the ambient effect layer is aria-hidden and pointer-events-none", () => {
+    const composition = baseComposition({
+      featureConfig: { motion: true, ambientMotif: "light", openingBurst: false },
+      designPackId: "hindu-wedding",
+    });
+    const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
+    expect(html).toMatch(/aria-hidden="true"[^>]*pointer-events-none|pointer-events-none[^>]*aria-hidden="true"/);
   });
 });

@@ -7,7 +7,7 @@ import { isValidSlug, buildOwnerInviteViewModel } from "@/lib/invite-view-model"
 import { buildOwnerManagementViewModel } from "@/lib/owner-invite-view-model";
 import { resolveComposition } from "@/lib/composition/resolve";
 import { OwnerManagementBar } from "./OwnerManagementBar";
-import { CompositionRenderer } from "@/components/composition/CompositionRenderer";
+import { InvitationExperience } from "@/components/experience/InvitationExperience";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
 
 /**
@@ -102,13 +102,14 @@ export default async function ManageInvitePage({ params }: Props) {
     <main>
       <OwnerManagementBar initial={buildOwnerManagementViewModel(invite)} />
       {composition ? (
-        <CompositionRenderer
+        <InvitationExperience
           composition={composition}
           inviteId={model.inviteId}
           guestId={model.guestId}
           guestName={model.guestName}
           song={model.song}
           canRsvp={model.isPublished}
+          mode="review"
         />
       ) : (
         <UnavailableInvite homeHref="/dashboard" homeLabel="Back to my invites" />

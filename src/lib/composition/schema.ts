@@ -98,6 +98,33 @@ const safeUrl = z
   .max(LIMITS.shortText)
   .refine(isSafeUrl, { message: "must be an internal path or an http(s)/mailto/tel URL" });
 
+/**
+ * Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part F) — stricter
+ * than `isSafeUrl()` above: audio is fetched and played automatically
+ * by the browser the moment a guest presses play, with no further
+ * per-request review, so this narrows the allowlist to `https:` only
+ * (never plain `http:`, which `safeUrl` still allows for a map link a
+ * human clicks through) plus the same internal-relative-path
+ * allowance — used for this project's own local/test fixtures (see
+ * public/audio/README.md), never a real production track, which
+ * should always be an external, trusted HTTPS source.
+ */
+function isSafeAudioUrl(value: string): boolean {
+  if (value.startsWith("/") && !value.startsWith("//")) return true; // internal path (local/test fixtures only)
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+const safeAudioUrl = z
+  .string()
+  .trim()
+  .min(1)
+  .max(LIMITS.shortText)
+  .refine(isSafeAudioUrl, { message: "must be an internal path or an https:// URL" });
+
 const HEX_COLOR_PATTERN = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3}([0-9a-fA-F]{2})?)?$/;
 const hexColor = z.string().regex(HEX_COLOR_PATTERN, { message: "must be a hex color" });
 
@@ -135,17 +162,40 @@ const dirEnum = z.enum(["ltr", "rtl", "auto"]);
 // motifEnum/motionEnum here to validate against — only ambientMotifEnum.
 const ambientMotifEnum = z.enum(["none", "light", "full"]);
 
+/**
+ * Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part B) — the
+ * TRUSTED motion preset vocabulary. A section (or the envelope-opening
+ * sequence) only ever NAMES one of these eight fixed identifiers;
+ * it never supplies actual Framer Motion configuration (durations,
+ * easings, transform values) itself — "do not accept arbitrary Framer
+ * Motion configuration from stored composition data." Each name is
+ * resolved to a real, hand-authored animation definition only by
+ * trusted application code (src/lib/motion/presets.ts), the same
+ * closed-registry pattern already used for palette/motif/pack ids.
+ * `"none"` means exactly that: render the final state immediately, no
+ * animation at all (this is also what every preset degrades to when the
+ * viewer prefers reduced motion — see src/lib/motion/useReducedMotion.ts,
+ * checked by AnimateIn.tsx / StaggeredSchedule.tsx / EnvelopeOpening.tsx /
+ * AtmosphericEffect.tsx).
+ */
+export const MOTION_PRESETS = ["none", "fade", "rise", "scale", "ceremonial", "stagger", "petals", "glow"] as const;
+export type MotionPresetId = (typeof MOTION_PRESETS)[number];
+const motionPresetEnum = z.enum(MOTION_PRESETS);
+
 // ---------------------------------------------------------------------
 // Trusted section types — Part B's starting vocabulary. Each is a
 // discriminated-union member: a stable `type` literal (the ONLY thing
 // the renderer registry ever keys off), `id` (stable, author-assigned),
 // `enabled` (explicit on/off — a disabled section is validated the same
-// as an enabled one, but never rendered), and a `data` payload specific
-// to that type. `.strict()` throughout — an extra key anywhere in any
-// section fails validation, it is never silently dropped.
+// as an enabled one, but never rendered), a `motionPreset` (Stage 7 —
+// which TRUSTED reveal preset this section uses; defaults to "fade" so
+// every pre-Stage-7 composition — none of which ever set this field —
+// parses unchanged), and a `data` payload specific to that type.
+// `.strict()` throughout — an extra key anywhere in any section fails
+// validation, it is never silently dropped.
 // ---------------------------------------------------------------------
 
-const SectionBase = { id: safeSlug, enabled: z.boolean() };
+const SectionBase = { id: safeSlug, enabled: z.boolean(), motionPreset: motionPresetEnum.default("fade") };
 
 const OpeningSection = z
   .object({
@@ -236,8 +286,13 @@ const DateTimeSection = z
     data: z
       .object({
         // ISO 8601 — validated as a real, parseable date rather than an
-        // arbitrary string, since this drives a live countdown.
-        eventDate: z.iso.datetime({ offset: true }).or(z.iso.datetime()),
+        // arbitrary string, since this drives a live countdown. Accepts
+        // a `Z`, a numeric offset, OR a bare local wall-clock time
+        // (`2027-03-06T17:00:00`) — the last is what the survey flow and
+        // the demo fixtures actually produce (an event's local time,
+        // with no zone attached), so rejecting it would silently break
+        // every real self-service invitation with an event date.
+        eventDate: z.iso.datetime({ offset: true, local: true }),
         label: safeText(80).optional(),
       })
       .strict(),
@@ -302,14 +357,43 @@ const RsvpSection = z
   })
   .strict();
 
+/**
+ * Stage 7 (Part F) — real, safe music configuration. Every field here
+ * is a plain, bounded, validated value — never unrestricted embed HTML,
+ * never a raw `<audio>`/`<iframe>` tag, never a third-party embed URL
+ * (Spotify/Apple Music/YouTube players are exactly the kind of
+ * unrestricted embed this schema forbids; only a direct, playable
+ * audio file URL is accepted). `src: null` (the default — every
+ * pre-Stage-7 composition, which never set this field, parses with no
+ * source at all) means "no track" — src/components/experience/AudioPlayer.tsx
+ * renders NOTHING in that case, never a fake/disabled-looking control.
+ * `label` (pre-Stage-7) is kept for backward compatibility with
+ * already-adapted legacy content; `title`/`credit` are the Stage 7
+ * additions actually shown by the real player.
+ */
 const MusicSection = z
   .object({
     ...SectionBase,
     type: z.literal("music"),
-    // The actual song title is sourced from the invitation's own record
-    // at render time (the same field the pre-Stage-6 system already
-    // used), not stored redundantly inside the composition.
-    data: z.object({ label: safeText(80).optional() }).strict(),
+    data: z
+      .object({
+        label: safeText(80).optional(),
+        src: safeAudioUrl.nullable().default(null),
+        title: safeText(120).nullable().default(null),
+        /** Artist/rights-holder credit — required by this project's own
+         *  convention (not by the schema itself) whenever `src` is set
+         *  to a real external track, since the owner/client is the one
+         *  attesting they hold the rights to use it; not enforced here
+         *  as a hard constraint because a trusted, license-free local
+         *  test fixture (see public/audio/README.md) has nothing
+         *  meaningful to credit. */
+        credit: safeText(120).nullable().default(null),
+        loop: z.boolean().default(false),
+        /** A bounded, safe starting volume — never full 1.0 by default,
+         *  never negative, never unbounded. */
+        startVolume: z.number().min(0).max(1).default(0.6),
+      })
+      .strict(),
   })
   .strict();
 
@@ -381,6 +465,15 @@ const FeatureConfigSchema = z
     motion: z.boolean(),
     ambientMotif: ambientMotifEnum,
     openingBurst: z.boolean(),
+    /** Stage 7 — whether the envelope-opening sequence
+     *  (src/components/experience/EnvelopeOpening.tsx) runs at all for
+     *  this invitation. Defaults to true so pre-Stage-7 compositions
+     *  (none of which ever set this) opt in automatically; the
+     *  experience shell still additionally gates it on `motion` (an
+     *  envelope never appears for a no-motion composition) and on the
+     *  viewer's own reduced-motion preference regardless of either
+     *  flag — see EnvelopeOpening.tsx's own comment. */
+    envelopeOpening: z.boolean().default(true),
   })
   .strict();
 

@@ -4,7 +4,7 @@ import { buildPreviewInviteViewModel } from "@/lib/invite-view-model";
 import { isValidPreviewTokenFormat } from "@/lib/preview-tokens.server";
 import { resolveComposition } from "@/lib/composition/resolve";
 import { PreviewBanner } from "@/components/invite/PreviewBanner";
-import { CompositionRenderer } from "@/components/composition/CompositionRenderer";
+import { InvitationExperience } from "@/components/experience/InvitationExperience";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
 
 /**
@@ -99,13 +99,14 @@ export default async function PreviewPage({ params }: Props) {
               prop, so it cannot appear in serialized client-component
               props even by accident). */}
           <PreviewBanner isPublished={model.isPublished} />
-          <CompositionRenderer
+          <InvitationExperience
             composition={composition}
             inviteId={model.inviteId}
             guestId={model.guestId}
             guestName={model.guestName}
             song={model.song}
             canRsvp={model.isPublished}
+            mode="review"
           />
         </>
       ) : (

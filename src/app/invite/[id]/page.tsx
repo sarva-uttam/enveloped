@@ -4,7 +4,7 @@ import { DEMO_INVITES } from "@/lib/demo-invites";
 import { getGuestEntryServer, getPublicInviteServer } from "@/lib/storage.server";
 import { buildDemoInviteViewModel, buildPublicInviteViewModel, isValidSlug } from "@/lib/invite-view-model";
 import { resolveComposition } from "@/lib/composition/resolve";
-import { CompositionRenderer } from "@/components/composition/CompositionRenderer";
+import { InvitationExperience } from "@/components/experience/InvitationExperience";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
 
 /**
@@ -124,15 +124,16 @@ export default async function InvitePage({ params, searchParams }: Props) {
 
   const demo = DEMO_INVITES[id];
 
-  // rawComposition stays null for a demo invite (demos have no database
-  // row at all, so there is nothing to read) — resolveComposition()
-  // treats that exactly like any other composition-less invitation and
-  // falls back to the legacy adapter, which is what a demo invite
-  // always used anyway.
+  // Most demos have no composition of their own — resolveComposition()
+  // falls back to the legacy adapter for them, exactly as before Stage
+  // 6. The one exception (Stage 7, Part J) is `demo-hindu`, which
+  // carries a real, pre-authored `composition` so the hindu-wedding
+  // cultural pack has something to render for visual review; when
+  // present, it's fed straight through, the same as a database row's.
   let model, rawComposition: unknown;
   if (demo) {
     model = buildDemoInviteViewModel(demo);
-    rawComposition = null;
+    rawComposition = demo.composition ?? null;
   } else {
     const { publicInvite, guestEntry } = await loadInviteData(id, guest ?? null);
     model = buildPublicInviteViewModel({ publicInvite, guestEntry });
@@ -144,13 +145,14 @@ export default async function InvitePage({ params, searchParams }: Props) {
   return (
     <main>
       {composition && model ? (
-        <CompositionRenderer
+        <InvitationExperience
           composition={composition}
           inviteId={model.inviteId}
           guestId={model.guestId}
           guestName={model.guestName}
           song={model.song}
           canRsvp={model.isPublished}
+          mode="guest"
         />
       ) : (
         <UnavailableInvite />

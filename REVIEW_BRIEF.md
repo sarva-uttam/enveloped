@@ -169,6 +169,23 @@ or — for every pre-existing invitation — a legacy adapter synthesizing
 one from the old `content` shape on every request (deliberately
 temporary, see `legacy-adapter.ts`'s own header).
 
+## Update — 2026-09-10: Stage 7 adds the interactive experience layer
+
+No database change, no migration. The composition schema gained
+BACKWARD-COMPATIBLE OPTIONAL fields only (a per-section `motionPreset`
+naming one of eight trusted presets, `featureConfig.envelopeOpening`,
+and real `music` config — `src`/`title`/`credit`/`loop`/`startVolume`).
+`InvitationExperience.tsx` (a server component) wraps the unchanged
+`CompositionRenderer` with a client-only envelope-opening overlay and a
+`prefers-reduced-motion`-aware motion layer. The old fake `MusicToggle`
+is deleted and replaced by a real `<audio>`-backed `AudioPlayer` that
+renders nothing when an invitation has no track. Two dev-only test
+deps added (`jsdom` + `@testing-library/react`). A synthesized,
+license-free `public/audio/sample-test-tone.wav` is committed as a test
+fixture. **New scrutiny item — see #19 below.** **The visual result is
+explicitly NOT approved** — it is a technical foundation for owner
+visual review.
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -617,6 +634,46 @@ temporary, see `legacy-adapter.ts`'s own header).
     equivalent — grep for it across `src/components/composition/`; (g)
     both new migrations are NOT yet applied to the live project —
     confirm they stay that way.
+19. **Interactive experience layer** (Stage 7, `src/components/
+    experience/*`, `src/lib/motion/*`, `src/components/composition/
+    CompositionRenderer.tsx`/`sections.tsx`, `src/components/invite/
+    AnimateIn.tsx`, `src/lib/composition/schema.ts`, `src/app/
+    globals.css`, `public/audio/`) — no database change, but worth
+    confirming independently: (a) the composition wording still lands
+    in the server-rendered HTML with JS disabled, and the guest reaches
+    the full invitation (not a stuck opaque overlay) — the envelope
+    overlay is rendered ONLY client-side via `useIsClient()`, never in
+    SSR output; view-source or curl `/invite/demo-hindu` and confirm;
+    (b) `prefers-reduced-motion: reduce` genuinely bypasses the
+    envelope entrance, petals/glow effects, and scroll-reveal motion —
+    emulate it in devtools and reload; content and every control must
+    remain; (c) motion is driven ONLY by the eight-name `MOTION_PRESETS`
+    `z.enum` — arbitrary Framer Motion config (`duration`, `ease`,
+    `keyframes`, `transition`, event handlers) in a stored section is
+    rejected by `schema.ts`'s `.strict()`, proven in `schema.test.ts`
+    but worth a hand payload; (d) the `AudioPlayer` never calls
+    `audio.play()` except from the click handler, has no `autoplay`
+    attribute, uses `preload="none"`, and renders NOTHING (not a fake
+    control) when a section has no `src`; grep the component and check
+    a no-music demo; (e) `music.src` only accepts an internal path or
+    an `https:` URL — `http:`/`javascript:`/`data:`/`//host` are
+    rejected by `safeAudioUrl` (note: `https://open.spotify.com/...`
+    passes the URL check — it is the `<audio>` element, not the schema,
+    that makes an embed impossible; documented in `schema.test.ts`);
+    (f) `public/audio/sample-test-tone.wav` is a synthesized 432 Hz
+    sine tone (see `public/audio/README.md`), not a recording or
+    sample — it exists only as a test/demo fixture and carries no
+    third-party rights; (g) decorative effect layers are `aria-hidden`,
+    `pointer-events: none`, bounded in count, and paused via
+    `data-effects-paused` on `visibilitychange`; (h) first-load JS for
+    `/invite/[id]` and `/preview/[token]` is still byte-identical, and
+    `/dashboard/invite/[id]` is still the only route with the
+    PayPal/owner chunk (Stage 7 adds ~14 KB to all three); (i) the
+    preview token still never appears in client props or HTML on
+    `/preview/[token]` — `InvitationExperience` is a server component
+    and passes only `mode="review"`; (j) **the visual design is NOT
+    approved** — do not flag "looks unfinished" as a defect; that is
+    the explicit Stage 8 scope.
 
 ## What NOT to flag as issues
 

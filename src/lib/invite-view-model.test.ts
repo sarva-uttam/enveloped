@@ -100,6 +100,7 @@ describe("buildPublicInviteViewModel", () => {
       "content",
       "eventDate",
       "song",
+      "musicSrc",
       "isDemo",
       "isPublished",
     ]);

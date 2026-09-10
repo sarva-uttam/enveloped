@@ -223,6 +223,20 @@ describe("InvitePage — server-rendered public content", () => {
     expect(getPublicInviteServer).not.toHaveBeenCalled();
     expect(html.length).toBeGreaterThan(0);
   });
+
+  it("EVERY demo invite renders its actual content — not the 'unavailable' fallback (guards against a schema/adapter regression that silently breaks demos, e.g. a too-strict eventDate format)", async () => {
+    const { DEMO_INVITES } = await import("@/lib/demo-invites");
+    for (const id of Object.keys(DEMO_INVITES)) {
+      const html = renderToStaticMarkup(await InvitePage(makeProps(id)));
+      expect(html, `${id} should render`).not.toContain("This invitation isn&#x27;t available");
+      const demo = DEMO_INVITES[id];
+      const headline = demo.composition
+        ? (demo.composition.sections.find((s) => s.type === "opening") as { data: { headline: string } }).data.headline
+        : demo.content.headline;
+      // headline text (& is escaped in static markup)
+      expect(html, `${id} should show its headline`).toContain(headline.replace(/&/g, "&amp;"));
+    }
+  });
 });
 
 describe("generateMetadata — sanitized, leak-free", () => {

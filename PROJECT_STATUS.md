@@ -2168,6 +2168,329 @@ adapter indefinitely — reducing, invitation by invitation, how much
 rendering permanently depends on Part F's deliberately-temporary code
 path.
 
+## Stage 7 — interactive invitation experience layer (2026-09-10)
+
+A production-quality technical foundation for invitation motion: an
+envelope-opening entrance, trusted pack-specific atmospheric effects,
+scroll-reveal ("scrollymation"), and — for the first time — REAL,
+working music playback. No database change and no new migration (the
+composition schema gained backward-compatible OPTIONAL fields only). No
+new large dependency (Framer Motion and canvas-confetti were already in
+`package.json` since Stage 4; the only additions are two dev-only test
+packages — `jsdom` + `@testing-library/react`). **The visual result is
+NOT finally approved** — see "Visual review" and "Remaining design
+issues" below.
+
+### Experience architecture
+
+```
+route (server) → resolveComposition() → InvitationExperience (server shell)
+                                              │
+                          ┌───────────────────┴───────────────────┐
+                          ▼                                       ▼
+                   EnvelopeOpening (client)              CompositionRenderer (server)
+                   — a client-only overlay ON TOP        — unchanged content authority;
+                     of, never instead of, the             walks composition.sections,
+                     already-server-rendered content       dispatches each to its
+                                                           registered component
+```
+
+`src/components/experience/InvitationExperience.tsx` is the reusable
+shell (Part G) — a plain SERVER component that wraps the unchanged
+`CompositionRenderer` with the envelope entrance and the motion layer
+"WITHOUT changing what the renderer decides to render — the composition
+renderer must remain the content authority. The experience shell
+controls presentation and progression only." All three surfaces
+(public `/invite/[id]`, private preview `/preview/[token]`,
+owner-management `/dashboard/invite/[id]`) render through it identically;
+each passes its own already-computed `canRsvp` (Stage 5's publication
+gate, unchanged) and a `mode` — `"guest"` (public) shows the full
+envelope ceremony, `"review"` (preview + owner) skips the envelope
+overlay entirely so the reviewer gets content and its own indicator
+immediately and on every navigation (scrollymation, atmospheric
+effects, and real audio still apply in review mode). The preview
+route's own `PreviewBanner` and the owner route's `OwnerManagementBar`
+are rendered by those routes OUTSIDE this shell, exactly as before —
+the shell never imports or references either, so no owner-management or
+PayPal code follows the shell onto the public bundle.
+
+### Envelope sequence
+
+`src/components/experience/EnvelopeOpening.tsx` — an entirely ORIGINAL,
+CSS/SVG-shaped component (a rectangle body + a `clip-path` triangular
+flap + a Lucide mail glyph — no imported artwork, no copied markup, no
+proprietary asset). Sequence (Part C's own steps): the envelope enters
+with an upward slide and a slight 3D `rotateX` settle ("enters and
+settles" / "gentle 3D rotation... perspective movement"); on
+activation the flap rotates open around its top edge and the card
+slides up out of it; `OpeningBurst` (canvas-confetti, when
+`featureConfig.openingBurst`) fires as the atmospheric reveal moment;
+the whole overlay then fades out and hands focus to the real page.
+
+- **Progressive enhancement** — the overlay is rendered ONLY
+  client-side, after hydration (a `useIsClient()` gate). The
+  server-rendered HTML and the pre-hydration DOM contain nothing but
+  the real invitation content — fully visible, fully interactive, no
+  overlay, no `inert`. "No blank screen before hydration / no content
+  loss without JavaScript" is satisfied structurally: if JS never runs,
+  the guest simply gets the invitation directly, exactly as before
+  Stage 7. The disclosed trade-off is a brief (typically sub-second)
+  glimpse of content before the envelope fades in over it — see
+  "Remaining design issues."
+- **Keyboard + touch** — the envelope is a real `<button>` (Enter/Space
+  activate it natively; tap/click work the same). A separate "Skip
+  animation" `<button>` immediately completes the sequence.
+- **Focus is never trapped** — no focus-trap library, no
+  `role="dialog"`. The content underneath gets the standard `inert`
+  attribute only while the overlay is up (keeps a keyboard/AT user from
+  tabbing into covered content) and it is lifted the instant the
+  overlay is done. Once "done", the overlay is removed from the DOM
+  entirely, so it can never intercept a pointer event or hold focus.
+- **Session replay rule** — `sessionStorage` remembers "opened this
+  session"; a second page view in the same session skips the overlay
+  but offers a small, unobtrusive "Replay opening" control (bottom-left,
+  mirroring the audio control). Reduced-motion viewers get neither the
+  overlay nor the replay control.
+- **Failure fallback** — a 6-second safety timeout force-resolves the
+  overlay to "done" if an animation callback ever fails to fire, so the
+  invitation can never end up permanently behind it.
+
+### Motion and reduced-motion system
+
+`src/lib/motion/` — one small, testable set of primitives:
+- `useReducedMotion.ts` — the ONE place `prefers-reduced-motion` is
+  read, via `useSyncExternalStore` (no hydration mismatch, no
+  setState-in-an-effect). Used by `AnimateIn`, `EnvelopeOpening`,
+  `AtmosphericEffect`, `StaggeredSchedule`.
+- `useIsClient.ts` — same `useSyncExternalStore` shape; the client-only
+  gate the envelope overlay uses.
+- `presets.ts` — `MOTION_PRESET_DEFINITIONS`, the trusted resolution
+  from a stored `motionPreset` NAME to a real, hand-authored Framer
+  Motion definition. **Stored composition data can only ever NAME one
+  of the eight presets** (`MOTION_PRESETS` in `schema.ts`:
+  `none` / `fade` / `rise` / `scale` / `ceremonial` / `stagger` /
+  `petals` / `glow`) — the actual durations, easings, and transform
+  values live only here, in trusted code. "Do not accept arbitrary
+  Framer Motion configuration from stored composition data" holds
+  structurally: there is no schema field anywhere a composition could
+  put a duration or easing value even if it wanted to (proven by
+  `schema.test.ts` — `duration`/`ease`/`transition`/`keyframes`/
+  `onAnimationStart` all rejected by `.strict()`). Every preset uses
+  only opacity/transform properties (compositor-friendly, no layout).
+
+`AnimateIn.tsx` (the Stage 4 scroll-reveal wrapper) now takes a
+`preset` and renders a plain, immediately-visible `<div>` — no
+animation at all — when ANY of three independent conditions holds: the
+composition has motion off (`featureConfig.motion === false`, e.g.
+Bronze tier), the section's preset is `"none"`, or the viewer prefers
+reduced motion. `CompositionRenderer` additionally collapses EVERY
+section's effective preset to `"none"` when the composition itself has
+motion off, in one place, so a no-motion composition is uniformly still
+(the schedule's own per-entry stagger included).
+
+**Reduced-motion behavior, verified:** the envelope is bypassed
+entirely; atmospheric effects render `null` (not a slower version —
+nothing); `OpeningBurst` never fires; every scroll-reveal collapses to
+an immediate render; `prefers-reduced-motion` also disables the
+plain-CSS decorative animations (`animate-drift`, `animate-glow-pulse`)
+via a global `globals.css` rule, independent of any JS. Every piece of
+information and every control remains present and functional. The
+"Skip animation" control is always available during the opening for
+anyone who didn't set the OS preference but still wants to bypass it.
+
+### Pack-specific atmospheric effects
+
+`src/components/experience/AtmosphericEffect.tsx` (Part D) — selected
+ONLY by the trusted, already-Zod-validated `designPackId` (never a raw
+string used to pick a component/class/URL) plus the composition's own
+`featureConfig.ambientMotif` intensity:
+- `hindu-wedding` → drifting petal glyphs (reusing `FloatingMotif`'s
+  existing `drift` animation) — "flower petals."
+- `neutral-classic` → a few large, slow-pulsing, heavily-blurred
+  highlights, NO particles — "soft light / subtle paper glow."
+
+Neither portrays a sacred figure, invents religious text, or implies a
+single ritual is universal — both are purely ambient, non-
+representational decoration. No confetti overload: `full` intensity
+still caps at the existing 20-element bound, `light` at 10 (the Stage
+4/6 numbers, never increased). Every effect is `aria-hidden`,
+`pointer-events-none`, renders nothing under reduced motion, PAUSES
+(via `data-effects-paused` + a `globals.css` rule keyed on the Page
+Visibility API, not a scroll/focus guess) when the page is hidden, and
+removes its listener on unmount.
+
+### Scrollymation
+
+`AnimateIn.tsx` uses Framer Motion's `whileInView` with `once: true`
+and a `-60px` viewport margin — no scroll hijacking, no forced scroll
+position, each section animates a single time then stays put. Document
+order and heading hierarchy are untouched (the reveal is a wrapper
+around already-rendered content, the same children-as-server-content
+pattern since Stage 4). The `stagger` preset additionally routes the
+schedule section through `StaggeredSchedule.tsx`, which renders the
+IDENTICAL `<dl>`/`<dt>`/`<dd>` structure with a short, fixed per-entry
+interval — and falls back to the plain `<dl>` under reduced motion.
+The legacy adapter assigns a deliberate preset per section type
+(`ceremonial` opening, `fade` welcome/greeting, `rise` dateTime/rsvp,
+`stagger` schedule, `petals` gallery, `glow` closing) — restrained
+sequencing for exactly the sections Part E names.
+
+### Real music implementation
+
+`src/components/experience/AudioPlayer.tsx` (Part F) replaces the
+pre-Stage-7 `MusicToggle` (deleted), which had no `<audio>` element at
+all — its "Now playing" state was fake.
+
+- A real `<audio>` element with NO `autoplay` attribute; `audio.play()`
+  is called from exactly ONE place — inside the button's own `onClick`
+  handler — so playback can only ever begin from a direct, current
+  click/tap/keyboard activation. Opening the envelope does NOT start
+  music (a deliberate choice: a first-time visitor reads "tap to open"
+  as "reveal the invitation", not "start music"; the safer, clearer
+  "Play music" control Part F itself names as preferred).
+- `preload="none"` — no network request for the file until the guest
+  presses play.
+- States handled: idle / loading / playing / paused / ended / error.
+  `aria-pressed` reflects the real playing state; the accessible label
+  reflects the current action and the track title. On an audio error
+  the control shows "Music unavailable" and disables itself — it never
+  throws.
+- **Renders NOTHING when there is no `src`** — "do not render a fake
+  control when music is unavailable." Every legacy/self-service
+  invitation has `music.src: null` (the old always-fake toggle is gone
+  for them — see "Remaining design issues").
+- `loop` only when the composition explicitly sets it; `startVolume` is
+  a bounded 0–1 value (default 0.6, never full).
+- The schema accepts only a direct, playable audio URL: `https:` only,
+  or an internal path for this project's own local/test fixtures
+  (`safeAudioUrl` — stricter than the general `safeUrl`). Never
+  `javascript:`/`data:`, never a Spotify/Apple/YouTube player embed
+  (only ever used as an `<audio src>`, never an `<iframe>`), never
+  unrestricted embed HTML (rejected by `.strict()`).
+- **Test fixture:** `public/audio/sample-test-tone.wav` — a fully
+  synthesized 2-second 432 Hz sine tone with a fade envelope,
+  generated programmatically (no recording, no sample, no copyrighted
+  source). Used only by `demo-platinum`/`demo-hindu` and this project's
+  tests. **Licensing responsibility:** a real invitation's music must
+  be a track the owner/client genuinely holds the rights to use — this
+  project provides the player, never the music.
+
+### Server/client boundary
+
+`CompositionRenderer` and `InvitationExperience` are both plain SERVER
+components — no "use client". The client islands are: `EnvelopeOpening`,
+`AnimateIn`, `AtmosphericEffect`, `AudioPlayer`, `StaggeredSchedule`,
+plus the unchanged `Countdown`/`RsvpForm`/`OpeningBurst`. The
+invitation's actual wording is in the server-rendered HTML before any
+hydration (Stage 4's benefit, preserved — verified by
+`InvitationExperience.test.tsx` and every route's `page.test.tsx`).
+Preview-token / private-data isolation is unchanged: the token is
+resolved to a sanitized composition server-side and never reaches a
+client prop; `canRsvp` remains the publication gate; no
+owner-management or PayPal code is on the public or preview bundle.
+
+### Mobile / performance measurements
+
+Verified against the production build:
+
+| Route | Stage 6 first-load JS | Stage 7 first-load JS | Δ |
+|---|---|---|---|
+| `/invite/[id]` | 865,689 B / 9 chunks | 879,651 B / 9 chunks | **+13,962 B (~13.6 KB uncompressed, ~4–5 KB gzipped)** |
+| `/preview/[token]` | 865,689 B / 9 chunks | 879,651 B / 9 chunks | identical to `/invite/[id]` (still byte-for-byte) |
+| `/dashboard/invite/[id]` | 875,304 B / 10 chunks | 889,362 B / 10 chunks | still the ONLY route carrying the PayPal/owner chunk |
+
+The ~13.6 KB is the entire envelope + motion + atmospheric + audio +
+scrollymation system — no new dependency, just this project's own new
+component code plus slightly more of the already-bundled Framer Motion
+(`AnimatePresence`) being used. Owner/PayPal isolation is preserved:
+grepping every chunk in `.next/static/chunks/` for `PaywallPanel` /
+`sandbox.paypal.com` / `OwnerManagementBar` returns exactly ONE file,
+the `/dashboard/invite/[id]`-only chunk. All major motion uses CSS
+transforms/opacity; every timer and listener is cleaned up on unmount;
+particle counts are bounded; effects pause when the page is hidden;
+the meaningful HTML is never delayed (Stage 4 SSR benefit intact).
+Mobile (390 px) checked visually — no horizontal overflow; the
+countdown's four cells fit; the two fixed bottom controls (replay +
+audio) are close on the narrowest screens (noted below).
+
+### Visual review
+
+**Live pixel screenshots could not be captured in this sandboxed
+environment** — headless Chromium needs system libraries (`libnspr4`,
+`libnss3`, `libasound2`, …) that require `sudo`/`apt` this environment
+doesn't grant. They were worked around by side-loading the `.deb`
+payloads into a temporary `LD_LIBRARY_PATH` (not committed), which was
+enough to drive Playwright for a one-off capture — 13 screenshots at:
+`/tmp/claude-1000/…/scratchpad/stage7-shots/` (relayed to the owner
+separately). Deterministic states captured: envelope waiting
+(desktop + mobile), the reveal moment, the first section, the
+mid-page schedule, the venue/RSVP area, a mobile scroll, the
+reduced-motion result (top + schedule), the neutral-classic
+no-music variant, and the second-view replay control. The owner
+should still review locally: `npm run dev`, then
+`/invite/demo-hindu` (hindu-wedding pack, petals, music),
+`/invite/demo-platinum` (neutral-classic, music, mobile), and
+`/invite/demo-gold` (neutral-classic, NO music), toggling the OS
+reduced-motion setting and resizing to a phone width.
+
+### Remaining design issues / owner decisions
+
+- **NOT visually approved.** The envelope shape, timing, palette use,
+  and the confetti particle style are a technical-foundation first
+  pass, not a finished design. The envelope flap triangle in
+  particular reads as a bit sharp/large; the ceremonial-preset opening
+  section briefly overlaps the eyebrow badge and headline mid-animation;
+  the canvas-confetti default particle shapes look generic.
+- **The old "Play our song" toggle is GONE for every existing
+  invitation.** Legacy/self-service invitations never stored a playable
+  audio URL, so the real `AudioPlayer` correctly renders nothing for
+  them. This is the intended Part F behavior ("do not render a fake
+  control when music is unavailable"), but it is a visible change for
+  anyone testing with existing data. Real music arrives only once a
+  composition carries a genuine `music.src` (Stage 8+ authoring).
+- **Brief content flash before the envelope.** On a fast connection the
+  real content is visible for a fraction of a second before the
+  client-only overlay fades in over it — the price of doing progressive
+  enhancement correctly (no SSR'd opaque overlay that could get stuck,
+  no hydration mismatch). Could be softened with a faster overlay
+  fade-in or an inline pre-hydration script; deliberately left as-is
+  for owner review.
+- **Two fixed bottom controls on mobile.** The "Replay opening" and
+  "Play music" pills sit at opposite bottom corners and get close on
+  the narrowest phones. Fine today; a future pass may consolidate them.
+- **`stagger` today animates the schedule's entries, not other
+  sections.** The preset is registered and validated for every section,
+  but only `ScheduleSection` implements true per-entry staggering;
+  other section types given that preset fall back to its block-level
+  definition.
+- **Bug fixed in passing:** every non-Bronze DEMO invite
+  (`demo-silver`/`demo-gold`/`demo-platinum`) had been silently
+  rendering the "unavailable" fallback since Stage 6, because the
+  composition schema's `dateTime.eventDate` required a timezone and the
+  demo fixtures (like the real survey flow) use a bare local
+  wall-clock time. `schema.ts` now accepts `z.iso.datetime({ offset:
+  true, local: true })`, and `page.test.tsx` has a new test that
+  renders EVERY demo end-to-end so this class of regression is caught.
+
+### Confirmation production was untouched
+
+No migration authored or applied (no database change at all this
+stage). No production data/user/config modified, `.env.local`
+untouched, no secrets printed, no real preview links created, no
+deployment, no merge to `master`, no pull request. No copyrighted
+audio or copied commercial asset added (`sample-test-tone.wav` is a
+programmatically synthesized sine tone).
+
+### Recommended Stage 8 scope
+
+Visual design refinement of everything this stage stubbed: a finished
+envelope treatment (shape, paper texture, wax-seal or monogram, timing
+curves), the real per-pack atmospheric art direction (petal shapes,
+diya glow), reduced-motion-aware but still elegant fallbacks, and the
+finished section layouts — followed by (or alongside) the composition-
+authoring control and concierge approval workflow Stages 5–7 have each
+deferred.
+
 ## Key files
 
 | Area | Path |
@@ -2198,6 +2521,10 @@ path.
 | Event taxonomy migration (Stage 6) | `supabase/migrations/20260910130000_wedding_event_taxonomy.sql` |
 | Composition authoring/protection migration (Stage 6) | `supabase/migrations/20260910140000_composition_authoring.sql` |
 | Stage 6 tests | `src/lib/composition/schema.test.ts`, `legacy-adapter.test.ts`, `cultural-packs.test.ts`, `event-types.test.ts`, `src/components/composition/CompositionRenderer.test.tsx`, `src/lib/composition-admin.server.test.ts`, `tests/integration/wedding-event-taxonomy.test.ts`, `tests/integration/composition-authoring.test.ts` |
+| Experience shell + envelope (Stage 7) | `src/components/experience/InvitationExperience.tsx`, `EnvelopeOpening.tsx`, `AtmosphericEffect.tsx`, `AudioPlayer.tsx`, `StaggeredSchedule.tsx` |
+| Motion system (Stage 7) | `src/lib/motion/useReducedMotion.ts`, `useIsClient.ts`, `presets.ts`; `src/components/invite/AnimateIn.tsx` (extended); `src/app/globals.css` (reduced-motion + `scripting: none` + visibility-pause rules) |
+| Audio test fixture (Stage 7) | `public/audio/sample-test-tone.wav` (synthesized, license-free) + `public/audio/README.md` |
+| Stage 7 tests | `src/components/experience/*.test.tsx` (jsdom), `src/lib/motion/presets.test.ts`, plus Stage 7 blocks appended to `src/lib/composition/schema.test.ts` / `CompositionRenderer.test.tsx` / `legacy-adapter.test.ts` / `src/app/invite/[id]/page.test.tsx` |
 
 ## Repo
 

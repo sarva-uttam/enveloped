@@ -146,6 +146,22 @@ Both of this stage's migrations are, like every stage since Stage 2,
 verified only against the local Supabase stack and not yet applied to
 the live project.
 
+Stage 7 adds the interactive experience layer on top of that renderer
+(no database change): an original CSS/SVG envelope-opening entrance, a
+central `prefers-reduced-motion`-aware motion system built from a
+closed set of eight trusted animation presets (never arbitrary Framer
+Motion config from stored data), pack-specific ambient effects,
+scroll-reveal sequencing, and — replacing the previously fake toggle —
+a real, accessible `<audio>` player that never autoplays and renders
+nothing when an invitation has no track. The invitation's wording
+still lands in the server-rendered HTML before any hydration, and if
+JavaScript never runs the guest simply gets the invitation directly.
+See `PROJECT_STATUS.md`'s "Stage 7" section for the experience
+sequence, the reduced-motion guarantees, music/licensing
+responsibility, the ~14 KB first-load-JS cost, and the design
+refinements still outstanding — **the visual result is a technical
+foundation, not a finally-approved design.**
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”
