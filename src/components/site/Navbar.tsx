@@ -34,7 +34,7 @@ export function Navbar() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <div className="relative inline-flex items-center">
+          <div className="relative hidden items-center sm:inline-flex">
             <Globe className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-ink-soft" />
             <select
               aria-label="Language"
@@ -77,7 +77,7 @@ export function Navbar() {
           )}
           <Link
             href="/survey"
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
+            className="shrink-0 whitespace-nowrap rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
           >
             {t("nav.startMyInvite")}
           </Link>

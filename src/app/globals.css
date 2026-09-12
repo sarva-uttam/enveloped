@@ -142,3 +142,18 @@ body {
 [data-effects-paused="true"] .animate-shimmer {
   animation-play-state: paused;
 }
+
+/* Homepage "How it works" (src/app/page.tsx) — each step's hover/focus
+   state is a small `-translate-y` lift plus a colour/shadow brighten.
+   The lift is exactly the kind of small, discrete transform-on-hover
+   `prefers-reduced-motion` guidance says to skip; the colour/border/
+   shadow brighten is not motion at all, so it stays. Overriding
+   `transform` (not `transition-property`) means the element simply
+   never moves under this preference, rather than moving instantly
+   without an easing curve — still motion, just less considerate of it. */
+@media (prefers-reduced-motion: reduce) {
+  .how-step:hover,
+  .how-step:focus-visible {
+    transform: none !important;
+  }
+}
