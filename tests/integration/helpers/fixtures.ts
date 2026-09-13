@@ -72,11 +72,34 @@ export async function createOwnedInvite(ownerClient: SupabaseClient, slug: strin
   return data as { id: string; slug: string; owner_id: string; [key: string]: unknown };
 }
 
-export async function createGuestFixture(inviteId: string, slug: string, name = "Test Guest") {
+export interface GuestFixtureOverrides {
+  householdId?: string | null;
+  contactEmail?: string | null;
+  permittedAttendees?: number;
+  allowPlusOne?: boolean;
+  isActive?: boolean;
+}
+
+export async function createGuestFixture(
+  inviteId: string,
+  slug: string,
+  name = "Test Guest",
+  overrides: GuestFixtureOverrides = {}
+) {
   const admin = createServiceRoleClient();
   const { data, error } = await admin
     .from("invite_guests")
-    .insert({ invite_id: inviteId, name, slug, click_teaser: "Click me." })
+    .insert({
+      invite_id: inviteId,
+      name,
+      slug,
+      click_teaser: "Click me.",
+      household_id: overrides.householdId ?? null,
+      contact_email: overrides.contactEmail ?? null,
+      permitted_attendees: overrides.permittedAttendees ?? 1,
+      allow_plus_one: overrides.allowPlusOne ?? false,
+      is_active: overrides.isActive ?? true,
+    })
     .select()
     .single();
 
@@ -84,6 +107,24 @@ export async function createGuestFixture(inviteId: string, slug: string, name = 
     throw new Error(`createGuestFixture(${slug}) failed: ${error?.message ?? "no row returned"}`);
   }
   return data as { id: string; slug: string; invite_id: string };
+}
+
+/** Creates a personalized guest link the way the admin flow does — via
+ *  admin_create_guest_link(), returning the raw token. Mirrors
+ *  createPreviewViaAdmin() in private-preview.test.ts. */
+export async function createGuestLinkViaAdmin(
+  adminClient: SupabaseClient,
+  guestId: string,
+  rawToken: () => string,
+  sha256hex: (v: string) => string
+): Promise<string> {
+  const token = rawToken();
+  const { error } = await adminClient.rpc("admin_create_guest_link", {
+    p_guest_id: guestId,
+    p_token_hash: sha256hex(token),
+  });
+  if (error) throw new Error(`createGuestLinkViaAdmin failed: ${error.message}`);
+  return token;
 }
 
 export async function createPaymentFixture(params: {

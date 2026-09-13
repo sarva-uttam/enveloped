@@ -51,9 +51,14 @@ export default async function AdminInvitationPage({ params }: Props) {
           )}
           <h1 className="mt-1 font-display text-3xl">Invitation editor</h1>
         </div>
-        <span className="text-xs text-ink-soft">
-          Slug: <code>{invitation.slug}</code>
-        </span>
+        <div className="flex items-center gap-3">
+          <Link href={`/admin/invitations/${id}/guests`} className="focus-ring rounded-full border border-line px-4 py-2 text-xs text-ink transition hover:border-ink">
+            Manage guests
+          </Link>
+          <span className="text-xs text-ink-soft">
+            Slug: <code>{invitation.slug}</code>
+          </span>
+        </div>
       </div>
 
       <div className="mt-8">

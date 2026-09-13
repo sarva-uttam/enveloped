@@ -21,6 +21,7 @@
 import type { DemoInvite } from "./demo-invites";
 import type { PublicInvite, PreviewInvite, StoredInvite } from "./storage-queries";
 import type { GeneratedInviteContent, TierId } from "./types";
+import type { GuestInviteView } from "./guests";
 
 export interface InviteViewModel {
   /** The invite's slug — undefined for demo invites, which accept no
@@ -213,6 +214,39 @@ export function buildOwnerInviteViewModel(stored: StoredInvite): InviteViewModel
     musicSrc: undefined,
     isDemo: false,
     isPublished: Boolean(stored.publishedAt),
+  };
+}
+
+/**
+ * Builds the view model for a valid PERSONALIZED GUEST LINK's sanitized
+ * payload — Stage 10 (see supabase/migrations/20260914090000_guest_management.sql).
+ * Returns null for a token that doesn't resolve to anything (invalid,
+ * revoked, a deactivated guest, or an unpublished invitation —
+ * get_guest_invite() collapses every one of those into the same `null`
+ * row), matching every other builder's "one safe unavailable response"
+ * shape.
+ *
+ * Unlike buildPreviewInviteViewModel(), `isPublished` is always true here
+ * — get_guest_invite() itself gates on the invitation's published_at, so
+ * this builder is only ever reached for a genuinely published invitation
+ * (a guest link grants no early/unpublished access, unlike a preview
+ * link). guestId/guestName always come from the resolved guest, never
+ * from an untrusted URL parameter.
+ */
+export function buildGuestInviteViewModel(guest: GuestInviteView | null): InviteViewModel | null {
+  if (!guest) return null;
+
+  return {
+    inviteId: guest.slug,
+    guestId: guest.guestId,
+    guestName: guest.guestName,
+    tier: guest.tier ?? "bronze",
+    content: guest.content,
+    eventDate: undefined,
+    song: undefined,
+    musicSrc: undefined,
+    isDemo: false,
+    isPublished: true,
   };
 }
 
