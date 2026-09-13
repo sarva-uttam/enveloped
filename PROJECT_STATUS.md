@@ -2491,6 +2491,284 @@ finished section layouts — followed by (or alongside) the composition-
 authoring control and concierge approval workflow Stages 5–7 have each
 deferred.
 
+## Stage 8 — concierge request management and structured admin generator (2026-09-12)
+
+Enveloped's primary business model is consultation-led: a client submits
+a request, the administrator handles pricing/scope conversation off-
+platform, creates and structures the invitation internally, shares a
+private preview, and publishes only when it's ready. Stages 5–7 each
+deferred the actual admin tooling for this ("belongs to a later,
+purpose-built migration" — Stage 2's own words about `invites` access).
+This stage builds it, extending every existing secure system
+(`checkAdmin()`, `admin_save_invite_composition()`,
+`buildCompositionFromPack()`/`validateComposition()`, the trusted
+`CompositionRenderer`/`InvitationExperience`, `publish_invite()`/
+`unpublish_invite()`, the preview-link RPCs) rather than duplicating any
+of them.
+
+**Not built this stage** (explicitly out of scope, per the owner's own
+restrictions): AI-assisted generation, client approval/rejection or
+revision comments, any new cultural pack beyond `neutral-classic`/
+`hindu-wedding`, email/messaging automation, drag-and-drop or canvas-
+style layout, and a live administrator bootstrap or production
+migration — every migration below is verified only against the local
+Supabase stack, exactly like every migration since Stage 2.
+
+### Request-management architecture
+
+`requests` already existed (recovered in Stage 0) with full admin CRUD
+RLS (Stage 2) — nothing new was needed there except the status
+vocabulary itself. `src/lib/requests-admin.server.ts` adds the read/write
+functions (`listRequests()`, `getRequestDetail()`,
+`updateRequestStatus()`), all `checkAdmin()`-gated on top of RLS, and
+`src/app/admin/requests/` adds the actual pages: a server-rendered list
+with a status filter (`?status=`, validated against the real vocabulary
+before ever reaching the database) and a detail page showing every field
+an administrator legitimately needs — including `internal_notes`,
+labeled distinctly as admin-only — none of it reachable by an ordinary
+user, an anonymous visitor, or through `/invite`/`/preview` (entirely
+different tables/RPCs, never given `requests` access at all).
+
+### Workflow statuses and audit trail
+
+The table's original (reconstructed, Stage 0) status vocabulary
+(`new/contacted/quoted/awaiting_payment/paid/in_progress/delivered/
+archived`) conflated payment into a request's own status — the same
+defect Stage 3 already corrected for invitations (`published_at`, not
+`paid`, is the sole publication gate). `20260912100000_concierge_admin_
+generator.sql` replaces it with a payment-free, consultation-stage
+vocabulary and REMAPS any existing row rather than leaving it violating
+the new CHECK constraint (`quoted→consultation`, `awaiting_payment`/
+`paid→accepted`, `in_progress→in_production`, `delivered→completed`).
+Single TypeScript source of truth: `src/lib/requests.ts`'s
+`REQUEST_STATUSES`/`REQUEST_STATUS_LABELS`/`REQUEST_STATUS_TRANSITIONS` —
+the database stores only the stable id, the UI shows only the label.
+
+```
+new → contacted → consultation → accepted → in_production → preview_sent → completed
+                                                                    ↓ (back for revisions)
+                                                              in_production
+any-of-{new,contacted,consultation,accepted,in_production,preview_sent} → declined
+{completed, declined} → archived (terminal)
+```
+
+Enforcement is a BEFORE UPDATE trigger
+(`enforce_request_status_transition()`), not just the admin-only UPDATE
+RLS policy already in place — the existing policy alone would let an
+administrator's own raw PostgREST client set ANY status value the CHECK
+constraint allows, in any order, with no record. The trigger
+independently re-checks `is_admin()`/`service_role`, validates the
+transition against `is_valid_request_status_transition()` (a fixed
+allowlist of `(from, to)` pairs, mirrored — not trusted instead of —
+in TypeScript for instant UI feedback), stamps `status_changed_at`, and
+inserts one `admin_audit_log` row per real change (`from`/`to`, actor,
+timestamp) — a status "changing" to its own current value is a no-op,
+never logged. `admin_audit_log` (new table) is RLS-enabled with a single
+admin-read policy and no insert/update/delete policy for any client role
+at all — every row is written exclusively by `SECURITY DEFINER`
+functions, the same posture Stage 5's `invite_previews` already
+established.
+
+### Request-to-invitation creation
+
+`admin_create_invitation_from_request()` (new RPC) is the one sanctioned
+way a concierge invitation is created. A partial unique index
+(`invites (request_id) where request_id is not null`) makes "one
+invitation per request" a structural guarantee, not a race-prone
+SELECT-then-INSERT check. Sets `generator_kind = 'concierge'`
+unconditionally (so `get_published_invite()`'s existing generator-aware
+branch, Stage 3, gates this invitation's visibility on `published_at`
+alone — `paid` stays false, untouched), never sets `owner_id`/`paid`/
+`published_at`, and copies ONLY `category`/`tier_interest`/a slugified
+name from the request — `notes`/`internal_notes`/`email`/`phone` are
+never referenced by this function at all. `src/lib/invitation-admin.
+server.ts`'s `createInvitationFromRequest()` wraps it: builds the
+initial composition from the administrator's selected pack via the
+EXISTING `buildCompositionFromPack()` (Stage 6) before the RPC call
+(same "validate before it ever reaches the database" ordering as
+`saveInviteComposition()`), and — if the request already has an
+invitation — returns its id instead of attempting a duplicate; the admin
+UI (`CreateInvitationControl.tsx`) redirects there rather than retrying.
+
+### Structured generator interface
+
+`src/app/admin/invitations/[id]/` is a structured FORM editor, never a
+free-form page builder: `InvitationEditor.tsx` holds the draft
+composition as client state, `SectionFields.tsx` has one explicit,
+typed field editor per registered section type (opening/greeting/intro/
+welcome/story/schedule/dateTime/venue/mapLink/dressCode/gallery/rsvp/
+music/closing/customText — every field maps to one already-Zod-validated
+property; there is no raw-HTML/raw-JSON escape hatch anywhere), and
+`SectionEditor.tsx` provides the enable/disable toggle, move-up/move-
+down (real, labeled, keyboard-reachable `<button>`s — no drag-and-drop),
+and remove controls for each section card. `InvitationCompositionSchema`
+(Stage 6, unmodified) is re-run client-side on every keystroke for
+instant field-level error display, and server-side again on save
+(`admin_save_invite_composition()`) — client validation is for
+usability, the database call is the actual security boundary, exactly
+this project's existing "client-side for usability, server-side for
+security" split.
+
+### Pack-based initialization
+
+Only `neutral-classic`/`hindu-wedding` are ever offered
+(`CreateInvitationControl.tsx`/`InvitationEditor.tsx`'s "initialize from
+pack" control both iterate `CULTURAL_PACK_IDS` itself, never a
+hand-written list) — selecting either calls the existing
+`buildCompositionFromPack()`, whose only text is generic, clearly
+provisional placeholder wording ("You're Invited," "Details to
+follow," …), all of it editable, none of it claimed as final. Every
+pack-selection surface repeats the same reminder: confirm customs,
+ceremonies, and terminology with the client before publishing.
+
+### Section editing and ordering
+
+Section order IS array order — unchanged since Stage 6
+(`CompositionRenderer` renders `composition.sections` in sequence); move-
+up/move-down simply swaps two array elements, so "deterministic" holds
+structurally, not via a separate ordering field that could drift from
+what actually renders. Adding a section generates a fresh, valid default
+payload and a collision-checked id; removing one is immediate (client-
+side; nothing is destroyed server-side until Save).
+
+### Trusted live preview
+
+`preview-frame/page.tsx`, loaded in an `<iframe>` by the editor, imports
+`InvitationExperience` DIRECTLY — the exact same component
+public/preview/owner routes render, not a second implementation. Nothing
+in this component tree (`InvitationExperience`→`CompositionRenderer`→
+`sections.tsx`/`registry.tsx`) has any server-exclusive dependency
+(no `next/headers`, no Supabase server client), so Next.js bundles it
+for the client transparently — this is the SAME code path executing
+client-side, not a reimplementation. An `<iframe>`, not a shrunk `<div>`,
+is what makes "support desktop and mobile preview widths" real:
+Tailwind's `md:` breakpoints respond to an element's own document
+viewport, which a resized `<div>` can never provide but a resized
+`<iframe>` genuinely does (the same principle every browser's device-
+toolbar preview relies on). The draft travels via `postMessage` (same-
+origin checked on receipt), debounced ~400ms, and only ever a schema-
+valid draft (or `null`, rendered by the frame as its own explicit
+"doesn't validate" message, never a crash) — `canRsvp` is hardcoded
+`false` in the frame's own render call, not a value the parent can
+override, so the unsaved admin preview can never accept an RSVP.
+"Preview as reduced-motion" monkey-patches `window.matchMedia` inside
+the iframe's OWN document only, never the parent admin page.
+
+### Save validation and concurrency protection
+
+`invites.composition_revision` (new column, `integer not null default
+0`) backs a classic compare-and-swap:
+`admin_save_invite_composition()`'s signature gained
+`p_expected_revision`, and its `UPDATE` now matches
+`composition_revision = p_expected_revision`, returning one of `'ok'` /
+`'stale'` / `'not-found'` (a `text` result, not a bare boolean, so the
+admin UI can tell "someone already saved a newer version" apart from
+"this invitation is gone"). A stale save is refused outright — the
+editor shows an explicit banner and a "reload latest version" action; it
+never silently overwrites. `src/lib/composition-admin.server.ts`'s
+`saveInviteComposition()` gained the matching `expectedRevision`
+parameter and typed `stale-revision` result. A successful save also
+inserts an `admin_audit_log` row (`composition_save`, the new revision
+number only — never the composition body, never a token).
+
+### Preview-link management
+
+`PreviewLinkPanel.tsx` reuses `/api/admin/invite-previews` and
+`preview-admin.server.ts` (Stage 5) completely unmodified — zero new
+token-generation logic. `AdminInvitationDetail.hasPreviewLink` (a plain
+boolean the server computes from `invite_previews.revoked_at is null`,
+never the hash itself) is what lets the panel show "a link exists"
+without ever touching stored token material. Rotation and revocation
+both require a confirmation dialog; a freshly created/rotated raw token
+is held in component state only long enough to display and copy, never
+written to storage, never logged.
+
+### Publication-readiness checks
+
+`src/lib/composition/readiness.ts`'s `assessPublicationReadiness()` is
+pure and NOT `server-only` — the admin page and the live editor (a
+Client Component) run the identical function, one against the saved
+state, one against the in-progress draft. Classifies each check as
+blocking/warning/passed: schema validity, a real (non-empty, non-
+disabled) opening headline, unresolved pack-placeholder text (an exact-
+string heuristic against every literal `buildCompositionFromPack()` can
+produce, scanned recursively through nested arrays like schedule entries
+and gallery items — never a generic "too short" guess), an event date/
+time section (blocking for wedding categories, a warning otherwise),
+venue presence, gallery alt-text quality, music credit completeness, and
+— when a connected request is known — a scan for that request's own
+private fields (email/phone/notes/internal_notes) appearing verbatim
+anywhere in the composition. This is an ASSESSMENT only: nothing in this
+module or `publishInvitation()`/`unpublishInvitation()` (thin wrappers
+around the existing, unmodified `publish_invite()`/`unpublish_invite()`
+from Stage 3) enforces it — an administrator retains final judgment,
+matching Part I's own framing exactly.
+
+### Database and authorization changes
+
+One migration, `supabase/migrations/20260912100000_concierge_admin_
+generator.sql` — NOT applied to the live project. Summary: the
+`requests.status` vocabulary swap + remap; `requests.status_changed_at`;
+the transition-validating, audit-logging trigger; `admin_audit_log`
+(admin-read-only, function-write-only); ONE new `invites` RLS policy
+(`admin select`, read-only — every admin WRITE still goes through a
+dedicated `SECURITY DEFINER` function, never a general admin update
+policy, so no raw PostgREST call can touch a column none of those
+functions specifically protects); `invites.composition_revision`;
+`admin_save_invite_composition()` replaced (drop + recreate — a
+parameter addition changes the function's signature) with the revision
+check and its own audit insert; the partial unique index on
+`invites.request_id`; `admin_create_invitation_from_request()`. Every
+new/changed `SECURITY DEFINER` function uses `set search_path = ''` with
+fully-qualified `public.*` references and an explicit `is_admin()` gate,
+matching every prior stage's functions exactly; `revoke ... from anon`
+is explicit throughout (Supabase's default-privilege grant otherwise
+reaches `anon` regardless of an initial `revoke ... from public`, the
+same platform behavior documented since Stage 3).
+
+### Privacy and bundle isolation
+
+`getAdminInvitationDetail()`/`getRequestDetail()` never return
+`owner_id`, `paypal_order_id`, or preview-token hash material — verified
+directly (`invitation-admin.server.test.ts` asserts the returned keys).
+The live preview's `canRsvp` is hardcoded, not caller-supplied. First-
+load JS for `/invite/[id]` and `/preview/[token]` stays byte-identical
+to pre-Stage-8 (879,766 B / 9 chunks, ±the general Next.js chunk-hash
+churn any rebuild produces) — grepping every chunk in
+`.next/static/chunks/` for `InvitationEditor`/`sandbox.paypal.com`
+confirms neither string reaches either bundle; the admin editor's own
+route legitimately pulls in the full renderer (`/admin/invitations/[id]`
+first-load ≈1.05 MB) since it needs the SAME trusted component tree the
+public routes use, entirely expected and outside the isolation
+guarantee (which only ever protected public/preview from admin/PayPal
+code, never the reverse).
+
+### Currently excluded functionality
+
+No AI-assisted wording generation, no client-facing approval/rejection
+or revision-comment flow, no third/fourth cultural pack, no email/SMS
+notification when a request changes status, no bulk operations, no
+admin-facing audit-log VIEWER UI (the table and its admin-read RLS
+policy exist; nothing yet renders it), and no automated publication —
+every publish/unpublish remains one explicit, confirmed administrator
+click, readiness assessment or not.
+
+### Local development workflow
+
+Identical to every stage since Stage 2: `npm run db:start` (local,
+disposable, Docker-backed), `npm run test:db` (resets from empty,
+applies every migration including this stage's, runs the full
+integration suite), `npm test`/`npm run lint`/`npx tsc --noEmit`/
+`npm run build` for everything else. No `.env.local` change, no live
+administrator bootstrap, no production migration.
+
+### Confirmation production was untouched
+
+No migration applied anywhere but the local stack. No production data,
+user, or configuration touched. No `.env.local` change. No live
+administrator created. No real preview link created against production
+data. No deployment, no merge to `master`, no pull request.
+
 ## Key files
 
 | Area | Path |
@@ -2525,6 +2803,14 @@ deferred.
 | Motion system (Stage 7) | `src/lib/motion/useReducedMotion.ts`, `useIsClient.ts`, `presets.ts`; `src/components/invite/AnimateIn.tsx` (extended); `src/app/globals.css` (reduced-motion + `scripting: none` + visibility-pause rules) |
 | Audio test fixture (Stage 7) | `public/audio/sample-test-tone.wav` (synthesized, license-free) + `public/audio/README.md` |
 | Stage 7 tests | `src/components/experience/*.test.tsx` (jsdom), `src/lib/motion/presets.test.ts`, plus Stage 7 blocks appended to `src/lib/composition/schema.test.ts` / `CompositionRenderer.test.tsx` / `legacy-adapter.test.ts` / `src/app/invite/[id]/page.test.tsx` |
+| Request model + admin reads/writes (Stage 8) | `src/lib/requests.ts`, `src/lib/requests-admin.server.ts` |
+| Request-management UI (Stage 8) | `src/app/admin/requests/page.tsx`, `[id]/page.tsx`, `RequestStatusControl.tsx`, `CreateInvitationControl.tsx` |
+| Invitation creation/detail/publish orchestration (Stage 8) | `src/lib/invitation-admin.server.ts` |
+| Publication readiness (Stage 8, not `server-only`) | `src/lib/composition/readiness.ts` |
+| Structured admin generator UI (Stage 8) | `src/app/admin/invitations/[id]/page.tsx`, `InvitationEditor.tsx`, `SectionEditor.tsx`, `SectionFields.tsx`, `ReadinessPanel.tsx`, `PreviewLinkPanel.tsx`, `preview-frame/page.tsx` |
+| Admin mutation routes (Stage 8) | `src/app/api/admin/requests/[id]/status/route.ts`, `.../create-invitation/route.ts`, `src/app/api/admin/invitations/[id]/composition/route.ts`, `.../publish/route.ts`, `.../initialize-pack/route.ts` |
+| Concierge/generator migration (Stage 8) | `supabase/migrations/20260912100000_concierge_admin_generator.sql` |
+| Stage 8 tests | `src/lib/requests.test.ts`, `src/lib/composition/readiness.test.ts`, `src/lib/requests-admin.server.test.ts`, `src/lib/invitation-admin.server.test.ts`, `tests/integration/concierge-admin.test.ts` |
 
 ## Repo
 

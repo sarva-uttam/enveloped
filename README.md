@@ -162,6 +162,21 @@ responsibility, the ~14 KB first-load-JS cost, and the design
 refinements still outstanding — **the visual result is a technical
 foundation, not a finally-approved design.**
 
+Stage 8 builds the concierge workflow the product direction above
+describes as primary: a request-management area under `/admin/requests`
+(consultation-led status pipeline, database-validated transitions, an
+admin-read-only audit trail) and a structured composition-authoring
+generator under `/admin/invitations/[id]` — a form editor over the
+existing trusted composition schema and renderer, never a free-form
+page builder, with a live preview built from the SAME
+`CompositionRenderer`/`InvitationExperience` every public/preview route
+uses, optimistic-concurrency-protected saves, and a publication-
+readiness assessment (never automatic publication). See
+`PROJECT_STATUS.md`'s "Stage 8" section for the full architecture,
+including the one new migration (not yet applied live) and what remains
+deliberately out of scope (AI-assisted generation, client-facing
+approval, further cultural packs).
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”

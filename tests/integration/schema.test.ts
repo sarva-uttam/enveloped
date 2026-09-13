@@ -48,7 +48,7 @@ describe("tables", () => {
 });
 
 describe("invites columns — exact live ordinal order (see supabase/migrations/README.md's cross-check)", () => {
-  it("has exactly the 20 expected columns in the exact order every migration added them — Stage 6 (2026-09-10, see PROJECT_STATUS.md's Stage 6 section) adds occasion_custom_label at the end, appended by supabase/migrations/20260910130000_wedding_event_taxonomy.sql, after every pre-existing column", async () => {
+  it("has exactly the 21 expected columns in the exact order every migration added them — Stage 8 (2026-09-12, see PROJECT_STATUS.md's Stage 8 section) appends composition_revision, after every pre-existing column", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ column_name: string }>(
       `select column_name
@@ -78,6 +78,7 @@ describe("invites columns — exact live ordinal order (see supabase/migrations/
       "published_at",
       "created_by_admin_id",
       "occasion_custom_label",
+      "composition_revision",
     ]);
   });
 });
@@ -315,7 +316,7 @@ describe("functions", () => {
 });
 
 describe("policies", () => {
-  it("invites/invite_guests/invite_rsvps/payments carry exactly the expected owner-scoped policies — unchanged by Stage 2", async () => {
+  it("invites/payments carry exactly the expected owner-scoped policies plus Stage 8's one admin-read-only addition — nothing else added or removed", async () => {
     const pool = getPgPool();
     const { rows } = await pool.query<{ tablename: string; policyname: string }>(
       `select tablename, policyname from pg_policies where schemaname = 'public' order by tablename, policyname`
@@ -327,10 +328,14 @@ describe("policies", () => {
     }
 
     // Stage 2 (admin_identity) touches ONLY app_admins/requests/templates/
-    // invite_payment_records — invites/payments must still carry exactly
-    // their pre-Stage-2 owner-scoped policies, nothing added or removed.
+    // invite_payment_records — invites/payments carried exactly their
+    // pre-Stage-2 owner-scoped policies through Stage 7. Stage 8 (Part J)
+    // adds exactly one more: a read-only "invites admin select" — no
+    // general admin UPDATE policy exists (every admin write still goes
+    // through a dedicated SECURITY DEFINER function; see
+    // supabase/migrations/20260912100000_concierge_admin_generator.sql).
     expect(byTable.get("invites")?.sort()).toEqual(
-      ["invites owner delete", "invites owner insert", "invites owner read own", "invites owner update"].sort()
+      ["invites admin select", "invites owner delete", "invites owner insert", "invites owner read own", "invites owner update"].sort()
     );
     expect(byTable.get("payments")).toEqual(["payments owner read own"]);
   });

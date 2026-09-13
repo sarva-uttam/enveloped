@@ -113,6 +113,48 @@ export async function createPaymentFixture(params: {
   return data as { id: string; [key: string]: unknown };
 }
 
+export interface RequestFixtureInput {
+  referenceCode: string;
+  status?: string;
+  name?: string;
+  category?: string;
+  tierInterest?: "bronze" | "silver" | "gold" | "platinum" | null;
+  email?: string | null;
+  phone?: string | null;
+  notes?: string | null;
+  internalNotes?: string | null;
+}
+
+/** Inserts a raw `requests` row — service-role only (bypasses RLS,
+ *  appropriate for ARRANGING test state; see createInviteFixture()'s own
+ *  comment for the same convention). Stage 8's integration tests use
+ *  this to set up a request in a known status before exercising the
+ *  admin-only read/status-transition/invitation-creation paths against
+ *  it through real anon/authenticated/admin clients. */
+export async function createRequestFixture(input: RequestFixtureInput) {
+  const admin = createServiceRoleClient();
+  const { data, error } = await admin
+    .from("requests")
+    .insert({
+      reference_code: input.referenceCode,
+      status: input.status ?? "new",
+      name: input.name ?? "Test Client",
+      category: input.category ?? "wedding-other",
+      tier_interest: input.tierInterest ?? null,
+      email: input.email ?? null,
+      phone: input.phone ?? null,
+      notes: input.notes ?? null,
+      internal_notes: input.internalNotes ?? null,
+    })
+    .select()
+    .single();
+
+  if (error || !data) {
+    throw new Error(`createRequestFixture(${input.referenceCode}) failed: ${error?.message ?? "no row returned"}`);
+  }
+  return data as { id: string; reference_code: string; status: string; [key: string]: unknown };
+}
+
 /** Grants admin membership the ONLY way it can be granted — a direct
  *  service-role insert into app_admins, mirroring the documented manual
  *  bootstrap procedure (PROJECT_STATUS.md's Stage 2 section). Never do

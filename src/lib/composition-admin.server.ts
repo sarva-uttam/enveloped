@@ -3,6 +3,7 @@ import { checkAdmin } from "@/lib/auth/admin.server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { InvitationCompositionSchema, type InvitationComposition } from "@/lib/composition/schema";
 import { CULTURAL_PACKS, type CulturalPackId } from "@/lib/composition/cultural-packs";
+import { PLACEHOLDER_TEXT_VALUES } from "@/lib/composition/readiness";
 import type { EventCategory } from "@/lib/types";
 import type { EventTypeId } from "@/lib/composition/event-types";
 
@@ -94,6 +95,12 @@ export function buildCompositionFromPack(params: {
   return result.ok ? result.composition : null;
 }
 
+/** Re-exported for any existing importer — the canonical definition now
+ *  lives in src/lib/composition/readiness.ts (not `server-only`, so the
+ *  live editor's Client Component can also use it for instant, client-
+ *  side placeholder detection as an administrator types). */
+export { PLACEHOLDER_TEXT_VALUES };
+
 /** Minimal, safe placeholder content for each section type a pack might
  *  suggest — deliberately generic ("Welcome" / "We're getting
  *  married..."), meant to be edited by an administrator or client
@@ -148,8 +155,8 @@ function defaultSectionFor(type: string) {
 }
 
 export type SaveCompositionResult =
-  | { ok: true }
-  | { ok: false; reason: "not-admin" | "invalid" | "invite-not-found" | "database-error" };
+  | { ok: true; revision: number }
+  | { ok: false; reason: "not-admin" | "invalid" | "invite-not-found" | "stale-revision" | "database-error" };
 
 /**
  * Saves a composition to an invitation — the ONLY way `invites.composition`
@@ -169,10 +176,21 @@ export type SaveCompositionResult =
  * server client — never the service-role client, so the real
  * authorization decision is is_admin() reading the caller's own
  * session, the same shape as every other admin write in this project.
+ *
+ * `expectedRevision` (Stage 8, Part G) — the `composition_revision` the
+ * caller last read this invitation at. The database performs the actual
+ * compare-and-swap (see the migration's own comment on
+ * admin_save_invite_composition()); this function only translates its
+ * three possible text outcomes ('ok'/'stale'/'not-found') into this
+ * module's typed result shape. `reason: "stale-revision"` is what an
+ * editor UI uses to tell an administrator "someone else already saved
+ * newer changes — reload before continuing" rather than silently
+ * clobbering that other save.
  */
 export async function saveInviteComposition(params: {
   inviteId: string;
   composition: unknown;
+  expectedRevision: number;
   occasionId?: EventTypeId | null;
   occasionCustomLabel?: string | null;
 }): Promise<SaveCompositionResult> {
@@ -188,6 +206,7 @@ export async function saveInviteComposition(params: {
   const { data, error } = await client.rpc("admin_save_invite_composition", {
     p_invite_id: params.inviteId,
     p_composition: validated.composition,
+    p_expected_revision: params.expectedRevision,
     p_occasion: params.occasionId ?? null,
     p_occasion_custom_label: params.occasionCustomLabel ?? null,
   });
@@ -196,7 +215,9 @@ export async function saveInviteComposition(params: {
     console.error("saveInviteComposition: admin_save_invite_composition RPC failed", error.message);
     return { ok: false, reason: "database-error" };
   }
-  if (!data) return { ok: false, reason: "invite-not-found" };
+  if (data === "not-found") return { ok: false, reason: "invite-not-found" };
+  if (data === "stale") return { ok: false, reason: "stale-revision" };
+  if (data !== "ok") return { ok: false, reason: "database-error" };
 
-  return { ok: true };
+  return { ok: true, revision: params.expectedRevision + 1 };
 }

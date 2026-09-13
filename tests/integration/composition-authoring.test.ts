@@ -46,6 +46,7 @@ describe("admin_save_invite_composition() — authorization", () => {
     const { error } = await ordinaryUser.client.rpc("admin_save_invite_composition", {
       p_invite_id: invite.id,
       p_composition: SOME_COMPOSITION,
+      p_expected_revision: 0,
     });
     expect(error).not.toBeNull();
     expect(error!.message).toContain("only an administrator");
@@ -57,6 +58,7 @@ describe("admin_save_invite_composition() — authorization", () => {
     const { error } = await createAnonClient().rpc("admin_save_invite_composition", {
       p_invite_id: invite.id,
       p_composition: SOME_COMPOSITION,
+      p_expected_revision: 0,
     });
     expect(error).not.toBeNull();
   });
@@ -67,9 +69,10 @@ describe("admin_save_invite_composition() — authorization", () => {
     const { data, error } = await admin.client.rpc("admin_save_invite_composition", {
       p_invite_id: invite.id,
       p_composition: SOME_COMPOSITION,
+      p_expected_revision: 0,
     });
     expect(error).toBeNull();
-    expect(data).toBe(true);
+    expect(data).toBe("ok");
 
     const service = createServiceRoleClient();
     const { data: row } = await service.from("invites").select("composition").eq("id", invite.id).single();
@@ -82,6 +85,7 @@ describe("admin_save_invite_composition() — authorization", () => {
     const { error } = await admin.client.rpc("admin_save_invite_composition", {
       p_invite_id: invite.id,
       p_composition: SOME_COMPOSITION,
+      p_expected_revision: 0,
       p_occasion: "not-a-real-event-type",
     });
     expect(error).not.toBeNull();
@@ -95,7 +99,7 @@ describe("admin_save_invite_composition() — authorization", () => {
   it("saving a composition does NOT publish the invitation", async () => {
     const invite = await createOwnedInvite(ownerA.client, `stage1-${runId}-save-no-publish`);
 
-    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION });
+    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION, p_expected_revision: 0 });
 
     const service = createServiceRoleClient();
     const { data: row } = await service.from("invites").select("published_at").eq("id", invite.id).single();
@@ -105,7 +109,7 @@ describe("admin_save_invite_composition() — authorization", () => {
   it("saving a composition does NOT change paid/paypal_order_id", async () => {
     const invite = await createOwnedInvite(ownerA.client, `stage1-${runId}-save-no-pay`);
 
-    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION });
+    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION, p_expected_revision: 0 });
 
     const service = createServiceRoleClient();
     const { data: row } = await service.from("invites").select("paid, paypal_order_id").eq("id", invite.id).single();
@@ -113,13 +117,14 @@ describe("admin_save_invite_composition() — authorization", () => {
     expect(row!.paypal_order_id).toBeNull();
   });
 
-  it("returns false, not an exception, for a nonexistent invite id", async () => {
+  it("returns 'not-found', not an exception, for a nonexistent invite id", async () => {
     const { data, error } = await admin.client.rpc("admin_save_invite_composition", {
       p_invite_id: "00000000-0000-0000-0000-000000000000",
       p_composition: SOME_COMPOSITION,
+      p_expected_revision: 0,
     });
     expect(error).toBeNull();
-    expect(data).toBe(false);
+    expect(data).toBe("not-found");
   });
 });
 
@@ -185,7 +190,7 @@ describe("generator-controlled fields cannot be set by a direct table update, fr
 describe("get_published_invite() — composition only surfaces once published", () => {
   it("an UNPUBLISHED invite's composition is null through the public RPC, even if one is saved", async () => {
     const invite = await createInviteFixture({ slug: `stage1-${runId}-pub-unpublished`, ownerId: ownerA.userId, publishedAt: null });
-    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION });
+    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION, p_expected_revision: 0 });
 
     const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
     const row = data as Record<string, unknown>;
@@ -198,7 +203,7 @@ describe("get_published_invite() — composition only surfaces once published", 
       ownerId: ownerA.userId,
       publishedAt: new Date().toISOString(),
     });
-    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION });
+    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION, p_expected_revision: 0 });
 
     const { data } = await createAnonClient().rpc("get_published_invite", { p_slug: invite.slug }).maybeSingle();
     const row = data as Record<string, unknown>;
@@ -209,7 +214,7 @@ describe("get_published_invite() — composition only surfaces once published", 
 describe("get_invite_preview() — composition available regardless of publication state", () => {
   it("returns the saved composition for an UNPUBLISHED invitation via a valid preview token", async () => {
     const invite = await createInviteFixture({ slug: `stage1-${runId}-preview-comp-unpub`, ownerId: ownerA.userId, publishedAt: null });
-    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION });
+    await admin.client.rpc("admin_save_invite_composition", { p_invite_id: invite.id, p_composition: SOME_COMPOSITION, p_expected_revision: 0 });
 
     const { createHash, randomBytes } = await import("node:crypto");
     const token = randomBytes(32).toString("base64url");

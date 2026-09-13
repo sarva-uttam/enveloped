@@ -76,7 +76,7 @@ describe("saveInviteComposition — authorization and validation order", () => {
   it("rejects a non-admin caller BEFORE validating the composition or touching the database", () => {
     checkAdmin.mockResolvedValue(NON_ADMIN);
 
-    return saveInviteComposition({ inviteId: "invite-1", composition: { garbage: true } }).then((result) => {
+    return saveInviteComposition({ inviteId: "invite-1", composition: { garbage: true }, expectedRevision: 0 }).then((result) => {
       expect(result).toEqual({ ok: false, reason: "not-admin" });
       expect(rpc).not.toHaveBeenCalled();
     });
@@ -85,22 +85,23 @@ describe("saveInviteComposition — authorization and validation order", () => {
   it("rejects an invalid composition from an admin, WITHOUT ever calling the RPC", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
 
-    const result = await saveInviteComposition({ inviteId: "invite-1", composition: { garbage: true } });
+    const result = await saveInviteComposition({ inviteId: "invite-1", composition: { garbage: true }, expectedRevision: 0 });
 
     expect(result).toEqual({ ok: false, reason: "invalid" });
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it("saves a valid composition from an admin, calling the RPC with the validated (not raw) composition", async () => {
+  it("saves a valid composition from an admin, calling the RPC with the validated (not raw) composition and the expected revision", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
-    rpc.mockResolvedValue({ data: true, error: null });
+    rpc.mockResolvedValue({ data: "ok", error: null });
 
-    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition() });
+    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition(), expectedRevision: 3 });
 
-    expect(result).toEqual({ ok: true });
+    expect(result).toEqual({ ok: true, revision: 4 });
     expect(rpc).toHaveBeenCalledWith("admin_save_invite_composition", {
       p_invite_id: "invite-1",
       p_composition: expect.objectContaining({ schemaVersion: COMPOSITION_SCHEMA_VERSION }),
+      p_expected_revision: 3,
       p_occasion: null,
       p_occasion_custom_label: null,
     });
@@ -108,11 +109,12 @@ describe("saveInviteComposition — authorization and validation order", () => {
 
   it("passes occasionId/occasionCustomLabel through when supplied", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
-    rpc.mockResolvedValue({ data: true, error: null });
+    rpc.mockResolvedValue({ data: "ok", error: null });
 
     await saveInviteComposition({
       inviteId: "invite-1",
       composition: validComposition(),
+      expectedRevision: 0,
       occasionId: "mehendi",
       occasionCustomLabel: null,
     });
@@ -123,20 +125,29 @@ describe("saveInviteComposition — authorization and validation order", () => {
     );
   });
 
-  it("maps a false/no-row RPC result to 'invite-not-found'", async () => {
+  it("maps a 'not-found' RPC result to 'invite-not-found'", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
-    rpc.mockResolvedValue({ data: false, error: null });
+    rpc.mockResolvedValue({ data: "not-found", error: null });
 
-    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition() });
+    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition(), expectedRevision: 0 });
 
     expect(result).toEqual({ ok: false, reason: "invite-not-found" });
+  });
+
+  it("maps a 'stale' RPC result to 'stale-revision' — a concurrent save must not be silently overwritten", async () => {
+    checkAdmin.mockResolvedValue(ADMIN);
+    rpc.mockResolvedValue({ data: "stale", error: null });
+
+    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition(), expectedRevision: 0 });
+
+    expect(result).toEqual({ ok: false, reason: "stale-revision" });
   });
 
   it("fails closed on a database error", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
     rpc.mockResolvedValue({ data: null, error: { message: "boom" } });
 
-    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition() });
+    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition(), expectedRevision: 0 });
 
     expect(result).toEqual({ ok: false, reason: "database-error" });
   });
@@ -145,7 +156,7 @@ describe("saveInviteComposition — authorization and validation order", () => {
     checkAdmin.mockResolvedValue(ADMIN);
     createServerSupabaseClient.mockResolvedValue(null);
 
-    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition() });
+    const result = await saveInviteComposition({ inviteId: "invite-1", composition: validComposition(), expectedRevision: 0 });
 
     expect(result).toEqual({ ok: false, reason: "database-error" });
     expect(rpc).not.toHaveBeenCalled();

@@ -186,6 +186,28 @@ fixture. **New scrutiny item — see #19 below.** **The visual result is
 explicitly NOT approved** — it is a technical foundation for owner
 visual review.
 
+## Update — 2026-09-12: Stage 8 adds concierge request management and a
+structured admin invitation generator
+
+One migration (`20260912100000_concierge_admin_generator.sql`), not
+applied to the live project. Summary: `requests.status` moves to a
+consultation-led vocabulary (remapping any existing row rather than
+leaving it invalid); a BEFORE UPDATE trigger validates status
+transitions and writes an audit row; a new `admin_audit_log` table
+(admin-read-only, function-write-only, same zero-client-policy shape as
+`invite_previews`); ONE new `invites` RLS policy — admin SELECT only
+(every admin WRITE still goes through a dedicated SECURITY DEFINER
+function, never a general admin update policy); `invites.composition_
+revision` backs optimistic concurrency on `admin_save_invite_
+composition()` (signature changed — drop+recreate, same lesson as every
+prior signature change in this project); a partial unique index makes
+"one invitation per request" structural; `admin_create_invitation_from_
+request()` is the one new way a concierge invitation is created. The
+admin UI (`src/app/admin/requests/`, `src/app/admin/invitations/[id]/`)
+sits entirely under the existing `AdminLayout` boundary (Stage 2) — no
+new authorization mechanism, only new admin-gated functions and one new
+read-only RLS policy. **New scrutiny item — see #20 below.**
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -674,6 +696,39 @@ visual review.
     and passes only `mode="review"`; (j) **the visual design is NOT
     approved** — do not flag "looks unfinished" as a defect; that is
     the explicit Stage 8 scope.
+20. **Concierge request management and admin generator** (Stage 8,
+    `supabase/migrations/20260912100000_concierge_admin_generator.sql`,
+    `src/lib/requests-admin.server.ts`, `src/lib/invitation-admin.
+    server.ts`, `src/app/admin/requests/`, `src/app/admin/invitations/
+    [id]/`) — worth confirming independently: (a) an administrator's
+    own ordinary authenticated client genuinely cannot directly `UPDATE`
+    an `invites` row (`select` policy only) — try
+    `.from("invites").update({tier:"platinum"}).eq(...)` as the admin
+    fixture and confirm it matches zero rows; (b) the same client
+    genuinely cannot set an invalid request-status transition — try
+    `.from("requests").update({status:"completed"}).eq(...)` on a `new`
+    request and confirm it errors; (c) `admin_create_invitation_from_
+    request()` genuinely cannot create a second invitation for the same
+    request — the partial unique index
+    (`invites_request_id_unique_idx`) should reject it even under a
+    service-role direct insert, not just the function's own pre-check;
+    (d) a fresh invitation created this way has `paid = false`,
+    `published_at = null`, `owner_id = null`, `generator_kind =
+    'concierge'` — confirm by hand, not just via the test; (e)
+    `admin_save_invite_composition()`'s stale-revision path — call it
+    twice with the same `p_expected_revision` and confirm the SECOND
+    call returns `'stale'`, not an overwrite; (f) `admin_audit_log` has
+    no insert/update/delete policy for any client role — confirm an
+    admin's own client cannot `.from("admin_audit_log").insert(...)`
+    directly; (g) grep `src/app/admin/invitations/[id]/` for any raw
+    preview token ever being sent to `admin_audit_log` or logged —
+    should find none (Stage 8 deliberately does not audit-log preview-
+    link operations at all yet, see PROJECT_STATUS.md's Stage 8 "remaining
+    risks"); (h) the live preview's `canRsvp` is hardcoded `false` in
+    `preview-frame/page.tsx`'s own render call, not something a posted
+    message can override — confirm no code path threads a caller-
+    supplied `canRsvp` into it; (i) this migration is NOT yet applied to
+    the live project — confirm it stays that way.
 
 ## What NOT to flag as issues
 

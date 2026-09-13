@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { checkAdmin } from "@/lib/auth/admin.server";
 import { PreviewLinkTool } from "./PreviewLinkTool";
 
@@ -35,9 +36,15 @@ export default async function AdminPage() {
         Signed in as <span className="font-medium text-ink">{user?.email}</span>.
       </p>
       <p className="mt-6 max-w-md text-sm text-ink-soft">
-        This is a placeholder. Concierge tools — client requests, the
-        template catalogue, and payment records — aren&apos;t built yet.
+        The template catalogue and payment records aren&apos;t built yet.
       </p>
+
+      <Link
+        href="/admin/requests"
+        className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
+      >
+        Client requests
+      </Link>
 
       <PreviewLinkTool />
     </div>
