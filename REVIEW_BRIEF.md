@@ -208,6 +208,35 @@ sits entirely under the existing `AdminLayout` boundary (Stage 2) — no
 new authorization mechanism, only new admin-gated functions and one new
 read-only RLS policy. **New scrutiny item — see #20 below.**
 
+## Update — 2026-09-13: Stage 9 adds a secure, version-aware client
+approval and revision workflow
+
+One migration (`20260913120000_client_review_workflow.sql`), not
+applied to the live project. Two new tables, `review_rounds` and
+`review_feedback_items`, same zero-client-policy shape as
+`invite_previews`/`admin_audit_log` — every write goes through one
+narrow, single-purpose `SECURITY DEFINER` function per action, never a
+generic "set status" endpoint. A review round binds to exactly one
+`composition_revision` at creation and never re-points afterward; a
+partial unique index makes "one active round per invitation"
+structural. `admin_save_invite_composition()`'s return type changed
+from `text` to `jsonb` (drop+recreate — a return-type change requires
+it) so it can report whether a save was a genuine no-op (identical
+content, revision NOT bumped) versus meaningful (revision bumped, and
+any active round for that invitation auto-superseded, with a distinct
+audit event if it had been approved). `publish_invite()`'s body changed
+(signature unchanged) to require, for `generator_kind = 'concierge'`
+invitations ONLY, a `client_approved` round bound to the CURRENT
+revision and no unresolved `changes_requested` round — self-service
+publication is untouched, verified directly. Two new anonymous,
+token-gated RPCs (`get_invite_review_context`, `submit_review_approval`,
+`submit_review_changes`, `mark_review_round_opened` — four, not two)
+hash the raw token inside themselves, the same trust shape as Stage 5's
+`get_invite_preview()`, and return the same generic outcome for every
+failure reason. **Two genuine defects were found and fixed during this
+stage's own visual review, not by a unit test** — see #21 below for
+both. **New scrutiny item — see #21 below.**
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -729,6 +758,47 @@ read-only RLS policy. **New scrutiny item — see #20 below.**
     message can override — confirm no code path threads a caller-
     supplied `canRsvp` into it; (i) this migration is NOT yet applied to
     the live project — confirm it stays that way.
+21. **Client approval and revision workflow** (Stage 9,
+    `supabase/migrations/20260913120000_client_review_workflow.sql`,
+    `src/lib/review-admin.server.ts`, `src/lib/review-client.server.ts`,
+    `src/lib/review-submission-guard.server.ts`, `src/app/preview/[token]/
+    ReviewSection.tsx`, `src/app/admin/invitations/[id]/ReviewPanel.tsx`)
+    — worth confirming independently: (a) approve the SAME round twice
+    through `submit_review_approval` with the same token — the second
+    call must return `'unavailable'`, not overwrite the first decision;
+    (b) after an approval, save a meaningful composition edit
+    (`admin_save_invite_composition` with different content) and confirm
+    the round's status flips to `superseded` AND `publish_invite` then
+    raises "no client approval" for that invitation; (c) confirm a
+    `changes_requested` round genuinely blocks `publish_invite` with its
+    OWN specific exception message, even before checking for approval;
+    (d) confirm self-service invitations (`generator_kind is null`)
+    publish with zero review state and zero review-related checks —
+    create one via `createInviteFixture` with no `generatorKind` and
+    publish it directly; (e) confirm `review_rounds`/
+    `review_feedback_items` have no SELECT/UPDATE/INSERT policy for
+    `anon`/`authenticated` — only the one admin SELECT policy exists;
+    (f) grep `admin_audit_log.detail` for a submitted decision's row and
+    confirm it contains no raw token, no token hash, and no verbatim
+    feedback message text; (g) **the Origin-check fix**: inside a real
+    Next.js Route Handler, confirm `req.headers.get("host")` — not
+    `new URL(req.url).origin` — is what `src/lib/review-submission-
+    guard.server.ts`'s `checkRequestOrigin()` actually compares against;
+    this was a genuine bug this stage's own visual review caught (a
+    same-origin browser request was being rejected as cross-origin)
+    that no unit test using directly-constructed `Request` objects could
+    have caught on its own — confirm the regression test
+    (`review-submission-guard.server.test.ts`) specifically documents and
+    exercises this; (h) **the preview-link-visibility fix**: confirm
+    `admin_invite_has_preview_link()` returns `true`/`false` correctly
+    and that no blanket admin SELECT policy was added to
+    `invite_previews` (that table must still carry zero policies for any
+    role — `token_hash` must remain unreachable via any raw table read,
+    admin included); (i) confirm the client decision UI
+    (`ReviewSection.tsx`) never renders feedback text via
+    `dangerouslySetInnerHTML` and rejects `<`/`>` characters client-side
+    before ever calling `fetch()`; (j) this migration is NOT yet applied
+    to the live project — confirm it stays that way.
 
 ## What NOT to flag as issues
 
@@ -755,3 +825,20 @@ read-only RLS policy. **New scrutiny item — see #20 below.**
   `useSyncExternalStore` instead of effect+setState for reading
   `localStorage` — worth a look since it's a more involved change than
   the other three's one-line fixes.
+- Invisible default focus-ring color on plain `<button>` elements across
+  most of the ADMIN UI (`PreviewLinkPanel.tsx`, `PublishControl`,
+  `RequestStatusControl.tsx`, and most of `InvitationEditor.tsx`'s own
+  buttons — this is a Stage 7/8 pattern, not something Stage 9
+  introduced). Stage 9 found this directly (the outline color computed
+  to match the page background almost exactly) while capturing its own
+  required keyboard-focus screenshot, and fixed it ONLY in the one
+  CLIENT-facing surface that screenshot covers
+  (`src/app/preview/[token]/ReviewSection.tsx`, via a `focusRingClass`
+  constant matching `Navbar.tsx`'s own already-working
+  `focus:ring-ink` pattern) — not retrofitted across the admin UI, which
+  would have meant either an inconsistent look within Stage 9's own new
+  `ReviewPanel.tsx` (matching its neighbors' invisible focus vs. not) or
+  a much larger, separately-scoped accessibility pass across every
+  pre-existing admin button. Recommended as real follow-up work, not
+  silently left broken — see `PROJECT_STATUS.md`'s Stage 9 "remaining
+  risks."

@@ -255,7 +255,7 @@ describe("composition save — optimistic concurrency", () => {
       p_expected_revision: 0,
     });
     expect(error).toBeNull();
-    expect(result).toBe("ok");
+    expect(result).toEqual({ result: "ok", revision: 1 });
 
     const service = createServiceRoleClient();
     const { data: row } = await service.from("invites").select("composition_revision, composition").eq("id", invite.id).single();
@@ -270,7 +270,7 @@ describe("composition save — optimistic concurrency", () => {
       p_composition: validComposition({ sections: [{ id: "opening", type: "opening", enabled: true, motionPreset: "fade", data: { headline: "First save" } }] }),
       p_expected_revision: 0,
     });
-    expect(first.data).toBe("ok");
+    expect(first.data).toEqual({ result: "ok", revision: 1 });
 
     // A second "tab" that read the invitation before the first save,
     // still believing revision is 0.
@@ -279,7 +279,7 @@ describe("composition save — optimistic concurrency", () => {
       p_composition: validComposition({ sections: [{ id: "opening", type: "opening", enabled: true, motionPreset: "fade", data: { headline: "Stale save, should not apply" } }] }),
       p_expected_revision: 0,
     });
-    expect(second.data).toBe("stale");
+    expect(second.data).toEqual({ result: "stale", revision: 1 });
 
     const service = createServiceRoleClient();
     const { data: row } = await service.from("invites").select("composition").eq("id", invite.id).single();
@@ -292,7 +292,7 @@ describe("composition save — optimistic concurrency", () => {
       p_composition: validComposition(),
       p_expected_revision: 0,
     });
-    expect(data).toBe("not-found");
+    expect(data).toEqual({ result: "not-found", revision: null });
   });
 
   it("a successful save records an admin_audit_log entry with the new revision, and no raw preview token or full composition text", async () => {

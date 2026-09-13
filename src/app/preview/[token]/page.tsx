@@ -3,9 +3,11 @@ import { getInvitePreviewServer } from "@/lib/storage.server";
 import { buildPreviewInviteViewModel } from "@/lib/invite-view-model";
 import { isValidPreviewTokenFormat } from "@/lib/preview-tokens.server";
 import { resolveComposition } from "@/lib/composition/resolve";
+import { getReviewContext, markReviewOpened } from "@/lib/review-client.server";
 import { PreviewBanner } from "@/components/invite/PreviewBanner";
 import { InvitationExperience } from "@/components/experience/InvitationExperience";
 import { UnavailableInvite } from "@/components/invite/UnavailableInvite";
+import { ReviewSection } from "./ReviewSection";
 
 /**
  * The private preview route — Stage 5 (2026-09-10, see PROJECT_STATUS.md's
@@ -87,6 +89,21 @@ export default async function PreviewPage({ params }: Props) {
   const model = buildPreviewInviteViewModel(preview);
   const composition = resolveComposition(model, preview?.composition ?? null);
 
+  // Stage 9 — sanitized review state (round status + whether it's still
+  // bound to the CURRENT composition revision), fetched through the
+  // SAME token, via its own dedicated function
+  // (get_invite_review_context()) rather than anything added to
+  // get_invite_preview() itself. Only attempted once we already know the
+  // token resolved to real, viewable content — an invalid token gets the
+  // identical UnavailableInvite response either way, so there's nothing
+  // to gain from querying review state for one. markReviewOpened() is a
+  // best-effort side effect (Part B: "opened timestamp where safely
+  // measurable") — it never affects what's rendered below.
+  const reviewContext = composition && model ? await getReviewContext(token) : null;
+  if (reviewContext?.status === "awaiting_client") {
+    await markReviewOpened(token);
+  }
+
   return (
     <main>
       {composition && model ? (
@@ -108,6 +125,14 @@ export default async function PreviewPage({ params }: Props) {
             canRsvp={model.isPublished}
             mode="review"
           />
+          {reviewContext && (
+            <ReviewSection
+              token={token}
+              status={reviewContext.status}
+              isCurrent={reviewContext.isCurrent}
+              sections={composition.sections.map((s) => ({ id: s.id, type: s.type }))}
+            />
+          )}
         </>
       ) : (
         <UnavailableInvite homeHref="/" homeLabel="Go to Enveloped" />

@@ -70,27 +70,27 @@ export function PreviewLinkTool() {
         value={inviteId}
         onChange={(e) => setInviteId(e.target.value)}
         placeholder="00000000-0000-0000-0000-000000000000"
-        className="mt-3 w-full rounded-full border border-line bg-paper px-4 py-2 text-sm outline-none focus:border-ink focus-visible:ring-2 focus-visible:ring-offset-2"
+        className="focus-ring mt-3 w-full rounded-full border border-line bg-paper px-4 py-2 text-sm outline-none focus:border-ink"
       />
       <div className="mt-3 flex flex-wrap gap-2">
         <button
           onClick={() => run("create")}
           disabled={!inviteId.trim() || status === "working"}
-          className="rounded-full bg-ink px-4 py-2 text-xs font-medium text-paper transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="rounded-full bg-ink px-4 py-2 text-xs font-medium text-paper transition disabled:opacity-40 focus-ring"
         >
           Create
         </button>
         <button
           onClick={() => run("rotate")}
           disabled={!inviteId.trim() || status === "working"}
-          className="rounded-full border border-line px-4 py-2 text-xs text-ink transition disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="rounded-full border border-line px-4 py-2 text-xs text-ink transition disabled:opacity-40 focus-ring"
         >
           Rotate
         </button>
         <button
           onClick={() => run("revoke")}
           disabled={!inviteId.trim() || status === "working"}
-          className="rounded-full border border-line px-4 py-2 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="rounded-full border border-line px-4 py-2 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-40 focus-ring"
         >
           Revoke
         </button>

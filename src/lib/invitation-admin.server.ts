@@ -7,6 +7,7 @@ import type { InvitationComposition } from "@/lib/composition/schema";
 import { isKnownCulturalPackId, type CulturalPackId } from "@/lib/composition/cultural-packs";
 import type { EventCategory, TierId } from "@/lib/types";
 import type { RequestDetail } from "@/lib/requests";
+import { assessPublicationReadiness, type PrivateFieldsForLeakCheck } from "@/lib/composition/readiness";
 
 /**
  * Server-only, ADMINISTRATOR-ONLY invitation-authoring orchestration —
@@ -128,6 +129,12 @@ export interface AdminInvitationDetail {
   hasPreviewLink: boolean;
   composition: unknown | null;
   compositionRevision: number;
+  /** null for a self-service invitation — Stage 9's client-approval
+   *  workflow (ReviewPanel, the publish approval gate) only ever
+   *  applies when this is `'concierge'`; the admin UI and
+   *  publishInvitation() both branch on it exactly like publish_invite()
+   *  itself does in the database. */
+  generatorKind: string | null;
 }
 
 /**
@@ -150,16 +157,23 @@ export async function getAdminInvitationDetail(invitationId: string): Promise<Ad
 
   const { data, error } = await client
     .from("invites")
-    .select("id, slug, category, tier, request_id, published_at, paid, composition, composition_revision")
+    .select("id, slug, category, tier, request_id, published_at, paid, composition, composition_revision, generator_kind")
     .eq("id", invitationId)
     .maybeSingle();
   if (error || !data) return null;
 
-  const { data: preview } = await client
-    .from("invite_previews")
-    .select("revoked_at")
-    .eq("invite_id", invitationId)
-    .maybeSingle();
+  // Stage 9 correction: invite_previews carries NO RLS policy for any
+  // role (deliberately — it holds token_hash, and Stage 5's own design
+  // is that no ordinary table read, admin included, should ever reach
+  // it). The direct `.from("invite_previews")` read this used to do
+  // therefore always returned nothing, silently reporting
+  // hasPreviewLink: false even when a link existed — found during this
+  // stage's own visual review. admin_invite_has_preview_link() is the
+  // boolean-only, function-mediated fix (see the migration's own
+  // comment on it) — the same "function-mediated, not policy-mediated"
+  // shape already used everywhere a sensitive column needs an
+  // existence-only answer.
+  const { data: hasLink } = await client.rpc("admin_invite_has_preview_link", { p_invite_id: invitationId });
 
   return {
     id: data.id,
@@ -169,9 +183,10 @@ export async function getAdminInvitationDetail(invitationId: string): Promise<Ad
     requestId: data.request_id,
     publishedAt: data.published_at,
     paid: Boolean(data.paid),
-    hasPreviewLink: Boolean(preview && !(preview as { revoked_at: string | null }).revoked_at),
+    hasPreviewLink: Boolean(hasLink),
     composition: data.composition ?? null,
     compositionRevision: data.composition_revision ?? 0,
+    generatorKind: data.generator_kind ?? null,
   };
 }
 
@@ -195,15 +210,68 @@ export async function getInvitationIdForRequest(requestId: string): Promise<stri
 // inspection," not re-implemented.
 // ---------------------------------------------------------------------
 
-export type PublishResult = { ok: true } | { ok: false; reason: "not-admin" | "not-found" | "database-error" };
+export type PublishResult =
+  | { ok: true }
+  | { ok: false; reason: "not-admin" | "not-found" | "not-ready" | "not-approved" | "unresolved-changes" | "database-error" };
 
+/**
+ * Publishes an invitation — Stage 3's publish_invite() underneath, but
+ * with a Stage 9 readiness pre-check layered in front of it for
+ * CONCIERGE invitations only (Part I: "preserve legitimate existing
+ * self-service publication behavior" — a self-service invitation's
+ * generator_kind is null, so none of the code below ever runs for one).
+ *
+ * Composition-SHAPE readiness (schema validity, blocking placeholders,
+ * required headline/date) is assessed here, in TypeScript, the same
+ * division of responsibility this project has used since Stage 8 —
+ * assessPublicationReadiness() has never been re-implemented in SQL,
+ * the same way composition shape itself is never re-validated by
+ * admin_save_invite_composition(). What publish_invite() DOES enforce,
+ * as the actual security boundary against a direct RPC call that skips
+ * this wrapper, is table STATE: a client-approved round for the current
+ * revision, and no unresolved change request — both mapped below from
+ * the database's own exception message to a specific PublishResult
+ * reason.
+ */
 export async function publishInvitation(invitationId: string): Promise<PublishResult> {
   const { isAdmin } = await checkAdmin();
   if (!isAdmin) return { ok: false, reason: "not-admin" };
   const client = await createServerSupabaseClient();
   if (!client) return { ok: false, reason: "database-error" };
+
+  const { data: invite, error: fetchError } = await client
+    .from("invites")
+    .select("generator_kind, composition, request_id")
+    .eq("id", invitationId)
+    .maybeSingle();
+  if (fetchError) return { ok: false, reason: "database-error" };
+  if (!invite) return { ok: false, reason: "not-found" };
+
+  if (invite.generator_kind === "concierge") {
+    let privateFields: PrivateFieldsForLeakCheck | null = null;
+    if (invite.request_id) {
+      const { data: request } = await client
+        .from("requests")
+        .select("email, phone, notes, internal_notes")
+        .eq("id", invite.request_id)
+        .maybeSingle();
+      if (request) {
+        privateFields = { email: request.email, phone: request.phone, notes: request.notes, internalNotes: request.internal_notes };
+      }
+    }
+    const readiness = assessPublicationReadiness(invite.composition, privateFields);
+    if (readiness.blocking.length > 0) {
+      return { ok: false, reason: "not-ready" };
+    }
+  }
+
   const { data, error } = await client.rpc("publish_invite", { p_invite_id: invitationId });
-  if (error) return { ok: false, reason: "database-error" };
+  if (error) {
+    if (error.message.includes("no client approval")) return { ok: false, reason: "not-approved" };
+    if (error.message.includes("unresolved change request")) return { ok: false, reason: "unresolved-changes" };
+    console.error("publishInvitation: publish_invite RPC failed", error.message);
+    return { ok: false, reason: "database-error" };
+  }
   if (!data) return { ok: false, reason: "not-found" };
   return { ok: true };
 }

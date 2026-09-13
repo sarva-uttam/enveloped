@@ -32,7 +32,7 @@ export default async function AdminRequestDetailPage({ params }: Props) {
       <div className="mx-auto max-w-2xl px-6 py-16 text-center">
         <h1 className="font-display text-2xl">Request unavailable</h1>
         <p className="mt-2 text-sm text-ink-soft">This request doesn&apos;t exist, or you don&apos;t have access to it.</p>
-        <Link href="/admin/requests" className="mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
+        <Link href="/admin/requests" className="focus-ring rounded mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
           Back to requests
         </Link>
       </div>
@@ -43,7 +43,7 @@ export default async function AdminRequestDetailPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
-      <Link href="/admin/requests" className="text-xs font-medium text-ink-soft underline-offset-2 hover:underline">
+      <Link href="/admin/requests" className="focus-ring rounded text-xs font-medium text-ink-soft underline-offset-2 hover:underline">
         ← All requests
       </Link>
 
@@ -103,7 +103,7 @@ export default async function AdminRequestDetailPage({ params }: Props) {
             <p className="mt-1 text-xs text-ink-soft">This request already has an invitation.</p>
             <Link
               href={`/admin/invitations/${request.invitationId}`}
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
+              className="focus-ring mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
             >
               Open invitation draft
             </Link>

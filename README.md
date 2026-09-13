@@ -177,6 +177,24 @@ including the one new migration (not yet applied live) and what remains
 deliberately out of scope (AI-assisted generation, client-facing
 approval, further cultural packs).
 
+Stage 9 adds the client-facing half Stage 8 deliberately left out: a
+version-aware approval workflow so the person holding a private preview
+link — never a verified identity, always described as such — can
+approve the exact composition revision they're looking at or request
+structured changes, without an account. A review round binds to one
+exact revision; a meaningful composition edit automatically supersedes
+an active round and invalidates a prior approval; and concierge
+publication now genuinely requires a client-approved current revision
+with no unresolved change request, enforced in the database itself, not
+just the admin UI — self-service publication is completely unaffected.
+See `PROJECT_STATUS.md`'s "Stage 9" section for the full domain model,
+the token-security design, two defects found and fixed during this
+stage's own visual review (an Origin-check bug specific to how Next.js
+Route Handlers report `req.url`, and a pre-existing Stage 8 gap where
+the admin UI's "preview link exists" indicator silently always read
+false), and what remains deliberately out of scope (email/SMS delivery,
+electronic signatures, file attachments, an emergency publish override).
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”

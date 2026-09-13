@@ -26,7 +26,7 @@ export function ReadinessPanel({ report }: { report: ReadinessReport }) {
         </p>
       )}
       <details className="mt-4">
-        <summary className="cursor-pointer text-xs font-medium uppercase tracking-wide text-ink-soft">Successful checks ({report.passed.length})</summary>
+        <summary className="focus-ring cursor-pointer rounded text-xs font-medium uppercase tracking-wide text-ink-soft">Successful checks ({report.passed.length})</summary>
         <ul className="mt-2 space-y-1 text-xs text-ink-soft">
           {report.passed.map((issue) => (
             <li key={issue.id} className="flex items-start gap-1.5">

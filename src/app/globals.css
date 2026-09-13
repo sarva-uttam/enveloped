@@ -157,3 +157,49 @@ body {
     transform: none !important;
   }
 }
+
+/* Stage 9 accessibility correction (see PROJECT_STATUS.md's Stage 9
+ * section) — the ONE centralized keyboard-focus treatment for every
+ * interactive control across the authenticated admin interface and the
+ * client review UI, applied via a single `.focus-ring` class rather than
+ * scattered per-component Tailwind ring utilities. Replaces an earlier
+ * version of this fix (confined to src/app/preview/[token]/ReviewSection.tsx
+ * alone) that used `focus-visible:ring-ink`, a box-shadow-only technique
+ * with no fallback once Windows high-contrast/forced-colors mode strips
+ * box-shadow entirely.
+ *
+ * Two independent layers, both gated on `:focus-visible` (never plain
+ * `:focus`) so a mouse/touch click never shows it, only real keyboard
+ * (or assistive-technology) focus:
+ *
+ * 1. A real `outline` — `outline-color: transparent` in ordinary
+ *    rendering (invisible there; the box-shadow below does the visible
+ *    work), but `outline-style`/`outline-width` are still genuinely
+ *    present, which is what matters for forced-colors mode: that mode
+ *    overrides author-specified colors wholesale but PRESERVES the
+ *    outline's existence and geometry, painting it in the OS's chosen
+ *    high-contrast highlight color — the same reason `box-shadow` alone
+ *    is not sufficient (forced-colors mode drops it entirely, since it's
+ *    treated as decorative).
+ * 2. A two-color box-shadow "halo," for every ordinary (non-forced-
+ *    colors) rendering context: a `--paper`-colored inner ring directly
+ *    against the control, then an `--ink`-colored outer ring beyond it.
+ *    Exactly one of the two always contrasts against whatever the
+ *    control's own background happens to be — the paper ring shows
+ *    clearly against a dark (`ink`) button, the ink ring shows clearly
+ *    against a light (`paper`/`paper-raised`) one, and a mid-tone
+ *    background (e.g. `blush`) still meets contrast against the darker
+ *    of the two. Pure `box-shadow`, not `outline-width`/`border`, so
+ *    focusing a control never shifts surrounding layout.
+ */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 4px var(--ink);
+}

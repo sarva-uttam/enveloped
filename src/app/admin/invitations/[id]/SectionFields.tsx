@@ -15,8 +15,7 @@ import { EVENT_TYPES } from "@/lib/composition/event-types";
  * keyboard-operable, controlled-input component.
  */
 
-const inputClass =
-  "w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm outline-none focus:border-ink focus-visible:ring-2 focus-visible:ring-offset-1";
+const inputClass = "focus-ring w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm outline-none focus:border-ink";
 const labelClass = "block text-xs font-medium uppercase tracking-wide text-ink-soft";
 
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -148,7 +147,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
                 type="button"
                 onClick={() => onChange({ ...d, entries: d.entries.filter((_, j) => j !== i) })}
                 disabled={d.entries.length <= 1}
-                className="rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-30"
+                className="focus-ring rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-30"
               >
                 Remove
               </button>
@@ -160,7 +159,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
               onChange({ ...d, entries: [...d.entries, { id: `schedule-${Date.now().toString(36)}`, eventTypeId: null, label: "New event", value: "To be confirmed" }] })
             }
             disabled={d.entries.length >= 12}
-            className="rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink disabled:opacity-30"
+            className="focus-ring rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink disabled:opacity-30"
           >
             + Add schedule entry
           </button>
@@ -250,7 +249,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
               <Field label="Fallback color">
                 <input
                   type="color"
-                  className="h-9 w-16 rounded border border-line"
+                  className="focus-ring h-9 w-16 rounded border border-line"
                   value={item.colorFallback ?? "#e2c07a"}
                   onChange={(e) => {
                     const items = d.items.slice();
@@ -263,7 +262,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
                 type="button"
                 onClick={() => onChange({ ...d, items: d.items.filter((_, j) => j !== i) })}
                 disabled={d.items.length <= 1}
-                className="rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-30"
+                className="focus-ring rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-30"
               >
                 Remove
               </button>
@@ -275,7 +274,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
               onChange({ ...d, items: [...d.items, { id: `gallery-${Date.now().toString(36)}`, imageUrl: null, alt: "Describe this image", colorFallback: "#e2c07a" }] })
             }
             disabled={d.items.length >= 12}
-            className="rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink disabled:opacity-30"
+            className="focus-ring rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink disabled:opacity-30"
           >
             + Add gallery item
           </button>
@@ -304,7 +303,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
             <input className={inputClass} value={d.credit ?? ""} onChange={(e) => onChange({ ...d, credit: e.target.value || null })} />
           </Field>
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={d.loop} onChange={(e) => onChange({ ...d, loop: e.target.checked })} />
+            <input type="checkbox" checked={d.loop} onChange={(e) => onChange({ ...d, loop: e.target.checked })} className="focus-ring" />
             Loop playback
           </label>
           <Field label={`Starting volume (${Math.round(d.startVolume * 100)}%)`}>
@@ -315,7 +314,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
               step={0.05}
               value={d.startVolume}
               onChange={(e) => onChange({ ...d, startVolume: Number(e.target.value) })}
-              className="w-full"
+              className="focus-ring w-full"
             />
           </Field>
           <p className="text-[11px] text-ink-soft">

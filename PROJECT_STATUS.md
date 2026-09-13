@@ -2769,6 +2769,346 @@ user, or configuration touched. No `.env.local` change. No live
 administrator created. No real preview link created against production
 data. No deployment, no merge to `master`, no pull request.
 
+## Stage 9 — secure client approval and revision workflow (2026-09-13)
+
+Stage 8 built the request pipeline and the structured generator; a
+concierge invitation could be drafted and previewed, but nothing let the
+client who holds the private preview link actually *decide* anything,
+and nothing stopped an administrator from publishing a version the
+client had never seen or had explicitly asked to change. This stage
+closes that gap: `Request → consultation → draft → private preview →
+client decision → revisions if required → current-version approval →
+deliberate admin publication`. It extends Stage 5's preview-token
+architecture, Stage 8's `composition_revision`/`admin_audit_log`, and
+`publish_invite()` — never duplicates any of them.
+
+**Not built this stage** (explicitly out of scope): general comments,
+live chat, email/SMS/WhatsApp delivery, electronic signatures or
+legal-contract acceptance, file attachments, an emergency publish
+override, and any new cultural pack. One migration
+(`supabase/migrations/20260913120000_client_review_workflow.sql`), like
+every migration since Stage 2, is verified only against the local
+Supabase stack and has not been applied to the live project.
+
+### A private preview link is not a verified identity
+
+Every place a client decision reaches a human — the client's own
+confirmation screen, the admin's review panel, the audit log's intended
+reading — says the decision was "submitted through the private preview
+link," never that it came from a legally verified person. The optional
+display name a client may type before approving or requesting changes
+is exactly that: a label they chose, not an authenticated identity.
+`src/lib/review.ts`'s `UNVERIFIED_IDENTITY_NOTE` is the single fixed
+string every surface uses, so this wording can never drift between
+components.
+
+### Review-round domain model and revision binding
+
+Two new tables, `review_rounds` and `review_feedback_items`
+(`supabase/migrations/20260913120000_client_review_workflow.sql`), carry
+the same zero-client-policy posture as `invite_previews`/
+`admin_audit_log`: RLS enabled, one admin-only SELECT policy, no
+insert/update/delete policy for any role — every write goes through a
+narrow, single-purpose `SECURITY DEFINER` function, never a generic
+"update status" endpoint (unlike `requests.status`, there is no other
+write path here to defend against, so no separate transition-validating
+trigger is needed — each function's own guarded `UPDATE ... WHERE
+status = '<expected>'` clause both encodes its one valid transition and
+provides the actual concurrency protection).
+
+A round binds to EXACTLY one `composition_revision`, captured at
+creation time (`admin_create_review_round()`) and never re-pointed
+afterward. Status vocabulary: `draft → ready_to_send → awaiting_client →
+{client_approved | changes_requested} → resolved`, with `superseded`
+and `cancelled` reachable from any non-terminal state. A partial unique
+index (`review_rounds_one_active_idx`, mirroring Stage 8's
+`invites_request_id_unique_idx` pattern) makes "only one active round
+per invitation" structural — active meaning any status except
+`resolved`/`superseded`/`cancelled`. Two admin actions distinguish
+"ready" from "actually sent" (`admin_mark_review_round_ready()`,
+`admin_send_review_round()`, the latter stamping `sent_at`) — Part J's
+"do not claim a preview was delivered merely because a link was created
+or copied" made explicit as two separate, deliberate state changes
+rather than one.
+
+### Composition-change invalidation
+
+`admin_save_invite_composition()` (signature unchanged, return TYPE
+changed from `text` to `jsonb` — a return-type change requires `drop
+function` first, the same lesson as every prior signature change)
+now reads the current row with `select ... for update` before writing,
+so it can tell a genuinely meaningful edit from a no-op resubmission of
+identical content: `composition is distinct from` the stored value (plus
+`occasion`/`occasion_custom_label`). An identical save returns `{result:
+"ok", revision: <unchanged>}` without incrementing `composition_revision`
+at all — Part H's "saving identical normalized composition content
+should not create a false revision." A MEANINGFUL save increments the
+revision as before, AND, in the same transaction, moves any non-terminal
+round for that invitation straight to `superseded` — an approved round
+loses its approval the instant the content it was approved for changes,
+with its own distinct `admin_audit_log` entry
+(`review_approval_invalidated`) separate from the general
+`review_round_superseded` one, since losing an approval is a more
+consequential event than losing an unsent draft round. `saveInviteComposition()`
+in `src/lib/composition-admin.server.ts` was updated to parse the new
+jsonb shape and report back the RPC's actual resulting revision, not a
+client-computed `expectedRevision + 1` (which would have been wrong for
+a no-op save).
+
+`InvitationEditor.tsx` shows a persistent, prominent warning — "The
+client has approved this exact version. Saving any further change will
+invalidate that approval" — whenever the latest review round is
+`client_approved` for the CURRENT live revision (computed from
+`InvitationEditor`'s own in-memory `revision` state, not a stale
+server-fetched snapshot, so it updates instantly on save, before any
+page refresh). Historical approval remains visible in the round history
+(`ReviewPanel.tsx`'s collapsed "earlier rounds" list) but a superseded
+round can never satisfy the publication gate below — only the specific
+round still `client_approved` for the invitation's CURRENT
+`composition_revision` can.
+
+### Secure client decision boundary
+
+`get_invite_review_context(p_token)` and `mark_review_round_opened(p_token)`
+are read-only/side-effect-only counterparts to `get_invite_preview()`,
+deliberately NOT added to that existing function — the same "physically
+separate, independently evolvable" split Stage 5 already established
+between `invites` and `invite_previews`. Both hash the raw token INSIDE
+themselves against `invite_previews.token_hash` (never trust a
+pre-hashed value from an anonymous caller) and return only what the
+client UI needs: which round, its status, and `is_current` (a boolean —
+whether the round's bound revision still equals the invitation's actual
+current one — computed server-side, never a raw revision number handed
+to the browser). `submit_review_approval(p_token, p_display_name)` and
+`submit_review_changes(p_token, p_items, p_display_name)` are the ONLY
+two ways a round ever leaves `awaiting_client`: both require the
+resolved round to be exactly `awaiting_client` AND still bound to the
+CURRENT revision, both use one guarded `UPDATE ... WHERE status =
+'awaiting_client'` as the actual transactional protection against two
+near-simultaneous decisions (Postgres's own row lock serializes
+concurrent writers; the loser's WHERE clause matches zero rows), and
+both return one of exactly two outcomes — `'ok'` or `'unavailable'` —
+the same generic failure for a bad token, a wrong-status round, a stale
+revision, or a lost race, so no response ever reveals which. Neither
+function, nor anything upstream of them, is ever called on a GET — Part
+F: "opening a preview must not itself approve or reject anything."
+
+`src/lib/review-client.server.ts` is the trusted-server wrapper: format-
+validates the token before any database call, runs Zod validation on
+`displayName`/feedback items (length caps, an HTML-like-character
+rejection via a bare `/[<>]/` test, whitespace normalization via a
+collapse-and-trim transform) BEFORE ever reaching the database, and
+cross-checks each item's optional `sectionId` against the invitation's
+OWN real composition section ids (never an arbitrary client-supplied
+string) using the same composition value already fetched for rendering
+— no second database round trip. `review_feedback_items`' own CHECK
+constraints (message length 1–2000, category enum, section-id shape)
+are a hard backstop behind this, the same division composition shape
+validation already uses between Zod and
+`admin_save_invite_composition()`.
+
+### Structured change requests
+
+A "request changes" decision may contain 1–10 structured items, each an
+optional category (`wording`/`names`/`dateTime`/`venue`/`schedule`/
+`imagery`/`style`/`music`/`rsvp`/`other`), an optional section reference,
+and a required message — never a single freeform blob, never an
+attachment. Rendered everywhere as plain text (React's default escaping;
+no `dangerouslySetInnerHTML` anywhere in this stage's code), matching the
+input-time rejection of anything HTML-like. `ReviewSection.tsx` (the
+client-facing form) requires the private-link acknowledgement checkbox
+before submitting and shows field-level validation inline; the admin's
+`ReviewPanel.tsx` lists each item with its category/section/message and
+an independent per-item "Resolve" action
+(`admin_resolve_review_feedback_item()`) alongside whole-round actions.
+
+### Token and submission security (Part F)
+
+The two anonymous submission routes
+(`/api/preview/[token]/review/{approve,request-changes}`) are POST-only
+and, before touching the database, run `src/lib/review-submission-
+guard.server.ts`'s checks in order: Origin validation, JSON content-
+type, a body-size bound, and a short per-token cooldown (an in-process
+`Map`, keyed by the token's SHA-256 hash — never the raw token — reset
+on restart, a documented limitation for this stage's single-admin-
+operator threat model, not a claim of distributed rate limiting). The
+Origin check was corrected mid-stage after being caught by this stage's
+own visual review, not a unit test: inside a real Next.js Route Handler,
+`req.url`'s host is normalized to a fixed internal value regardless of
+what the browser actually addressed, so comparing `Origin` against
+`new URL(req.url).origin` rejected every genuine same-origin request.
+The fix compares against the `Host` header instead (what the client
+actually sent), which Next.js does not rewrite — confirmed by
+reproducing the failure directly against the local build via `curl`
+before and after. No CAPTCHA (no demonstrated threat justifying one, per
+the stage's own instruction). Infrastructure-level request logs
+(reverse proxies, hosting-platform access logs) still see the full
+request URL including the path segment that IS the token — this stage's
+own application code never logs it, but that infrastructure-log
+exposure is a standing, documented fact for ANY bearer-token URL design
+and is not something this stage's code can close.
+
+### Admin review management
+
+`src/lib/review-admin.server.ts` mirrors every other `*-admin.server.ts`
+file's shape: `checkAdmin()`-gated wrappers around one dedicated function
+per action (`createReviewRound`, `markReviewRoundReady`,
+`sendReviewRound`, `cancelReviewRound`, `resolveReviewRound`,
+`resolveReviewFeedbackItem`), plus `getInvitationReviewHistory()`, a
+read model built from `review_rounds`/`review_feedback_items`'s one
+admin-SELECT policy (never the service-role client). `ReviewPanel.tsx`,
+slotted into `InvitationEditor.tsx` only when `generatorKind ===
+"concierge"`, shows the current round's status/feedback/actions plus a
+collapsed chronological history of every earlier round — current-
+revision approval and historical approval are visually distinguishable
+because a round whose `compositionRevision` no longer matches the
+invitation's current one is labeled as such directly in the panel.
+
+**A genuine pre-existing gap, found and fixed during this stage's own
+visual review**: `getAdminInvitationDetail()`'s `hasPreviewLink` check
+(Stage 8) read `invite_previews` through the ordinary session-aware
+client — but that table has carried NO RLS policy for any role at all
+since Stage 5, deliberately (it holds `token_hash`; "token_hash is never
+reachable through PostgREST's ordinary table endpoint... for any caller,
+admin included"). That read has therefore always returned nothing,
+silently reporting `hasPreviewLink: false` even when an active link
+existed — invisible in Stage 8's own screenshots because nothing in that
+stage's fixtures happened to create a link before screenshotting that
+exact panel. The fix is NOT a blanket admin SELECT policy on
+`invite_previews` (that would make `token_hash` itself reachable via a
+raw `.select("token_hash")` from an admin's own client) — it is
+`admin_invite_has_preview_link(p_invite_id)`, a narrow, boolean-only,
+`SECURITY DEFINER` function, the same function-mediated-not-policy-
+mediated shape `get_invite_preview()` itself already uses for a
+sensitive column.
+
+### Publication guard (Part I)
+
+`publish_invite()` (signature unchanged, body changed — `create or
+replace` suffices) gains a `generator_kind = 'concierge'`-gated check:
+an unresolved `changes_requested` round, checked first with its own
+specific exception message; then a `client_approved` round bound to the
+invitation's CURRENT `composition_revision`, required to exist at all.
+Neither check runs for `generator_kind is null` (self-service) —
+verified directly, not just by code inspection: a self-service
+invitation with no review state at all still publishes on the first
+call, byte-for-byte the same as before this stage. Composition-shape
+readiness (schema validity, blocking placeholders, required headline/
+date) is deliberately NOT re-implemented in SQL — `publishInvitation()`
+in `src/lib/invitation-admin.server.ts` runs `assessPublicationReadiness()`
+(fetching the connected request's private fields for the leak check,
+same as the editor already does) and refuses to call the RPC at all if
+any blocking issue exists, the same TypeScript-only division composition
+shape validation has used since Stage 6 — documented explicitly as a
+two-layer design (state in SQL, shape in TypeScript), not an oversight:
+an admin's own direct RPC call could in principle still bypass the
+TypeScript-only readiness gate, an accepted risk in this project's
+existing trust model (the security boundary is client vs. admin, never
+admin vs. self — the same reasoning `admin_save_invite_composition()`
+already applies to its own shape validation). `publish_invite()` inserts
+an `invitation_published` audit row on success;
+`unpublish_invite()` gains a matching `invitation_unpublished` one and
+never touches `review_rounds`/`review_feedback_items` — historical review
+records survive unpublication untouched.
+
+No emergency override was built. If one is ever needed, it should be a
+deliberate, reported owner decision — not something added silently to
+close out this stage.
+
+### Auditing (Part K)
+
+Every review-lifecycle transition writes its own `admin_audit_log` row:
+`review_round_created`, `review_round_ready`, `review_round_sent`,
+`review_round_cancelled`, `review_round_resolved`,
+`review_feedback_item_resolved` (actor-attributed, `auth.uid()`),
+`review_decision_received` (actor `null` — there is no authenticated
+user for a client decision — `detail` records `{decision, source:
+"preview_link"}`, never the raw text of any feedback item),
+`review_round_superseded` and `review_approval_invalidated` (both from
+`admin_save_invite_composition()`'s own transaction),
+`invitation_published`/`invitation_unpublished`. No function anywhere in
+this stage's migration ever writes a raw token or its hash into
+`detail` — verified directly
+(`tests/integration/review-workflow.test.ts`'s privacy describe block
+asserts the serialized detail of a real audit row never contains either
+value for a real submitted token).
+
+### Testing
+
+`tests/integration/review-workflow.test.ts` (46 tests, real Postgres):
+table-access denial for anon/ordinary roles on both new tables; the full
+admin round lifecycle and its authorization; token-context resolution
+for valid/invalid/malformed/rotated/revoked tokens and cross-invitation
+isolation; `mark_review_round_opened()`'s exactly-once behavior;
+approval and change-request submission including duplicate/conflicting-
+decision rejection, empty/over-limit item rejection, and a proof that
+feedback never touches `invites.composition`; meaningful-vs-no-op save
+detection, round supersession, and approval invalidation with its
+distinct audit event; the full publication guard (unresolved changes
+block, stale/invalidated approval blocks, current approval permits,
+approval alone never publishes, payment state never changes,
+self-service is completely unaffected, unpublish preserves history); the
+`admin_invite_has_preview_link()` correction; and a privacy sweep (no
+token/hash column anywhere, `get_invite_review_context()` never returns
+one, `get_published_invite()`'s output carries no review-round field at
+all). `tests/integration/composition-authoring.test.ts` and
+`concierge-admin.test.ts` were updated for
+`admin_save_invite_composition()`'s new jsonb contract and a new
+no-op-save assertion. Full local suite after this stage: 234/234
+database integration tests, 595 unit/component/route tests
+(`review.ts`'s constants, `review-admin.server.ts`,
+`review-client.server.ts`, `review-submission-guard.server.ts`, the five
+new API routes, `ReviewSection.tsx` — including HTML-rejection,
+required-confirmation, and post-submission focus-management assertions
+— and `ReviewPanel.tsx`, plus new cases added to `InvitationEditor.test.tsx`
+for the approved-revision warning banner).
+
+### Privacy and bundle isolation
+
+`/invite/[id]` and `/preview/[token]` share byte-identical client chunks
+before and after this stage except for exactly one new chunk —
+`ReviewSection.tsx`'s own code, present only on `/preview/[token]`
+(confirmed by diffing each route's `page_client-reference-manifest.js`
+chunk list) — grepped clean of `InvitationEditor`/`ReviewPanel`/
+`admin_save_invite_composition`/`sandbox.paypal.com`. The client decision
+UI never receives the raw composition, private request fields, owner id,
+payment state, admin membership, or any preview-token hash; the ONE
+identifier it does hold (the raw preview token itself, as a plain prop
+used only to build the two fetch() URLs) is never written to
+localStorage/sessionStorage/a cookie and never appears in any analytics
+call (this stage adds none).
+
+### Local development workflow
+
+Identical to every stage since Stage 2: `npm run db:start`, `npm run
+test:db` (resets from empty, applies every migration including this
+stage's, runs the full integration suite), `npm test`/`npm run lint`/
+`npx tsc --noEmit`/`npm run build` for everything else. No `.env.local`
+change, no live administrator bootstrap, no production migration.
+
+### Production rollout requirements
+
+Before this stage's migration could ever reach the live project: apply
+`20260913120000_client_review_workflow.sql` (after every prior
+migration, in order); confirm no existing `review_rounds`/
+`review_feedback_items` naming collision; re-run the full local
+integration suite one final time immediately beforehand; and, since
+`admin_save_invite_composition()`'s return type changed, confirm no
+other caller anywhere still expects the old bare-text result (this
+codebase has exactly one caller, `saveInviteComposition()`, already
+updated). No code change is required to `publish_invite()`'s callers —
+its signature and return type are unchanged.
+
+### Confirmation production was untouched
+
+No migration applied anywhere but the local stack. No production data,
+user, or configuration touched. No `.env.local` change (a
+`.env.development.local`/`.env.production.local` pair was used locally
+for this stage's own visual-review session, both gitignored, both
+deleted before finishing). No live administrator created. No real
+preview link created against production data. No deployment, no merge
+to `master`, no pull request.
+
 ## Key files
 
 | Area | Path |
@@ -2811,6 +3151,13 @@ data. No deployment, no merge to `master`, no pull request.
 | Admin mutation routes (Stage 8) | `src/app/api/admin/requests/[id]/status/route.ts`, `.../create-invitation/route.ts`, `src/app/api/admin/invitations/[id]/composition/route.ts`, `.../publish/route.ts`, `.../initialize-pack/route.ts` |
 | Concierge/generator migration (Stage 8) | `supabase/migrations/20260912100000_concierge_admin_generator.sql` |
 | Stage 8 tests | `src/lib/requests.test.ts`, `src/lib/composition/readiness.test.ts`, `src/lib/requests-admin.server.test.ts`, `src/lib/invitation-admin.server.test.ts`, `tests/integration/concierge-admin.test.ts` |
+| Review domain model + admin reads/writes (Stage 9) | `src/lib/review.ts`, `src/lib/review-admin.server.ts` |
+| Client decision boundary (Stage 9) | `src/lib/review-client.server.ts`, `src/lib/review-submission-guard.server.ts` |
+| Admin review UI (Stage 9) | `src/app/admin/invitations/[id]/ReviewPanel.tsx` |
+| Client review UI (Stage 9) | `src/app/preview/[token]/ReviewSection.tsx` (wired into `page.tsx`) |
+| Client/admin review mutation routes (Stage 9) | `src/app/api/preview/[token]/review/approve/route.ts`, `.../request-changes/route.ts`, `src/app/api/admin/invitations/[id]/review/route.ts`, `src/app/api/admin/reviews/[roundId]/route.ts`, `.../feedback/[itemId]/route.ts` |
+| Client review workflow migration (Stage 9) | `supabase/migrations/20260913120000_client_review_workflow.sql` |
+| Stage 9 tests | `src/lib/review-admin.server.test.ts`, `src/lib/review-client.server.test.ts`, `src/lib/review-submission-guard.server.test.ts`, `src/app/preview/[token]/ReviewSection.test.tsx`, `src/app/admin/invitations/[id]/ReviewPanel.test.tsx`, five new route `*.test.ts` files, `tests/integration/review-workflow.test.ts` |
 
 ## Repo
 

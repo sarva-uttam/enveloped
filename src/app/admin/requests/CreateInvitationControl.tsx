@@ -60,7 +60,7 @@ export function CreateInvitationControl({ requestId }: { requestId: string }) {
         <div className="mt-2 space-y-2">
           {CULTURAL_PACK_IDS.map((id) => (
             <label key={id} className="flex cursor-pointer items-start gap-2 rounded-xl border border-line p-3 text-sm has-[:checked]:border-ink">
-              <input type="radio" name="packId" value={id} checked={packId === id} onChange={() => setPackId(id)} className="mt-1" />
+              <input type="radio" name="packId" value={id} checked={packId === id} onChange={() => setPackId(id)} className="focus-ring mt-1" />
               <span>
                 <span className="block font-medium text-ink">{CULTURAL_PACKS[id].label}</span>
                 <span className="block text-xs text-ink-soft">{CULTURAL_PACKS[id].description}</span>
@@ -75,7 +75,7 @@ export function CreateInvitationControl({ requestId }: { requestId: string }) {
       <button
         onClick={create}
         disabled={status === "working"}
-        className="mt-4 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft disabled:opacity-40"
+        className="focus-ring mt-4 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft disabled:opacity-40"
       >
         {status === "working" ? "Creating…" : "Create invitation draft"}
       </button>

@@ -45,7 +45,7 @@ export default async function AdminRequestsPage({ searchParams }: Props) {
             id="status-filter"
             name="status"
             defaultValue={status ?? ""}
-            className="rounded-full border border-line bg-paper px-3 py-1.5 text-sm outline-none focus:border-ink"
+            className="focus-ring rounded-full border border-line bg-paper px-3 py-1.5 text-sm outline-none focus:border-ink"
           >
             <option value="">All</option>
             {REQUEST_STATUSES.map((s) => (
@@ -54,7 +54,7 @@ export default async function AdminRequestsPage({ searchParams }: Props) {
               </option>
             ))}
           </select>
-          <button type="submit" className="rounded-full border border-line px-3 py-1.5 text-sm transition hover:border-ink">
+          <button type="submit" className="focus-ring rounded-full border border-line px-3 py-1.5 text-sm transition hover:border-ink">
             Filter
           </button>
         </form>
@@ -83,7 +83,7 @@ export default async function AdminRequestsPage({ searchParams }: Props) {
               {requests.map((r) => (
                 <tr key={r.id} className="border-t border-line hover:bg-paper-raised/60">
                   <td className="px-4 py-3">
-                    <Link href={`/admin/requests/${r.id}`} className="font-medium text-ink underline-offset-2 hover:underline">
+                    <Link href={`/admin/requests/${r.id}`} className="focus-ring rounded font-medium text-ink underline-offset-2 hover:underline">
                       {r.name}
                     </Link>
                     <div className="text-xs text-ink-soft">{r.referenceCode}</div>
@@ -98,7 +98,7 @@ export default async function AdminRequestsPage({ searchParams }: Props) {
                   </td>
                   <td className="px-4 py-3">
                     {r.invitationId ? (
-                      <Link href={`/admin/invitations/${r.invitationId}`} className="text-xs font-medium text-ink underline-offset-2 hover:underline">
+                      <Link href={`/admin/invitations/${r.invitationId}`} className="focus-ring rounded text-xs font-medium text-ink underline-offset-2 hover:underline">
                         View draft
                       </Link>
                     ) : (

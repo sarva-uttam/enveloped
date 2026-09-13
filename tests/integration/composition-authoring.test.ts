@@ -72,7 +72,7 @@ describe("admin_save_invite_composition() — authorization", () => {
       p_expected_revision: 0,
     });
     expect(error).toBeNull();
-    expect(data).toBe("ok");
+    expect(data).toEqual({ result: "ok", revision: 1 });
 
     const service = createServiceRoleClient();
     const { data: row } = await service.from("invites").select("composition").eq("id", invite.id).single();
@@ -124,7 +124,25 @@ describe("admin_save_invite_composition() — authorization", () => {
       p_expected_revision: 0,
     });
     expect(error).toBeNull();
-    expect(data).toBe("not-found");
+    expect(data).toEqual({ result: "not-found", revision: null });
+  });
+
+  it("does not bump composition_revision when saving content identical to what's already stored (Part H, Stage 9)", async () => {
+    const invite = await createOwnedInvite(ownerA.client, `stage1-${runId}-save-noop`);
+
+    const first = await admin.client.rpc("admin_save_invite_composition", {
+      p_invite_id: invite.id,
+      p_composition: SOME_COMPOSITION,
+      p_expected_revision: 0,
+    });
+    expect(first.data).toEqual({ result: "ok", revision: 1 });
+
+    const second = await admin.client.rpc("admin_save_invite_composition", {
+      p_invite_id: invite.id,
+      p_composition: SOME_COMPOSITION,
+      p_expected_revision: 1,
+    });
+    expect(second.data).toEqual({ result: "ok", revision: 1 });
   });
 });
 

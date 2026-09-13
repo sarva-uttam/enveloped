@@ -54,7 +54,7 @@ export function RequestStatusControl({ requestId, currentStatus }: { requestId: 
             key={next}
             onClick={() => changeTo(next)}
             disabled={status === "working"}
-            className="rounded-full border border-line px-4 py-2 text-xs font-medium text-ink transition hover:border-ink disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="focus-ring rounded-full border border-line px-4 py-2 text-xs font-medium text-ink transition hover:border-ink disabled:opacity-40"
           >
             Mark as {REQUEST_STATUS_LABELS[next]}
           </button>

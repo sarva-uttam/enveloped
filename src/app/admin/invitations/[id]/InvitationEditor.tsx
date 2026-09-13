@@ -15,12 +15,13 @@ import { EVENT_CATEGORIES } from "@/lib/categories";
 import { EVENT_TYPES } from "@/lib/composition/event-types";
 import { LOCALES } from "@/lib/i18n/translations";
 import { assessPublicationReadiness, type PrivateFieldsForLeakCheck } from "@/lib/composition/readiness";
+import type { AdminReviewRound } from "@/lib/review";
 import { SectionEditor } from "./SectionEditor";
 import { ReadinessPanel } from "./ReadinessPanel";
 import { PreviewLinkPanel } from "./PreviewLinkPanel";
+import { ReviewPanel } from "./ReviewPanel";
 
-const inputClass =
-  "w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm outline-none focus:border-ink focus-visible:ring-2 focus-visible:ring-offset-1";
+const inputClass = "focus-ring w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm outline-none focus:border-ink";
 
 function defaultDataFor(type: SectionType): CompositionSection["data"] {
   switch (type) {
@@ -74,6 +75,8 @@ export function InvitationEditor({
   initialRevision,
   publishedAt,
   hasPreviewLink,
+  generatorKind,
+  initialReviewHistory,
   privateFieldsForReadiness,
 }: {
   invitationId: string;
@@ -82,6 +85,8 @@ export function InvitationEditor({
   initialRevision: number;
   publishedAt: string | null;
   hasPreviewLink: boolean;
+  generatorKind: string | null;
+  initialReviewHistory: AdminReviewRound[];
   privateFieldsForReadiness: PrivateFieldsForLeakCheck | null;
 }) {
   const parsedInitial = InvitationCompositionSchema.safeParse(initialComposition);
@@ -120,6 +125,17 @@ export function InvitationEditor({
   }, [validation, draft]);
 
   const readiness = useMemo(() => assessPublicationReadiness(draft, privateFieldsForReadiness), [draft, privateFieldsForReadiness]);
+
+  // Stage 9 — the latest review round, compared against the LIVE
+  // revision state (not the server-fetched `initialReviewHistory`
+  // snapshot alone): a save updates `revision` immediately, so this
+  // correctly flips to "not approved for the current version" the
+  // instant an edit is saved, even before the next router.refresh()
+  // re-fetches `initialReviewHistory` itself (ReviewPanel does that on
+  // every action; a composition save does not trigger one on its own).
+  const latestReviewRound = initialReviewHistory[0] ?? null;
+  const isApprovedForCurrentRevision = Boolean(latestReviewRound && latestReviewRound.status === "client_approved" && latestReviewRound.compositionRevision === revision);
+  const hasUnresolvedChangeRequest = Boolean(latestReviewRound && latestReviewRound.status === "changes_requested");
 
   // "Protect against accidental navigation where reasonable."
   useEffect(() => {
@@ -237,7 +253,7 @@ export function InvitationEditor({
               </option>
             ))}
           </select>
-          <button onClick={handleInitializePack} className="mt-3 w-full rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft">
+          <button onClick={handleInitializePack} className="focus-ring mt-3 w-full rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft">
             Initialize composition
           </button>
         </div>
@@ -255,9 +271,16 @@ export function InvitationEditor({
           <div role="alert" className="rounded-2xl border border-amber-400 bg-amber-50 p-4 text-sm text-amber-800">
             <p className="font-medium">Someone else saved a newer version of this invitation.</p>
             <p className="mt-1 text-xs">Your changes here were NOT saved, to avoid overwriting theirs. Reload to see the latest version before continuing.</p>
-            <button onClick={() => window.location.reload()} className="mt-2 rounded-full bg-amber-600 px-4 py-2 text-xs font-medium text-white">
+            <button onClick={() => window.location.reload()} className="focus-ring mt-2 rounded-full bg-amber-600 px-4 py-2 text-xs font-medium text-white">
               Reload latest version
             </button>
+          </div>
+        )}
+
+        {isApprovedForCurrentRevision && (
+          <div role="alert" className="rounded-2xl border border-amber-400 bg-amber-50 p-4 text-sm text-amber-800">
+            <p className="font-medium">The client has approved this exact version.</p>
+            <p className="mt-1 text-xs">Saving any further change will invalidate that approval — the invitation will need a new review round before it can be published again.</p>
           </div>
         )}
 
@@ -324,6 +347,7 @@ export function InvitationEditor({
                 type="checkbox"
                 checked={draft.featureConfig.motion}
                 onChange={(e) => updateDraft((prev) => ({ ...prev, featureConfig: { ...prev.featureConfig, motion: e.target.checked } }))}
+                className="focus-ring"
               />
               Motion enabled
             </label>
@@ -332,6 +356,7 @@ export function InvitationEditor({
                 type="checkbox"
                 checked={draft.featureConfig.openingBurst}
                 onChange={(e) => updateDraft((prev) => ({ ...prev, featureConfig: { ...prev.featureConfig, openingBurst: e.target.checked } }))}
+                className="focus-ring"
               />
               Opening burst
             </label>
@@ -340,13 +365,14 @@ export function InvitationEditor({
                 type="checkbox"
                 checked={draft.featureConfig.envelopeOpening}
                 onChange={(e) => updateDraft((prev) => ({ ...prev, featureConfig: { ...prev.featureConfig, envelopeOpening: e.target.checked } }))}
+                className="focus-ring"
               />
               Envelope opening
             </label>
             <label className="flex items-center gap-2">
               Ambient motif
               <select
-                className="rounded-lg border border-line bg-paper px-2 py-1 text-sm"
+                className="focus-ring rounded-lg border border-line bg-paper px-2 py-1 text-sm"
                 value={draft.featureConfig.ambientMotif}
                 onChange={(e) => updateDraft((prev) => ({ ...prev, featureConfig: { ...prev.featureConfig, ambientMotif: e.target.value as InvitationComposition["featureConfig"]["ambientMotif"] } }))}
               >
@@ -368,6 +394,7 @@ export function InvitationEditor({
                     weddingContext: e.target.checked ? { occasionId: null, occasionCustomLabel: null, culturalPackId: prev.designPackId } : null,
                   }))
                 }
+                className="focus-ring"
               />
               This is part of a multi-event wedding with a specific occasion
             </label>
@@ -415,7 +442,7 @@ export function InvitationEditor({
           <div className="flex items-center justify-between">
             <h2 className="font-display text-xl">Sections</h2>
             <div className="flex items-center gap-2">
-              <select value={addSectionType} onChange={(e) => setAddSectionType(e.target.value as SectionType)} className="rounded-full border border-line bg-paper px-3 py-1.5 text-xs">
+              <select value={addSectionType} onChange={(e) => setAddSectionType(e.target.value as SectionType)} className="focus-ring rounded-full border border-line bg-paper px-3 py-1.5 text-xs">
                 {SECTION_TYPES.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -440,7 +467,7 @@ export function InvitationEditor({
                   }))
                 }
                 disabled={draft.sections.length >= 24}
-                className="rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink disabled:opacity-30"
+                className="focus-ring rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink disabled:opacity-30"
               >
                 + Add section
               </button>
@@ -505,7 +532,7 @@ export function InvitationEditor({
             <button
               onClick={handleSave}
               disabled={!isValid || saveState === "working" || !dirty}
-              className="mt-3 w-full rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft disabled:opacity-40"
+              className="focus-ring mt-3 w-full rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft disabled:opacity-40"
             >
               {saveState === "working" ? "Saving…" : "Save composition"}
             </button>
@@ -525,20 +552,20 @@ export function InvitationEditor({
               <div className="flex gap-1">
                 <button
                   onClick={() => setPreviewWidth("desktop")}
-                  className={`rounded-full px-3 py-1 text-xs ${previewWidth === "desktop" ? "bg-ink text-paper" : "border border-line text-ink-soft"}`}
+                  className={`focus-ring rounded-full px-3 py-1 text-xs ${previewWidth === "desktop" ? "bg-ink text-paper" : "border border-line text-ink-soft"}`}
                 >
                   Desktop
                 </button>
                 <button
                   onClick={() => setPreviewWidth("mobile")}
-                  className={`rounded-full px-3 py-1 text-xs ${previewWidth === "mobile" ? "bg-ink text-paper" : "border border-line text-ink-soft"}`}
+                  className={`focus-ring rounded-full px-3 py-1 text-xs ${previewWidth === "mobile" ? "bg-ink text-paper" : "border border-line text-ink-soft"}`}
                 >
                   Mobile
                 </button>
               </div>
             </div>
             <label className="mt-2 flex items-center gap-2 text-xs text-ink-soft">
-              <input type="checkbox" checked={previewReducedMotion} onChange={(e) => setPreviewReducedMotion(e.target.checked)} />
+              <input type="checkbox" checked={previewReducedMotion} onChange={(e) => setPreviewReducedMotion(e.target.checked)} className="focus-ring" />
               Preview as reduced-motion
             </label>
             <div className={`mt-3 overflow-hidden rounded-xl border border-line ${previewWidth === "mobile" ? "mx-auto w-[390px]" : "w-full"}`}>
@@ -553,16 +580,39 @@ export function InvitationEditor({
 
           <ReadinessPanel report={readiness} />
 
+          {generatorKind === "concierge" && <ReviewPanel invitationId={invitationId} currentRevision={revision} history={initialReviewHistory} />}
+
           <PreviewLinkPanel invitationId={invitationId} hasLinkInitially={hasPreviewLink} />
 
-          <PublishControl invitationId={invitationId} publishedAt={publishedAt} blocking={readiness.blocking.length} />
+          <PublishControl
+            invitationId={invitationId}
+            publishedAt={publishedAt}
+            blocking={readiness.blocking.length}
+            isConcierge={generatorKind === "concierge"}
+            isApprovedForCurrentRevision={isApprovedForCurrentRevision}
+            hasUnresolvedChangeRequest={hasUnresolvedChangeRequest}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function PublishControl({ invitationId, publishedAt, blocking }: { invitationId: string; publishedAt: string | null; blocking: number }) {
+function PublishControl({
+  invitationId,
+  publishedAt,
+  blocking,
+  isConcierge,
+  isApprovedForCurrentRevision,
+  hasUnresolvedChangeRequest,
+}: {
+  invitationId: string;
+  publishedAt: string | null;
+  blocking: number;
+  isConcierge: boolean;
+  isApprovedForCurrentRevision: boolean;
+  hasUnresolvedChangeRequest: boolean;
+}) {
   const [status, setStatus] = useState<"idle" | "working" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
   const [published, setPublished] = useState(Boolean(publishedAt));
@@ -593,17 +643,36 @@ function PublishControl({ invitationId, publishedAt, blocking }: { invitationId:
     }
   }
 
+  // Stage 9: for a CONCIERGE invitation, these three conditions are a
+  // REAL server-enforced gate (publish_invite()'s own checks, mirrored
+  // here only for instant feedback and to keep the button disabled
+  // rather than inviting a guaranteed-to-fail click) — never merely
+  // "not recommended," unlike readiness blocking for a self-service
+  // invitation, which stays an assessment only (Part I: "an assessment,
+  // not automatic publication" — that framing is preserved exactly for
+  // self-service; only the concierge path gains a hard gate).
+  const conciergeBlocked = isConcierge && (blocking > 0 || !isApprovedForCurrentRevision || hasUnresolvedChangeRequest);
+
   return (
     <section className="rounded-2xl border border-line bg-paper-raised p-4">
       <h2 className="font-display text-lg">Publication</h2>
       <p className="mt-1 text-xs text-ink-soft">{published ? "Currently published." : "Not published yet."}</p>
-      {!published && blocking > 0 && (
+
+      {!published && isConcierge && (
+        <ul className="mt-2 space-y-1 text-xs text-amber-700">
+          {blocking > 0 && <li>{blocking} blocking readiness issue{blocking === 1 ? "" : "s"} above must be fixed first.</li>}
+          {hasUnresolvedChangeRequest && <li>There is an unresolved change request — resolve it before publishing.</li>}
+          {!hasUnresolvedChangeRequest && !isApprovedForCurrentRevision && <li>The client has not approved this exact version yet.</li>}
+        </ul>
+      )}
+      {!published && !isConcierge && blocking > 0 && (
         <p className="mt-2 text-xs text-amber-700">{blocking} blocking readiness issue{blocking === 1 ? "" : "s"} above — publishing is still possible, but not recommended yet.</p>
       )}
+
       <button
         onClick={toggle}
-        disabled={status === "working"}
-        className="mt-3 w-full rounded-full border border-line px-5 py-2.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-40"
+        disabled={status === "working" || (!published && conciergeBlocked)}
+        className="focus-ring mt-3 w-full rounded-full border border-line px-5 py-2.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-40"
       >
         {published ? "Unpublish" : "Publish"}
       </button>

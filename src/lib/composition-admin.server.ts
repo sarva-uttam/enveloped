@@ -215,9 +215,19 @@ export async function saveInviteComposition(params: {
     console.error("saveInviteComposition: admin_save_invite_composition RPC failed", error.message);
     return { ok: false, reason: "database-error" };
   }
-  if (data === "not-found") return { ok: false, reason: "invite-not-found" };
-  if (data === "stale") return { ok: false, reason: "stale-revision" };
-  if (data !== "ok") return { ok: false, reason: "database-error" };
 
-  return { ok: true, revision: params.expectedRevision + 1 };
+  // Stage 9: the RPC now returns jsonb ({result, revision}), not a bare
+  // text code — it must report back the ACTUAL resulting revision,
+  // which the caller can no longer safely compute as
+  // `expectedRevision + 1` now that a no-op save (identical normalized
+  // content) leaves composition_revision unchanged (Part H: "saving
+  // identical normalized composition content should not create a false
+  // revision" — see the migration's own comment on this function).
+  const result = data as { result?: unknown; revision?: unknown } | null;
+  if (!result || typeof result.result !== "string") return { ok: false, reason: "database-error" };
+  if (result.result === "not-found") return { ok: false, reason: "invite-not-found" };
+  if (result.result === "stale") return { ok: false, reason: "stale-revision" };
+  if (result.result !== "ok" || typeof result.revision !== "number") return { ok: false, reason: "database-error" };
+
+  return { ok: true, revision: result.revision };
 }

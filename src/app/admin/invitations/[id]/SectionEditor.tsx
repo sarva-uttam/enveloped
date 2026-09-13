@@ -50,7 +50,7 @@ export function SectionEditor({
             aria-label={`Move ${section.type} section up`}
             onClick={() => onMove(-1)}
             disabled={index === 0}
-            className="rounded-full border border-line p-1.5 text-ink-soft transition hover:border-ink hover:text-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+            className="rounded-full border border-line p-1.5 text-ink-soft transition hover:border-ink hover:text-ink disabled:opacity-30 focus-ring"
           >
             <ChevronUp className="h-4 w-4" />
           </button>
@@ -59,19 +59,19 @@ export function SectionEditor({
             aria-label={`Move ${section.type} section down`}
             onClick={() => onMove(1)}
             disabled={index === total - 1}
-            className="rounded-full border border-line p-1.5 text-ink-soft transition hover:border-ink hover:text-ink disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+            className="rounded-full border border-line p-1.5 text-ink-soft transition hover:border-ink hover:text-ink disabled:opacity-30 focus-ring"
           >
             <ChevronDown className="h-4 w-4" />
           </button>
           <label className="ml-2 flex items-center gap-1.5 text-xs text-ink-soft">
-            <input type="checkbox" checked={section.enabled} onChange={(e) => onToggleEnabled(e.target.checked)} />
+            <input type="checkbox" checked={section.enabled} onChange={(e) => onToggleEnabled(e.target.checked)} className="focus-ring" />
             Enabled
           </label>
           <button
             type="button"
             aria-label={`Remove ${section.type} section`}
             onClick={onRemove}
-            className="ml-2 rounded-full border border-line p-1.5 text-ink-soft transition hover:border-red-400 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+            className="ml-2 rounded-full border border-line p-1.5 text-ink-soft transition hover:border-red-400 hover:text-red-500 focus-ring"
           >
             <Trash2 className="h-4 w-4" />
           </button>

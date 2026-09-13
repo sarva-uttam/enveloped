@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAdminInvitationDetail } from "@/lib/invitation-admin.server";
 import { getRequestDetail } from "@/lib/requests-admin.server";
+import { getInvitationReviewHistory } from "@/lib/review-admin.server";
 import { InvitationEditor } from "./InvitationEditor";
 
 export const metadata = { title: "Invitation — Admin — Enveloped" };
@@ -29,7 +30,7 @@ export default async function AdminInvitationPage({ params }: Props) {
       <div className="mx-auto max-w-2xl px-6 py-16 text-center">
         <h1 className="font-display text-2xl">Invitation unavailable</h1>
         <p className="mt-2 text-sm text-ink-soft">This invitation doesn&apos;t exist, or you don&apos;t have access to it.</p>
-        <Link href="/admin/requests" className="mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
+        <Link href="/admin/requests" className="focus-ring rounded mt-6 inline-block text-sm font-medium text-ink underline underline-offset-4">
           Back to requests
         </Link>
       </div>
@@ -37,13 +38,14 @@ export default async function AdminInvitationPage({ params }: Props) {
   }
 
   const request = invitation.requestId ? await getRequestDetail(invitation.requestId) : null;
+  const reviewHistory = invitation.generatorKind === "concierge" ? await getInvitationReviewHistory(invitation.id) : [];
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           {request && (
-            <Link href={`/admin/requests/${request.id}`} className="text-xs font-medium text-ink-soft underline-offset-2 hover:underline">
+            <Link href={`/admin/requests/${request.id}`} className="focus-ring rounded text-xs font-medium text-ink-soft underline-offset-2 hover:underline">
               ← {request.name}&apos;s request
             </Link>
           )}
@@ -62,6 +64,8 @@ export default async function AdminInvitationPage({ params }: Props) {
           initialRevision={invitation.compositionRevision}
           publishedAt={invitation.publishedAt}
           hasPreviewLink={invitation.hasPreviewLink}
+          generatorKind={invitation.generatorKind}
+          initialReviewHistory={reviewHistory}
           privateFieldsForReadiness={
             request ? { email: request.email, phone: request.phone, notes: request.notes, internalNotes: request.internalNotes } : null
           }

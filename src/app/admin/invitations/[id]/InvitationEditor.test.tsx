@@ -1,6 +1,14 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
+
+// ReviewPanel.tsx (rendered as a child when generatorKind === "concierge")
+// calls useRouter() — mocked here the same way ReviewPanel.test.tsx mocks
+// it on its own, since this file renders InvitationEditor as a whole tree.
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: vi.fn() }),
+}));
+
 import { InvitationEditor } from "./InvitationEditor";
 
 /**
@@ -44,6 +52,8 @@ function renderEditor(overrides: Partial<React.ComponentProps<typeof InvitationE
       initialRevision={0}
       publishedAt={null}
       hasPreviewLink={false}
+      generatorKind={null}
+      initialReviewHistory={[]}
       privateFieldsForReadiness={null}
       {...overrides}
     />
@@ -142,5 +152,92 @@ describe("readiness panel reacts live to the in-progress draft", () => {
     fireEvent.change(screen.getByDisplayValue("First section"), { target: { value: "You're Invited" } });
 
     expect(screen.getByText(/unresolved placeholder content remains/i)).toBeTruthy();
+  });
+});
+
+describe("Stage 9 — approved-revision edit warning", () => {
+  it("shows no warning when there is no approved round for the current revision", () => {
+    renderEditor({ generatorKind: "concierge", initialReviewHistory: [] });
+    expect(screen.queryByText(/client has approved this exact version/i)).toBeNull();
+  });
+
+  it("shows a prominent warning when the CURRENT revision has a client-approved round", () => {
+    renderEditor({
+      generatorKind: "concierge",
+      initialRevision: 3,
+      initialReviewHistory: [
+        {
+          id: "round-1",
+          roundNumber: 1,
+          status: "client_approved",
+          compositionRevision: 3,
+          createdAt: "t",
+          sentAt: "t",
+          openedAt: "t",
+          decidedAt: "t",
+          decisionDisplayName: null,
+          resolvedAt: null,
+          supersededAt: null,
+          cancelledAt: null,
+          feedbackItems: [],
+        },
+      ],
+    });
+    expect(screen.getByText(/client has approved this exact version/i)).toBeTruthy();
+  });
+
+  it("does not show the warning for an approval bound to an OLDER revision than the current one", () => {
+    renderEditor({
+      generatorKind: "concierge",
+      initialRevision: 4,
+      initialReviewHistory: [
+        {
+          id: "round-1",
+          roundNumber: 1,
+          status: "client_approved",
+          compositionRevision: 2,
+          createdAt: "t",
+          sentAt: "t",
+          openedAt: "t",
+          decidedAt: "t",
+          decisionDisplayName: null,
+          resolvedAt: null,
+          supersededAt: null,
+          cancelledAt: null,
+          feedbackItems: [],
+        },
+      ],
+    });
+    expect(screen.queryByText(/client has approved this exact version/i)).toBeNull();
+  });
+
+  it("never shows the review panel or the warning for a self-service invitation (generatorKind null)", () => {
+    renderEditor({ generatorKind: null, initialReviewHistory: [] });
+    expect(screen.queryByText(/client review/i)).toBeNull();
+    expect(screen.queryByText(/client has approved this exact version/i)).toBeNull();
+  });
+});
+
+describe("Stage 9 accessibility correction — centralized keyboard focus", () => {
+  it("the Save button carries the centralized .focus-ring class, not a one-off Tailwind ring utility", () => {
+    renderEditor();
+    const save = screen.getByText(/save composition/i);
+    expect(save.className).toContain("focus-ring");
+    expect(save.className).not.toMatch(/focus-visible:ring-\d|focus:ring-\d/);
+  });
+
+  it("section move-up/move-down buttons are real, focusable <button>s carrying .focus-ring", () => {
+    renderEditor();
+    const moveDown = screen.getByLabelText(/move opening section down/i) as HTMLButtonElement;
+    expect(moveDown.tagName).toBe("BUTTON");
+    expect(moveDown.className).toContain("focus-ring");
+    moveDown.focus();
+    expect(document.activeElement).toBe(moveDown);
+  });
+
+  it("the Desktop/Mobile live-preview toggle buttons carry .focus-ring", () => {
+    renderEditor();
+    expect(screen.getByText("Desktop").className).toContain("focus-ring");
+    expect(screen.getByText("Mobile").className).toContain("focus-ring");
   });
 });

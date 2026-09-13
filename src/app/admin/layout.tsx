@@ -37,7 +37,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
         <p className="max-w-sm text-sm text-ink-soft">
           You&apos;re signed in, but this account doesn&apos;t have administrator access.
         </p>
-        <Link href="/dashboard" className="text-sm font-medium text-ink underline underline-offset-4">
+        <Link href="/dashboard" className="focus-ring rounded text-sm font-medium text-ink underline underline-offset-4">
           Back to my invites
         </Link>
       </div>

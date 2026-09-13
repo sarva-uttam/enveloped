@@ -41,7 +41,7 @@ export default async function AdminPage() {
 
       <Link
         href="/admin/requests"
-        className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
+        className="focus-ring mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
       >
         Client requests
       </Link>

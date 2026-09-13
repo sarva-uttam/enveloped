@@ -27,6 +27,30 @@ import { createInvitationFromRequest, publishInvitation, unpublishInvitation, ge
 const ADMIN = { user: { id: "admin-1" }, isAdmin: true };
 const NON_ADMIN = { user: { id: "user-1" }, isAdmin: false };
 
+/** A composition that passes assessPublicationReadiness() with zero
+ *  blocking issues — real (non-placeholder) headline, and a dateTime
+ *  section (required for a wedding category to avoid the "no event
+ *  date/time section" blocking issue). Used only to prove
+ *  publishInvitation()'s readiness pre-check does NOT reject a genuinely
+ *  ready concierge composition before it ever reaches the RPC. */
+function validReadyComposition() {
+  return {
+    schemaVersion: 1,
+    templateId: null,
+    designPackId: "neutral-classic",
+    eventCategory: "wedding-other",
+    weddingContext: null,
+    locale: "en",
+    dir: "ltr",
+    themeTokens: { paletteId: "neutral-classic" },
+    featureConfig: { motion: true, ambientMotif: "none", openingBurst: false },
+    sections: [
+      { id: "opening", type: "opening", enabled: true, motionPreset: "fade", data: { headline: "Priya & Rohan are getting married" } },
+      { id: "date-time", type: "dateTime", enabled: true, motionPreset: "fade", data: { eventDate: "2027-06-12T17:00:00" } },
+    ],
+  };
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   createServerSupabaseClient.mockResolvedValue(mockClient);
@@ -98,12 +122,37 @@ describe("publishInvitation / unpublishInvitation — thin, admin-gated wrappers
     expect(rpcMock).not.toHaveBeenCalled();
   });
 
-  it("publishInvitation calls the existing publish_invite RPC", async () => {
+  it("publishInvitation calls the existing publish_invite RPC (self-service: generator_kind null, no readiness pre-check)", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
+    fromMock.mockReturnValueOnce(makeQuery({ data: { generator_kind: null, composition: null, request_id: null }, error: null }));
     rpcMock.mockResolvedValue({ data: true, error: null });
     const result = await publishInvitation("invite-1");
     expect(result).toEqual({ ok: true });
     expect(rpcMock).toHaveBeenCalledWith("publish_invite", { p_invite_id: "invite-1" });
+  });
+
+  it("publishInvitation runs the readiness pre-check for a CONCIERGE invitation and refuses to call the RPC when blocking issues exist", async () => {
+    checkAdmin.mockResolvedValue(ADMIN);
+    fromMock.mockReturnValueOnce(makeQuery({ data: { generator_kind: "concierge", composition: { not: "a valid composition" }, request_id: null }, error: null }));
+    const result = await publishInvitation("invite-1");
+    expect(result).toEqual({ ok: false, reason: "not-ready" });
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("publishInvitation maps publish_invite()'s 'no client approval' exception to reason 'not-approved'", async () => {
+    checkAdmin.mockResolvedValue(ADMIN);
+    fromMock.mockReturnValueOnce(makeQuery({ data: { generator_kind: "concierge", composition: validReadyComposition(), request_id: null }, error: null }));
+    rpcMock.mockResolvedValue({ data: null, error: { message: "this invitation has no client approval for its current version — it cannot be published yet" } });
+    const result = await publishInvitation("invite-1");
+    expect(result).toEqual({ ok: false, reason: "not-approved" });
+  });
+
+  it("publishInvitation maps publish_invite()'s 'unresolved change request' exception to reason 'unresolved-changes'", async () => {
+    checkAdmin.mockResolvedValue(ADMIN);
+    fromMock.mockReturnValueOnce(makeQuery({ data: { generator_kind: "concierge", composition: validReadyComposition(), request_id: null }, error: null }));
+    rpcMock.mockResolvedValue({ data: null, error: { message: "there is an unresolved change request for this invitation — resolve it before publishing" } });
+    const result = await publishInvitation("invite-1");
+    expect(result).toEqual({ ok: false, reason: "unresolved-changes" });
   });
 
   it("unpublishInvitation calls the existing unpublish_invite RPC", async () => {
@@ -114,10 +163,19 @@ describe("publishInvitation / unpublishInvitation — thin, admin-gated wrappers
     expect(rpcMock).toHaveBeenCalledWith("unpublish_invite", { p_invite_id: "invite-1" });
   });
 
-  it("reports not-found when the RPC finds no matching row", async () => {
+  it("reports not-found when the invitation itself doesn't exist", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
-    rpcMock.mockResolvedValue({ data: false, error: null });
+    fromMock.mockReturnValueOnce(makeQuery({ data: null, error: null }));
     const result = await publishInvitation("missing");
+    expect(result).toEqual({ ok: false, reason: "not-found" });
+    expect(rpcMock).not.toHaveBeenCalled();
+  });
+
+  it("reports not-found when the RPC itself finds no matching row (self-service)", async () => {
+    checkAdmin.mockResolvedValue(ADMIN);
+    fromMock.mockReturnValueOnce(makeQuery({ data: { generator_kind: null, composition: null, request_id: null }, error: null }));
+    rpcMock.mockResolvedValue({ data: false, error: null });
+    const result = await publishInvitation("invite-1");
     expect(result).toEqual({ ok: false, reason: "not-found" });
   });
 });
@@ -132,24 +190,23 @@ describe("getAdminInvitationDetail — narrow read model", () => {
 
   it("never includes owner_id, paypal_order_id, or a preview hash in its return shape", async () => {
     checkAdmin.mockResolvedValue(ADMIN);
-    fromMock
-      .mockReturnValueOnce(
-        makeQuery({
-          data: {
-            id: "invite-1",
-            slug: "priya-sam",
-            category: "wedding-other",
-            tier: "gold",
-            request_id: null,
-            published_at: null,
-            paid: false,
-            composition: null,
-            composition_revision: 0,
-          },
-          error: null,
-        })
-      )
-      .mockReturnValueOnce(makeQuery({ data: null, error: null }));
+    fromMock.mockReturnValueOnce(
+      makeQuery({
+        data: {
+          id: "invite-1",
+          slug: "priya-sam",
+          category: "wedding-other",
+          tier: "gold",
+          request_id: null,
+          published_at: null,
+          paid: false,
+          composition: null,
+          composition_revision: 0,
+        },
+        error: null,
+      })
+    );
+    rpcMock.mockResolvedValue({ data: false, error: null });
 
     const result = await getAdminInvitationDetail("invite-1");
 
@@ -158,5 +215,20 @@ describe("getAdminInvitationDetail — narrow read model", () => {
     expect(Object.keys(result!)).not.toContain("tokenHash");
     expect(Object.keys(result!)).not.toContain("paypalOrderId");
     expect(result!.hasPreviewLink).toBe(false);
+    expect(rpcMock).toHaveBeenCalledWith("admin_invite_has_preview_link", { p_invite_id: "invite-1" });
+  });
+
+  it("reports hasPreviewLink: true when the function says a link exists", async () => {
+    checkAdmin.mockResolvedValue(ADMIN);
+    fromMock.mockReturnValueOnce(
+      makeQuery({
+        data: { id: "invite-1", slug: "priya-sam", category: "wedding-other", tier: "gold", request_id: null, published_at: null, paid: false, composition: null, composition_revision: 0 },
+        error: null,
+      })
+    );
+    rpcMock.mockResolvedValue({ data: true, error: null });
+
+    const result = await getAdminInvitationDetail("invite-1");
+    expect(result!.hasPreviewLink).toBe(true);
   });
 });

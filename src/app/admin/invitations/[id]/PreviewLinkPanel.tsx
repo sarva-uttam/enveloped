@@ -74,7 +74,7 @@ export function PreviewLinkPanel({ invitationId, hasLinkInitially }: { invitatio
           <button
             onClick={() => run("create")}
             disabled={status === "working"}
-            className="rounded-full bg-ink px-4 py-2 text-xs font-medium text-paper transition disabled:opacity-40"
+            className="focus-ring rounded-full bg-ink px-4 py-2 text-xs font-medium text-paper transition disabled:opacity-40"
           >
             Create preview link
           </button>
@@ -83,14 +83,14 @@ export function PreviewLinkPanel({ invitationId, hasLinkInitially }: { invitatio
             <button
               onClick={() => run("rotate", "Rotate the preview link? The previous link will stop working immediately.")}
               disabled={status === "working"}
-              className="rounded-full border border-line px-4 py-2 text-xs text-ink transition hover:border-ink disabled:opacity-40"
+              className="focus-ring rounded-full border border-line px-4 py-2 text-xs text-ink transition hover:border-ink disabled:opacity-40"
             >
               Rotate
             </button>
             <button
               onClick={() => run("revoke", "Revoke the preview link? The client will no longer be able to open it.")}
               disabled={status === "working"}
-              className="rounded-full border border-line px-4 py-2 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-40"
+              className="focus-ring rounded-full border border-line px-4 py-2 text-xs text-ink-soft transition hover:border-red-400 hover:text-red-500 disabled:opacity-40"
             >
               Revoke
             </button>
@@ -111,7 +111,7 @@ export function PreviewLinkPanel({ invitationId, hasLinkInitially }: { invitatio
           <button
             type="button"
             onClick={() => navigator.clipboard?.writeText(previewUrl).catch(() => {})}
-            className="mt-2 rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink"
+            className="focus-ring mt-2 rounded-full border border-line px-3 py-1.5 text-xs transition hover:border-ink"
           >
             Copy link
           </button>
