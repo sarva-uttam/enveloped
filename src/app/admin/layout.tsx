@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { checkAdmin } from "@/lib/auth/admin.server";
 import { sanitizeRedirectPath } from "@/lib/safe-redirect";
+import { AdminNav } from "@/components/site/AdminNav";
 
 /**
  * The authorization boundary for every route under /admin/*. Any future
@@ -46,8 +47,9 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
 
   return (
     <div className="min-h-screen">
-      <div className="border-b border-line px-6 py-3">
+      <div className="flex items-center justify-between gap-6 border-b border-line px-6 py-3">
         <span className="text-xs font-medium uppercase tracking-wide text-ink-soft">Admin</span>
+        <AdminNav />
       </div>
       {children}
     </div>

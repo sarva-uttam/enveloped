@@ -17,6 +17,17 @@
   --platinum-soft: #f1e8fd;
   --blush: #c26b7a;
   --blush-soft: #fbeaec;
+
+  /* Stage 11 — the two palette members the brief calls for that the
+     Stage 1-10 token set never needed: a warm metallic accent for
+     "premium indicator" treatments (badges, dividers, the templates
+     showcase) and a deep editorial accent for emphasis text/rules that
+     needs to read as more formal than --blush without going as dark as
+     --ink. Additive only; nothing above is renamed or removed. */
+  --champagne: #cba36b;
+  --champagne-soft: #f6efe0;
+  --burgundy: #7a2632;
+  --burgundy-soft: #f3e4e2;
 }
 
 @theme inline {
@@ -36,6 +47,10 @@
   --color-platinum-soft: var(--platinum-soft);
   --color-blush: var(--blush);
   --color-blush-soft: var(--blush-soft);
+  --color-champagne: var(--champagne);
+  --color-champagne-soft: var(--champagne-soft);
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-soft: var(--burgundy-soft);
 
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
@@ -202,4 +217,30 @@ body {
   box-shadow:
     0 0 0 2px var(--paper),
     0 0 0 4px var(--ink);
+}
+
+/* Stage 11 sponsor belt (src/components/site/SponsorBelt.tsx) — a
+   right-to-left CSS marquee. The track is rendered twice back-to-back
+   and translated exactly -50%, so the loop point is seamless. Paused
+   via `data-paused` (set on hover/focus-within AND by an explicit,
+   keyboard-reachable pause button, so the control isn't mouse-only) and
+   fully replaced by a static wrapped row under reduced motion, matching
+   the brief's "no scroll hijacking / respect reduced motion" rule. */
+@keyframes marquee-rtl {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee-rtl 32s linear infinite;
+}
+
+.animate-marquee[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
 }

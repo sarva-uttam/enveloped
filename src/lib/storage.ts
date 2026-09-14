@@ -115,7 +115,12 @@ export async function saveInvite(
       click_teaser: g.clickTeaser,
     }));
     const { error: guestErr } = await supabase.from("invite_guests").insert(rows);
-    if (guestErr) console.error("Supabase saveInvite guests failed", guestErr);
+    // Stage 11 fix: this used to only console.error and silently drop the
+    // guest rows (e.g. on a (invite_id, slug) collision) — the invite
+    // would be created with zero guests and no one would know why. Now
+    // surfaced to the caller so the survey can show a real error instead
+    // of a silently-empty guest list.
+    if (guestErr) throw new Error(`Your invite was created, but the guest list failed to save: ${guestErr.message}`);
   }
 
   const resolved: StoredInvite = { ...invite, internalId: inviteRow.id, ownerId: user.id };

@@ -95,4 +95,19 @@ describe(".focus-ring — no scattered one-off focus-ring utilities reappear", (
     }
     expect(offenders).toEqual([]);
   });
+
+  // Stage 11 — the survey was rebuilt to adopt .focus-ring throughout
+  // (it previously had no centralized focus treatment at all, unlike
+  // admin/preview). Scanning it here the same way keeps this guard
+  // meaningful for the newly-adopted surface too.
+  it("no survey-flow file uses a scattered focus-visible:ring-*/focus:ring-* utility instead of .focus-ring", () => {
+    const offenders: string[] = [];
+    for (const dir of [path.join(projectRoot, "src/app/survey"), path.join(projectRoot, "src/components/survey")]) {
+      for (const file of listTsxFiles(dir)) {
+        const content = readFileSync(file, "utf8");
+        if (SCATTERED_PATTERN.test(content)) offenders.push(file);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
 });

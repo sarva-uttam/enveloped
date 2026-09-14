@@ -36,7 +36,9 @@ export default async function AdminPage() {
         Signed in as <span className="font-medium text-ink">{user?.email}</span>.
       </p>
       <p className="mt-6 max-w-md text-sm text-ink-soft">
-        The template catalogue and payment records aren&apos;t built yet.
+        Everything starts from Requests: open a request to create or edit its
+        invitation, review a client&apos;s approval, and manage its guest list
+        and RSVP responses.
       </p>
 
       <Link
