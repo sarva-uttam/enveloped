@@ -14,7 +14,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function TierPreview() {
   return (
-    <Section tone="raised" border="top">
+    <Section border="top">
       <SectionHeading
         eyebrow="Choose your tier"
         title="Four tiers."

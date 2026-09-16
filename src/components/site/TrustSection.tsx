@@ -1,6 +1,5 @@
 import { ShieldCheck, Lock, EyeOff } from "lucide-react";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
@@ -11,6 +10,14 @@ import { Reveal } from "@/components/ui/Reveal";
  * themselves, and payment capture that never auto-publishes an
  * invitation (Stage 3's "separate publication from payment"). No new
  * claims are introduced here.
+ *
+ * design/public-frontend-premium-v3 — the homepage's one deliberate
+ * dark beat: everything else alternates ivory (--paper) and white
+ * (--paper-raised), so a single ink-toned section reads as a genuine
+ * change of register (a vault, a quiet room) rather than a random
+ * palette swap. Hand-rolled heading (not SectionHeading) because that
+ * primitive is tuned for light backgrounds — burgundy/ink text would
+ * fail contrast here.
  */
 const POINTS = [
   {
@@ -32,14 +39,19 @@ const POINTS = [
 
 export function TrustSection() {
   return (
-    <Section tone="raised" border="y">
-      <SectionHeading eyebrow="Built to be trusted" title="Quietly serious about your privacy." />
+    <Section tone="ink" border="y">
+      <div className="text-center">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-champagne">Built to be trusted</p>
+        <h2 className="mt-3 font-display text-3xl sm:text-4xl">
+          Quietly serious <span className="italic text-champagne">about your privacy.</span>
+        </h2>
+      </div>
       <div className="mt-14 grid gap-10 sm:grid-cols-3">
         {POINTS.map((point, i) => (
           <Reveal key={point.title} delay={i * 0.06}>
-            <point.icon className="h-6 w-6 text-burgundy" />
-            <h3 className="mt-4 font-medium text-ink">{point.title}</h3>
-            <p className="mt-2 text-sm text-ink-soft">{point.body}</p>
+            <point.icon className="h-6 w-6 text-champagne" />
+            <h3 className="mt-4 font-medium text-paper">{point.title}</h3>
+            <p className="mt-2 text-sm text-paper/70">{point.body}</p>
           </Reveal>
         ))}
       </div>

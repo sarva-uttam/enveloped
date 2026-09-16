@@ -62,8 +62,8 @@ export function TemplatesGallery({ demos }: { demos: GalleryDemo[] }) {
               className="focus-ring group overflow-hidden rounded-sm border border-line bg-paper-raised transition hover:shadow-[0_28px_48px_-32px_rgba(33,26,23,0.3)]"
             >
               <div
-                className="flex h-52 flex-col items-center justify-center gap-2 p-6 text-center"
-                style={{ background: tier.softVar }}
+                className="texture-grain corner-flourish relative flex h-52 flex-col items-center justify-center gap-2 border-b border-line/60 p-6 text-center"
+                style={{ background: tier.softVar, color: tier.colorVar }}
               >
                 <span
                   className="text-[11px] font-medium uppercase tracking-widest"
@@ -71,7 +71,7 @@ export function TemplatesGallery({ demos }: { demos: GalleryDemo[] }) {
                 >
                   {tier.name}
                 </span>
-                <span className="font-display text-2xl italic">{demo.headline}</span>
+                <span className="font-display text-2xl italic text-ink">{demo.headline}</span>
                 <span className="text-xs text-ink-soft">{demo.subheadline}</span>
               </div>
               <div className="flex items-center justify-between gap-4 px-6 py-4">

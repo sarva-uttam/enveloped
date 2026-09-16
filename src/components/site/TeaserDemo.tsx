@@ -2,58 +2,53 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCheck } from "lucide-react";
 
-const TEASERS = [
-  "There's a little surprise for you. Click me 💌",
-  "Sending my best regards. Click me.",
-  "Open when you have a moment 🤍",
-];
+const TEASER_LINE = "There's a little surprise for you. Click to open.";
 
+/**
+ * design/public-frontend-premium-v3 — replaces the previous CSS-drawn
+ * WhatsApp-chat mockup (fake app chrome, emoji, a green header bar that
+ * never existed in any real product) with an editorial reveal: a plain
+ * message line the guest actually sees, then the invitation's own
+ * typographic identity underneath — no simulated interface standing in
+ * for real imagery. The click-to-reveal mechanic itself is preserved.
+ */
 export function TeaserDemo() {
   const [opened, setOpened] = useState(false);
 
   return (
     <div className="mx-auto max-w-sm">
-      <div className="overflow-hidden rounded-[2rem] border border-line bg-[#e5ded3] shadow-xl">
-        <div className="bg-[#075e54] px-4 py-3 text-sm font-medium text-white">
-          Priya &amp; Dev
-        </div>
-        <div className="flex min-h-[220px] flex-col justify-end gap-2 p-4">
-          <AnimatePresence>
+      <div className="texture-grain overflow-hidden rounded-sm border border-line bg-paper-raised">
+        <div className="flex min-h-[280px] flex-col justify-center p-10 text-center">
+          <AnimatePresence mode="wait">
             {!opened ? (
               <motion.button
-                key="bubble"
+                key="teaser"
+                type="button"
                 onClick={() => setOpened(true)}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-[#dcf8c6] px-4 py-2.5 text-left text-sm text-ink shadow-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="focus-ring mx-auto"
               >
-                {TEASERS[0]}
-                <span className="mt-1 flex items-center justify-end gap-1 text-[10px] text-ink-soft/70">
-                  10:41 AM <CheckCheck className="h-3 w-3 text-sky-500" />
+                <p className="font-display text-xl italic text-ink">{TEASER_LINE}</p>
+                <span className="mt-4 inline-block text-xs font-medium uppercase tracking-[0.18em] text-blush">
+                  Tap to open
                 </span>
               </motion.button>
             ) : (
               <motion.div
                 key="revealed"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="ml-auto max-w-[92%] overflow-hidden rounded-2xl rounded-tr-sm bg-white shadow-md"
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
-                <div className="relative flex h-32 items-center justify-center bg-gradient-to-br from-blush-soft via-gold-soft to-platinum-soft">
-                  <span className="font-display text-lg italic text-ink">
-                    Priya &amp; Dev
-                  </span>
-                  <span className="absolute bottom-2 right-3 text-[10px] uppercase tracking-wide text-ink-soft">
-                    are getting married
-                  </span>
-                </div>
-                <div className="flex items-center justify-between px-3 py-2 text-[11px] text-ink-soft">
-                  <span>enveloped.app/priya-dev</span>
-                  <Check className="h-3.5 w-3.5 text-emerald-600" />
-                </div>
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-burgundy">
+                  Priya &amp; Dev are getting married
+                </p>
+                <p className="mt-4 font-display text-3xl italic text-ink">Priya &amp; Dev</p>
+                <div className="foil-divider mx-auto mt-5 w-16" />
+                <p className="mt-5 text-xs text-ink-soft">enveloped.app/priya-dev</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -62,7 +57,7 @@ export function TeaserDemo() {
       <p className="mt-4 text-center text-sm text-ink-soft">
         {opened
           ? "That's the moment your guests get — no gibberish links, just intrigue."
-          : "This is what shows up in the chat. Tap the bubble."}
+          : "This is what shows up in the chat. Tap the line above."}
       </p>
     </div>
   );

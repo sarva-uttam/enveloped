@@ -28,7 +28,7 @@ const FEATURES = [
 
 export function FeatureStory() {
   return (
-    <Section>
+    <Section border="top">
       <SectionHeading eyebrow="What you're actually getting" title="More than a pretty page." />
       <div className="mt-16 space-y-16">
         {FEATURES.map((feature, i) => (

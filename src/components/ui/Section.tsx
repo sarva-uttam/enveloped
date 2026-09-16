@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
 
-type Tone = "paper" | "raised";
+type Tone = "paper" | "raised" | "ink";
 
 const TONE_CLASSES: Record<Tone, string> = {
-  paper: "bg-paper",
-  raised: "bg-paper-raised",
+  paper: "bg-paper text-ink",
+  raised: "bg-paper-raised text-ink",
+  /** A single dramatic dark beat in the homepage's light/dark rhythm — see TrustSection. */
+  ink: "bg-ink text-paper",
 };
 
 /**

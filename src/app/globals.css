@@ -244,3 +244,61 @@ body {
     animation: none;
   }
 }
+
+/* design/public-frontend-premium-v3 — a subtle tactile-paper grain,
+   used in place of flat colour panels on showcase/preview surfaces
+   (DesignShowcase, TemplatesGallery). Procedural SVG turbulence, not a
+   photograph — keeps the "real texture, not a flat rectangle" feel
+   without depending on a licensed asset. Applied at very low opacity so
+   it reads as paper stock, not a visible pattern. */
+.texture-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.texture-grain > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* A restrained corner flourish for showcase/preview panels — genuine
+   vector linework (a pair of nested corner brackets), not a fake 3D
+   effect or an illustration standing in for real imagery. */
+.corner-flourish::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  opacity: 0.5;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28' fill='none' stroke='currentColor' stroke-width='1'%3E%3Cpath d='M1 10V1H10'/%3E%3Cpath d='M6 14V6H14' opacity='0.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+/* A fine "foil line" divider for cinematic section transitions — a
+   hairline with a soft champagne glow at its centre, used sparingly
+   between major homepage narrative beats instead of a plain border. */
+.foil-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--line) 15%,
+    var(--champagne) 50%,
+    var(--line) 85%,
+    transparent 100%
+  );
+}

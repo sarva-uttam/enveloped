@@ -37,7 +37,7 @@ const STEPS = [
 export function HowItWorks({ id = "how" }: { id?: string }) {
   return (
     <Section id={id}>
-      <SectionHeading title="How it works" body="Four steps between you and a finished invite." />
+      <SectionHeading eyebrow="The journey" title="How it works" body="Four steps between you and a finished invite." />
       {/* An editorial numbered sequence, not repeated bordered boxes:
           each step is a real link (to the survey — the thing every
           step is ultimately describing how to get to), so "lifts

@@ -19,7 +19,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/70 bg-paper/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-line/70 bg-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="font-display text-2xl tracking-tight text-ink">
           Envel<span className="italic text-blush">oped</span>

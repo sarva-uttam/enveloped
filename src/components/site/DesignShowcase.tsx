@@ -37,13 +37,13 @@ export function DesignShowcase() {
                 className="focus-ring group block overflow-hidden rounded-sm border border-line transition hover:shadow-[0_28px_48px_-32px_rgba(33,26,23,0.3)]"
               >
                 <div
-                  className="flex h-56 flex-col justify-end p-8"
-                  style={{ background: palette.soft }}
+                  className="texture-grain corner-flourish relative flex h-56 flex-col justify-end border-b border-line/60 p-8"
+                  style={{ background: palette.soft, color: palette.accent }}
                 >
                   <span className="text-xs font-medium uppercase tracking-widest" style={{ color: palette.accent }}>
                     {eyebrow}
                   </span>
-                  <span className="mt-2 font-display text-3xl italic">{pack.label}</span>
+                  <span className="mt-2 font-display text-3xl italic text-ink">{pack.label}</span>
                 </div>
                 <div className="flex items-center justify-between gap-6 bg-paper-raised p-6">
                   <p className="text-sm text-ink-soft">{pack.description}</p>

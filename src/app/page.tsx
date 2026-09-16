@@ -20,6 +20,9 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <div className="bg-paper px-6 py-3" aria-hidden="true">
+          <div className="foil-divider mx-auto max-w-6xl" />
+        </div>
         <HowItWorks />
         <ExperienceShowcase />
         <DesignShowcase />
@@ -31,6 +34,9 @@ export default function Home() {
         <Testimonials />
         <SponsorBelt />
         <FAQSection />
+        <div className="bg-paper px-6 py-3" aria-hidden="true">
+          <div className="foil-divider mx-auto max-w-6xl" />
+        </div>
         <ClosingCTA />
       </main>
       <Footer />

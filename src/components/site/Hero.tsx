@@ -44,7 +44,7 @@ export function Hero() {
   const { t } = useLocale();
 
   return (
-    <section className="relative overflow-hidden border-b border-line">
+    <section className="relative overflow-hidden">
       <div className="relative h-[64vh] max-h-[620px] min-h-[440px] overflow-hidden md:h-[88vh] md:max-h-[860px] md:min-h-[560px]">
         <HeroVideo />
         {/* Desktop-only legibility scrim — the site's own warm ivory
@@ -64,7 +64,7 @@ export function Hero() {
 
       <div className="px-6 py-12 text-center sm:py-14 md:absolute md:inset-0 md:flex md:items-center md:py-0 md:text-left">
         <div className="mx-auto max-w-xl md:mx-0 md:max-w-md md:pl-[7%] lg:max-w-lg lg:pl-[9%]">
-          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised/90 px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft backdrop-blur-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
             <Sparkles className="h-3.5 w-3.5 text-gold" />
             {t("hero.badge")}
           </span>
@@ -86,7 +86,7 @@ export function Hero() {
             </Link>
             <Link
               href="/templates"
-              className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised/90 px-7 py-3.5 text-sm font-medium text-ink backdrop-blur-sm transition hover:border-ink"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised px-7 py-3.5 text-sm font-medium text-ink transition hover:border-ink"
             >
               {t("hero.ctaSecondary")}
             </Link>
