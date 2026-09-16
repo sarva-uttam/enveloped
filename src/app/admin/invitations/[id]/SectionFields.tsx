@@ -1,6 +1,6 @@
 "use client";
 
-import { MOTION_PRESETS, type CompositionSection } from "@/lib/composition/schema";
+import { LIMITS, MOTION_PRESETS, type CompositionSection } from "@/lib/composition/schema";
 import { EVENT_TYPES } from "@/lib/composition/event-types";
 
 /**
@@ -18,12 +18,37 @@ import { EVENT_TYPES } from "@/lib/composition/event-types";
 const inputClass = "focus-ring w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm outline-none focus:border-ink";
 const labelClass = "block text-xs font-medium uppercase tracking-wide text-ink-soft";
 
-export function Field({ label, children }: { label: string; children: React.ReactNode }) {
+export function Field({
+  label,
+  required,
+  charCount,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  charCount?: { value: number; max: number };
+  children: React.ReactNode;
+}) {
   return (
-    <label className="block">
-      <span className={labelClass}>{label}</span>
-      <div className="mt-1">{children}</div>
-    </label>
+    <div>
+      <label className="block">
+        <span className={labelClass}>
+          {label}
+          {required ? <span className="text-red-500"> *</span> : <span className="normal-case text-ink-soft/70"> (optional)</span>}
+        </span>
+        <div className="mt-1">{children}</div>
+      </label>
+      {charCount && (
+        // Deliberately OUTSIDE the <label> — a wrapped <label>'s
+        // accessible name includes every descendant text node, so a live
+        // character count in here would make the field's accessible name
+        // change on every keystroke (a genuine a11y bug, not just a test
+        // nicety: assistive tech announces a "renamed" field mid-edit).
+        <span className={`mt-1 block text-right text-[10px] ${charCount.value > charCount.max ? "text-red-500" : "text-ink-soft"}`}>
+          {charCount.value}/{charCount.max}
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -52,7 +77,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
           <Field label="Eyebrow (small text above the headline)">
             <input className={inputClass} value={d.eyebrow ?? ""} onChange={(e) => onChange({ ...d, eyebrow: e.target.value || undefined })} />
           </Field>
-          <Field label="Headline">
+          <Field label="Headline" required charCount={{ value: d.headline.length, max: 160 }}>
             <input className={inputClass} value={d.headline} onChange={(e) => onChange({ ...d, headline: e.target.value })} />
           </Field>
           <Field label="Subheadline">
@@ -79,7 +104,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
     case "welcome": {
       const d = section.data;
       return (
-        <Field label="Welcome message">
+        <Field label="Welcome message" required charCount={{ value: d.message.length, max: LIMITS.mediumText }}>
           <textarea className={inputClass} rows={3} value={d.message} onChange={(e) => onChange({ ...d, message: e.target.value })} />
         </Field>
       );
@@ -91,7 +116,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
           <Field label="Title">
             <input className={inputClass} value={d.title ?? ""} onChange={(e) => onChange({ ...d, title: e.target.value || undefined })} />
           </Field>
-          <Field label="Story">
+          <Field label="Story" required charCount={{ value: d.body.length, max: LIMITS.longText }}>
             <textarea className={inputClass} rows={5} value={d.body} onChange={(e) => onChange({ ...d, body: e.target.value })} />
           </Field>
         </div>
@@ -326,7 +351,7 @@ export function SectionFields({ section, onChange }: { section: CompositionSecti
     case "closing": {
       const d = section.data;
       return (
-        <Field label="Closing message">
+        <Field label="Closing message" required charCount={{ value: d.message.length, max: LIMITS.mediumText }}>
           <textarea className={inputClass} rows={2} value={d.message} onChange={(e) => onChange({ ...d, message: e.target.value })} />
         </Field>
       );

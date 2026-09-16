@@ -3,7 +3,12 @@ import { EVENT_CATEGORIES } from "../categories";
 import { LOCALES } from "../i18n/translations";
 import { EVENT_TYPE_IDS } from "./event-types";
 import { CULTURAL_PACK_IDS } from "./cultural-packs";
-import { PALETTE_IDS } from "./theme";
+import { PALETTE_IDS, DENSITY_IDS } from "./theme";
+import { TYPOGRAPHY_IDS } from "./typography";
+import { SECTION_STYLE_IDS } from "./section-styles";
+import { DECORATIVE_MOTIF_IDS } from "./motifs";
+import { ENVELOPE_TREATMENT_IDS } from "./envelope-treatments";
+import { DESIGN_TEMPLATE_IDS } from "./design-template-ids";
 
 /**
  * The versioned, strict composition schema — Stage 6 (2026-09-10, see
@@ -152,6 +157,18 @@ const eventTypeIdEnum = z.enum(EVENT_TYPE_IDS);
 const culturalPackIdEnum = z.enum(CULTURAL_PACK_IDS);
 const paletteIdEnum = z.enum(PALETTE_IDS);
 const dirEnum = z.enum(["ltr", "rtl", "auto"]);
+// Stage 12 — the trusted visual-differentiation layer (see theme.ts's
+// DENSITY_IDS, typography.ts, section-styles.ts, motifs.ts,
+// envelope-treatments.ts for what each resolves to). All optional: no
+// pre-Stage-12 composition ever set these, so they must remain absent-
+// and-valid on every existing row, resolved by trusted application code
+// to today's exact current appearance when missing.
+const densityIdEnum = z.enum(DENSITY_IDS).optional();
+const typographyIdEnum = z.enum(TYPOGRAPHY_IDS).optional();
+const sectionStyleIdEnum = z.enum(SECTION_STYLE_IDS).optional();
+const decorativeMotifIdEnum = z.enum(DECORATIVE_MOTIF_IDS).optional();
+const envelopeTreatmentIdEnum = z.enum(ENVELOPE_TREATMENT_IDS).optional();
+const designTemplateIdEnum = z.enum(DESIGN_TEMPLATE_IDS);
 // Note: motifId/motionId (the cultural pack's own OWN choice of
 // decorative treatment — see cultural-packs.ts's CulturalPackDefinition)
 // are NOT part of the composition document itself, deliberately — a
@@ -457,6 +474,12 @@ const ThemeTokensSchema = z
     /** An optional, still-hex-only override — never a free CSS value,
      *  never a Tailwind class. */
     accentOverride: hexColor.optional(),
+    /** Stage 12 — trusted, closed treatment ids; see the enum
+     *  declarations above for what each resolves to and why they're
+     *  optional. */
+    typographyId: typographyIdEnum,
+    sectionStyleId: sectionStyleIdEnum,
+    densityId: densityIdEnum,
   })
   .strict();
 
@@ -474,6 +497,11 @@ const FeatureConfigSchema = z
      *  viewer's own reduced-motion preference regardless of either
      *  flag — see EnvelopeOpening.tsx's own comment. */
     envelopeOpening: z.boolean().default(true),
+    /** Stage 12 — trusted, closed treatment ids; absent resolves to
+     *  today's pack-inferred motif / the classic envelope shape (see
+     *  motifs.ts's legacyMotifForPack() and envelope-treatments.ts). */
+    decorativeMotifId: decorativeMotifIdEnum,
+    envelopeTreatmentId: envelopeTreatmentIdEnum,
   })
   .strict();
 
@@ -501,12 +529,21 @@ const WeddingContextSchema = z
 export const InvitationCompositionSchema = z
   .object({
     schemaVersion: z.literal(COMPOSITION_SCHEMA_VERSION),
-    /** Reserved for a future templates-table integration (the existing
-     *  `templates` catalogue, see PROJECT_STATUS.md's Stage 0 section) —
-     *  not validated against a live catalogue yet, since nothing reads
-     *  `templates` at runtime today. Always null from every builder in
-     *  this stage. */
-    templateId: z.string().max(100).nullable(),
+    /** Stage 12 — which trusted design template (design-templates.ts)
+     *  was last applied, if any. `null` for every composition built by
+     *  buildCompositionFromPack() alone (no template chosen yet) and for
+     *  any composition whose visual tokens were hand-edited section by
+     *  section rather than through the template library — a template id
+     *  is a convenience/provenance marker for the admin UI, never
+     *  required for the composition to render or validate. Deliberately
+     *  a closed enum (design-template-ids.ts), not a free string: "future
+     *  template identifiers cannot be falsely selected before
+     *  registration," the same guarantee designPackId/paletteId already
+     *  have. This still leaves the pre-existing, long-unused `templates`
+     *  database table (see PROJECT_STATUS.md's Stage 0 section)
+     *  unreferenced — that table is admin/DB-editable, not a trusted
+     *  TypeScript registry, so it is deliberately not wired in here. */
+    templateId: designTemplateIdEnum.nullable(),
     designPackId: culturalPackIdEnum,
     eventCategory: eventCategoryEnum,
     weddingContext: WeddingContextSchema.nullable(),

@@ -3,6 +3,8 @@ import { RsvpForm } from "@/components/invite/RsvpForm";
 import { AudioPlayer } from "@/components/experience/AudioPlayer";
 import { StaggeredSchedule } from "@/components/experience/StaggeredSchedule";
 import type { CompositionSection, MotionPresetId } from "@/lib/composition/schema";
+import type { TypographyBundle } from "@/lib/composition/typography";
+import type { SectionStyleBundle } from "@/lib/composition/section-styles";
 
 /**
  * The trusted section components — Stage 6 (see PROJECT_STATUS.md's
@@ -61,6 +63,12 @@ export interface SectionRenderContext {
    *  outer AnimateIn wrapper consumes the same value independently for
    *  the whole-section reveal. */
   motionPreset: MotionPresetId;
+  /** Stage 12 — resolved once per render from
+   *  composition.themeTokens.{typographyId,sectionStyleId} by
+   *  CompositionRenderer (theme.ts/typography.ts/section-styles.ts's
+   *  trusted resolvers), never composition-supplied directly. */
+  typography: TypographyBundle;
+  style: SectionStyleBundle;
 }
 
 type SectionProps<T extends CompositionSection["type"]> = {
@@ -73,14 +81,14 @@ export function OpeningSection({ data, ctx }: SectionProps<"opening">) {
     <div className="text-center">
       {data.eyebrow && (
         <span
-          className="inline-block rounded-full px-4 py-1 text-[11px] font-medium uppercase tracking-widest"
+          className={`inline-block rounded-full px-4 py-1 ${ctx.typography.eyebrow}`}
           style={{ background: ctx.soft, color: ctx.accent }}
         >
           {data.eyebrow}
         </span>
       )}
-      <h1 className="mt-6 font-display text-4xl italic leading-tight sm:text-5xl">{data.headline}</h1>
-      {data.subheadline && <p className="mt-4 text-lg text-ink-soft">{data.subheadline}</p>}
+      <h1 className={`mt-6 text-4xl leading-tight sm:text-5xl ${ctx.typography.headline}`}>{data.headline}</h1>
+      {data.subheadline && <p className={`mt-4 text-lg ${ctx.typography.body}`}>{data.subheadline}</p>}
     </div>
   );
 }
@@ -105,28 +113,28 @@ export function GreetingSection({ ctx }: SectionProps<"greeting">) {
   );
 }
 
-export function IntroSection({ data }: SectionProps<"intro">) {
+export function IntroSection({ data, ctx }: SectionProps<"intro">) {
   return (
-    <div className="rounded-3xl border border-line bg-paper-raised/80 p-8 text-center">
-      <h2 className="font-display text-2xl">{data.title}</h2>
-      {data.description && <p className="mt-2 text-ink-soft leading-relaxed">{data.description}</p>}
+    <div className={`${ctx.style.cardLg} text-center`}>
+      <h2 className={`text-2xl ${ctx.typography.headline}`}>{data.title}</h2>
+      {data.description && <p className={`mt-2 ${ctx.typography.body}`}>{data.description}</p>}
     </div>
   );
 }
 
-export function WelcomeSection({ data }: SectionProps<"welcome">) {
+export function WelcomeSection({ data, ctx }: SectionProps<"welcome">) {
   return (
-    <div className="rounded-3xl border border-line bg-paper-raised/80 p-8 text-center backdrop-blur-sm">
-      <p className="text-ink-soft leading-relaxed">{data.message}</p>
+    <div className={`${ctx.style.cardLg} text-center`}>
+      <p className={ctx.typography.body}>{data.message}</p>
     </div>
   );
 }
 
-export function StorySection({ data }: SectionProps<"story">) {
+export function StorySection({ data, ctx }: SectionProps<"story">) {
   return (
-    <div className="rounded-3xl border border-line bg-paper-raised/70 p-8 text-left">
-      {data.title && <h2 className="font-display text-xl">{data.title}</h2>}
-      <p className="mt-2 text-sm text-ink-soft leading-relaxed">{data.body}</p>
+    <div className={`${ctx.style.cardLg} text-left`}>
+      {data.title && <h2 className={`text-xl ${ctx.typography.headline}`}>{data.title}</h2>}
+      <p className={`mt-2 text-sm ${ctx.typography.body}`}>{data.body}</p>
     </div>
   );
 }
@@ -149,8 +157,8 @@ export function ScheduleSection({ data, ctx }: SectionProps<"schedule">) {
   return (
     <dl className="grid gap-3 sm:grid-cols-2">
       {data.entries.map((entry) => (
-        <div key={entry.id} className="rounded-2xl border border-line bg-paper-raised/70 p-5 text-left">
-          <dt className="text-[11px] font-medium uppercase tracking-wide" style={{ color: ctx.accent }}>
+        <div key={entry.id} className={`${ctx.style.cardSm} text-left`}>
+          <dt className={ctx.style.label} style={{ color: ctx.accent }}>
             {entry.label}
           </dt>
           <dd className="mt-1 text-sm text-ink">{entry.value}</dd>
@@ -164,10 +172,10 @@ export function DateTimeSection({ data, ctx }: SectionProps<"dateTime">) {
   return <Countdown date={data.eventDate} accent={ctx.accent} />;
 }
 
-export function VenueSection({ data }: SectionProps<"venue">) {
+export function VenueSection({ data, ctx }: SectionProps<"venue">) {
   return (
-    <div className="rounded-2xl border border-line bg-paper-raised/70 p-5 text-left">
-      <div className="text-[11px] font-medium uppercase tracking-wide text-ink-soft">Venue</div>
+    <div className={`${ctx.style.cardSm} text-left`}>
+      <div className={ctx.style.label}>Venue</div>
       <div className="mt-1 text-sm text-ink">{data.name}</div>
       {data.address && <div className="mt-1 text-sm text-ink-soft">{data.address}</div>}
     </div>
@@ -188,19 +196,19 @@ export function MapLinkSection({ data, ctx }: SectionProps<"mapLink">) {
   );
 }
 
-export function DressCodeSection({ data }: SectionProps<"dressCode">) {
+export function DressCodeSection({ data, ctx }: SectionProps<"dressCode">) {
   return (
-    <div className="rounded-2xl border border-line bg-paper-raised/70 p-5 text-center">
-      <div className="text-[11px] font-medium uppercase tracking-wide text-ink-soft">Dress Code</div>
+    <div className={`${ctx.style.cardSm} text-center`}>
+      <div className={ctx.style.label}>Dress Code</div>
       <div className="mt-1 text-sm text-ink">{data.description}</div>
     </div>
   );
 }
 
-export function GallerySection({ data }: SectionProps<"gallery">) {
+export function GallerySection({ data, ctx }: SectionProps<"gallery">) {
   return (
     <div>
-      <div className="mb-3 text-center text-[11px] font-medium uppercase tracking-wide text-ink-soft">A few moments</div>
+      <div className={`mb-3 text-center ${ctx.style.label}`}>A few moments</div>
       <div className="grid grid-cols-3 gap-3" aria-hidden="true">
         {data.items.map((item) =>
           item.imageUrl ? (
@@ -249,15 +257,15 @@ export function MusicSection({ data, ctx }: SectionProps<"music">) {
   );
 }
 
-export function ClosingSection({ data }: SectionProps<"closing">) {
-  return <p className="text-center font-display text-xl italic text-ink-soft">{data.message}</p>;
+export function ClosingSection({ data, ctx }: SectionProps<"closing">) {
+  return <p className={`text-center text-xl text-ink-soft ${ctx.typography.headline}`}>{data.message}</p>;
 }
 
-export function CustomTextSection({ data }: SectionProps<"customText">) {
+export function CustomTextSection({ data, ctx }: SectionProps<"customText">) {
   return (
-    <div className="rounded-2xl border border-line bg-paper-raised/70 p-5 text-left">
-      {data.heading && <h2 className="font-display text-lg">{data.heading}</h2>}
-      <p className="mt-1 text-sm text-ink-soft leading-relaxed">{data.body}</p>
+    <div className={`${ctx.style.cardSm} text-left`}>
+      {data.heading && <h2 className={`text-lg ${ctx.typography.headline}`}>{data.heading}</h2>}
+      <p className={`mt-1 text-sm ${ctx.typography.body}`}>{data.body}</p>
     </div>
   );
 }

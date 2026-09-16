@@ -474,3 +474,41 @@ describe("Stage 7: music configuration is safe and bounded", () => {
     expect(InvitationCompositionSchema.safeParse(withMusic({ embedHtml: "<iframe></iframe>" })).success).toBe(false);
   });
 });
+
+describe("Stage 12 — the trusted visual-differentiation layer", () => {
+  it("a composition with none of the new fields set (every pre-Stage-12 composition) still parses", () => {
+    const result = InvitationCompositionSchema.safeParse(validComposition());
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts every valid combination of the new closed, optional theme/feature ids", () => {
+    const result = InvitationCompositionSchema.safeParse(
+      validComposition({
+        templateId: "evening-burgundy",
+        themeTokens: { paletteId: "bronze", typographyId: "royal-display", sectionStyleId: "ornate", densityId: "compact" },
+        featureConfig: { motion: true, ambientMotif: "full", openingBurst: true, decorativeMotifId: "soft-glow", envelopeTreatmentId: "monogram-seal" },
+      })
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it.each(["typographyId", "sectionStyleId", "densityId"])("rejects an unknown %s value", (field) => {
+    const result = InvitationCompositionSchema.safeParse(validComposition({ themeTokens: { paletteId: "gold", [field]: "not-a-real-id" } }));
+    expect(result.success).toBe(false);
+  });
+
+  it.each(["decorativeMotifId", "envelopeTreatmentId"])("rejects an unknown %s value", (field) => {
+    const result = InvitationCompositionSchema.safeParse(
+      validComposition({ featureConfig: { motion: true, ambientMotif: "none", openingBurst: false, [field]: "not-a-real-id" } })
+    );
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects an unregistered templateId — future template identifiers cannot be falsely selected before registration", () => {
+    expect(InvitationCompositionSchema.safeParse(validComposition({ templateId: "some-future-template" })).success).toBe(false);
+  });
+
+  it("still accepts templateId: null (no template chosen / hand-edited composition)", () => {
+    expect(InvitationCompositionSchema.safeParse(validComposition({ templateId: null })).success).toBe(true);
+  });
+});

@@ -6,6 +6,7 @@ import { Mail } from "lucide-react";
 import { useReducedMotion } from "@/lib/motion/useReducedMotion";
 import { useIsClient } from "@/lib/motion/useIsClient";
 import { OpeningBurst } from "@/components/invite/OpeningBurst";
+import type { EnvelopeTreatmentId } from "@/lib/composition/envelope-treatments";
 
 function readOpenedFlag(key: string): boolean {
   try {
@@ -71,6 +72,7 @@ export function EnvelopeOpening({
   accent,
   eyebrow,
   openingBurst,
+  treatmentId,
   children,
 }: {
   active: boolean;
@@ -78,8 +80,13 @@ export function EnvelopeOpening({
   accent: string;
   eyebrow?: string;
   openingBurst: boolean;
+  /** Stage 12 — a trusted envelope shape/border variant (see
+   *  envelope-treatments.ts). Absent resolves to `"classic"`, the
+   *  original shape this component has always rendered. */
+  treatmentId?: EnvelopeTreatmentId;
   children: ReactNode;
 }) {
+  const resolvedTreatment = treatmentId ?? "classic";
   const reducedMotion = useReducedMotion();
   const isClient = useIsClient();
   const storageKey = `enveloped:envelope-opened:${sessionKey}`;
@@ -190,10 +197,15 @@ export function EnvelopeOpening({
                   <span className="px-4 text-sm font-medium text-ink">{eyebrow || "You're invited"}</span>
                 </motion.div>
 
-                {/* Envelope body */}
+                {/* Envelope body — "bordered-frame" adds a second,
+                    inset double-line border; both remain the same
+                    original hand-built rectangle, never imported
+                    artwork. */}
                 <div
-                  className="relative flex h-44 w-56 items-end justify-center overflow-hidden rounded-lg border bg-paper shadow-lg sm:h-52 sm:w-64"
-                  style={{ borderColor: accent }}
+                  className={`relative flex h-44 w-56 items-end justify-center overflow-hidden rounded-lg border bg-paper shadow-lg sm:h-52 sm:w-64 ${
+                    resolvedTreatment === "bordered-frame" ? "outline outline-2 outline-offset-4" : ""
+                  }`}
+                  style={{ borderColor: accent, outlineColor: resolvedTreatment === "bordered-frame" ? accent : undefined }}
                 >
                   <Mail className="mb-4 h-6 w-6 opacity-70" style={{ color: accent }} aria-hidden="true" />
                 </div>
@@ -210,7 +222,19 @@ export function EnvelopeOpening({
                   initial={{ rotateX: 0 }}
                   animate={{ rotateX: phase === "opening" || phase === "revealing" ? -165 : 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
-                />
+                >
+                  {/* "monogram-seal" — a small circular wax-seal-style
+                      mark centered on the flap; purely decorative, no
+                      couple-specific initials (this component never
+                      receives any). */}
+                  {resolvedTreatment === "monogram-seal" && (
+                    <div
+                      className="absolute left-1/2 top-3 h-7 w-7 -translate-x-1/2 rounded-full border-2 border-paper/80"
+                      style={{ background: "color-mix(in srgb, var(--ink) 20%, transparent)" }}
+                      aria-hidden="true"
+                    />
+                  )}
+                </motion.div>
               </motion.div>
 
               <span className="text-xs font-medium uppercase tracking-widest text-ink-soft">

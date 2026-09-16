@@ -88,3 +88,43 @@ describe("AtmosphericEffect", () => {
     expect(removeSpy).toHaveBeenCalledWith("visibilitychange", expect.any(Function));
   });
 });
+
+describe("Stage 12 — explicit decorativeMotifId overrides the pack-inferred default", () => {
+  it("an explicit motifId of 'none' renders nothing, even for a pack that would otherwise show a motif", () => {
+    const { container } = render(<AtmosphericEffect designPackId="hindu-wedding" intensity="full" motifId="none" />);
+    expect(container.firstChild).toBeNull();
+  });
+
+  it("botanical-line renders original SVG line art, not the hindu petal glyphs", () => {
+    const { container } = render(<AtmosphericEffect designPackId="neutral-classic" intensity="full" motifId="botanical-line" />);
+    expect(container.querySelectorAll("svg").length).toBeGreaterThan(0);
+    expect(container.querySelectorAll("svg.animate-drift").length).toBeGreaterThan(0);
+  });
+
+  it("lotus-geometric renders faceted line-art geometry, never a representational image", () => {
+    const { container } = render(<AtmosphericEffect designPackId="hindu-wedding" intensity="light" motifId="lotus-geometric" />);
+    const polygons = container.querySelectorAll("polygon");
+    expect(polygons.length).toBeGreaterThan(0);
+    expect(container.querySelector("img")).toBeNull();
+  });
+
+  it("diya-warmth renders a warm glow treatment, not a literal flame/lamp image", () => {
+    const { container } = render(<AtmosphericEffect designPackId="hindu-wedding" intensity="full" motifId="diya-warmth" />);
+    expect(container.querySelectorAll(".animate-glow-pulse").length).toBeGreaterThan(0);
+    expect(container.querySelector("img")).toBeNull();
+  });
+
+  it("reduced motion still suppresses every new motif, not just the original two", () => {
+    setReducedMotion(true);
+    for (const motifId of ["botanical-line", "lotus-geometric", "diya-warmth"] as const) {
+      const { container, unmount } = render(<AtmosphericEffect designPackId="hindu-wedding" intensity="full" motifId={motifId} />);
+      expect(container.firstChild).toBeNull();
+      unmount();
+    }
+  });
+
+  it("with no explicit motifId, falls back to the original pack-inferred motif (backward compatible)", () => {
+    const { container } = render(<AtmosphericEffect designPackId="hindu-wedding" intensity="full" />);
+    expect(container.querySelectorAll(".animate-drift").length).toBe(20);
+  });
+});

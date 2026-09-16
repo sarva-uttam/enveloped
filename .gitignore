@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright (Stage 12 browser tests) — reports, traces, and any local
+# auth storage state are all disposable/local-only, never tracked.
+/test-results/
+/playwright-report/
+/tests/browser/.auth/

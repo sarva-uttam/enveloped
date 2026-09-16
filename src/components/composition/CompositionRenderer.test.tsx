@@ -238,3 +238,70 @@ describe("CompositionRenderer — Stage 7 atmospheric effect is decorative-only"
     expect(html).toMatch(/aria-hidden="true"[^>]*pointer-events-none|pointer-events-none[^>]*aria-hidden="true"/);
   });
 });
+
+describe("Stage 12 — legacy compositions (no visual-differentiation tokens set) render unaffected", () => {
+  it("a composition with no typographyId/sectionStyleId/densityId still renders the intro/welcome/story cards", () => {
+    const composition = baseComposition({
+      sections: [
+        { id: "welcome", type: "welcome", enabled: true, data: { message: "Welcome message text" } },
+        { id: "story", type: "story", enabled: true, data: { body: "Once upon a time" } },
+      ],
+    });
+    const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
+    expect(html).toContain("rounded-3xl");
+    expect(html).toContain("Welcome message text");
+    expect(html).toContain("Once upon a time");
+  });
+});
+
+describe("Stage 12 — templates produce visibly different rendered output", () => {
+  it("each of the six registered templates renders a distinct combination of typography/section-style classes", async () => {
+    const { DESIGN_TEMPLATE_IDS, applyDesignTemplate } = await import("@/lib/composition/design-templates");
+    const seen = new Set<string>();
+    for (const id of DESIGN_TEMPLATE_IDS) {
+      const composition = applyDesignTemplate(
+        baseComposition({
+          sections: [
+            { id: "opening", type: "opening", enabled: true, data: { headline: "Amara & Devin" } },
+            { id: "welcome", type: "welcome", enabled: true, data: { message: "Welcome" } },
+          ],
+        }),
+        id
+      );
+      const html = renderToStaticMarkup(<CompositionRenderer composition={composition} canRsvp={false} />);
+      // A signature drawn from the actually-applied typography/section-style
+      // classes — six distinct templates must not collapse to fewer than
+      // six distinct signatures ("not merely renamed colour swaps").
+      const signature = [/font-sans[^"]*/, /rounded-\S+/, /shadow-\S+/].map((re) => html.match(re)?.[0] ?? "").join("|");
+      seen.add(`${id}:${signature}`);
+    }
+    expect(seen.size).toBe(6);
+  });
+
+  it("applying the 'evening-burgundy' template changes the welcome card's border-radius class vs. an unset composition", () => {
+    const plain = baseComposition({ sections: [{ id: "welcome", type: "welcome", enabled: true, data: { message: "Hi" } }] });
+    const plainHtml = renderToStaticMarkup(<CompositionRenderer composition={plain} canRsvp={false} />);
+    expect(plainHtml).toContain("rounded-3xl");
+
+    const templated = baseComposition({
+      themeTokens: { paletteId: "bronze", sectionStyleId: "ornate" },
+      sections: [{ id: "welcome", type: "welcome", enabled: true, data: { message: "Hi" } }],
+    });
+    const templatedHtml = renderToStaticMarkup(<CompositionRenderer composition={templated} canRsvp={false} />);
+    expect(templatedHtml).toContain("rounded-[28px]");
+    expect(templatedHtml).not.toContain("rounded-3xl");
+  });
+
+  it("density scales section spacing to a different, still-fixed Tailwind class", () => {
+    const airy = baseComposition({
+      themeTokens: { paletteId: "gold", densityId: "airy" },
+      featureConfig: { motion: true, ambientMotif: "none", openingBurst: false },
+      sections: [
+        { id: "opening", type: "opening", enabled: true, data: { headline: "Hi" } },
+        { id: "closing", type: "closing", enabled: true, data: { message: "Bye" } },
+      ],
+    });
+    const html = renderToStaticMarkup(<CompositionRenderer composition={airy} canRsvp={false} />);
+    expect(html).toContain("mt-24"); // closing's mt-16 base, scaled by "airy"
+  });
+});

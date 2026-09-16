@@ -148,3 +148,25 @@ describe("EnvelopeOpening — session replay rule", () => {
     await waitFor(() => expect(screen.getByLabelText("Open your invitation")).toBeTruthy());
   });
 });
+
+describe("Stage 12 — trusted envelope treatments", () => {
+  it("defaults to the original 'classic' shape when no treatmentId is given (backward compatible)", async () => {
+    const { container } = renderEnvelope();
+    await screen.findByLabelText("Open your invitation");
+    expect(container.querySelector(".outline-2")).toBeNull();
+  });
+
+  it("'bordered-frame' adds a double-line outline to the same original envelope body", async () => {
+    const { container } = renderEnvelope({ treatmentId: "bordered-frame" });
+    await screen.findByLabelText("Open your invitation");
+    expect(container.querySelector(".outline-2")).not.toBeNull();
+  });
+
+  it("'monogram-seal' adds a small circular mark on the flap, with no couple-specific text", async () => {
+    const { container } = renderEnvelope({ treatmentId: "monogram-seal" });
+    await screen.findByLabelText("Open your invitation");
+    const seal = container.querySelector(".rounded-full.border-2.border-paper\\/80");
+    expect(seal).not.toBeNull();
+    expect(seal?.textContent).toBe("");
+  });
+});

@@ -43,6 +43,14 @@ interface PreviewMessage {
   type: "envelope-admin-preview";
   composition: InvitationComposition | null;
   forceReducedMotion: boolean;
+  /** Stage 12 — when true, renders in `mode="guest"` instead of the
+   *  default `mode="review"`, which is the ONLY difference between the
+   *  two: the envelope-opening ceremony becomes active, so an
+   *  administrator can preview/replay it live (EnvelopeOpening's own
+   *  "Replay opening" control, unmodified). Everything else about this
+   *  route's guarantees (canRsvp always false, no owner tooling, same
+   *  trusted renderer) is unaffected by this flag. */
+  previewOpeningAnimation?: boolean;
 }
 
 function isPreviewMessage(value: unknown): value is PreviewMessage {
@@ -52,6 +60,7 @@ function isPreviewMessage(value: unknown): value is PreviewMessage {
 export default function PreviewFramePage() {
   const [composition, setComposition] = useState<InvitationComposition | null>(null);
   const [patched, setPatched] = useState(false);
+  const [openingAnimation, setOpeningAnimation] = useState(false);
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
@@ -76,6 +85,7 @@ export default function PreviewFramePage() {
       }
 
       setComposition(event.data.composition);
+      setOpeningAnimation(Boolean(event.data.previewOpeningAnimation));
       setPatched(true);
     }
 
@@ -93,5 +103,5 @@ export default function PreviewFramePage() {
     );
   }
 
-  return <InvitationExperience composition={composition} canRsvp={false} mode="review" />;
+  return <InvitationExperience composition={composition} canRsvp={false} mode={openingAnimation ? "guest" : "review"} />;
 }

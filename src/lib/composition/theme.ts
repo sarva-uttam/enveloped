@@ -44,3 +44,35 @@ export const PALETTE_REGISTRY: Record<PaletteId, PaletteTokens> = {
 export function isKnownPaletteId(value: string): value is PaletteId {
   return (PALETTE_IDS as readonly string[]).includes(value);
 }
+
+/**
+ * Stage 12 — spacing/density, the same closed-registry shape as palette
+ * above. Resolves to a trusted multiplier applied to
+ * `CompositionRenderer.tsx`'s existing `SECTION_MARGIN` Tailwind
+ * classes, never to an arbitrary computed value. Absent on every
+ * pre-Stage-12 composition — `resolveDensity()` below treats that the
+ * same as `"comfortable"`, today's actual spacing, so nothing already
+ * saved changes appearance.
+ */
+export const DENSITY_IDS = ["compact", "comfortable", "airy"] as const;
+export type DensityId = (typeof DENSITY_IDS)[number];
+
+/** Tailwind margin-top classes, keyed by density, for the three section
+ *  margin sizes CompositionRenderer's SECTION_MARGIN table already uses
+ *  ("" for the opening section, "mt-12" default, "mt-14" rsvp, "mt-16"
+ *  closing) — a trusted lookup table, not a computed value, so an
+ *  invalid density id simply cannot produce an arbitrary class. */
+const DENSITY_MARGIN_SCALE: Record<DensityId, Record<"mt-12" | "mt-14" | "mt-16", string>> = {
+  compact: { "mt-12": "mt-8", "mt-14": "mt-9", "mt-16": "mt-10" },
+  comfortable: { "mt-12": "mt-12", "mt-14": "mt-14", "mt-16": "mt-16" },
+  airy: { "mt-12": "mt-16", "mt-14": "mt-20", "mt-16": "mt-24" },
+};
+
+export function isKnownDensityId(value: string): value is DensityId {
+  return (DENSITY_IDS as readonly string[]).includes(value);
+}
+
+export function resolveDensityMargin(densityId: DensityId | undefined, baseMargin: "mt-12" | "mt-14" | "mt-16" | ""): string {
+  if (!baseMargin) return "";
+  return DENSITY_MARGIN_SCALE[densityId ?? "comfortable"][baseMargin];
+}

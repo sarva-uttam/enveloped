@@ -12,6 +12,8 @@
     "db:stop": "supabase stop --no-backup",
     "db:reset": "supabase db reset",
     "test:db": "supabase db reset && vitest run --config vitest.integration.config.ts",
+    "seed:visual-review": "node scripts/seed-visual-review.mjs",
+    "test:browser": "playwright test",
     "test:all": "npm test && npm run test:db"
   },
   "dependencies": {
@@ -31,6 +33,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/react": "^16.3.3",
     "@types/canvas-confetti": "^1.9.0",

@@ -72,6 +72,7 @@ export function InvitationExperience({
       accent={accent}
       eyebrow={eyebrow}
       openingBurst={composition.featureConfig.openingBurst}
+      treatmentId={composition.featureConfig.envelopeTreatmentId}
     >
       <CompositionRenderer
         composition={composition}

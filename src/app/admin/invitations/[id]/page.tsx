@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAdminInvitationDetail } from "@/lib/invitation-admin.server";
 import { getRequestDetail } from "@/lib/requests-admin.server";
 import { getInvitationReviewHistory } from "@/lib/review-admin.server";
+import { getGuestDashboardSummary } from "@/lib/guest-admin.server";
 import { InvitationEditor } from "./InvitationEditor";
 
 export const metadata = { title: "Invitation — Admin — Enveloped" };
@@ -39,6 +40,7 @@ export default async function AdminInvitationPage({ params }: Props) {
 
   const request = invitation.requestId ? await getRequestDetail(invitation.requestId) : null;
   const reviewHistory = invitation.generatorKind === "concierge" ? await getInvitationReviewHistory(invitation.id) : [];
+  const guestSummary = await getGuestDashboardSummary(invitation.id);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
@@ -74,6 +76,7 @@ export default async function AdminInvitationPage({ params }: Props) {
           privateFieldsForReadiness={
             request ? { email: request.email, phone: request.phone, notes: request.notes, internalNotes: request.internalNotes } : null
           }
+          guestSummary={guestSummary}
         />
       </div>
     </div>

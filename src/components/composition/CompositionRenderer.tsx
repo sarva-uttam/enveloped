@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
 import type { InvitationComposition, SectionType } from "@/lib/composition/schema";
-import { PALETTE_REGISTRY } from "@/lib/composition/theme";
+import { PALETTE_REGISTRY, resolveDensityMargin } from "@/lib/composition/theme";
+import { resolveTypography } from "@/lib/composition/typography";
+import { resolveSectionStyle } from "@/lib/composition/section-styles";
 import { AnimateIn } from "@/components/invite/AnimateIn";
 import { AtmosphericEffect } from "@/components/experience/AtmosphericEffect";
 import { resolveSectionComponent } from "./registry";
@@ -12,13 +14,16 @@ import type { SectionRenderContext } from "./sections";
  *  schedule/gallery all used `mt-12`; rsvp used the slightly larger
  *  `mt-14`; closing used `mt-16`). New (non-legacy-mapped) section
  *  types default to `mt-12`, the most common value. Kept as simple,
- *  fixed Tailwind classes — never a computed/arbitrary value. */
-const SECTION_MARGIN: Partial<Record<SectionType, string>> = {
+ *  fixed Tailwind classes — never a computed/arbitrary value. Stage 12:
+ *  the base class chosen here is then scaled by the composition's own
+ *  `themeTokens.densityId` via `resolveDensityMargin()`, still only
+ *  ever resolving to another fixed, trusted Tailwind class. */
+const SECTION_MARGIN: Partial<Record<SectionType, "mt-12" | "mt-14" | "mt-16" | "">> = {
   opening: "",
   rsvp: "mt-14",
   closing: "mt-16",
 };
-const DEFAULT_SECTION_MARGIN = "mt-12";
+const DEFAULT_SECTION_MARGIN = "mt-12" as const;
 
 /**
  * THE trusted composition renderer — Stage 6 (see PROJECT_STATUS.md's
@@ -84,8 +89,10 @@ export function CompositionRenderer({
   const palette = PALETTE_REGISTRY[composition.themeTokens.paletteId];
   const accent = composition.themeTokens.accentOverride ?? palette.accent;
   const soft = palette.soft;
+  const typography = resolveTypography(composition.themeTokens.typographyId);
+  const style = resolveSectionStyle(composition.themeTokens.sectionStyleId);
 
-  const baseCtx = { accent, soft, inviteId, guestId, guestName, song, canRsvp } as const;
+  const baseCtx = { accent, soft, inviteId, guestId, guestName, song, canRsvp, typography, style } as const;
 
   const enabledSections = composition.sections.filter((s) => s.enabled);
   const greetingSection = enabledSections.find((s) => s.type === "greeting");
@@ -106,7 +113,11 @@ export function CompositionRenderer({
           itself, so the burst never double-fires and never fires at all
           for a reduced-motion viewer or a composition with no envelope
           sequence. */}
-      <AtmosphericEffect designPackId={composition.designPackId} intensity={featureConfig.ambientMotif} />
+      <AtmosphericEffect
+        designPackId={composition.designPackId}
+        intensity={featureConfig.ambientMotif}
+        motifId={featureConfig.decorativeMotifId}
+      />
 
       <div className="relative mx-auto max-w-2xl px-6 py-20">
         {/* When the composition itself has motion turned off
@@ -124,7 +135,8 @@ export function CompositionRenderer({
           const ctx: SectionRenderContext = { ...baseCtx, motionPreset: preset };
           const rendered = renderSection(section, ctx);
           if (rendered === null) return null;
-          const margin = SECTION_MARGIN[section.type] ?? DEFAULT_SECTION_MARGIN;
+          const baseMargin = SECTION_MARGIN[section.type] ?? DEFAULT_SECTION_MARGIN;
+          const margin = resolveDensityMargin(composition.themeTokens.densityId, baseMargin);
           return (
             <AnimateIn key={section.id} active={featureConfig.motion} preset={preset} className={margin || undefined}>
               {rendered}
