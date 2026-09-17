@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { checkAdmin } from "@/lib/auth/admin.server";
 import { sanitizeRedirectPath } from "@/lib/safe-redirect";
 import { AdminNav } from "@/components/site/AdminNav";
@@ -24,7 +25,7 @@ import { AdminNav } from "@/components/site/AdminNav";
  * client sending no query params, guarantees nothing on its own; the
  * database check on every render is what does.
  */
-export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
+export default async function AdminLayout({ children }: Readonly<{ children: ReactNode }>) {
   const { user, isAdmin } = await checkAdmin();
 
   if (!user) {

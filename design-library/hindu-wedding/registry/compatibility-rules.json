@@ -1,0 +1,145 @@
+[
+  {
+    "id": "CR-SACRED-001",
+    "scope": "sacred",
+    "severity": "ERROR",
+    "message": "Only one principal sacred header may be selected; Ganesha and Om share the same slot.",
+    "machineCondition": {
+      "group": "principal-sacred-header",
+      "max": 1
+    }
+  },
+  {
+    "id": "CR-SACRED-002",
+    "scope": "sacred",
+    "severity": "ERROR",
+    "message": "Sacred imagery must never be cropped, obscured, placed beneath feet or controls, or used as a low-opacity texture.",
+    "machineCondition": {
+      "validator": "CR-SACRED-002"
+    }
+  },
+  {
+    "id": "CR-ARCH-001",
+    "scope": "architecture",
+    "severity": "ERROR",
+    "message": "Only one primary architectural structure; pillars must match its family.",
+    "machineCondition": {
+      "group": "architecture",
+      "max": 1
+    }
+  },
+  {
+    "id": "CR-ARCH-002",
+    "scope": "architecture",
+    "severity": "ERROR",
+    "message": "Open and closed temple doors are states of one structure and cannot coexist.",
+    "machineCondition": {
+      "validator": "CR-ARCH-002"
+    }
+  },
+  {
+    "id": "CR-FLORA-001",
+    "scope": "flora",
+    "severity": "ERROR",
+    "message": "Select at most three principal flower families.",
+    "maxSelections": 3,
+    "machineCondition": {
+      "group": "flower-family",
+      "max": 3
+    }
+  },
+  {
+    "id": "CR-FLORA-002",
+    "scope": "flora",
+    "severity": "ERROR",
+    "message": "Flowers must not cover critical text; foreground flowers remain below text-safe regions.",
+    "machineCondition": {
+      "validator": "CR-FLORA-002"
+    }
+  },
+  {
+    "id": "CR-CEREM-001",
+    "scope": "ceremonial",
+    "severity": "ERROR",
+    "message": "Rangoli, lamps, kalash and banana plants must remain physically grounded and correctly constructed.",
+    "machineCondition": {
+      "validator": "CR-CEREM-001"
+    }
+  },
+  {
+    "id": "CR-ANIMAL-001",
+    "scope": "animals",
+    "severity": "ERROR",
+    "message": "Only one principal animal family; inward-facing pairs may not compete for the same corners.",
+    "machineCondition": {
+      "group": "principal-animal",
+      "max": 1
+    }
+  },
+  {
+    "id": "CR-TYPE-001",
+    "scope": "typography",
+    "severity": "ERROR",
+    "message": "Calligraphy is limited to names and short headings; body text stays readable, editable HTML.",
+    "machineCondition": {
+      "validator": "CR-TYPE-001"
+    }
+  },
+  {
+    "id": "CR-MOTION-001",
+    "scope": "motion",
+    "severity": "ERROR",
+    "message": "Select at most three continuous ambient animation families.",
+    "maxSelections": 3,
+    "machineCondition": {
+      "group": "ambient-animation",
+      "max": 3
+    }
+  },
+  {
+    "id": "CR-MOTION-002",
+    "scope": "motion",
+    "severity": "ERROR",
+    "message": "Door, curtain and envelope opening experiences are mutually exclusive; reduced motion uses static states.",
+    "machineCondition": {
+      "group": "opening-experience",
+      "max": 1
+    }
+  },
+  {
+    "id": "CR-MUSIC-001",
+    "scope": "music",
+    "severity": "ERROR",
+    "message": "Music starts only after user interaction and must be optional.",
+    "machineCondition": {
+      "validator": "CR-MUSIC-001"
+    }
+  },
+  {
+    "id": "CR-PRICE-001",
+    "scope": "pricing",
+    "severity": "ERROR",
+    "message": "Browsing is free; only active selections are priced, and replacement removes the prior charge.",
+    "machineCondition": {
+      "validator": "CR-PRICE-001"
+    }
+  },
+  {
+    "id": "CR-PRICE-002",
+    "scope": "pricing",
+    "severity": "WARNING",
+    "message": "Recommend a higher tier when it includes the same features for less than the current tier plus additions.",
+    "machineCondition": {
+      "validator": "CR-PRICE-002"
+    }
+  },
+  {
+    "id": "CR-ACCESS-001",
+    "scope": "accessibility",
+    "severity": "ERROR",
+    "message": "Required usability and accessibility features are never premium add-ons.",
+    "machineCondition": {
+      "validator": "CR-ACCESS-001"
+    }
+  }
+]

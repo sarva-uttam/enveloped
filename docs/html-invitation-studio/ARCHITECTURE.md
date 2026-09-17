@@ -219,3 +219,6 @@ Production changes:    none
 ```
 
 Stopping here for owner review, as instructed. No architecture code, templates, or assets have been implemented.
+# Registry integration note
+
+The Hindu Wedding Registry under `design-library/hindu-wedding/` extends this architecture without changing its trust boundary. Its templates, assets, palettes and survey mappings are catalogue and validation inputs only. Every production Hindu template must still be implemented as a compile-time registered, reviewed document package. Registry IDs may select declared slots and closed parameters; they may never become executable markup or drive a free-form runtime layer composer. The detailed contract is in `design-library/hindu-wedding/documentation/HTML-STUDIO-INTEGRATION.md`.

@@ -1,0 +1,37 @@
+{
+  "id": "HW-REGISTRY-001",
+  "name": "Enveloped Hindu Wedding Component Registry",
+  "version": "1.1.0",
+  "logicalCanvas": {
+    "width": 1000,
+    "height": 1778,
+    "aspectRatio": "9:16"
+  },
+  "products": [
+    "FIXED_TEMPLATE",
+    "CUSTOM_TIERED"
+  ],
+  "architecture": {
+    "renderingModel": "TRUSTED_HTML_DOCUMENT_PACKAGE",
+    "authority": "docs/html-invitation-studio/ARCHITECTURE.md",
+    "componentRole": "CATALOGUE_AND_TEMPLATE_DECLARED_ASSET_SLOT",
+    "prohibitedModel": "ARBITRARY_RUNTIME_LAYER_COMPOSER",
+    "storedExecutableMarkup": false,
+    "personalizationTiming": "SERVE_TIME_ONLY"
+  },
+  "registryFiles": [
+    "templates.json",
+    "components.json",
+    "palettes.json",
+    "typography.json",
+    "animations.json",
+    "music.json",
+    "pricing.json",
+    "compatibility-rules.json",
+    "survey-mapping.json",
+    "placement-rules.json",
+    "asset-generation-status.json"
+  ],
+  "approvalPolicy": "Only APPROVED records with valid production files may be selectable in production; selection is limited to slots declared by a reviewed HTML document package.",
+  "updatedDate": "2026-09-17"
+}

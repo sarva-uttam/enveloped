@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/compatibility-rule.schema.json",
+  "title": "compatibility-rule schema",
+  "type": "object",
+  "required": [
+    "id",
+    "scope",
+    "severity",
+    "message",
+    "machineCondition"
+  ],
+  "properties": {
+    "id": {},
+    "scope": {},
+    "severity": {},
+    "message": {},
+    "machineCondition": {}
+  },
+  "additionalProperties": true
+}

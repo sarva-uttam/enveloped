@@ -12,7 +12,10 @@
     "db:stop": "supabase stop --no-backup",
     "db:reset": "supabase db reset",
     "test:db": "supabase db reset && vitest run --config vitest.integration.config.ts",
-    "test:all": "npm test && npm run test:db"
+    "test:all": "npm test && npm run test:db",
+    "build:design-library": "node scripts/build-design-library.mjs",
+    "validate:design-library": "node scripts/validate-design-library.mjs",
+    "report:design-library": "node scripts/validate-design-library.mjs --report"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.81",

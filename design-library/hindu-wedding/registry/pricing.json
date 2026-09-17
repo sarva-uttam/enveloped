@@ -1,0 +1,100 @@
+{
+  "version": "1.0.0",
+  "status": "PENDING_OWNER_DECISION",
+  "currency": null,
+  "note": "Existing self-serve USD prices in src/lib/tiers.ts are not changed by this custom-invitation registry.",
+  "products": {
+    "fixedTemplates": {
+      "pricingMode": "FIXED",
+      "prices": [
+        {
+          "templateId": "H01",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H02",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H03",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H04",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H05",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H06",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H07",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "templateId": "H08",
+          "amount": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        }
+      ]
+    },
+    "customInvitations": {
+      "pricingMode": "TIER_PLUS_ACTIVE_ADDITIONS",
+      "tiers": [
+        {
+          "tier": "BRONZE",
+          "basePrice": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "tier": "SILVER",
+          "basePrice": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "tier": "GOLD",
+          "basePrice": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        },
+        {
+          "tier": "PLATINUM",
+          "basePrice": null,
+          "currency": null,
+          "decision": "PENDING_OWNER_DECISION"
+        }
+      ],
+      "classifications": [
+        "INCLUDED",
+        "ENHANCED",
+        "PREMIUM",
+        "BESPOKE"
+      ],
+      "bespokeRequiresQuote": true,
+      "browsingAddsCharge": false,
+      "replacementRemovesPriorCharge": true,
+      "higherTierRecommendation": true
+    }
+  }
+}
