@@ -1,12 +1,24 @@
 # Asset Generation Workflow
 
-1. Select a `PLANNED` record and confirm its cultural note, slot, dimensions and template compatibility.
-2. Write an original prompt or production brief; record provenance and set `PROMPT_READY`.
-3. Generate or create the master without copying reference artwork.
-4. Save masters and delivery variants in the registered category path.
-5. Run technical QA for dimensions, alpha, color, compression, responsive variants and filenames.
-6. Create its 9:16 option card and thumbnail.
-7. Run visual, physical-coherence, cultural, accessibility and licence review.
-8. Approve one version or reject it with notes. Only `APPROVED` records receive production file paths.
+The approved production sequence is:
 
-Never overwrite an approved master. Increment versions and mark superseded versions accordingly.
+1. Backgrounds and paper textures.
+2. Colour grades and atmospheric washes.
+3. Architectural frames and pillars.
+4. Ganesha and sacred-header options.
+5. Flowers and foliage.
+6. Curtains, torans and garlands.
+7. Kalash, lamps, diyas and ceremonial objects.
+8. Peacocks and elephants.
+9. Couple representations.
+10. Typography styles.
+11. Petals, sparkles, smoke and lighting.
+12. Motion effects and static fallbacks.
+13. Produce 9:16 survey option cards.
+14. Complete cultural and technical review.
+15. Obtain Owner approval.
+16. Assemble approved components into H01, then continue through H02–H08.
+
+For every component: confirm its registered slot, cultural notes and compatibility; prepare an original brief; record provenance; generate the master and responsive variants; complete technical, visual, physical-coherence, cultural, accessibility and licensing review; then approve or reject it with notes.
+
+Components-first does not mean arbitrary assembly. A production template is still a trusted HTML document package. It may use only approved components through slots and placements it declares. Never overwrite an approved master; version replacements and mark superseded records.

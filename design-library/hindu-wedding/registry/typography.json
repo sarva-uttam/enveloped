@@ -1,122 +1,57 @@
 [
   {
     "id": "TYPE-001",
-    "name": "Formal Calligraphy",
+    "name": "Mozart Script",
     "role": "NAMES_AND_SHORT_HEADINGS",
-    "fontFamily": null,
+    "fontFamily": "Mozart Script",
     "licenceStatus": "TO_VERIFY",
     "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
   },
   {
     "id": "TYPE-002",
-    "name": "Romantic Calligraphy",
+    "name": "Slight",
     "role": "NAMES_AND_SHORT_HEADINGS",
-    "fontFamily": null,
+    "fontFamily": "Slight",
     "licenceStatus": "TO_VERIFY",
     "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
   },
   {
     "id": "TYPE-003",
-    "name": "Traditional Indian Calligraphy",
+    "name": "Ms Claudy",
     "role": "NAMES_AND_SHORT_HEADINGS",
-    "fontFamily": null,
+    "fontFamily": "Ms Claudy",
     "licenceStatus": "TO_VERIFY",
     "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
   },
   {
     "id": "TYPE-004",
-    "name": "Luxury Serif",
-    "role": "BODY_OR_HEADING",
-    "fontFamily": null,
+    "name": "Ecatherina",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Ecatherina",
     "licenceStatus": "TO_VERIFY",
     "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
   },
   {
     "id": "TYPE-005",
-    "name": "Classical Serif",
-    "role": "BODY_OR_HEADING",
-    "fontFamily": null,
+    "name": "Modern Symphony",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Modern Symphony",
     "licenceStatus": "TO_VERIFY",
     "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-006",
-    "name": "Readable Supporting Serif",
-    "role": "BODY_OR_HEADING",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-007",
-    "name": "Accessible Sans Serif",
-    "role": "BODY_OR_HEADING",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-008",
-    "name": "Date Display",
-    "role": "SPECIALISED_TEXT",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-009",
-    "name": "Venue Display",
-    "role": "SPECIALISED_TEXT",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-010",
-    "name": "Multilingual",
-    "role": "SPECIALISED_TEXT",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-011",
-    "name": "Devanagari",
-    "role": "SPECIALISED_TEXT",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
-  },
-  {
-    "id": "TYPE-012",
-    "name": "Tamil Script",
-    "role": "SPECIALISED_TEXT",
-    "fontFamily": null,
-    "licenceStatus": "TO_VERIFY",
-    "source": null,
-    "approvalStatus": "PLANNED",
-    "note": "No font is production-approved until its exact family, source, script coverage and licence are verified."
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
   }
 ]

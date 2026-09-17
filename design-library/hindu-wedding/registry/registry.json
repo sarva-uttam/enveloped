@@ -1,7 +1,7 @@
 {
   "id": "HW-REGISTRY-001",
   "name": "Enveloped Hindu Wedding Component Registry",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "logicalCanvas": {
     "width": 1000,
     "height": 1778,
@@ -33,5 +33,18 @@
     "asset-generation-status.json"
   ],
   "approvalPolicy": "Only APPROVED records with valid production files may be selectable in production; selection is limited to slots declared by a reviewed HTML document package.",
-  "updatedDate": "2026-09-17"
+  "updatedDate": "2026-09-17",
+  "initialCulturalMarket": {
+    "id": "MAURITIAN_HINDU_WEDDINGS",
+    "status": "APPROVED_OWNER_DECISION",
+    "supportedProfiles": [
+      "MAURITIAN_HINDU",
+      "MAURITIAN_TAMIL_HINDU",
+      "MIXED_HINDU_TRADITIONS",
+      "NOT_SURE",
+      "LET_ENVELOPED_ADVISE",
+      "NO_SACRED_IMAGERY"
+    ],
+    "internationalExpansion": "DEFERRED_PENDING_CULTURAL_REVIEW"
+  }
 }

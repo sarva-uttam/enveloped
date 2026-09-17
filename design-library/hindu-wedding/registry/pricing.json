@@ -1,11 +1,19 @@
 {
-  "version": "1.0.0",
-  "status": "PENDING_OWNER_DECISION",
-  "currency": null,
-  "note": "Existing self-serve USD prices in src/lib/tiers.ts are not changed by this custom-invitation registry.",
+  "version": "1.1.0",
+  "status": "APPROVED_OWNER_DECISION",
+  "effectiveDate": "2026-09-17",
+  "note": "Custom-invitation pricing only. Existing self-serve prices in src/lib/tiers.ts remain unchanged.",
+  "regionalPolicy": {
+    "billingCountryDeterminesRegion": true,
+    "currencyConversionOnly": false,
+    "purchasingPowerConsidered": true,
+    "manualReviewAllowed": true,
+    "antiAbuseReviewAllowed": true
+  },
   "products": {
     "fixedTemplates": {
       "pricingMode": "FIXED",
+      "status": "PENDING_PER_TEMPLATE_COMMERCIAL_DECISION",
       "prices": [
         {
           "templateId": "H01",
@@ -59,42 +67,94 @@
     },
     "customInvitations": {
       "pricingMode": "TIER_PLUS_ACTIVE_ADDITIONS",
-      "tiers": [
+      "regionalPriceGroups": [
         {
-          "tier": "BRONZE",
-          "basePrice": null,
-          "currency": null,
-          "decision": "PENDING_OWNER_DECISION"
+          "id": "MAURITIUS",
+          "billingCountries": [
+            "MU"
+          ],
+          "currency": "MUR",
+          "status": "APPROVED",
+          "tiers": {
+            "BRONZE": 990,
+            "SILVER": 2490,
+            "GOLD": 3990,
+            "PLATINUM": 6490
+          }
         },
         {
-          "tier": "SILVER",
-          "basePrice": null,
-          "currency": null,
-          "decision": "PENDING_OWNER_DECISION"
+          "id": "AFFORDABLE_INTERNATIONAL",
+          "billingCountries": [],
+          "currency": "USD",
+          "status": "POLICY_DEFINED_PRICES_PENDING",
+          "selectionBasis": "Owner-approved country grouping using local purchasing power, not exchange rate alone.",
+          "tiers": null
         },
         {
-          "tier": "GOLD",
-          "basePrice": null,
-          "currency": null,
-          "decision": "PENDING_OWNER_DECISION"
+          "id": "STANDARD_INTERNATIONAL",
+          "billingCountries": [],
+          "currency": "USD",
+          "status": "APPROVED",
+          "tiers": {
+            "BRONZE": 59,
+            "SILVER": 95,
+            "GOLD": 139,
+            "PLATINUM": 209
+          }
         },
         {
-          "tier": "PLATINUM",
-          "basePrice": null,
-          "currency": null,
-          "decision": "PENDING_OWNER_DECISION"
+          "id": "HIGHER_INCOME_MARKETS",
+          "billingCountries": [],
+          "currency": "USD",
+          "status": "POLICY_DEFINED_PRICES_PENDING",
+          "selectionBasis": "Owner-approved higher-income country grouping.",
+          "tiers": null
         }
       ],
-      "classifications": [
-        "INCLUDED",
-        "ENHANCED",
-        "PREMIUM",
-        "BESPOKE"
-      ],
-      "bespokeRequiresQuote": true,
+      "addOns": {
+        "MAURITIUS": {
+          "currency": "MUR",
+          "INCLUDED": {
+            "min": 0,
+            "max": 0
+          },
+          "ENHANCED": {
+            "min": 75,
+            "max": 150
+          },
+          "PREMIUM": {
+            "min": 200,
+            "max": 400
+          },
+          "BESPOKE": {
+            "quotationRequired": true
+          }
+        },
+        "INTERNATIONAL": {
+          "currency": "USD",
+          "INCLUDED": {
+            "min": 0,
+            "max": 0
+          },
+          "ENHANCED": {
+            "min": 2,
+            "max": 5
+          },
+          "PREMIUM": {
+            "min": 8,
+            "max": 16
+          },
+          "BESPOKE": {
+            "quotationRequired": true
+          }
+        }
+      },
       "browsingAddsCharge": false,
       "replacementRemovesPriorCharge": true,
-      "higherTierRecommendation": true
+      "chargeOnlyActiveSelection": true,
+      "bespokeRequiresQuote": true,
+      "higherTierRecommendation": true,
+      "recommendationRule": "When the active tier plus selected add-ons costs more than the next tier offering the same features, recommend the next tier without changing it automatically."
     }
   }
 }

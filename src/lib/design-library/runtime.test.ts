@@ -4,6 +4,8 @@ import templates from "../../../design-library/hindu-wedding/registry/templates.
 import mappings from "../../../design-library/hindu-wedding/registry/survey-mapping.json";
 import placements from "../../../design-library/hindu-wedding/registry/placement-rules.json";
 import rules from "../../../design-library/hindu-wedding/registry/compatibility-rules.json";
+import pricing from "../../../design-library/hindu-wedding/registry/pricing.json";
+import typography from "../../../design-library/hindu-wedding/registry/typography.json";
 import { calculateAdjustments, recommendTier, replaceSingleChoice } from "./runtime";
 import type { DesignComponent, PreviewState } from "./types";
 
@@ -46,4 +48,14 @@ describe("Hindu wedding design library", () => {
     expect(inventory.every((c) => c.usageModel === "TEMPLATE_DECLARED_SLOT_ONLY" && c.executableContentAllowed === false)).toBe(true);
     expect(templates.every((t: { renderingModel: string; documentPackageStatus: string }) => t.renderingModel === "TRUSTED_HTML_DOCUMENT_PACKAGE" && t.documentPackageStatus === "NOT_IMPLEMENTED")).toBe(true);
   });
+  it("records the approved Mauritius and international pricing decisions", () => {
+    const custom = pricing.products.customInvitations;
+    expect(custom.regionalPriceGroups.find((group) => group.id === "MAURITIUS")?.tiers).toEqual({ BRONZE: 990, SILVER: 2490, GOLD: 3990, PLATINUM: 6490 });
+    expect(custom.regionalPriceGroups.find((group) => group.id === "STANDARD_INTERNATIONAL")?.tiers).toEqual({ BRONZE: 59, SILVER: 95, GOLD: 139, PLATINUM: 209 });
+  });
+  it("keeps owner-selected fonts blocked until licensing is verified", () => {
+    expect(typography.map((font) => font.name)).toEqual(["Mozart Script", "Slight", "Ms Claudy", "Ecatherina", "Modern Symphony"]);
+    expect(typography.every((font) => font.productionEligible === false && font.licenceStatus === "TO_VERIFY")).toBe(true);
+  });
+
 });

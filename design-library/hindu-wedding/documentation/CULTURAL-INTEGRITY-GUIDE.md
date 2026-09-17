@@ -1,7 +1,18 @@
 # Cultural Integrity Guide
 
-Hindu wedding practices vary by family, region and community. This library must not present a North Indian, South Indian, Tamil, Marathi, Gujarati, Bengali, Mauritian Hindu or other regional convention as universal. Ask for client intent and request human review for sensitive or unfamiliar combinations.
+The first supported market is specifically Mauritian Hindu weddings. The survey must allow:
 
-Ganesha and Om are optional principal sacred images, not background texture. Never crop, obscure, fade into decoration, place beneath feet or controls, or remove their registered clear space. A client may choose no sacred imagery.
+- Mauritian Hindu
+- Mauritian Tamil Hindu
+- Mixed Hindu traditions
+- Not sure
+- Let Enveloped advise me
+- No sacred imagery
 
-Kalash artwork must show a physically coherent vessel, coconut and mango leaves. Rangoli, lamps, offerings and banana plants remain grounded; hanging bells and garlands need visible support. Do not combine unrelated ritual objects merely for density. Distinguish sacred, ceremonial and decorative records, and review language and script accuracy with a competent human before approval.
+Mixed, uncertain and advisory selections require human review. “No sacred imagery” is a complete, respected design path and must not be treated as an error or lower-value invitation.
+
+Mauritian practice is not universal. Family and temple traditions vary, and future North Indian, South Indian, Tamil, Marathi, Gujarati, Bengali and other international collections require suitable cultural review before release.
+
+Ganesha and Om are optional principal sacred images, not background textures. Never crop, obscure, fade into decoration, place beneath feet or controls, or remove their registered clear space.
+
+Kalash artwork must be physically coherent. Rangoli, lamps, offerings and banana plants remain grounded; hanging bells and garlands require visible support. Do not combine unrelated ritual objects merely for visual density. Review all language, script, blessing and unfamiliar ceremonial combinations with a competent human before approval.

@@ -150,7 +150,46 @@
       "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
     },
     "clientExplanation": "Main visual style: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
-    "adminExplanation": "Store visual data at design.templateId; update the live preview."
+    "adminExplanation": "Store visual data at design.templateId; update the live preview.",
+    "initialCulturalMarket": "MAURITIAN_HINDU_WEDDINGS",
+    "traditionProfile": {
+      "questionId": "hw-05-family-tradition",
+      "required": true,
+      "selectionMode": "SINGLE",
+      "dataDestination": "design.culturalProfile",
+      "options": [
+        {
+          "id": "MAURITIAN_HINDU",
+          "label": "Mauritian Hindu"
+        },
+        {
+          "id": "MAURITIAN_TAMIL_HINDU",
+          "label": "Mauritian Tamil Hindu"
+        },
+        {
+          "id": "MIXED_HINDU_TRADITIONS",
+          "label": "Mixed Hindu traditions"
+        },
+        {
+          "id": "NOT_SURE",
+          "label": "Not sure"
+        },
+        {
+          "id": "LET_ENVELOPED_ADVISE",
+          "label": "Let Enveloped advise me"
+        },
+        {
+          "id": "NO_SACRED_IMAGERY",
+          "label": "No sacred imagery"
+        }
+      ],
+      "humanReviewRequiredFor": [
+        "MIXED_HINDU_TRADITIONS",
+        "NOT_SURE",
+        "LET_ENVELOPED_ADVISE"
+      ],
+      "noSacredImageryOption": "NO_SACRED_IMAGERY"
+    }
   },
   {
     "id": "SURVEY-06",
