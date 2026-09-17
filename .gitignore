@@ -40,3 +40,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# html invitation generator — rendered fixture output for local review
+/generator-output/
+
+# html invitation generator — owner-supplied source PNGs duplicated
+# verbatim under owner-input/ during handoff; the canonical, tracked
+# copies live in src/lib/html-templates/packages/timeless-editorial-v2/
+# assets/ (verified byte-identical before this rule was added). The
+# handoff docs (README.md, CLAUDE-HANDOFF.md) in the same directory
+# are not covered by this pattern and stay tracked.
+owner-input/**/*.png
