@@ -1,102 +1,102 @@
 [
   {
     "componentId": "HW-BG-001",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-001-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-002",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-002-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-003",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-003-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-004",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-004-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-005",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-005-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-006",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-006-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-007",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-007-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-008",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-008-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-009",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-009-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-010",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-010-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-BG-011",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-011-family-comparison.png",
+    "reviewer": "OWNER",
+    "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-001",

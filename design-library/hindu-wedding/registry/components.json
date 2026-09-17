@@ -1,23 +1,22 @@
 [
   {
     "id": "HW-BG-001",
-    "name": "Handmade Ivory Cotton Paper",
-    "shortDescription": "Handmade Ivory Cotton Paper for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed handmade ivory cotton paper asset with clean edges and slot-safe composition.",
+    "name": "Ivory Whisper",
+    "shortDescription": "Ivory Whisper is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "warm ivory handmade paper; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
     "subcategory": "paper-textures",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-001-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-001-pale-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -61,37 +60,56 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Handmade Ivory Cotton Paper decorative option.",
+    "altText": "Ivory Whisper decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Ivory Whisper",
+    "paletteDescription": "warm ivory handmade paper",
+    "dominantColours": [
+      "ivory",
+      "cream",
+      "parchment beige"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "antique gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "PALE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-002",
-    "name": "Warm Cream Parchment",
-    "shortDescription": "Warm Cream Parchment for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed warm cream parchment asset with clean edges and slot-safe composition.",
+    "name": "Champagne Parchment",
+    "shortDescription": "Champagne Parchment is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "champagne parchment with softened aged edges; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
     "subcategory": "paper-textures",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-002-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-002-subtle-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -135,37 +153,57 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Warm Cream Parchment decorative option.",
+    "altText": "Champagne Parchment decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Champagne Parchment",
+    "paletteDescription": "champagne parchment with softened aged edges",
+    "dominantColours": [
+      "cream",
+      "champagne",
+      "honey",
+      "warm umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "burgundy",
+      "deep bronze"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "SUBTLE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-003",
-    "name": "Blush Watercolour Paper",
-    "shortDescription": "Blush Watercolour Paper for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed blush watercolour paper asset with clean edges and slot-safe composition.",
+    "name": "Blush Petal Wash",
+    "shortDescription": "Blush Petal Wash is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "diffused blush watercolour wash; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
-    "subcategory": "paper-textures",
+    "subcategory": "colour-washes",
     "designFamily": "GARDEN",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-003-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-003-pale-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -199,44 +237,65 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "SILVER",
+    "pricingClassification": "ENHANCED",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Blush Watercolour Paper decorative option.",
+    "altText": "Blush Petal Wash decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Blush Petal Wash",
+    "paletteDescription": "diffused blush watercolour wash",
+    "dominantColours": [
+      "pearl",
+      "blush pink",
+      "dusty rose",
+      "plum"
+    ],
+    "recommendedTextColours": [
+      "plum",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "PALE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-004",
-    "name": "Sage Green Handmade Paper",
-    "shortDescription": "Sage Green Handmade Paper for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed sage green handmade paper asset with clean edges and slot-safe composition.",
+    "name": "Sage Serenity",
+    "shortDescription": "Sage Serenity is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "quiet sage mineral-paper texture; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
     "subcategory": "paper-textures",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-004-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-004-subtle-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -280,37 +339,58 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Sage Green Handmade Paper decorative option.",
+    "altText": "Sage Serenity decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Sage Serenity",
+    "paletteDescription": "quiet sage mineral-paper texture",
+    "dominantColours": [
+      "mist green",
+      "sage",
+      "olive",
+      "forest"
+    ],
+    "recommendedTextColours": [
+      "forest",
+      "charcoal",
+      "ivory",
+      "pale gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "SUBTLE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-005",
-    "name": "Burgundy Velvet Field",
-    "shortDescription": "Burgundy Velvet Field for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed burgundy velvet field asset with clean edges and slot-safe composition.",
+    "name": "Ruby Velvet",
+    "shortDescription": "Ruby Velvet is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "matte ruby velvet with restrained tonal depth; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
     "subcategory": "paper-textures",
     "designFamily": "ROYAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-005-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-005-deep-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -344,44 +424,64 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "SILVER",
+    "pricingClassification": "ENHANCED",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Burgundy Velvet Field decorative option.",
+    "altText": "Ruby Velvet decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Ruby Velvet",
+    "paletteDescription": "matte ruby velvet with restrained tonal depth",
+    "dominantColours": [
+      "rose",
+      "ruby",
+      "garnet",
+      "oxblood"
+    ],
+    "recommendedTextColours": [
+      "burgundy",
+      "ivory",
+      "champagne gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "DEEP",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-006",
-    "name": "Sandstone Temple Texture",
-    "shortDescription": "Sandstone Temple Texture for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed sandstone temple texture asset with clean edges and slot-safe composition.",
+    "name": "Gilded Sandstone",
+    "shortDescription": "Gilded Sandstone is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "fine sandstone and mineral plaster; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
     "subcategory": "paper-textures",
     "designFamily": "TEMPLE",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-006-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-006-subtle-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -417,44 +517,65 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "GOLD",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Sandstone Temple Texture decorative option.",
+    "altText": "Gilded Sandstone decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Gilded Sandstone",
+    "paletteDescription": "fine sandstone and mineral plaster",
+    "dominantColours": [
+      "ivory",
+      "sandstone",
+      "ochre",
+      "dark umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "antique gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "SUBTLE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-007",
-    "name": "Teal Royal Background",
-    "shortDescription": "Teal Royal Background for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed teal royal background asset with clean edges and slot-safe composition.",
+    "name": "Peacock Teal",
+    "shortDescription": "Peacock Teal is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "matte paper-textile teal field; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
     "subcategory": "paper-textures",
     "designFamily": "ROYAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-007-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-007-deep-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -488,44 +609,64 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "SILVER",
+    "pricingClassification": "ENHANCED",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Teal Royal Background decorative option.",
+    "altText": "Peacock Teal decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Peacock Teal",
+    "paletteDescription": "matte paper-textile teal field",
+    "dominantColours": [
+      "aqua mist",
+      "teal",
+      "peacock",
+      "midnight teal"
+    ],
+    "recommendedTextColours": [
+      "deep teal",
+      "ivory",
+      "champagne gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "DEEP",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-008",
-    "name": "Dark Cinematic Temple Interior",
-    "shortDescription": "Dark Cinematic Temple Interior for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed dark cinematic temple interior asset with clean edges and slot-safe composition.",
+    "name": "Temple Ember",
+    "shortDescription": "Temple Ember is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "smoky amber illumination and ember atmosphere; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
-    "subcategory": "paper-textures",
+    "subcategory": "environmental-scenes",
     "designFamily": "TEMPLE",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-008-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-008-dark-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -561,44 +702,64 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "PLATINUM",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Dark Cinematic Temple Interior decorative option.",
+    "altText": "Temple Ember decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Temple Ember",
+    "paletteDescription": "smoky amber illumination and ember atmosphere",
+    "dominantColours": [
+      "warm cream",
+      "amber",
+      "ember orange",
+      "soot brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "ivory",
+      "pale gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "DARK",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-009",
-    "name": "Gold Central Glow",
-    "shortDescription": "Gold Central Glow for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed gold central glow asset with clean edges and slot-safe composition.",
+    "name": "Golden Veil",
+    "shortDescription": "Golden Veil is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "luminous translucent gold veils; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
-    "subcategory": "paper-textures",
+    "subcategory": "colour-washes",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-009-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-009-pale-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -635,44 +796,65 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "PLATINUM",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Gold Central Glow decorative option.",
+    "altText": "Golden Veil decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Golden Veil",
+    "paletteDescription": "luminous translucent gold veils",
+    "dominantColours": [
+      "pearl",
+      "champagne",
+      "burnished gold",
+      "black-brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "metallic gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "PALE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-010",
-    "name": "Blush Atmospheric Wash",
-    "shortDescription": "Blush Atmospheric Wash for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed blush atmospheric wash asset with clean edges and slot-safe composition.",
+    "name": "Rosewater Cloud",
+    "shortDescription": "Rosewater Cloud is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "rosewater cloud wash with mineral blooms; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
-    "subcategory": "paper-textures",
+    "subcategory": "colour-washes",
     "designFamily": "GARDEN",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-010-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-010-pale-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -706,44 +888,65 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "GOLD",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Blush Atmospheric Wash decorative option.",
+    "altText": "Rosewater Cloud decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Rosewater Cloud",
+    "paletteDescription": "rosewater cloud wash with mineral blooms",
+    "dominantColours": [
+      "pearl",
+      "peach",
+      "rose",
+      "aubergine"
+    ],
+    "recommendedTextColours": [
+      "aubergine",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "PALE",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-BG-011",
-    "name": "Warm Amber Vignette",
-    "shortDescription": "Warm Amber Vignette for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed warm amber vignette asset with clean edges and slot-safe composition.",
+    "name": "Amber Reverie",
+    "shortDescription": "Amber Reverie is an Owner-approved reusable background family with four art-directed colour moods.",
+    "internalProductionDescription": "soft-focus amber glow on smooth atmospheric paper; preserve a clean central invitation-content area across every mood.",
     "category": "backgrounds",
-    "subcategory": "paper-textures",
+    "subcategory": "colour-washes",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "FULL_BACKGROUND",
     "intendedOutputFormat": [
-      "WEBP",
-      "AVIF"
+      "WEBP"
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011",
+    "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-011-family-comparison.png",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-011-dark-v1-option-card.webp",
     "layerNumber": 0,
     "slot": "full-background",
     "anchor": "CENTER",
@@ -780,24 +983,46 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "background",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "GOLD",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Warm Amber Vignette decorative option.",
+    "altText": "Amber Reverie decorative background family with a clear central invitation area.",
     "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    "provenance": "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved all four colour moods after contact-sheet review.",
+    "publicFamilyName": "Amber Reverie",
+    "paletteDescription": "soft-focus amber glow on smooth atmospheric paper",
+    "dominantColours": [
+      "cream",
+      "honey",
+      "amber",
+      "burnt umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "champagne gold"
+    ],
+    "colourMoodValues": [
+      "PALE",
+      "SUBTLE",
+      "DEEP",
+      "DARK"
+    ],
+    "defaultColourMood": "DARK",
+    "billingBehavior": "Browsing colourways is free; only the active selected component or applicable tier is charged."
   },
   {
     "id": "HW-ARCH-001",
@@ -869,8 +1094,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -943,8 +1168,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1016,8 +1241,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1089,8 +1314,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1162,8 +1387,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1233,8 +1458,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1307,8 +1532,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1380,8 +1605,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1452,8 +1677,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1524,8 +1749,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1597,8 +1822,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1670,8 +1895,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1747,8 +1972,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1824,8 +2049,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1901,8 +2126,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -1978,8 +2203,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2055,8 +2280,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2132,8 +2357,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2205,8 +2430,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2282,8 +2507,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2353,8 +2578,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2425,8 +2650,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2502,8 +2727,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2579,8 +2804,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2656,8 +2881,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2733,8 +2958,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2807,8 +3032,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2878,8 +3103,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -2949,8 +3174,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3023,8 +3248,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3094,8 +3319,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3165,8 +3390,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3238,8 +3463,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3312,8 +3537,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3386,8 +3611,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3460,8 +3685,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3534,8 +3759,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3608,8 +3833,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3680,8 +3905,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3754,8 +3979,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3828,8 +4053,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3899,8 +4124,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -3970,8 +4195,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4044,8 +4269,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4115,8 +4340,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4189,8 +4414,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4263,8 +4488,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4337,8 +4562,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4410,8 +4635,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4484,8 +4709,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4557,8 +4782,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4631,8 +4856,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4705,8 +4930,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4780,8 +5005,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4851,8 +5076,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4925,8 +5150,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -4999,8 +5224,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5072,8 +5297,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5146,8 +5371,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5218,8 +5443,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5290,8 +5515,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5361,8 +5586,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5435,8 +5660,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5509,8 +5734,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5583,8 +5808,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5657,8 +5882,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5731,8 +5956,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5805,8 +6030,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5879,8 +6104,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -5953,8 +6178,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6027,8 +6252,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6101,8 +6326,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6175,8 +6400,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6249,8 +6474,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6323,8 +6548,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6396,8 +6621,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6470,8 +6695,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6544,8 +6769,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6618,8 +6843,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6692,8 +6917,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6766,8 +6991,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6843,8 +7068,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6919,8 +7144,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -6996,8 +7221,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7073,8 +7298,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7150,8 +7375,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7227,8 +7452,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7304,8 +7529,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7379,8 +7604,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7455,8 +7680,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7532,8 +7757,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7609,8 +7834,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7685,8 +7910,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7761,8 +7986,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7837,8 +8062,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7913,8 +8138,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -7989,8 +8214,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8065,8 +8290,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8141,8 +8366,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8217,8 +8442,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8293,8 +8518,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8369,8 +8594,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8445,8 +8670,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8521,8 +8746,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8597,8 +8822,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8668,8 +8893,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8741,8 +8966,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8812,8 +9037,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8886,8 +9111,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -8960,8 +9185,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -9031,8 +9256,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -9104,8 +9329,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -9175,8 +9400,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -9249,8 +9474,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -9326,8 +9551,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   },
   {
@@ -9403,8 +9628,8 @@
     "approvalStatus": "PLANNED",
     "generationStatus": "NOT_STARTED",
     "version": "1.0.0",
-    "createdDate": "2026-09-17",
-    "updatedDate": "2026-09-17",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
   }
 ]

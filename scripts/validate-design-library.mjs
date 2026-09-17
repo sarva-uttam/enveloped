@@ -13,6 +13,7 @@ const placements = read("placement-rules.json");
 const rules = read("compatibility-rules.json");
 const pricing = read("pricing.json");
 const typography = read("typography.json");
+const backgroundVariants = read("background-families.json");
 const failures = [];
 const validTiers = new Set(["BRONZE", "SILVER", "GOLD", "PLATINUM"]);
 const validPricing = new Set(["INCLUDED", "ENHANCED", "PREMIUM", "BESPOKE"]);
@@ -24,6 +25,7 @@ function check(condition, message) { if (!condition) failures.push(message); }
 function unique(records, field, label) { const values = records.map((r) => r[field]); check(new Set(values).size === values.length, `${label} contains duplicate ${field} values`); }
 
 for (const [records, field, label] of [[components, "id", "components"], [templates, "id", "templates"], [palettes, "id", "palettes"], [animations, "id", "animations"], [music, "id", "music"], [mappings, "questionId", "survey mappings"], [placements, "id", "placements"], [rules, "id", "compatibility rules"]]) unique(records, field, label);
+unique(backgroundVariants, "variantId", "background variants");
 
 for (const c of components) {
   for (const field of ["id", "name", "category", "subcategory", "slot", "tier", "pricingClassification", "approvalStatus", "generationStatus", "altText", "provenance"]) check(Boolean(c[field]), `${c.id ?? "unknown component"} missing ${field}`);
@@ -63,6 +65,17 @@ check(typography.length === 5 && typography.every((font) => font.productionEligi
 check(mappings.find((mapping) => mapping.stepId === "05")?.traditionProfile?.options?.some((option) => option.id === "NO_SACRED_IMAGERY"), "survey must provide a no-sacred-imagery cultural choice");
 check(rules.some((r) => r.id === "CR-MOTION-001" && r.maxSelections === 3), "ambient animation maximum rule is missing");
 check(rules.some((r) => r.id === "CR-FLORA-001" && r.maxSelections === 3), "floral maximum rule is missing");
+check(backgroundVariants.length === 44, "exactly 44 approved background colourways are required");
+for (const variant of backgroundVariants) {
+  check(componentIds.has(variant.parentBackgroundId), `${variant.variantId} has an unknown parent background`);
+  check(["PALE", "SUBTLE", "DEEP", "DARK"].includes(variant.colourMood), `${variant.variantId} has an invalid colour mood`);
+  check(validTiers.has(variant.minimumTier), `${variant.variantId} has an invalid minimum tier`);
+  check(variant.reviewStatus === "APPROVED", `${variant.variantId} is not Owner-approved`);
+  check(fs.existsSync(path.resolve(variant.sourceFilePath)), `${variant.variantId} source file is missing`);
+  check(fs.existsSync(path.resolve(variant.previewFilePath)), `${variant.variantId} preview file is missing`);
+  check(variant.technical?.width === 1000 && variant.technical?.height === 1778, `${variant.variantId} has invalid delivery dimensions`);
+  check(variant.technical?.surveyPreviewWidth === 540 && variant.technical?.surveyPreviewHeight === 960, `${variant.variantId} has invalid survey dimensions`);
+}
 
 const counts = (records, key) => Object.fromEntries([...new Set(records.map((r) => r[key]))].sort().map((value) => [value, records.filter((r) => r[key] === value).length]));
 const report = { templates: templates.length, plannedComponents: components.length, byCategory: counts(components, "category"), byTier: counts(components, "tier"), byGenerationStatus: counts(components, "generationStatus"), byApprovalStatus: counts(components, "approvalStatus"), surveySteps: new Set(mappings.map((m) => m.stepId)).size, compatibilityRules: rules.length, missingAssets: components.filter((c) => !c.sourceFilePath).length, missingPreviews: components.filter((c) => !c.previewFilePath).length, missingProvenance: components.filter((c) => !c.provenance).length };

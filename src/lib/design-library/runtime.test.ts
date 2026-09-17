@@ -6,6 +6,7 @@ import placements from "../../../design-library/hindu-wedding/registry/placement
 import rules from "../../../design-library/hindu-wedding/registry/compatibility-rules.json";
 import pricing from "../../../design-library/hindu-wedding/registry/pricing.json";
 import typography from "../../../design-library/hindu-wedding/registry/typography.json";
+import backgroundVariants from "../../../design-library/hindu-wedding/registry/background-families.json";
 import { calculateAdjustments, recommendTier, replaceSingleChoice } from "./runtime";
 import type { DesignComponent, PreviewState } from "./types";
 
@@ -56,6 +57,12 @@ describe("Hindu wedding design library", () => {
   it("keeps owner-selected fonts blocked until licensing is verified", () => {
     expect(typography.map((font) => font.name)).toEqual(["Mozart Script", "Slight", "Ms Claudy", "Ecatherina", "Modern Symphony"]);
     expect(typography.every((font) => font.productionEligible === false && font.licenceStatus === "TO_VERIFY")).toBe(true);
+  });
+  it("registers all Owner-approved background families and colour moods", () => {
+    expect(backgroundVariants).toHaveLength(44);
+    expect(new Set(backgroundVariants.map((variant) => variant.parentBackgroundId)).size).toBe(11);
+    expect(new Set(backgroundVariants.map((variant) => variant.colourMood))).toEqual(new Set(["PALE", "SUBTLE", "DEEP", "DARK"]));
+    expect(backgroundVariants.every((variant) => variant.reviewStatus === "APPROVED")).toBe(true);
   });
 
 });
