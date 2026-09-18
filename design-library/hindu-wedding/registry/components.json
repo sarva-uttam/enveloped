@@ -2955,9 +2955,9 @@
   },
   {
     "id": "HW-GANESHA-001",
-    "name": "Minimal Gold Line Ganesha",
-    "shortDescription": "Minimal Gold Line Ganesha for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed minimal gold line ganesha asset with clean edges and slot-safe composition.",
+    "name": "Aureate Line",
+    "shortDescription": "Aureate Line: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in satin antique gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Minimal four-armed seated Ganesha in bold refined satin antique-gold outline, very few assured lines, modern luxury stationery; no surrounding decoration. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences. STRICT MEDIUM: sparse flat GOLD OUTLINE ONLY. Transparent empty interiors throughout. Not a shaded statue, not filled gold, not a painting, not a 3D render. Use clean substantial uniform strokes, no decorative detailing. Simple entire four-armed seated silhouette. No ornaments other than simple crown. Header emblem, not full ceremonial portrait.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -2969,21 +2969,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-001-v2-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-001-v2-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-001-v2-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3018,23 +3018,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Minimal Gold Line Ganesha, presented respectfully at the top centre of the invitation.",
+    "altText": "Aureate Line: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in satin antique gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Aureate Line",
+    "style": "line art",
+    "finish": "satin antique gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-001-v2-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-001-v2-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-001-v2-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Minimal four-armed seated Ganesha in bold refined satin antique-gold outline, very few assured lines, modern luxury stationery; no surrounding decoration. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences. STRICT MEDIUM: sparse flat GOLD OUTLINE ONLY. Transparent empty interiors throughout. Not a shaded statue, not filled gold, not a painting, not a 3D render. Use clean substantial uniform strokes, no decorative detailing. Simple entire four-armed seated silhouette. No ornaments other than simple crown. Header emblem, not full ceremonial portrait.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "satin antique gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 147240,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        167,
+        56,
+        1116,
+        1187
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "8e2d525eea2d4224070eb0f28147b000b2a469580c1d81b9e10e665feae7fbaa",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        83,
+        26,
+        572,
+        608
+      ],
+      "masterSha256": "24df500f23bf3679488996b8f077345af097c6c578eacd049ee2c5d5bc84db69",
+      "deliverySha256": "7033b851f4a6526b9e122e882bbf04f40a8f32b8ab504a8dc3930e4ee3d92a1b"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-002",
-    "name": "Classic Gold Line Ganesha",
-    "shortDescription": "Classic Gold Line Ganesha for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed classic gold line ganesha asset with clean edges and slot-safe composition.",
+    "name": "Golden Contour",
+    "shortDescription": "Golden Contour: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Classic seated four-armed Ganesha in elegant engraved antique-gold line work; finely articulated crown, ears, dhoti and jewellery but readable at small size; no surrounding wreath. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences. Keep every body interior transparent. Refined engraving-like antique-gold outlines only; no filled metallic statue.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -3046,21 +3132,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-002-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-002-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-002-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3095,23 +3181,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Classic Gold Line Ganesha, presented respectfully at the top centre of the invitation.",
+    "altText": "Golden Contour: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Golden Contour",
+    "style": "engraved line art",
+    "finish": "antique gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-002-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-002-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-002-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Classic seated four-armed Ganesha in elegant engraved antique-gold line work; finely articulated crown, ears, dhoti and jewellery but readable at small size; no surrounding wreath. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences. Keep every body interior transparent. Refined engraving-like antique-gold outlines only; no filled metallic statue.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 203032,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        155,
+        31,
+        1121,
+        1219
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "6636c647205fccce34f293ed229e8c339530d05ab86b21e23f84b9e76a2b0d66",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        77,
+        13,
+        575,
+        625
+      ],
+      "masterSha256": "ff147f3372a9c1ff951d63eae55f157dbd860385a889056f6eb7944d079ce71f",
+      "deliverySha256": "7f0f99a5b2be6ce8ad50dccd62e35d4dac9970169f9ae055934c110dc70b9b82"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-003",
-    "name": "Lotus Gold Line Ganesha",
-    "shortDescription": "Lotus Gold Line Ganesha for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed lotus gold line ganesha asset with clean edges and slot-safe composition.",
+    "name": "Lotus Contour",
+    "shortDescription": "Lotus Contour: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in warm gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Four-armed Ganesha seated on a small clearly defined lotus pedestal, engraved warm gold line illustration, poised compact silhouette; lotus is a supporting pedestal. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences. Engraved gold outlines only, transparent interiors and delicate but readable strokes. Not a filled metallic statue.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -3123,21 +3295,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-003-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-003-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-003-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3172,23 +3344,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Lotus Gold Line Ganesha, presented respectfully at the top centre of the invitation.",
+    "altText": "Lotus Contour: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in warm gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Lotus Contour",
+    "style": "line illustration",
+    "finish": "warm gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-003-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-003-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-003-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Four-armed Ganesha seated on a small clearly defined lotus pedestal, engraved warm gold line illustration, poised compact silhouette; lotus is a supporting pedestal. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences. Engraved gold outlines only, transparent interiors and delicate but readable strokes. Not a filled metallic statue.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "warm gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 184962,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        208,
+        42,
+        1047,
+        1206
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "5f0f3b2016629054a4c38e0c901e5e982ca740a79a476792cb8a3899e254b367",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        104,
+        19,
+        537,
+        618
+      ],
+      "masterSha256": "9b778effb83733129e58fe682853bc04d71a2af37f40f9f6694442287da88b39",
+      "deliverySha256": "7c400c67c3d1c8b37cf28a0b7257489f31fc4444f3d2bf53d0a9e31d9b2bb263"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-004",
-    "name": "Floral Ganesha Emblem",
-    "shortDescription": "Floral Ganesha Emblem for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed floral ganesha emblem asset with clean edges and slot-safe composition.",
+    "name": "Petal Halo",
+    "shortDescription": "Petal Halo: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, dusty blush, sage.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Seated four-armed Ganesha as a delicate antique-gold line emblem, framed by a modest airy wreath of five small dusty-blush blossoms with subtle muted sage leaves; wreath is strictly peripheral and never crosses the figure. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -3200,21 +3458,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-004-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-004-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-004-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3249,23 +3507,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Floral Ganesha Emblem, presented respectfully at the top centre of the invitation.",
+    "altText": "Petal Halo: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, dusty blush, sage.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Petal Halo",
+    "style": "floral illustration",
+    "finish": "antique gold, dusty blush, sage",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-004-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-004-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-004-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Seated four-armed Ganesha as a delicate antique-gold line emblem, framed by a modest airy wreath of five small dusty-blush blossoms with subtle muted sage leaves; wreath is strictly peripheral and never crosses the figure. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold, dusty blush, sage"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 149496,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        41,
+        48,
+        1214,
+        1200
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "48e5906c1e774c6702471599e29d87d3153bc15b7928a43174c388ba9ab3edcc",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        19,
+        22,
+        621,
+        614
+      ],
+      "masterSha256": "b03f5b736fe4d8ee76bd187b07cf270cbda0dc3fe0e5b75a406789836ab6ea65",
+      "deliverySha256": "6e8695e6dcc59bc689396f4aaaf1e21e0bfcfccf5bf44e4b1460d8978efd73df"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-005",
-    "name": "Traditional Illustrated Ganesha",
-    "shortDescription": "Traditional Illustrated Ganesha for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed traditional illustrated ganesha asset with clean edges and slot-safe composition.",
+    "name": "Vermilion Atelier",
+    "shortDescription": "Vermilion Atelier: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in terracotta, saffron, burgundy, antique gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Traditional miniature-inspired original four-armed seated Ganesha, warm terracotta-red skin, muted saffron dhoti, burgundy sash, finely rendered antique-gold crown and ornaments, small lotus seat. Painterly fine illustration, calm expressive face, no backdrop. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -3277,21 +3621,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-005-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-005-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-005-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3326,23 +3670,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Traditional Illustrated Ganesha, presented respectfully at the top centre of the invitation.",
+    "altText": "Vermilion Atelier: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in terracotta, saffron, burgundy, antique gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Vermilion Atelier",
+    "style": "traditional illustration",
+    "finish": "terracotta, saffron, burgundy, antique gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-005-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-005-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-005-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Traditional miniature-inspired original four-armed seated Ganesha, warm terracotta-red skin, muted saffron dhoti, burgundy sash, finely rendered antique-gold crown and ornaments, small lotus seat. Painterly fine illustration, calm expressive face, no backdrop. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "terracotta, saffron, burgundy, antique gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 95840,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        198,
+        35,
+        1063,
+        1224
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "cb50edd9aa2c0315756a7acd4de0908b3893f01b0ad74316f12d38ff7240825a",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        99,
+        15,
+        545,
+        627
+      ],
+      "masterSha256": "d74a226e6d205c71a0cf5850eb3a89a8e4dd20d6465962b4302473f9bf457744",
+      "deliverySha256": "faf2dd86c04c2ddd2c932f0fffd8df106194b1a30a0cf614b5a18159ed12bc7d"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-006",
-    "name": "Ornamental Ganesha Crest",
-    "shortDescription": "Ornamental Ganesha Crest for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed ornamental ganesha crest asset with clean edges and slot-safe composition.",
+    "name": "Filigree Crest",
+    "shortDescription": "Filigree Crest: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in champagne gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Original four-armed seated Ganesha in lightly embossed champagne-gold illustration framed by airy symmetrical ornamental filigree curves; restrained luxury and full recognition, no heraldic shield. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -3354,21 +3784,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-006-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-006-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-006-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3403,23 +3833,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Ornamental Ganesha Crest, presented respectfully at the top centre of the invitation.",
+    "altText": "Filigree Crest: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in champagne gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Filigree Crest",
+    "style": "ornamental relief",
+    "finish": "champagne gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-006-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-006-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-006-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Original four-armed seated Ganesha in lightly embossed champagne-gold illustration framed by airy symmetrical ornamental filigree curves; restrained luxury and full recognition, no heraldic shield. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "champagne gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 160812,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        52,
+        24,
+        1204,
+        1240
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "424e8cdad120a73dbe9e018e9e023cd30d9505461c5bfecd72e3a1b399f4a111",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        25,
+        10,
+        616,
+        635
+      ],
+      "masterSha256": "ba4d28c4aeb202d7fb6bd44e708a5dc22647a4ad3635233f54bcf7d58ca3f6f1",
+      "deliverySha256": "b110ece5796605314a31a912e19859503a95f6f58d5932ec18fa2b26fd5b068d"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-007",
-    "name": "Temple Ganesha Crest",
-    "shortDescription": "Temple Ganesha Crest for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed temple ganesha crest asset with clean edges and slot-safe composition.",
+    "name": "Chiselled Gold",
+    "shortDescription": "Chiselled Gold: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in aged gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Entire seated four-armed Ganesha as an exquisite frontal low-relief metallic sculptural emblem, softly aged gold with carefully defined facial features and drapery, small integral lotus pedestal; no building or arch. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "TEMPLE",
@@ -3431,21 +3947,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-007-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-007-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-007-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3476,23 +3992,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Temple Ganesha Crest, presented respectfully at the top centre of the invitation.",
+    "altText": "Chiselled Gold: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in aged gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Chiselled Gold",
+    "style": "metallic relief",
+    "finish": "aged gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-007-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-007-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-007-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Entire seated four-armed Ganesha as an exquisite frontal low-relief metallic sculptural emblem, softly aged gold with carefully defined facial features and drapery, small integral lotus pedestal; no building or arch. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "aged gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 119966,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        167,
+        38,
+        1087,
+        1217
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "cae4185854759c929eaea32880e4b3c1cc28f7bc47c2ef576f2c0a4005913c88",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        83,
+        17,
+        557,
+        623
+      ],
+      "masterSha256": "5a9598a728a4b400dc51f7c7e2c34c582c54d25b773b8a78b6cc4d26d76ad2ac",
+      "deliverySha256": "e0ae4fc14a3da6e049243b97df086dfa417579286cc2fdec661df487aded13c5"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-008",
-    "name": "Botanical Ganesha Emblem",
-    "shortDescription": "Botanical Ganesha Emblem for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed botanical ganesha emblem asset with clean edges and slot-safe composition.",
+    "name": "Sage Garland",
+    "shortDescription": "Sage Garland: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, muted sage.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Original four-armed seated Ganesha in dark antique-gold engraved line work, a slim peripheral wreath of natural muted sage leaves; warm sophisticated botanical stationery, no flowers. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "BOTANICAL",
@@ -3504,21 +4106,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-008-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-008-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-008-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3553,23 +4155,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Botanical Ganesha Emblem, presented respectfully at the top centre of the invitation.",
+    "altText": "Sage Garland: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, muted sage.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Sage Garland",
+    "style": "botanical illustration",
+    "finish": "antique gold, muted sage",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-008-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-008-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-008-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Original four-armed seated Ganesha in dark antique-gold engraved line work, a slim peripheral wreath of natural muted sage leaves; warm sophisticated botanical stationery, no flowers. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold, muted sage"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 175942,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        50,
+        54,
+        1204,
+        1202
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "933b5acb1db8834048ada9ae8592e9303ddd0e93422a4f8d8e4d2f0019894ca9",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        24,
+        26,
+        617,
+        616
+      ],
+      "masterSha256": "43bc9d3bb2e772c27ec590c37d404ed3e4bac32d81c9f5cba0b4a7dc98d7438b",
+      "deliverySha256": "6a2634079db5a9987c067346897099da3058346f7841a64b131ebe53601a21e8"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-009",
-    "name": "Royal Antique Gold Ganesha",
-    "shortDescription": "Royal Antique Gold Ganesha for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed royal antique gold ganesha asset with clean edges and slot-safe composition.",
+    "name": "Antique Aureole",
+    "shortDescription": "Antique Aureole: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, restrained garnet.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Entire four-armed seated Ganesha as exquisitely detailed antique-gold bas-relief with restrained garnet accents in crown and cloth, softly burnished edges and rich shadowed engraving; compact complete silhouette, no gold disk behind. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "ROYAL",
@@ -3581,21 +4269,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-009-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-009-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-009-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3624,23 +4312,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Royal Antique Gold Ganesha, presented respectfully at the top centre of the invitation.",
+    "altText": "Antique Aureole: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, restrained garnet.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Antique Aureole",
+    "style": "ceremonial relief",
+    "finish": "antique gold, restrained garnet",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-009-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-009-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-009-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Entire four-armed seated Ganesha as exquisitely detailed antique-gold bas-relief with restrained garnet accents in crown and cloth, softly burnished edges and rich shadowed engraving; compact complete silhouette, no gold disk behind. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold, restrained garnet"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 125652,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        176,
+        19,
+        1084,
+        1231
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "a6c679373ab78be222ae6610a3a051b483497fc815860af9bdccddc54fbd7d60",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        87,
+        8,
+        555,
+        630
+      ],
+      "masterSha256": "e3ed75e60ff2b3f1a1fc8c8b95446e6e2e4721ecdc92c288e3a34be68e141ab4",
+      "deliverySha256": "c915b73e9a858cd40f500d100bf2a37791364d06fb0f222bdd6ff804200686aa"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-GANESHA-010",
-    "name": "Peacock Motif Ganesha Crest",
-    "shortDescription": "Peacock Motif Ganesha Crest for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed peacock motif ganesha crest asset with clean edges and slot-safe composition.",
+    "name": "Peacock Filigree",
+    "shortDescription": "Peacock Filigree: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, muted teal.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Entire seated four-armed Ganesha in antique-gold engraved illustration with two clearly decorative slim peacock-feather accents at the outer edges, muted teal enamel accents, NOT riding a peacock and NOT a named special deity form; feathers never cross or obscure figure. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "ganesha",
     "designFamily": "ROYAL",
@@ -3652,21 +4426,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-ganesha-010-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-ganesha-010-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-ganesha-010-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3696,23 +4470,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Peacock Motif Ganesha Crest, presented respectfully at the top centre of the invitation.",
+    "altText": "Peacock Filigree: seated four-armed Ganesha with a left-curving trunk, goad, noose, raised palm and sweets bowl, in antique gold, muted teal.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Peacock Filigree",
+    "style": "ornamental illustration",
+    "finish": "antique gold, muted teal",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-ganesha-010-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-ganesha-010-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-ganesha-010-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Entire seated four-armed Ganesha in antique-gold engraved illustration with two clearly decorative slim peacock-feather accents at the outer edges, muted teal enamel accents, NOT riding a peacock and NOT a named special deity form; feathers never cross or obscure figure. Intentionally four arms, exactly four separate hands, exactly two folded legs. Elephant head, two calm eyes, two broad intact ears, one long trunk curving to Ganesha's anatomical LEFT (viewer RIGHT), one intact tusk and one shorter broken tusk. Upper anatomical right hand (viewer LEFT) holds a small goad, upper anatomical left (viewer RIGHT) holds a looped noose. Lower anatomical right (viewer LEFT) is raised palm-forward in abhaya with five clean distinct fingers; lower anatomical left (viewer RIGHT) supports a bowl of modaka sweets. Trunk ends above the sweets, does not fuse with hand. Round belly, coherent saffron/gold dhoti folds and simple crown. No companions, no extra figures, no unintended objects, no extra limbs, no mirrored orientation. This is an original illustration of documented common iconography, not a reproduction of any artist's composition. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold, muted teal"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 157282,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        46,
+        31,
+        1208,
+        1229
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "4fc252173ffda4984efa2b0b90dea7b9feb54c019439c8b29ff4398a5d86419a",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        21,
+        13,
+        618,
+        629
+      ],
+      "masterSha256": "2df6584cd55d10f0ff8d0d0ea05a6ee4151b59fee5205983aadc85719de78857",
+      "deliverySha256": "ba3fd66e657202a64d8c57f857b5fef08c8721a5c3845f02af4bcf1d795a9b06"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-SACRED-001",
-    "name": "Minimal Om Symbol",
-    "shortDescription": "Minimal Om Symbol for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed minimal om symbol asset with clean edges and slot-safe composition.",
+    "name": "Quiet Om",
+    "shortDescription": "Quiet Om: a Devanagari-style Om symbol in antique gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One standard upright Devanagari-style Om symbol as registered sacred iconography, correct complete conventional curls with a separate crescent and dot above, refined warm antique-gold strokes, strong readable silhouette, no decorative frame. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "sacred-motifs",
     "designFamily": "BOTANICAL",
@@ -3724,21 +4584,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-sacred-001-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-sacred-001-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-sacred-001-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3773,23 +4633,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Minimal Om Symbol, presented respectfully at the top centre of the invitation.",
+    "altText": "Quiet Om: a Devanagari-style Om symbol in antique gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Quiet Om",
+    "style": "minimal symbol",
+    "finish": "antique gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-sacred-001-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-sacred-001-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-sacred-001-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One standard upright Devanagari-style Om symbol as registered sacred iconography, correct complete conventional curls with a separate crescent and dot above, refined warm antique-gold strokes, strong readable silhouette, no decorative frame. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 73534,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        131,
+        133,
+        1125,
+        1126
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "a4288ea619a4aaba943747be825e5cf876d4aeffbca2398c70573f71e02a9cc7",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        64,
+        66,
+        576,
+        577
+      ],
+      "masterSha256": "8aa6deb46b8eeb4a96f168a6c01ef5757da1929f7d6364b0c0c0530d7bbb21bb",
+      "deliverySha256": "8070e6d04aa565dc79e7cc85b3f0bdee461a8e2728466a161b31ba637f8ed8a6"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-SACRED-002",
-    "name": "Floral Om Symbol",
-    "shortDescription": "Floral Om Symbol for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed floral om symbol asset with clean edges and slot-safe composition.",
+    "name": "Petal Om",
+    "shortDescription": "Petal Om: a Devanagari-style Om symbol in antique gold, dusty blush, sage.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One correct conventional upright Devanagari-style Om sacred symbol, complete curls, separate crescent and dot, in satin antique gold, an airy peripheral wreath of very small dusty-blush blossoms and muted sage leaves; flowers do not intersect symbol. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "sacred-motifs",
     "designFamily": "BOTANICAL",
@@ -3801,21 +4747,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-sacred-002-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-sacred-002-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-sacred-002-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3850,23 +4796,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Floral Om Symbol, presented respectfully at the top centre of the invitation.",
+    "altText": "Petal Om: a Devanagari-style Om symbol in antique gold, dusty blush, sage.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Petal Om",
+    "style": "floral symbol",
+    "finish": "antique gold, dusty blush, sage",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-sacred-002-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-sacred-002-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-sacred-002-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One correct conventional upright Devanagari-style Om sacred symbol, complete curls, separate crescent and dot, in satin antique gold, an airy peripheral wreath of very small dusty-blush blossoms and muted sage leaves; flowers do not intersect symbol. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold, dusty blush, sage"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 143702,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        62,
+        155,
+        1192,
+        1118
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "4d842a6e23067d24a23ad0d4f8fde8429b273ed9f04c87fe15528cccf192623b",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        31,
+        77,
+        611,
+        573
+      ],
+      "masterSha256": "6177111968c44c42028a9d70d464c8c6f15cc64c5eeb83edd94b0f77f7aa494e",
+      "deliverySha256": "c2d019766b6a6eccdc3a7a6514a65ca05e3979c7d42f829879d436d1809313df"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-SACRED-003",
-    "name": "Gold Sacred Motif",
-    "shortDescription": "Gold Sacred Motif for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed gold sacred motif asset with clean edges and slot-safe composition.",
+    "name": "Sculpted Om",
+    "shortDescription": "Sculpted Om: a Devanagari-style Om symbol in champagne gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One correct conventional upright Devanagari-style Om sacred symbol, complete curls, separate crescent and dot, rendered as soft low-relief champagne-gold metal, exquisite engraving with clean legibility, no additional sacred symbols. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "sacred-motifs",
     "designFamily": "BOTANICAL",
@@ -3878,21 +4910,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-sacred-003-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-sacred-003-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-sacred-003-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -3927,23 +4959,109 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Gold Sacred Motif, presented respectfully at the top centre of the invitation.",
+    "altText": "Sculpted Om: a Devanagari-style Om symbol in champagne gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Sculpted Om",
+    "style": "ornamented Om relief",
+    "finish": "champagne gold and ivory",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-sacred-003-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-sacred-003-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-sacred-003-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One correct conventional upright Devanagari-style Om sacred symbol, complete curls, separate crescent and dot, rendered as soft low-relief champagne-gold metal, exquisite engraving with clean legibility, no additional sacred symbols. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "champagne gold and ivory"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 139934,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        34,
+        106,
+        1222,
+        1059
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "699cf7ba351b801f0893c9b95e3e6ef4cdc4a60eb53cf96e4d58e83f208bee8b",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        15,
+        52,
+        626,
+        542
+      ],
+      "masterSha256": "d05a4993229b3f7bb41a9ff4d7877bf8c6196b8a54e0c5bc3fde58c72c1b1449",
+      "deliverySha256": "7256abb1fe2797616b4065a2f0728c3b4db0a62ba2d25da3f96192cf02d27599"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-SACRED-004",
-    "name": "Lotus Mandala Blessing Symbol",
-    "shortDescription": "Lotus Mandala Blessing Symbol for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed lotus mandala blessing symbol asset with clean edges and slot-safe composition.",
+    "name": "Lotus Medallion",
+    "shortDescription": "Lotus Medallion: a lotus-petal rosette in antique gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One restrained symmetrical lotus-petal rosette, two clearly separated concentric rings of elegant antique-gold lotus petals with a simple tiny plain centre; no deity, no Om, no script, no yantra, no triangle, no claims of blessings. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
     "category": "sacred",
     "subcategory": "sacred-motifs",
     "designFamily": "BOTANICAL",
@@ -3955,21 +5073,21 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/sacred/masters/hw-sacred-004-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-sacred-004-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-sacred-004-v1-thumbnail.webp",
     "layerNumber": 5,
     "slot": "sacred-header",
     "anchor": "TOP_CENTER",
-    "defaultWidth": 180,
-    "defaultHeight": 180,
+    "defaultWidth": 170,
+    "defaultHeight": 170,
     "minimumSize": [
       140,
       140
     ],
     "maximumSize": [
-      220,
-      220
+      170,
+      170
     ],
     "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
     "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
@@ -4004,17 +5122,103 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Lotus Mandala Blessing Symbol, presented respectfully at the top centre of the invitation.",
+    "altText": "Lotus Medallion: a lotus-petal rosette in antique gold.",
     "culturalUsageNotes": "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Lotus Medallion",
+    "style": "lotus ornament",
+    "finish": "antique gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/sacred/delivery/hw-sacred-004-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-sacred-004-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-sacred-004-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. One restrained symmetrical lotus-petal rosette, two clearly separated concentric rings of elegant antique-gold lotus petals with a simple tiny plain centre; no deity, no Om, no script, no yantra, no triangle, no claims of blessings. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "CANDIDATE_REQUIRES_FAMILY_AND_CULTURAL_REVIEW",
+      "MAURITIAN_TAMIL_HINDU": "DO_NOT_ASSUME_SCRIPT_OR_FORM_EQUIVALENCE; HUMAN_REVIEW_REQUIRED",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "EXCLUDED"
+    },
+    "permittedFinishes": [
+      "antique gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 100442,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        60,
+        71,
+        1194,
+        1174
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "9ca1d0431c5eb457301df60cc829cab4458ae8b5e302337c4b0fab12c35b8bc9",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        28,
+        34,
+        612,
+        601
+      ],
+      "masterSha256": "d4b009050c8c7d7baaba2fe734db4a28088a90bdc4e44819703d80469c7fdb91",
+      "deliverySha256": "d3296fbb83302e4f56b2610aa6a726713014b03a3e3f547f37fbc87495c35261"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   },
   {
     "id": "HW-FLORAL-001",
@@ -10685,5 +11889,168 @@
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
     "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+  },
+  {
+    "id": "HW-HEADER-001",
+    "name": "Gilded Flourish",
+    "shortDescription": "Gilded Flourish: a non-religious decorative scrollwork flourish in champagne gold.",
+    "internalProductionDescription": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Purely non-religious decorative header: a tiny elegant symmetrical antique-gold scrollwork flourish with two mirrored arabesque curves, subtle champagne-metal finish, no flowers, no leaves, no deity, no religious symbols or sacred geometry; minimal modern luxury stationery ornament. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "category": "typography",
+    "subcategory": "ornaments",
+    "designFamily": "BOTANICAL",
+    "culturalClassification": "DECORATIVE",
+    "assetType": "TRANSPARENT_COMPONENT",
+    "intendedOutputFormat": [
+      "PNG",
+      "WEBP"
+    ],
+    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
+    "executableContentAllowed": false,
+    "sourceFilePath": "design-library/hindu-wedding/components/typography/ornaments/masters/hw-header-001-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/review/sacred-header/option-cards/hw-header-001-v1-1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/review/sacred-header/thumbnails/hw-header-001-v1-thumbnail.webp",
+    "layerNumber": 5,
+    "slot": "sacred-header",
+    "anchor": "TOP_CENTER",
+    "defaultWidth": 170,
+    "defaultHeight": 170,
+    "minimumSize": [
+      140,
+      140
+    ],
+    "maximumSize": [
+      170,
+      170
+    ],
+    "mobilePlacement": "Use sacred-header placement rule on the native 9:16 canvas.",
+    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
+    "zIndex": 50,
+    "safeAreaBehavior": "Never crop; preserve 40-unit clear space; never place under feet, buttons, or low-opacity backgrounds.",
+    "supportedTemplates": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "H05",
+      "H06",
+      "H07",
+      "H08"
+    ],
+    "supportedPalettes": [
+      "PAL-IVORY-GOLD",
+      "PAL-SAGE-IVORY",
+      "PAL-TEMPLE-GOLD"
+    ],
+    "supportedEventTypes": [
+      "wedding-hindu"
+    ],
+    "conflictingComponents": [],
+    "requiredCompanionComponents": [],
+    "maximumSelectionCount": 1,
+    "singleChoiceGroup": "principal-sacred-header",
+    "tier": "BRONZE",
+    "pricingClassification": "INCLUDED",
+    "priceAdjustment": 0,
+    "currency": "CONFIGURED_AT_RUNTIME",
+    "animationAllowed": false,
+    "supportedAnimations": [],
+    "reducedMotionFallback": "Static presentation.",
+    "altText": "Gilded Flourish: a non-religious decorative scrollwork flourish in champagne gold.",
+    "culturalUsageNotes": "Purely non-religious scrollwork; candidate for the no-sacred-imagery design path.",
+    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
+    "licensingSource": "Original generated artwork approved by Owner; recorded reference provenance and cultural limitations retained.",
+    "provenance": "Generated specifically for Enveloped with ChatGPT built-in image generation; deterministic sizing/export only; no automatic mirroring, recolouring or third-party pixels.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "1.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed.",
+    "publicFamilyName": "Gilded Flourish",
+    "style": "neutral ornament",
+    "finish": "champagne gold",
+    "productionEligible": true,
+    "deliveryFilePath": "design-library/hindu-wedding/components/typography/ornaments/delivery/hw-header-001-v1-delivery.webp",
+    "reviewMasterFilePath": "design-library/hindu-wedding/review/sacred-header/masters/hw-header-001-v1-master.png",
+    "reviewDeliveryFilePath": "design-library/hindu-wedding/review/sacred-header/delivery/hw-header-001-v1-delivery.webp",
+    "reviewManifestFilePath": "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+    "sourceGenerationPrompt": "Generate ONE reusable standalone Hindu wedding HEADER component for Enveloped, NOT an invitation, NOT a contact sheet. Original raster artwork. Square 1024x1024 image on a genuinely TRANSPARENT background with alpha; no white or coloured background, no checkerboard baked into pixels. Entire artwork centred, occupies roughly 75% of canvas, generous transparent padding, nothing cropped. Crisp clean anti-aliased edges, no white halos. Premium restrained material finish, no neon, no crude filters. Must remain legible when rendered 180 to 220 logical units wide (about 70–85 px on a phone). No captions, typography, mantras, readable sacred text, watermark, logos, shadow on background, buildings or complete scene. Purely non-religious decorative header: a tiny elegant symmetrical antique-gold scrollwork flourish with two mirrored arabesque curves, subtle champagne-metal finish, no flowers, no leaves, no deity, no religious symbols or sacred geometry; minimal modern luxury stationery ornament. The registered Om icon, when requested, is the only allowed sacred glyph; no words or mantras. Forehead is plain and unmarked: NO trident, NO tilak, NO extra religious marks, NO additional sacred glyphs. Respect the requested STYLE above generic rendering preferences.",
+    "generationModel": null,
+    "generationDate": "2026-09-18",
+    "traditionCompatibility": {
+      "MAURITIAN_HINDU": "NEUTRAL_DECORATIVE_CANDIDATE",
+      "MAURITIAN_TAMIL_HINDU": "NEUTRAL_DECORATIVE_CANDIDATE",
+      "MIXED_HINDU_TRADITIONS": "HUMAN_REVIEW_REQUIRED",
+      "NOT_SURE": "HUMAN_REVIEW_REQUIRED",
+      "LET_ENVELOPED_ADVISE": "HUMAN_REVIEW_REQUIRED",
+      "NO_SACRED_IMAGERY": "ALLOWED_AFTER_DECORATIVE_APPROVAL"
+    },
+    "permittedFinishes": [
+      "champagne gold"
+    ],
+    "placement": {
+      "slot": "sacred-header",
+      "anchor": "TOP_CENTER",
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "visibleArtworkTop": 120,
+      "visibleArtworkCentreX": 500,
+      "maximumVisibleDimensions": [
+        170,
+        170
+      ],
+      "minimumVisibleDimensions": [
+        140,
+        140
+      ],
+      "defaultVisibleDimensions": [
+        170,
+        170
+      ],
+      "clearSpace": 40,
+      "maximumClearSpaceBottom": 330,
+      "centralTextSafeAreaStartsAt": 330,
+      "cropPermitted": false,
+      "mirrorPermitted": false,
+      "animationPermitted": false,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "automaticColourFiltersPermitted": false
+    },
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1254,
+        1254
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        640,
+        640
+      ],
+      "deliveryBytes": 40892,
+      "colourSpace": "sRGB",
+      "alphaPreserved": true,
+      "alphaBoundingBox": [
+        41,
+        476,
+        1214,
+        766
+      ],
+      "alphaExportCleanup": "Source alpha values 1-7/255 set to zero to remove invisible generated background noise; alpha >=8 unchanged; no RGB edits.",
+      "originalSourceSha256": "af1cc3051872247585cad6554b901fcb054251b22a32b230fc158ea04781f67f",
+      "boundingBoxConvention": "left, top, right-exclusive, bottom-exclusive; all nonzero alpha",
+      "deliveryAlphaBoundingBox": [
+        19,
+        241,
+        621,
+        393
+      ],
+      "masterSha256": "350ce47a7ed43714264f4bbba75b6b3a3ac4a2cfd6b3fe21e33492eac717491b",
+      "deliverySha256": "7da682a98f491d03e674d47d6c44dc8e30aa9734982e36f42f0c6547de8d42e6"
+    },
+    "ownerApprovalRecord": "design-library/hindu-wedding/documentation/OWNER-APPROVAL-SACRED-HEADER-2026-09-18.md"
   }
 ]

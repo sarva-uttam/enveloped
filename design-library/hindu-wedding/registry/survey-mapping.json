@@ -375,7 +375,37 @@
       "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
     },
     "clientExplanation": "Decorative motifs: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
-    "adminExplanation": "Store visual data at design.components; update the live preview."
+    "adminExplanation": "Store visual data at design.components; update the live preview.",
+    "approvedHeaderChoices": {
+      "approvalStatus": "APPROVED",
+      "productionEligible": true,
+      "candidateIds": [
+        "HW-GANESHA-001",
+        "HW-GANESHA-002",
+        "HW-GANESHA-003",
+        "HW-GANESHA-004",
+        "HW-GANESHA-005",
+        "HW-GANESHA-006",
+        "HW-GANESHA-007",
+        "HW-GANESHA-008",
+        "HW-GANESHA-009",
+        "HW-GANESHA-010",
+        "HW-SACRED-001",
+        "HW-SACRED-002",
+        "HW-SACRED-003",
+        "HW-SACRED-004",
+        "HW-HEADER-001"
+      ],
+      "neutralHeaderId": "HW-HEADER-001",
+      "noSacredImageryState": {
+        "id": "NO_SACRED_IMAGERY",
+        "isSelectionState": true,
+        "imageFilePath": null,
+        "action": "CLEAR_PRINCIPAL_HEADER",
+        "preserveNeutralDecorativeChoice": true
+      },
+      "rule": "When NO_SACRED_IMAGERY is selected, exclude all sacred candidates; a neutral ornament is optional. Human review applies to mixed, uncertain and advisory profiles."
+    }
   },
   {
     "id": "SURVEY-12",

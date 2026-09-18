@@ -193,6 +193,38 @@ function templateSupport(name, category) { if (/Peacock|Royal|Burgundy/.test(nam
 function paletteSupport(name) { if (/Burgundy|Royal/.test(name)) return ["PAL-BURGUNDY-GOLD", "PAL-TEAL-MAROON"]; if (/Blush|Pink|Peon/.test(name)) return ["PAL-IVORY-BLUSH", "PAL-BLUSH-PEACH"]; return ["PAL-IVORY-GOLD", "PAL-SAGE-IVORY", "PAL-TEMPLE-GOLD"]; }
 function culturalNote(category, name) { if (category === "ceremonial") return `${name} must be physically grounded and reviewed for ritual correctness; do not imply universal regional use.`; if (category === "animals") return "Paired animals face inward where registered and remain decorative rather than sacred."; return "Decorative option; confirm regional fit and client intent where traditions differ."; }
 
+// Sacred-header catalogue: production paths require recorded Owner approval.
+const sacredReviewPath = path.join(root, "review/sacred-header/review-manifest.json");
+const sacredReview = fs.existsSync(sacredReviewPath) ? JSON.parse(fs.readFileSync(sacredReviewPath, "utf8")) : null;
+if (sacredReview) {
+  for (const entry of sacredReview.entries) {
+    let component = components.find((c) => c.id === entry.id);
+    if (!component && entry.id === "HW-HEADER-001") {
+      component = { ...components.find((c) => c.id === "HW-GANESHA-001"), id: entry.id,
+        category: "typography", subcategory: "ornaments", culturalClassification: "DECORATIVE",
+        supportedTemplates: templates.map((t) => t.id), culturalUsageNotes: "Purely non-religious scrollwork; candidate for the no-sacred-imagery design path." };
+      components.push(component);
+    }
+    if (!component) throw new Error(`Unregistered sacred-header review entry: ${entry.id}`);
+    Object.assign(component, {
+      name: entry.publicName, publicFamilyName: entry.publicName, shortDescription: entry.altText,
+      internalProductionDescription: entry.exactGenerationPrompt, style: entry.style, finish: entry.finish,
+      approvalStatus: entry.approvalStatus, generationStatus: entry.approvalStatus === "APPROVED" ? "COMPLETE" : "VISUAL_QA", productionEligible: entry.approvalStatus === "APPROVED",
+      sourceFilePath: entry.approvalStatus === "APPROVED" ? entry.sourceFilePath : null, deliveryFilePath: entry.approvalStatus === "APPROVED" ? entry.deliveryFilePath : null, previewFilePath: entry.reviewPreviewFilePath,
+      thumbnailFilePath: entry.reviewThumbnailFilePath, reviewMasterFilePath: entry.reviewMasterFilePath,
+      reviewDeliveryFilePath: entry.reviewDeliveryFilePath,
+      reviewManifestFilePath: "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+      defaultWidth: 170, defaultHeight: 170, maximumSize: [170,170], minimumSize: [140,140],
+      altText: entry.altText, provenance: entry.provenance, version: entry.version,
+      sourceGenerationPrompt: entry.exactGenerationPrompt, generationModel: null,
+      generationDate: entry.generationDate, updatedDate: entry.generationDate,
+      licensingSource: entry.licenceReview, traditionCompatibility: entry.traditionCompatibility,
+      permittedFinishes: entry.permittedFinishes, placement: entry.placement,
+      technical: entry.technical, ownerApprovalRecord: entry.ownerApprovalRecord ?? null, reviewerNotes: entry.approvalStatus === "APPROVED" ? "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed." : "UNDER_REVIEW; technical QA is not cultural approval. Production paths remain null."
+    });
+  }
+}
+
 const palettes = [
   ["PAL-IVORY-BLUSH", "Ivory and Blush", { background: "#F7F0E7", primary: "#B98686", accent: "#C9A45C", text: "#332821" }],
   ["PAL-IVORY-GOLD", "Ivory and Gold", { background: "#F5EFE3", primary: "#A7792D", accent: "#D8B86A", text: "#30271E" }],
@@ -229,6 +261,29 @@ const status = components.map((c) => ({ componentId: c.id, generationStatus: c.g
 const registry = { id: "HW-REGISTRY-001", name: "Enveloped Hindu Wedding Component Registry", version: "1.3.0", initialCulturalMarket: { id: "MAURITIAN_HINDU_WEDDINGS", status: "APPROVED_OWNER_DECISION", supportedProfiles: ["MAURITIAN_HINDU", "MAURITIAN_TAMIL_HINDU", "MIXED_HINDU_TRADITIONS", "NOT_SURE", "LET_ENVELOPED_ADVISE", "NO_SACRED_IMAGERY"], internationalExpansion: "DEFERRED_PENDING_CULTURAL_REVIEW" }, logicalCanvas: { width: 1000, height: 1778, aspectRatio: "9:16" }, products: ["FIXED_TEMPLATE", "CUSTOM_TIERED"], architecture: { renderingModel: "TRUSTED_HTML_DOCUMENT_PACKAGE", authority: "docs/html-invitation-studio/ARCHITECTURE.md", componentRole: "CATALOGUE_AND_TEMPLATE_DECLARED_ASSET_SLOT", prohibitedModel: "ARBITRARY_RUNTIME_LAYER_COMPOSER", storedExecutableMarkup: false, personalizationTiming: "SERVE_TIME_ONLY" }, registryFiles: ["templates.json", "components.json", "background-families.json", "palettes.json", "typography.json", "animations.json", "music.json", "pricing.json", "compatibility-rules.json", "survey-mapping.json", "placement-rules.json", "asset-generation-status.json"], approvalPolicy: "Only APPROVED records with valid production files may be selectable in production; selection is limited to slots declared by a reviewed HTML document package.", updatedDate: today };
 
 write(path.join(registryDir, "registry.json"), registry); write(path.join(registryDir, "templates.json"), templates); write(path.join(registryDir, "components.json"), components); write(path.join(registryDir, "background-families.json"), backgroundVariants); write(path.join(registryDir, "palettes.json"), palettes); write(path.join(registryDir, "typography.json"), typography); write(path.join(registryDir, "animations.json"), animations); write(path.join(registryDir, "music.json"), music); write(path.join(registryDir, "pricing.json"), pricing); write(path.join(registryDir, "compatibility-rules.json"), rules); write(path.join(registryDir, "survey-mapping.json"), mappings); write(path.join(registryDir, "placement-rules.json"), placements); write(path.join(registryDir, "asset-generation-status.json"), status);
+
+if (sacredReview) {
+  const motifStep = mappings.find((m) => m.stepId === "11");
+  const approvedHeaders = sacredReview.approvalStatus === "APPROVED";
+  motifStep[approvedHeaders ? "approvedHeaderChoices" : "reviewOnlyHeaderChoices"] = {
+    approvalStatus: sacredReview.approvalStatus, productionEligible: approvedHeaders,
+    candidateIds: sacredReview.entries.map((e) => e.id),
+    neutralHeaderId: "HW-HEADER-001", noSacredImageryState: {
+      id: "NO_SACRED_IMAGERY", isSelectionState: true, imageFilePath: null,
+      action: "CLEAR_PRINCIPAL_HEADER", preserveNeutralDecorativeChoice: true
+    },
+    rule: "When NO_SACRED_IMAGERY is selected, exclude all sacred candidates; a neutral ornament is optional. Human review applies to mixed, uncertain and advisory profiles."
+  };
+  for (const record of status) {
+    const entry = sacredReview.entries.find((e) => e.id === record.componentId);
+    if (entry) Object.assign(record, {
+      reviewMasterFilePath: entry.reviewMasterFilePath, reviewDeliveryFilePath: entry.reviewDeliveryFilePath,
+      notes: entry.approvalStatus === "APPROVED" ? "Owner approved sacred-header batch on 2026-09-18; production files verified. Family/cultural limitations retained." : "Generated and technically reviewed; UNDER_REVIEW. Owner approval pending. No production paths."
+    });
+  }
+  write(path.join(registryDir, "survey-mapping.json"), mappings);
+  write(path.join(registryDir, "asset-generation-status.json"), status);
+}
 
 const schemaNames = ["registry", "template", "component", "background-family", "palette", "typography", "animation", "music", "pricing", "compatibility-rule", "survey-mapping", "placement-rule", "asset-generation-status"];
 const required = { registry: ["id", "name", "version", "logicalCanvas", "registryFiles"], template: ["id", "name", "supportedTiers", "defaultPalette", "requiredSlots", "approvalStatus", "version"], component: ["id", "name", "category", "subcategory", "slot", "tier", "pricingClassification", "approvalStatus", "generationStatus", "altText", "provenance"], "background-family": ["variantId", "parentBackgroundId", "publicFamilyName", "colourMood", "minimumTier", "sourceFilePath", "previewFilePath", "altText", "reviewStatus"], palette: ["id", "name", "colors", "contrastNotes"], typography: ["id", "name", "licenceStatus"], animation: ["id", "name", "kind", "reducedMotionFallback"], music: ["id", "name", "sourceType", "requiresInteraction"], pricing: ["version", "status", "products"], "compatibility-rule": ["id", "scope", "severity", "message", "machineCondition"], "survey-mapping": ["id", "stepId", "questionId", "kind", "affectsPreview", "dataDestination"], "placement-rule": ["id", "slot", "x", "y", "width", "height", "logicalCanvas"], "asset-generation-status": ["componentId", "generationStatus", "approvalStatus"] };
