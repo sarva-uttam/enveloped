@@ -41,6 +41,11 @@ for (const c of components) {
   check(!c.animationAllowed || Boolean(c.reducedMotionFallback), `${c.id} is animated without a reduced-motion fallback`);
   check(c.approvalStatus !== "APPROVED" || (c.sourceFilePath && fs.existsSync(path.resolve(c.sourceFilePath))), `${c.id} is approved without a valid source file`);
   check(c.approvalStatus === "APPROVED" || c.sourceFilePath === null, `${c.id} has an unapproved production file reference`);
+  if (c.category === "architecture" && c.approvalStatus === "APPROVED") {
+    check(c.deliveryFilePath?.includes("/architecture/delivery/") && fs.existsSync(path.resolve(c.deliveryFilePath)), `${c.id} approved architecture delivery file is missing`);
+    check(Array.isArray(c.presentationModes) && c.presentationModes.includes("EDGE_FRAME"), `${c.id} is missing controlled architecture presentation modes`);
+    check(c.opacityLimits?.minimum >= 0.7 && c.opacityLimits?.maximum <= 1, `${c.id} has unsafe opacity limits`);
+  }
   check(c.usageModel === "TEMPLATE_DECLARED_SLOT_ONLY", `${c.id} may only be consumed through a template-declared slot`);
   check(c.executableContentAllowed === false, `${c.id} must not allow executable content`);
 }

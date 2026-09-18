@@ -4,6 +4,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-001-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -13,6 +14,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-002-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -22,6 +24,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-003-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -31,6 +34,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-004-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -40,6 +44,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-005-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -49,6 +54,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-006-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -58,6 +64,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-007-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -67,6 +74,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-008-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -76,6 +84,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-009-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -85,6 +94,7 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-010-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
@@ -94,123 +104,137 @@
     "generationStatus": "COMPLETE",
     "approvalStatus": "APPROVED",
     "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011",
+    "deliveryFilePath": null,
     "previewFilePath": "design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-011-family-comparison.png",
     "reviewer": "OWNER",
     "notes": "All four colour moods approved by the Owner on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-001",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-001-v2-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-001-v2-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-001-v2-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-002",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-002-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-002-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-002-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-003",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-003-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-003-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-003-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-004",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-004-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-004-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-004-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-005",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-005-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-005-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-005-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-006",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-006-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-006-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-006-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-007",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-007-v2-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-007-v2-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-007-v2-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-008",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-008-v2-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-008-v2-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-008-v2-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-009",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-009-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-009-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-009-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-010",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-010-v2-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-010-v2-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-010-v2-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-011",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-011-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-011-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-011-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-ARCH-012",
-    "generationStatus": "NOT_STARTED",
-    "approvalStatus": "PLANNED",
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "reviewer": null,
-    "notes": "Planned only; no asset generated."
+    "generationStatus": "COMPLETE",
+    "approvalStatus": "APPROVED",
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-012-v1-master.png",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-012-v1-delivery.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-012-v1-option-card.webp",
+    "reviewer": "OWNER",
+    "notes": "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18."
   },
   {
     "componentId": "HW-GANESHA-001",
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -220,6 +244,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -229,6 +254,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -238,6 +264,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -247,6 +274,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -256,6 +284,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -265,6 +294,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -274,6 +304,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -283,6 +314,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -292,6 +324,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -301,6 +334,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -310,6 +344,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -319,6 +354,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -328,6 +364,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -337,6 +374,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -346,6 +384,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -355,6 +394,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -364,6 +404,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -373,6 +414,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -382,6 +424,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -391,6 +434,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -400,6 +444,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -409,6 +454,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -418,6 +464,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -427,6 +474,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -436,6 +484,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -445,6 +494,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -454,6 +504,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -463,6 +514,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -472,6 +524,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -481,6 +534,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -490,6 +544,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -499,6 +554,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -508,6 +564,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -517,6 +574,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -526,6 +584,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -535,6 +594,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -544,6 +604,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -553,6 +614,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -562,6 +624,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -571,6 +634,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -580,6 +644,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -589,6 +654,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -598,6 +664,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -607,6 +674,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -616,6 +684,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -625,6 +694,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -634,6 +704,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -643,6 +714,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -652,6 +724,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -661,6 +734,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -670,6 +744,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -679,6 +754,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -688,6 +764,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -697,6 +774,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -706,6 +784,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -715,6 +794,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -724,6 +804,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -733,6 +814,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -742,6 +824,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -751,6 +834,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -760,6 +844,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -769,6 +854,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -778,6 +864,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -787,6 +874,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -796,6 +884,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -805,6 +894,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -814,6 +904,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -823,6 +914,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -832,6 +924,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -841,6 +934,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -850,6 +944,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -859,6 +954,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -868,6 +964,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -877,6 +974,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -886,6 +984,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -895,6 +994,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -904,6 +1004,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -913,6 +1014,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -922,6 +1024,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -931,6 +1034,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -940,6 +1044,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -949,6 +1054,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -958,6 +1064,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -967,6 +1074,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -976,6 +1084,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -985,6 +1094,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -994,6 +1104,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1003,6 +1114,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1012,6 +1124,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1021,6 +1134,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1030,6 +1144,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1039,6 +1154,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1048,6 +1164,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1057,6 +1174,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1066,6 +1184,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1075,6 +1194,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1084,6 +1204,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1093,6 +1214,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1102,6 +1224,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1111,6 +1234,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1120,6 +1244,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1129,6 +1254,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."
@@ -1138,6 +1264,7 @@
     "generationStatus": "NOT_STARTED",
     "approvalStatus": "PLANNED",
     "sourceFilePath": null,
+    "deliveryFilePath": null,
     "previewFilePath": null,
     "reviewer": null,
     "notes": "Planned only; no asset generated."

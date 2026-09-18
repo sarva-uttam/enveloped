@@ -32,7 +32,7 @@
     "id": "CR-ARCH-002",
     "scope": "architecture",
     "severity": "ERROR",
-    "message": "Open and closed temple doors are states of one structure and cannot coexist.",
+    "message": "Architecture must stay within its declared anchors and scale limits and must preserve the registered central text-safe area.",
     "machineCondition": {
       "validator": "CR-ARCH-002"
     }

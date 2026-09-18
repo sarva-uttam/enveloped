@@ -1026,11 +1026,11 @@
   },
   {
     "id": "HW-ARCH-001",
-    "name": "Fine Double Gold Mughal Arch",
-    "shortDescription": "Fine Double Gold Mughal Arch for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed fine double gold mughal arch asset with clean edges and slot-safe composition.",
+    "name": "Palace Whisper",
+    "shortDescription": "Palace Whisper is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "warm ivory with antique-gold trim architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
+    "subcategory": "architectural-frames",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
@@ -1040,9 +1040,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-001-v2-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-001-v2-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-001-v2-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1086,25 +1086,110 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Fine Double Gold Mughal Arch decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Palace Whisper, a symmetrical warm ivory with antique-gold trim decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Palace Whisper",
+    "componentRole": "FULL_FRAME",
+    "finish": "warm ivory with antique-gold trim",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-001-v2-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "EDGE_FRAME",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.04,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": false,
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-002",
+      "HW-BG-003",
+      "HW-BG-004"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "deep burgundy"
+    ],
+    "sourceGenerationPrompt": "Generate Palace Whisper as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; warm ivory with antique-gold trim; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-002",
-    "name": "Champagne Botanical Arch",
-    "shortDescription": "Champagne Botanical Arch for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed champagne botanical arch asset with clean edges and slot-safe composition.",
+    "name": "Champagne Colonnade",
+    "shortDescription": "Champagne Colonnade is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "champagne gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
+    "subcategory": "architectural-frames",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
@@ -1114,9 +1199,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-002-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-002-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-002-v1-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1160,26 +1245,111 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Champagne Botanical Arch decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Champagne Colonnade, a symmetrical champagne gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Champagne Colonnade",
+    "componentRole": "FULL_FRAME",
+    "finish": "champagne gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-002-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "EDGE_FRAME",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.04,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": false,
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-003",
+      "HW-BG-004",
+      "HW-BG-005"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "deep burgundy"
+    ],
+    "sourceGenerationPrompt": "Generate Champagne Colonnade as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; champagne gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-003",
-    "name": "Carved Ivory Mandap",
-    "shortDescription": "Carved Ivory Mandap for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed carved ivory mandap asset with clean edges and slot-safe composition.",
+    "name": "Sandstone Grace",
+    "shortDescription": "Sandstone Grace is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "warm sandstone architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "TEMPLE",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
     "intendedOutputFormat": [
@@ -1188,9 +1358,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-003-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-003-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-003-v1-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1209,9 +1379,10 @@
     "zIndex": 20,
     "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
     "supportedTemplates": [
+      "H01",
       "H02",
-      "H04",
       "H05",
+      "H06",
       "H08"
     ],
     "supportedPalettes": [
@@ -1233,171 +1404,110 @@
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Carved Ivory Mandap decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Sandstone Grace, a symmetrical warm sandstone decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Sandstone Grace",
+    "componentRole": "FULL_FRAME",
+    "finish": "warm sandstone",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-003-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "EDGE_FRAME",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.04,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": false,
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-004",
+      "HW-BG-006",
+      "HW-BG-007"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory"
+    ],
+    "sourceGenerationPrompt": "Generate Sandstone Grace as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; warm sandstone; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-004",
-    "name": "Sandstone Temple Arch",
-    "shortDescription": "Sandstone Temple Arch for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed sandstone temple arch asset with clean edges and slot-safe composition.",
+    "name": "Royal Scallop",
+    "shortDescription": "Royal Scallop is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "antique gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "TEMPLE",
-    "culturalClassification": "DECORATIVE",
-    "assetType": "TRANSPARENT_COMPONENT",
-    "intendedOutputFormat": [
-      "PNG",
-      "WEBP"
-    ],
-    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
-    "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
-    "layerNumber": 2,
-    "slot": "centre-artwork",
-    "anchor": "BOTTOM_CENTER",
-    "defaultWidth": 700,
-    "defaultHeight": 800,
-    "minimumSize": [
-      80,
-      80
-    ],
-    "maximumSize": [
-      1000,
-      1778
-    ],
-    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
-    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
-    "zIndex": 20,
-    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
-    "supportedTemplates": [
-      "H02",
-      "H04",
-      "H05",
-      "H08"
-    ],
-    "supportedPalettes": [
-      "PAL-IVORY-GOLD",
-      "PAL-SAGE-IVORY",
-      "PAL-TEMPLE-GOLD"
-    ],
-    "supportedEventTypes": [
-      "wedding-hindu"
-    ],
-    "conflictingComponents": [],
-    "requiredCompanionComponents": [],
-    "maximumSelectionCount": 1,
-    "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
-    "priceAdjustment": 0,
-    "currency": "CONFIGURED_AT_RUNTIME",
-    "animationAllowed": false,
-    "supportedAnimations": [],
-    "reducedMotionFallback": "Static presentation.",
-    "altText": "Sandstone Temple Arch decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
-    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-18",
-    "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
-  },
-  {
-    "id": "HW-ARCH-005",
-    "name": "Golden Temple Arch",
-    "shortDescription": "Golden Temple Arch for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed golden temple arch asset with clean edges and slot-safe composition.",
-    "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "TEMPLE",
-    "culturalClassification": "DECORATIVE",
-    "assetType": "TRANSPARENT_COMPONENT",
-    "intendedOutputFormat": [
-      "PNG",
-      "WEBP"
-    ],
-    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
-    "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
-    "layerNumber": 2,
-    "slot": "centre-artwork",
-    "anchor": "BOTTOM_CENTER",
-    "defaultWidth": 700,
-    "defaultHeight": 800,
-    "minimumSize": [
-      80,
-      80
-    ],
-    "maximumSize": [
-      1000,
-      1778
-    ],
-    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
-    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
-    "zIndex": 20,
-    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
-    "supportedTemplates": [
-      "H02",
-      "H04",
-      "H05",
-      "H08"
-    ],
-    "supportedPalettes": [
-      "PAL-IVORY-GOLD",
-      "PAL-SAGE-IVORY",
-      "PAL-TEMPLE-GOLD"
-    ],
-    "supportedEventTypes": [
-      "wedding-hindu"
-    ],
-    "conflictingComponents": [],
-    "requiredCompanionComponents": [],
-    "maximumSelectionCount": 1,
-    "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
-    "priceAdjustment": 0,
-    "currency": "CONFIGURED_AT_RUNTIME",
-    "animationAllowed": false,
-    "supportedAnimations": [],
-    "reducedMotionFallback": "Static presentation.",
-    "altText": "Golden Temple Arch decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
-    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-18",
-    "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
-  },
-  {
-    "id": "HW-ARCH-006",
-    "name": "Burgundy Royal Arch",
-    "shortDescription": "Burgundy Royal Arch for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed burgundy royal arch asset with clean edges and slot-safe composition.",
-    "category": "architecture",
-    "subcategory": "arches",
+    "subcategory": "architectural-frames",
     "designFamily": "ROYAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
@@ -1407,9 +1517,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-004-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-004-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-004-v1-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1443,32 +1553,435 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "SILVER",
+    "pricingClassification": "ENHANCED",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Burgundy Royal Arch decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Royal Scallop, a symmetrical antique gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Royal Scallop",
+    "componentRole": "FULL_FRAME",
+    "finish": "antique gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-004-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "SOFT_ARCHITECTURAL_SURROUND",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": false,
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-003",
+      "HW-BG-005",
+      "HW-BG-007"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "ivory",
+      "deep burgundy"
+    ],
+    "sourceGenerationPrompt": "Generate Royal Scallop as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; antique gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
+  },
+  {
+    "id": "HW-ARCH-005",
+    "name": "Gilded Courtyard",
+    "shortDescription": "Gilded Courtyard is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "champagne and antique gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
+    "category": "architecture",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
+    "culturalClassification": "DECORATIVE",
+    "assetType": "TRANSPARENT_COMPONENT",
+    "intendedOutputFormat": [
+      "PNG",
+      "WEBP"
+    ],
+    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
+    "executableContentAllowed": false,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-005-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-005-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-005-v1-option-card.webp",
+    "layerNumber": 2,
+    "slot": "centre-artwork",
+    "anchor": "BOTTOM_CENTER",
+    "defaultWidth": 700,
+    "defaultHeight": 800,
+    "minimumSize": [
+      80,
+      80
+    ],
+    "maximumSize": [
+      1000,
+      1778
+    ],
+    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
+    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
+    "zIndex": 20,
+    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
+    "supportedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "supportedPalettes": [
+      "PAL-IVORY-GOLD",
+      "PAL-SAGE-IVORY",
+      "PAL-TEMPLE-GOLD"
+    ],
+    "supportedEventTypes": [
+      "wedding-hindu"
+    ],
+    "conflictingComponents": [],
+    "requiredCompanionComponents": [],
+    "maximumSelectionCount": 1,
+    "singleChoiceGroup": "architecture",
+    "tier": "SILVER",
+    "pricingClassification": "ENHANCED",
+    "priceAdjustment": 0,
+    "currency": "CONFIGURED_AT_RUNTIME",
+    "animationAllowed": false,
+    "supportedAnimations": [],
+    "reducedMotionFallback": "Static presentation.",
+    "altText": "Gilded Courtyard, a symmetrical champagne and antique gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
+    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "1.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Gilded Courtyard",
+    "componentRole": "FULL_FRAME",
+    "finish": "champagne and antique gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-005-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "SOFT_ARCHITECTURAL_SURROUND",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": false,
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-003",
+      "HW-BG-004",
+      "HW-BG-006"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "deep burgundy"
+    ],
+    "sourceGenerationPrompt": "Generate Gilded Courtyard as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; champagne and antique gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
+  },
+  {
+    "id": "HW-ARCH-006",
+    "name": "Teal Darbar",
+    "shortDescription": "Teal Darbar is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "peacock teal and muted gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
+    "category": "architecture",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
+    "culturalClassification": "DECORATIVE",
+    "assetType": "TRANSPARENT_COMPONENT",
+    "intendedOutputFormat": [
+      "PNG",
+      "WEBP"
+    ],
+    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
+    "executableContentAllowed": false,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-006-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-006-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-006-v1-option-card.webp",
+    "layerNumber": 2,
+    "slot": "centre-artwork",
+    "anchor": "BOTTOM_CENTER",
+    "defaultWidth": 700,
+    "defaultHeight": 800,
+    "minimumSize": [
+      80,
+      80
+    ],
+    "maximumSize": [
+      1000,
+      1778
+    ],
+    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
+    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
+    "zIndex": 20,
+    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
+    "supportedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "supportedPalettes": [
+      "PAL-IVORY-GOLD",
+      "PAL-SAGE-IVORY",
+      "PAL-TEMPLE-GOLD"
+    ],
+    "supportedEventTypes": [
+      "wedding-hindu"
+    ],
+    "conflictingComponents": [],
+    "requiredCompanionComponents": [],
+    "maximumSelectionCount": 1,
+    "singleChoiceGroup": "architecture",
+    "tier": "SILVER",
+    "pricingClassification": "ENHANCED",
+    "priceAdjustment": 0,
+    "currency": "CONFIGURED_AT_RUNTIME",
+    "animationAllowed": false,
+    "supportedAnimations": [],
+    "reducedMotionFallback": "Static presentation.",
+    "altText": "Teal Darbar, a symmetrical peacock teal and muted gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
+    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "1.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Teal Darbar",
+    "componentRole": "FULL_FRAME",
+    "finish": "peacock teal and muted gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-006-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "SOFT_ARCHITECTURAL_SURROUND",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": false,
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-002",
+      "HW-BG-003",
+      "HW-BG-009"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "ivory",
+      "champagne gold",
+      "charcoal"
+    ],
+    "sourceGenerationPrompt": "Generate Teal Darbar as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; peacock teal and muted gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-007",
-    "name": "Floral Pavilion with Columns",
-    "shortDescription": "Floral Pavilion with Columns for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed floral pavilion with columns asset with clean edges and slot-safe composition.",
+    "name": "Amber Pavilion",
+    "shortDescription": "Amber Pavilion is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "amber sandstone and antique gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
+    "subcategory": "architectural-frames",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
@@ -1478,9 +1991,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-007-v2-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-007-v2-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-007-v2-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1517,177 +2030,121 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "GOLD",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Floral Pavilion with Columns decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Amber Pavilion, a symmetrical amber sandstone and antique gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Amber Pavilion",
+    "componentRole": "FULL_FRAME",
+    "finish": "amber sandstone and antique gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-007-v2-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "DEPTH_REVEAL",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": true,
+      "durationSeconds": [
+        1.5,
+        2.5
+      ],
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-004",
+      "HW-BG-007",
+      "HW-BG-010"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory"
+    ],
+    "sourceGenerationPrompt": "Generate Amber Pavilion as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; amber sandstone and antique gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-008",
-    "name": "Banana Leaf Mandap",
-    "shortDescription": "Banana Leaf Mandap for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed banana leaf mandap asset with clean edges and slot-safe composition.",
+    "name": "Moonlit Haveli",
+    "shortDescription": "Moonlit Haveli is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "cool ivory, smoky blue-grey and champagne gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "TEMPLE",
-    "culturalClassification": "DECORATIVE",
-    "assetType": "TRANSPARENT_COMPONENT",
-    "intendedOutputFormat": [
-      "PNG",
-      "WEBP"
-    ],
-    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
-    "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
-    "layerNumber": 2,
-    "slot": "centre-artwork",
-    "anchor": "BOTTOM_CENTER",
-    "defaultWidth": 700,
-    "defaultHeight": 800,
-    "minimumSize": [
-      80,
-      80
-    ],
-    "maximumSize": [
-      1000,
-      1778
-    ],
-    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
-    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
-    "zIndex": 20,
-    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
-    "supportedTemplates": [
-      "H02",
-      "H04",
-      "H05",
-      "H08"
-    ],
-    "supportedPalettes": [
-      "PAL-IVORY-GOLD",
-      "PAL-SAGE-IVORY",
-      "PAL-TEMPLE-GOLD"
-    ],
-    "supportedEventTypes": [
-      "wedding-hindu"
-    ],
-    "conflictingComponents": [],
-    "requiredCompanionComponents": [],
-    "maximumSelectionCount": 1,
-    "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
-    "priceAdjustment": 0,
-    "currency": "CONFIGURED_AT_RUNTIME",
-    "animationAllowed": false,
-    "supportedAnimations": [],
-    "reducedMotionFallback": "Static presentation.",
-    "altText": "Banana Leaf Mandap decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
-    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-18",
-    "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
-  },
-  {
-    "id": "HW-ARCH-009",
-    "name": "Peacock Ornamental Frame",
-    "shortDescription": "Peacock Ornamental Frame for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed peacock ornamental frame asset with clean edges and slot-safe composition.",
-    "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "ROYAL",
-    "culturalClassification": "DECORATIVE",
-    "assetType": "TRANSPARENT_COMPONENT",
-    "intendedOutputFormat": [
-      "PNG",
-      "WEBP"
-    ],
-    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
-    "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
-    "layerNumber": 2,
-    "slot": "centre-artwork",
-    "anchor": "BOTTOM_CENTER",
-    "defaultWidth": 700,
-    "defaultHeight": 800,
-    "minimumSize": [
-      80,
-      80
-    ],
-    "maximumSize": [
-      1000,
-      1778
-    ],
-    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
-    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
-    "zIndex": 20,
-    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
-    "supportedTemplates": [
-      "H03",
-      "H07",
-      "H08"
-    ],
-    "supportedPalettes": [
-      "PAL-IVORY-GOLD",
-      "PAL-SAGE-IVORY",
-      "PAL-TEMPLE-GOLD"
-    ],
-    "supportedEventTypes": [
-      "wedding-hindu"
-    ],
-    "conflictingComponents": [],
-    "requiredCompanionComponents": [],
-    "maximumSelectionCount": 1,
-    "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
-    "priceAdjustment": 0,
-    "currency": "CONFIGURED_AT_RUNTIME",
-    "animationAllowed": false,
-    "supportedAnimations": [],
-    "reducedMotionFallback": "Static presentation.",
-    "altText": "Peacock Ornamental Frame decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
-    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
-    "version": "1.0.0",
-    "createdDate": "2026-09-18",
-    "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
-  },
-  {
-    "id": "HW-ARCH-010",
-    "name": "Curtain Framed Arch",
-    "shortDescription": "Curtain Framed Arch for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed curtain framed arch asset with clean edges and slot-safe composition.",
-    "category": "architecture",
-    "subcategory": "arches",
+    "subcategory": "architectural-frames",
     "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
@@ -1697,9 +2154,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-008-v2-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-008-v2-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-008-v2-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1719,6 +2176,8 @@
     "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
     "supportedTemplates": [
       "H01",
+      "H02",
+      "H05",
       "H06",
       "H08"
     ],
@@ -1734,33 +2193,448 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "GOLD",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Curtain Framed Arch decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Moonlit Haveli, a symmetrical cool ivory, smoky blue-grey and champagne gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Moonlit Haveli",
+    "componentRole": "FULL_FRAME",
+    "finish": "cool ivory, smoky blue-grey and champagne gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-008-v2-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "DEPTH_REVEAL",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": true,
+      "durationSeconds": [
+        1.5,
+        2.5
+      ],
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-002",
+      "HW-BG-003",
+      "HW-BG-005",
+      "HW-BG-011"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "deep navy",
+      "ivory"
+    ],
+    "sourceGenerationPrompt": "Generate Moonlit Haveli as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; cool ivory, smoky blue-grey and champagne gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
+  },
+  {
+    "id": "HW-ARCH-009",
+    "name": "Jaali Reverie",
+    "shortDescription": "Jaali Reverie is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "warm ivory and antique gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
+    "category": "architecture",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
+    "culturalClassification": "DECORATIVE",
+    "assetType": "TRANSPARENT_COMPONENT",
+    "intendedOutputFormat": [
+      "PNG",
+      "WEBP"
+    ],
+    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
+    "executableContentAllowed": false,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-009-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-009-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-009-v1-option-card.webp",
+    "layerNumber": 2,
+    "slot": "centre-artwork",
+    "anchor": "BOTTOM_CENTER",
+    "defaultWidth": 700,
+    "defaultHeight": 800,
+    "minimumSize": [
+      80,
+      80
+    ],
+    "maximumSize": [
+      1000,
+      1778
+    ],
+    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
+    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
+    "zIndex": 20,
+    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
+    "supportedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "supportedPalettes": [
+      "PAL-IVORY-GOLD",
+      "PAL-SAGE-IVORY",
+      "PAL-TEMPLE-GOLD"
+    ],
+    "supportedEventTypes": [
+      "wedding-hindu"
+    ],
+    "conflictingComponents": [],
+    "requiredCompanionComponents": [],
+    "maximumSelectionCount": 1,
+    "singleChoiceGroup": "architecture",
+    "tier": "GOLD",
+    "pricingClassification": "PREMIUM",
+    "priceAdjustment": 0,
+    "currency": "CONFIGURED_AT_RUNTIME",
+    "animationAllowed": false,
+    "supportedAnimations": [],
+    "reducedMotionFallback": "Static presentation.",
+    "altText": "Jaali Reverie, a symmetrical warm ivory and antique gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
+    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Jaali Reverie",
+    "componentRole": "FULL_FRAME",
+    "finish": "warm ivory and antique gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-009-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "DEPTH_REVEAL",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": true,
+      "durationSeconds": [
+        1.5,
+        2.5
+      ],
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-004",
+      "HW-BG-005",
+      "HW-BG-007"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "deep burgundy"
+    ],
+    "sourceGenerationPrompt": "Generate Jaali Reverie as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; warm ivory and antique gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
+  },
+  {
+    "id": "HW-ARCH-010",
+    "name": "Blackened Gold Portal",
+    "shortDescription": "Blackened Gold Portal is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "blackened bronze and aged gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
+    "category": "architecture",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
+    "culturalClassification": "DECORATIVE",
+    "assetType": "TRANSPARENT_COMPONENT",
+    "intendedOutputFormat": [
+      "PNG",
+      "WEBP"
+    ],
+    "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
+    "executableContentAllowed": false,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-010-v2-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-010-v2-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-010-v2-option-card.webp",
+    "layerNumber": 2,
+    "slot": "centre-artwork",
+    "anchor": "BOTTOM_CENTER",
+    "defaultWidth": 700,
+    "defaultHeight": 800,
+    "minimumSize": [
+      80,
+      80
+    ],
+    "maximumSize": [
+      1000,
+      1778
+    ],
+    "mobilePlacement": "Use centre-artwork placement rule on the native 9:16 canvas.",
+    "desktopPlacement": "Use identical logical coordinates inside centered 9:16 canvas.",
+    "zIndex": 20,
+    "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
+    "supportedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "supportedPalettes": [
+      "PAL-IVORY-GOLD",
+      "PAL-SAGE-IVORY",
+      "PAL-TEMPLE-GOLD"
+    ],
+    "supportedEventTypes": [
+      "wedding-hindu"
+    ],
+    "conflictingComponents": [],
+    "requiredCompanionComponents": [],
+    "maximumSelectionCount": 1,
+    "singleChoiceGroup": "architecture",
+    "tier": "PLATINUM",
+    "pricingClassification": "PREMIUM",
+    "priceAdjustment": 0,
+    "currency": "CONFIGURED_AT_RUNTIME",
+    "animationAllowed": false,
+    "supportedAnimations": [],
+    "reducedMotionFallback": "Static presentation.",
+    "altText": "Blackened Gold Portal, a symmetrical blackened bronze and aged gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
+    "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
+    "version": "2.0.0",
+    "createdDate": "2026-09-18",
+    "updatedDate": "2026-09-18",
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Blackened Gold Portal",
+    "componentRole": "FULL_FRAME",
+    "finish": "blackened bronze and aged gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-010-v2-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "DEPTH_REVEAL",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": true,
+      "durationSeconds": [
+        1.5,
+        2.5
+      ],
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-003",
+      "HW-BG-009",
+      "HW-BG-010"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "ivory",
+      "warm white",
+      "champagne gold"
+    ],
+    "sourceGenerationPrompt": "Generate Blackened Gold Portal as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; blackened bronze and aged gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-011",
-    "name": "Open Golden Temple Doors",
-    "shortDescription": "Open Golden Temple Doors for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed open golden temple doors asset with clean edges and slot-safe composition.",
+    "name": "Imperial Depth",
+    "shortDescription": "Imperial Depth is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "ivory stone and burnished champagne gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "TEMPLE",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
     "intendedOutputFormat": [
@@ -1769,9 +2643,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-011-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-011-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-011-v1-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1790,9 +2664,10 @@
     "zIndex": 20,
     "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
     "supportedTemplates": [
+      "H01",
       "H02",
-      "H04",
       "H05",
+      "H06",
       "H08"
     ],
     "supportedPalettes": [
@@ -1807,33 +2682,122 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "PLATINUM",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Open Golden Temple Doors decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Imperial Depth, a symmetrical ivory stone and burnished champagne gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Imperial Depth",
+    "componentRole": "FULL_FRAME",
+    "finish": "ivory stone and burnished champagne gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-011-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "DEPTH_REVEAL",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": true,
+      "durationSeconds": [
+        1.5,
+        2.5
+      ],
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-003",
+      "HW-BG-005",
+      "HW-BG-007",
+      "HW-BG-011"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "deep burgundy",
+      "charcoal"
+    ],
+    "sourceGenerationPrompt": "Generate Imperial Depth as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; ivory stone and burnished champagne gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-ARCH-012",
-    "name": "Closed Golden Temple Doors",
-    "shortDescription": "Closed Golden Temple Doors for an approved Hindu wedding composition.",
-    "internalProductionDescription": "Create an original, culturally reviewed closed golden temple doors asset with clean edges and slot-safe composition.",
+    "name": "Nocturne Colonnade",
+    "shortDescription": "Nocturne Colonnade is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.",
+    "internalProductionDescription": "deep burgundy stone and blackened gold architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.",
     "category": "architecture",
-    "subcategory": "arches",
-    "designFamily": "TEMPLE",
+    "subcategory": "architectural-frames",
+    "designFamily": "BOTANICAL",
     "culturalClassification": "DECORATIVE",
     "assetType": "TRANSPARENT_COMPONENT",
     "intendedOutputFormat": [
@@ -1842,9 +2806,9 @@
     ],
     "usageModel": "TEMPLATE_DECLARED_SLOT_ONLY",
     "executableContentAllowed": false,
-    "sourceFilePath": null,
-    "previewFilePath": null,
-    "thumbnailFilePath": null,
+    "sourceFilePath": "design-library/hindu-wedding/components/architecture/masters/hw-arch-012-v1-master.png",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-012-v1-option-card.webp",
+    "thumbnailFilePath": "design-library/hindu-wedding/previews/option-cards/architecture/hw-arch-012-v1-option-card.webp",
     "layerNumber": 2,
     "slot": "centre-artwork",
     "anchor": "BOTTOM_CENTER",
@@ -1863,9 +2827,10 @@
     "zIndex": 20,
     "safeAreaBehavior": "Respect text-safe regions and contain unless explicitly registered as a covering background.",
     "supportedTemplates": [
+      "H01",
       "H02",
-      "H04",
       "H05",
+      "H06",
       "H08"
     ],
     "supportedPalettes": [
@@ -1880,24 +2845,113 @@
     "requiredCompanionComponents": [],
     "maximumSelectionCount": 1,
     "singleChoiceGroup": "architecture",
-    "tier": "BRONZE",
-    "pricingClassification": "INCLUDED",
+    "tier": "PLATINUM",
+    "pricingClassification": "PREMIUM",
     "priceAdjustment": 0,
     "currency": "CONFIGURED_AT_RUNTIME",
     "animationAllowed": false,
     "supportedAnimations": [],
     "reducedMotionFallback": "Static presentation.",
-    "altText": "Closed Golden Temple Doors decorative option.",
-    "culturalUsageNotes": "Decorative option; confirm regional fit and client intent where traditions differ.",
+    "altText": "Nocturne Colonnade, a symmetrical deep burgundy stone and blackened gold decorative architectural frame with a large open centre.",
+    "culturalUsageNotes": "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
     "accessibilityNotes": "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.",
-    "licensingSource": "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending",
-    "provenance": "Planned by Enveloped from original requirements; asset does not yet exist.",
-    "approvalStatus": "PLANNED",
-    "generationStatus": "NOT_STARTED",
+    "licensingSource": "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    "provenance": "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    "approvalStatus": "APPROVED",
+    "generationStatus": "COMPLETE",
     "version": "1.0.0",
     "createdDate": "2026-09-18",
     "updatedDate": "2026-09-18",
-    "reviewerNotes": "Requires generation, technical QA, visual QA and cultural review before approval."
+    "reviewerNotes": "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18.",
+    "publicFamilyName": "Nocturne Colonnade",
+    "componentRole": "FULL_FRAME",
+    "finish": "deep burgundy stone and blackened gold",
+    "deliveryFilePath": "design-library/hindu-wedding/components/architecture/delivery/hw-arch-012-v1-delivery.webp",
+    "anchorPoint": {
+      "x": 500,
+      "y": 1688
+    },
+    "textSafeArea": {
+      "x": 210,
+      "y": 330,
+      "width": 580,
+      "height": 900
+    },
+    "scaleLimits": {
+      "minimum": 0.8,
+      "default": 1,
+      "maximum": 1.08
+    },
+    "opacityLimits": {
+      "minimum": 0.72,
+      "default": 0.9,
+      "maximum": 1
+    },
+    "presentationModes": [
+      "EDGE_FRAME",
+      "SOFT_ARCHITECTURAL_SURROUND",
+      "DEPTH_REVEAL"
+    ],
+    "defaultPresentationMode": "DEPTH_REVEAL",
+    "edgeFadeLimits": {
+      "minimum": 0,
+      "default": 0.1,
+      "maximum": 0.16
+    },
+    "permittedBlendModes": [
+      "NORMAL"
+    ],
+    "motionPolicy": {
+      "depthRevealAllowed": true,
+      "durationSeconds": [
+        1.5,
+        2.5
+      ],
+      "reducedMotionFallback": "EDGE_FRAME",
+      "skippable": true
+    },
+    "responsiveBehavior": "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    "compatibleBackgroundFamilies": [
+      "HW-BG-001",
+      "HW-BG-003",
+      "HW-BG-009",
+      "HW-BG-010"
+    ],
+    "incompatibleCombinations": [
+      "another active architecture component",
+      "cropping that intersects the registered text-safe area"
+    ],
+    "recommendedTextColours": [
+      "ivory",
+      "warm white",
+      "champagne gold"
+    ],
+    "sourceGenerationPrompt": "Generate Nocturne Colonnade as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; deep burgundy stone and blackened gold; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.",
+    "generationModel": "ChatGPT built-in image generation",
+    "generationDate": "2026-09-18",
+    "technical": {
+      "masterFormat": "PNG",
+      "masterDimensions": [
+        1400,
+        2489
+      ],
+      "deliveryFormat": "WEBP",
+      "deliveryDimensions": [
+        700,
+        1245
+      ],
+      "colourSpace": "sRGB",
+      "transparency": true,
+      "logicalCanvas": [
+        1000,
+        1778
+      ],
+      "surveyPreview": [
+        540,
+        960
+      ]
+    },
+    "technicalQaResult": "PASS"
   },
   {
     "id": "HW-GANESHA-001",
