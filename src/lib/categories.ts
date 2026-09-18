@@ -1,4 +1,29 @@
+import {
+  Flame,
+  Church,
+  Moon,
+  Heart,
+  TreePine,
+  Palmtree,
+  Hotel,
+  PartyPopper,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import type { EventCategory } from "./types";
+
+/** Shared between the homepage Categories section and the survey's category step. */
+export const CATEGORY_ICONS: Record<EventCategory, LucideIcon> = {
+  "wedding-hindu": Flame,
+  "wedding-christian": Church,
+  "wedding-muslim": Moon,
+  "wedding-other": Heart,
+  holiday: TreePine,
+  vacation: Palmtree,
+  "hotel-package": Hotel,
+  birthday: PartyPopper,
+  other: Sparkles,
+};
 
 export const EVENT_CATEGORIES: {
   id: EventCategory;

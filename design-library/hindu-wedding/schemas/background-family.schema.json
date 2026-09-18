@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/background-family.schema.json",
+  "title": "background-family schema",
+  "type": "object",
+  "required": [
+    "variantId",
+    "parentBackgroundId",
+    "publicFamilyName",
+    "colourMood",
+    "minimumTier",
+    "sourceFilePath",
+    "previewFilePath",
+    "altText",
+    "reviewStatus"
+  ],
+  "properties": {
+    "variantId": {},
+    "parentBackgroundId": {},
+    "publicFamilyName": {},
+    "colourMood": {},
+    "minimumTier": {},
+    "sourceFilePath": {},
+    "previewFilePath": {},
+    "altText": {},
+    "reviewStatus": {}
+  },
+  "additionalProperties": true
+}

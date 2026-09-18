@@ -1,7 +1,15 @@
 import "server-only";
 import { createServerSupabaseClient } from "./supabase/server";
 import { supabaseAdmin, supabaseAdminConfigured } from "./supabase/admin";
-import { fetchInvite, fetchGuestEntry, fetchPublicInvite, type StoredInvite, type PublicInvite } from "./storage-queries";
+import {
+  fetchInvite,
+  fetchGuestEntry,
+  fetchPublicInvite,
+  fetchInvitePreview,
+  type StoredInvite,
+  type PublicInvite,
+  type PreviewInvite,
+} from "./storage-queries";
 
 /**
  * Server-only data access — for Server Components and Route Handlers.
@@ -54,6 +62,22 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
 }
 
 /**
+ * Server-side redemption of a private preview token — Stage 5 (see
+ * PROJECT_STATUS.md). Deliberately uses the same session-aware SERVER
+ * client as every other read here, not the service-role client: the
+ * underlying get_invite_preview() function is granted to anon AND
+ * authenticated (see the migration), so this works identically whether
+ * or not the visitor happens to have a session — "never require the
+ * client to sign in" for preview access is enforced by the grant, not by
+ * this function special-casing anonymous callers.
+ */
+export async function getInvitePreviewServer(token: string): Promise<PreviewInvite | null> {
+  const client = await createServerSupabaseClient();
+  if (!client) return null;
+  return fetchInvitePreview(client, token);
+}
+
+/**
  * Marks an invite as paid after a successful, verified PayPal capture.
  *
  * `invitationId` is the invite's internal uuid (invites.id), NOT the
@@ -72,7 +96,7 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
  * keep working exactly as before. See src/lib/supabase/admin.ts for why
  * that's safe and what it does/doesn't change about payment integrity.
  * Also the one write path exempted from the invites_reject_client_paid_update
- * trigger (supabase/migrations/20260829000000_payment_integrity.sql),
+ * trigger (supabase/migrations/20260901114212_payment_integrity.sql),
  * since it runs as service_role.
  *
  * Idempotent by design: setting paid=true / paypal_order_id on a row
@@ -80,6 +104,20 @@ export async function getPublicInviteServer(slug: string): Promise<PublicInvite 
  * the capture route safely retry just this step (see the capture route's
  * "already captured, recover the invite flip" branch) without needing to
  * first check whether the previous attempt actually got this far.
+ *
+ * Stage 3 confirmation (2026-09-09, see PROJECT_STATUS.md): this
+ * function sets ONLY paid/paypal_order_id, exactly as it always has —
+ * it does not, and must never, touch published_at. Payment must never
+ * automatically publish an invitation; that's the owner's explicit
+ * business rule this stage implements. Verified, not just asserted: the
+ * update payload literally has no published_at key, and the database's
+ * own invites_reject_client_paid_update trigger would reject
+ * publish_at/paid being set together from anything but this exact
+ * service-role path anyway (see
+ * supabase/migrations/20260909150000_publication_payment_split.sql).
+ * Publishing remains an administrator-only action via
+ * publish_invite()/unpublish_invite() — never triggered by this
+ * function, directly or indirectly.
  */
 export async function markInvitePaid(invitationId: string, paypalOrderId: string): Promise<boolean> {
   if (!supabaseAdminConfigured || !supabaseAdmin) return false;

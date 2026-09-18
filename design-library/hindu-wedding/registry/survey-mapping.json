@@ -1,0 +1,748 @@
+[
+  {
+    "id": "SURVEY-01",
+    "stepId": "01",
+    "stepName": "Client details",
+    "questionId": "hw-01-client-details",
+    "questionType": "FORM",
+    "kind": "ADMINISTRATIVE",
+    "required": true,
+    "affectsPreview": false,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": null,
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "Client details: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store administrative data at the administrative record; do not create a visual asset."
+  },
+  {
+    "id": "SURVEY-02",
+    "stepId": "02",
+    "stepName": "Selected events",
+    "questionId": "hw-02-selected-events",
+    "questionType": "STRUCTURED_CONTENT",
+    "kind": "CONTENT",
+    "required": true,
+    "affectsPreview": false,
+    "selectionMode": "MULTIPLE",
+    "maximumSelections": null,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": "events",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "Selected events: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store content data at events; do not create a visual asset."
+  },
+  {
+    "id": "SURVEY-03",
+    "stepId": "03",
+    "stepName": "Couple and family information",
+    "questionId": "hw-03-couple-and-family-information",
+    "questionType": "STRUCTURED_CONTENT",
+    "kind": "CONTENT",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": "couple-names",
+    "dataDestination": "content.people",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Couple and family information: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store content data at content.people; update the live preview."
+  },
+  {
+    "id": "SURVEY-04",
+    "stepId": "04",
+    "stepName": "Invitation experience",
+    "questionId": "hw-04-invitation-experience",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": "design.openingExperience",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Invitation experience: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.openingExperience; update the live preview."
+  },
+  {
+    "id": "SURVEY-05",
+    "stepId": "05",
+    "stepName": "Main visual style",
+    "questionId": "hw-05-main-visual-style",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "templates",
+    "previewSlot": null,
+    "dataDestination": "design.templateId",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Main visual style: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.templateId; update the live preview.",
+    "initialCulturalMarket": "MAURITIAN_HINDU_WEDDINGS",
+    "traditionProfile": {
+      "questionId": "hw-05-family-tradition",
+      "required": true,
+      "selectionMode": "SINGLE",
+      "dataDestination": "design.culturalProfile",
+      "options": [
+        {
+          "id": "MAURITIAN_HINDU",
+          "label": "Mauritian Hindu"
+        },
+        {
+          "id": "MAURITIAN_TAMIL_HINDU",
+          "label": "Mauritian Tamil Hindu"
+        },
+        {
+          "id": "MIXED_HINDU_TRADITIONS",
+          "label": "Mixed Hindu traditions"
+        },
+        {
+          "id": "NOT_SURE",
+          "label": "Not sure"
+        },
+        {
+          "id": "LET_ENVELOPED_ADVISE",
+          "label": "Let Enveloped advise me"
+        },
+        {
+          "id": "NO_SACRED_IMAGERY",
+          "label": "No sacred imagery"
+        }
+      ],
+      "humanReviewRequiredFor": [
+        "MIXED_HINDU_TRADITIONS",
+        "NOT_SURE",
+        "LET_ENVELOPED_ADVISE"
+      ],
+      "noSacredImageryOption": "NO_SACRED_IMAGERY"
+    }
+  },
+  {
+    "id": "SURVEY-06",
+    "stepId": "06",
+    "stepName": "Colour palette",
+    "questionId": "hw-06-colour-palette",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "palettes",
+    "previewSlot": "full-background",
+    "dataDestination": "design.paletteId",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Colour palette: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.paletteId; update the live preview."
+  },
+  {
+    "id": "SURVEY-07",
+    "stepId": "07",
+    "stepName": "Paper and background",
+    "questionId": "hw-07-paper-and-background",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "backgrounds",
+    "previewSlot": "full-background",
+    "dataDestination": "design.components",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Paper and background: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.components; update the live preview."
+  },
+  {
+    "id": "SURVEY-08",
+    "stepId": "08",
+    "stepName": "Frame and architecture",
+    "questionId": "hw-08-frame-and-architecture",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "architecture",
+    "previewSlot": "centre-artwork",
+    "dataDestination": "design.components",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Frame and architecture: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.components; update the live preview."
+  },
+  {
+    "id": "SURVEY-09",
+    "stepId": "09",
+    "stepName": "Flowers and foliage",
+    "questionId": "hw-09-flowers-and-foliage",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "MULTIPLE",
+    "maximumSelections": 3,
+    "registryCategory": "flora",
+    "previewSlot": "foreground",
+    "dataDestination": "design.components",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Flowers and foliage: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.components; update the live preview."
+  },
+  {
+    "id": "SURVEY-10",
+    "stepId": "10",
+    "stepName": "Hindu ceremonial elements",
+    "questionId": "hw-10-hindu-ceremonial-elements",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "MULTIPLE",
+    "maximumSelections": null,
+    "registryCategory": "ceremonial",
+    "previewSlot": "lower-ceremonial",
+    "dataDestination": "design.components",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Hindu ceremonial elements: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.components; update the live preview."
+  },
+  {
+    "id": "SURVEY-11",
+    "stepId": "11",
+    "stepName": "Decorative motifs",
+    "questionId": "hw-11-decorative-motifs",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": false,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "sacred",
+    "previewSlot": "sacred-header",
+    "dataDestination": "design.components",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Decorative motifs: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.components; update the live preview.",
+    "approvedHeaderChoices": {
+      "approvalStatus": "APPROVED",
+      "productionEligible": true,
+      "candidateIds": [
+        "HW-GANESHA-001",
+        "HW-GANESHA-002",
+        "HW-GANESHA-003",
+        "HW-GANESHA-004",
+        "HW-GANESHA-005",
+        "HW-GANESHA-006",
+        "HW-GANESHA-007",
+        "HW-GANESHA-008",
+        "HW-GANESHA-009",
+        "HW-GANESHA-010",
+        "HW-SACRED-001",
+        "HW-SACRED-002",
+        "HW-SACRED-003",
+        "HW-SACRED-004",
+        "HW-HEADER-001"
+      ],
+      "neutralHeaderId": "HW-HEADER-001",
+      "noSacredImageryState": {
+        "id": "NO_SACRED_IMAGERY",
+        "isSelectionState": true,
+        "imageFilePath": null,
+        "action": "CLEAR_PRINCIPAL_HEADER",
+        "preserveNeutralDecorativeChoice": true
+      },
+      "rule": "When NO_SACRED_IMAGERY is selected, exclude all sacred candidates; a neutral ornament is optional. Human review applies to mixed, uncertain and advisory profiles."
+    }
+  },
+  {
+    "id": "SURVEY-12",
+    "stepId": "12",
+    "stepName": "Couple representation",
+    "questionId": "hw-12-couple-representation",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "people",
+    "previewSlot": "centre-artwork",
+    "dataDestination": "design.components",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Couple representation: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.components; update the live preview."
+  },
+  {
+    "id": "SURVEY-13",
+    "stepId": "13",
+    "stepName": "Typography",
+    "questionId": "hw-13-typography",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "typography",
+    "previewSlot": "couple-names",
+    "dataDestination": "design.typography",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Typography: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.typography; update the live preview."
+  },
+  {
+    "id": "SURVEY-14",
+    "stepId": "14",
+    "stepName": "Motion and special effects",
+    "questionId": "hw-14-motion-and-special-effects",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": false,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "animations",
+    "previewSlot": "foreground",
+    "dataDestination": "design.animations",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Motion and special effects: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.animations; update the live preview."
+  },
+  {
+    "id": "SURVEY-15",
+    "stepId": "15",
+    "stepName": "Music",
+    "questionId": "hw-15-music",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "FUNCTIONAL",
+    "required": false,
+    "affectsPreview": false,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "music",
+    "previewSlot": null,
+    "dataDestination": "experience.music",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [
+      "SHOW_WHEN_TIER_SUPPORTS_MUSIC_OR_AS_ADDON"
+    ],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "Music: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store functional data at experience.music; do not create a visual asset."
+  },
+  {
+    "id": "SURVEY-16",
+    "stepId": "16",
+    "stepName": "Invitation sections",
+    "questionId": "hw-16-invitation-sections",
+    "questionType": "STRUCTURED_CONTENT",
+    "kind": "CONTENT",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "MULTIPLE",
+    "maximumSelections": null,
+    "registryCategory": null,
+    "previewSlot": "event-summary",
+    "dataDestination": "content.sections",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Invitation sections: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store content data at content.sections; update the live preview."
+  },
+  {
+    "id": "SURVEY-17",
+    "stepId": "17",
+    "stepName": "RSVP preference",
+    "questionId": "hw-17-rsvp-preference",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "FUNCTIONAL",
+    "required": false,
+    "affectsPreview": false,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": "features.rsvp",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "RSVP preference: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store functional data at features.rsvp; do not create a visual asset."
+  },
+  {
+    "id": "SURVEY-18",
+    "stepId": "18",
+    "stepName": "Guest personalisation",
+    "questionId": "hw-18-guest-personalisation",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "FUNCTIONAL",
+    "required": false,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": "invitation-introduction",
+    "dataDestination": "features.personalisation",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Guest personalisation: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store functional data at features.personalisation; update the live preview."
+  },
+  {
+    "id": "SURVEY-19",
+    "stepId": "19",
+    "stepName": "Privacy",
+    "questionId": "hw-19-privacy",
+    "questionType": "RADIO",
+    "kind": "PRIVACY",
+    "required": true,
+    "affectsPreview": false,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": "access.privacy",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "Privacy: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store privacy data at access.privacy; do not create a visual asset."
+  },
+  {
+    "id": "SURVEY-20",
+    "stepId": "20",
+    "stepName": "Enveloped branding",
+    "questionId": "hw-20-enveloped-branding",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "VISUAL",
+    "required": true,
+    "affectsPreview": true,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": "branding",
+    "previewSlot": "branding-footer",
+    "dataDestination": "design.branding",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_BEFORE_APPLY",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": true,
+      "behavior": "Choose a compatible included option for the current tier; do not add a premium charge without confirmation."
+    },
+    "clientExplanation": "Enveloped branding: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store visual data at design.branding; update the live preview."
+  },
+  {
+    "id": "SURVEY-21",
+    "stepId": "21",
+    "stepName": "Budget and service level",
+    "questionId": "hw-21-budget-and-service-level",
+    "questionType": "VISUAL_OPTION_CARD",
+    "kind": "PRICING",
+    "required": true,
+    "affectsPreview": false,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": "pricing",
+    "pricingEffect": "RECALCULATE_ACTIVE_SELECTIONS",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "Budget and service level: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store pricing data at pricing; do not create a visual asset."
+  },
+  {
+    "id": "SURVEY-22",
+    "stepId": "22",
+    "stepName": "Review and submission",
+    "questionId": "hw-22-review-and-submission",
+    "questionType": "FORM",
+    "kind": "ADMINISTRATIVE",
+    "required": true,
+    "affectsPreview": false,
+    "selectionMode": "SINGLE",
+    "maximumSelections": 1,
+    "registryCategory": null,
+    "previewSlot": null,
+    "dataDestination": "workflow.submission",
+    "pricingEffect": "NONE",
+    "tierAvailability": [
+      "BRONZE",
+      "SILVER",
+      "GOLD",
+      "PLATINUM"
+    ],
+    "conditionalDisplayRules": [],
+    "compatibilityValidation": "VALIDATE_ON_SUBMIT",
+    "defaultSelection": null,
+    "letEnvelopedChoose": {
+      "enabled": false
+    },
+    "clientExplanation": "Review and submission: choose what fits your celebration. Unavailable choices remain visible with a clear reason.",
+    "adminExplanation": "Store administrative data at workflow.submission; do not create a visual asset."
+  }
+]

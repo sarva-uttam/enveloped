@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/placement-rule.schema.json",
+  "title": "placement-rule schema",
+  "type": "object",
+  "required": [
+    "id",
+    "slot",
+    "x",
+    "y",
+    "width",
+    "height",
+    "logicalCanvas"
+  ],
+  "properties": {
+    "id": {},
+    "slot": {},
+    "x": {},
+    "y": {},
+    "width": {},
+    "height": {},
+    "logicalCanvas": {}
+  },
+  "additionalProperties": true
+}

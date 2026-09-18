@@ -17,6 +17,17 @@
   --platinum-soft: #f1e8fd;
   --blush: #c26b7a;
   --blush-soft: #fbeaec;
+
+  /* Stage 11 — the two palette members the brief calls for that the
+     Stage 1-10 token set never needed: a warm metallic accent for
+     "premium indicator" treatments (badges, dividers, the templates
+     showcase) and a deep editorial accent for emphasis text/rules that
+     needs to read as more formal than --blush without going as dark as
+     --ink. Additive only; nothing above is renamed or removed. */
+  --champagne: #cba36b;
+  --champagne-soft: #f6efe0;
+  --burgundy: #7a2632;
+  --burgundy-soft: #f3e4e2;
 }
 
 @theme inline {
@@ -36,6 +47,10 @@
   --color-platinum-soft: var(--platinum-soft);
   --color-blush: var(--blush);
   --color-blush-soft: var(--blush-soft);
+  --color-champagne: var(--champagne);
+  --color-champagne-soft: var(--champagne-soft);
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-soft: var(--burgundy-soft);
 
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
@@ -78,4 +93,154 @@ body {
 
 .animate-shimmer {
   animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Stage 7 (see PROJECT_STATUS.md's Stage 7 section, Part B/D). */
+
+/* Global reduced-motion safety net for every plain-CSS decorative
+   animation in this project (FloatingMotif's `drift`, the `glow-pulse`
+   below, and `shimmer` — kept defensively even though its only former
+   user, the pre-Stage-7 MusicToggle, is gone) — independent of, and in
+   addition to, the JS-level useReducedMotion() check Framer Motion
+   elements use (src/lib/motion/useReducedMotion.ts). A user who set this
+   OS/browser preference gets it honored even for the parts of the page
+   that have no JavaScript motion logic to check it at all. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift,
+  .animate-shimmer,
+  .animate-glow-pulse {
+    animation: none !important;
+  }
+}
+
+/* "Avoid making the invitation invisible when JavaScript fails" — every
+   Framer Motion scroll-reveal element (AnimateIn.tsx) renders its
+   `initial` (pre-reveal, e.g. opacity: 0) state as real inline styles in
+   the server-rendered HTML; only client JS ever flips it to its
+   revealed state. `scripting: none` is a real, well-supported media
+   feature meaning "no scripting available on this browsing context at
+   all" (not merely "hasn't run yet") — when it matches, no JS will EVER
+   run to complete the reveal, so this override forces every such
+   element to its fully-visible, final resting state instead, using
+   !important specifically because it must win over the inline style
+   Framer Motion itself sets. AnimateIn.tsx tags every motion element it
+   renders with the `data-motion-reveal` attribute this rule targets. */
+@media (scripting: none) {
+  [data-motion-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* AtmosphericEffect.tsx (Part D) — the neutral-classic pack's "soft
+   paper glow" treatment: a few slow-pulsing, blurred radial highlights,
+   not emoji/particles. */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(0.96); }
+  50% { opacity: 0.32; transform: scale(1.04); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 6s ease-in-out infinite;
+}
+
+/* Pauses every decorative CSS animation this project defines when the
+   page is hidden (backgrounded tab, minimized window, locked screen) —
+   toggled via the `data-effects-paused` attribute AtmosphericEffect.tsx
+   sets on its own wrapper in response to the Page Visibility API, not a
+   guess based on scroll/focus. `animation-play-state: paused` (not
+   `display: none`/`visibility: hidden`) keeps the element and its
+   current frame in place, so nothing jumps or resets when the page
+   becomes visible again — it simply resumes exactly where it left off. */
+[data-effects-paused="true"] .animate-drift,
+[data-effects-paused="true"] .animate-glow-pulse,
+[data-effects-paused="true"] .animate-shimmer {
+  animation-play-state: paused;
+}
+
+/* Homepage "How it works" (src/app/page.tsx) — each step's hover/focus
+   state is a small `-translate-y` lift plus a colour/shadow brighten.
+   The lift is exactly the kind of small, discrete transform-on-hover
+   `prefers-reduced-motion` guidance says to skip; the colour/border/
+   shadow brighten is not motion at all, so it stays. Overriding
+   `transform` (not `transition-property`) means the element simply
+   never moves under this preference, rather than moving instantly
+   without an easing curve — still motion, just less considerate of it. */
+@media (prefers-reduced-motion: reduce) {
+  .how-step:hover,
+  .how-step:focus-visible {
+    transform: none !important;
+  }
+}
+
+/* Stage 9 accessibility correction (see PROJECT_STATUS.md's Stage 9
+ * section) — the ONE centralized keyboard-focus treatment for every
+ * interactive control across the authenticated admin interface and the
+ * client review UI, applied via a single `.focus-ring` class rather than
+ * scattered per-component Tailwind ring utilities. Replaces an earlier
+ * version of this fix (confined to src/app/preview/[token]/ReviewSection.tsx
+ * alone) that used `focus-visible:ring-ink`, a box-shadow-only technique
+ * with no fallback once Windows high-contrast/forced-colors mode strips
+ * box-shadow entirely.
+ *
+ * Two independent layers, both gated on `:focus-visible` (never plain
+ * `:focus`) so a mouse/touch click never shows it, only real keyboard
+ * (or assistive-technology) focus:
+ *
+ * 1. A real `outline` — `outline-color: transparent` in ordinary
+ *    rendering (invisible there; the box-shadow below does the visible
+ *    work), but `outline-style`/`outline-width` are still genuinely
+ *    present, which is what matters for forced-colors mode: that mode
+ *    overrides author-specified colors wholesale but PRESERVES the
+ *    outline's existence and geometry, painting it in the OS's chosen
+ *    high-contrast highlight color — the same reason `box-shadow` alone
+ *    is not sufficient (forced-colors mode drops it entirely, since it's
+ *    treated as decorative).
+ * 2. A two-color box-shadow "halo," for every ordinary (non-forced-
+ *    colors) rendering context: a `--paper`-colored inner ring directly
+ *    against the control, then an `--ink`-colored outer ring beyond it.
+ *    Exactly one of the two always contrasts against whatever the
+ *    control's own background happens to be — the paper ring shows
+ *    clearly against a dark (`ink`) button, the ink ring shows clearly
+ *    against a light (`paper`/`paper-raised`) one, and a mid-tone
+ *    background (e.g. `blush`) still meets contrast against the darker
+ *    of the two. Pure `box-shadow`, not `outline-width`/`border`, so
+ *    focusing a control never shifts surrounding layout.
+ */
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 4px var(--ink);
+}
+
+/* Stage 11 sponsor belt (src/components/site/SponsorBelt.tsx) — a
+   right-to-left CSS marquee. The track is rendered twice back-to-back
+   and translated exactly -50%, so the loop point is seamless. Paused
+   via `data-paused` (set on hover/focus-within AND by an explicit,
+   keyboard-reachable pause button, so the control isn't mouse-only) and
+   fully replaced by a static wrapped row under reduced motion, matching
+   the brief's "no scroll hijacking / respect reduced motion" rule. */
+@keyframes marquee-rtl {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee-rtl 32s linear infinite;
+}
+
+.animate-marquee[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
 }

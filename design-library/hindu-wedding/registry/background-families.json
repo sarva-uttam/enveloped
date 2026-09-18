@@ -1,0 +1,1918 @@
+[
+  {
+    "variantId": "HW-BG-001-PALE",
+    "parentBackgroundId": "HW-BG-001",
+    "publicFamilyName": "Ivory Whisper",
+    "publicVariantName": "Ivory Whisper — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "airy and luminous interpretation of warm ivory handmade paper",
+    "dominantColours": [
+      "ivory",
+      "cream",
+      "parchment beige"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "antique gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Ivory Whisper: warm ivory handmade paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001/hw-bg-001-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-001-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Ivory Whisper, pale colour mood: airy and luminous warm ivory handmade paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-001-SUBTLE",
+    "parentBackgroundId": "HW-BG-001",
+    "publicFamilyName": "Ivory Whisper",
+    "publicVariantName": "Ivory Whisper — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "balanced and restrained interpretation of warm ivory handmade paper",
+    "dominantColours": [
+      "ivory",
+      "cream",
+      "parchment beige"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "antique gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Ivory Whisper: warm ivory handmade paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001/hw-bg-001-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-001-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Ivory Whisper, subtle colour mood: balanced and restrained warm ivory handmade paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-001-DEEP",
+    "parentBackgroundId": "HW-BG-001",
+    "publicFamilyName": "Ivory Whisper",
+    "publicVariantName": "Ivory Whisper — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "rich colour with stronger presence interpretation of warm ivory handmade paper",
+    "dominantColours": [
+      "ivory",
+      "cream",
+      "parchment beige"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "antique gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Ivory Whisper: warm ivory handmade paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001/hw-bg-001-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-001-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Ivory Whisper, deep colour mood: rich colour with stronger presence warm ivory handmade paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-001-DARK",
+    "parentBackgroundId": "HW-BG-001",
+    "publicFamilyName": "Ivory Whisper",
+    "publicVariantName": "Ivory Whisper — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "dramatic and luxurious interpretation of warm ivory handmade paper",
+    "dominantColours": [
+      "ivory",
+      "cream",
+      "parchment beige"
+    ],
+    "recommendedTextColours": [
+      "charcoal",
+      "espresso",
+      "antique gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Ivory Whisper: warm ivory handmade paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-001/hw-bg-001-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-001-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Ivory Whisper, dark colour mood: dramatic and luxurious warm ivory handmade paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-002-PALE",
+    "parentBackgroundId": "HW-BG-002",
+    "publicFamilyName": "Champagne Parchment",
+    "publicVariantName": "Champagne Parchment — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "airy and luminous interpretation of champagne parchment with softened aged edges",
+    "dominantColours": [
+      "cream",
+      "champagne",
+      "honey",
+      "warm umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "burgundy",
+      "deep bronze"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Champagne Parchment: champagne parchment with softened aged edges; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002/hw-bg-002-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-002-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Champagne Parchment, pale colour mood: airy and luminous champagne parchment with softened aged edges background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-002-SUBTLE",
+    "parentBackgroundId": "HW-BG-002",
+    "publicFamilyName": "Champagne Parchment",
+    "publicVariantName": "Champagne Parchment — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "balanced and restrained interpretation of champagne parchment with softened aged edges",
+    "dominantColours": [
+      "cream",
+      "champagne",
+      "honey",
+      "warm umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "burgundy",
+      "deep bronze"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Champagne Parchment: champagne parchment with softened aged edges; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002/hw-bg-002-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-002-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Champagne Parchment, subtle colour mood: balanced and restrained champagne parchment with softened aged edges background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-002-DEEP",
+    "parentBackgroundId": "HW-BG-002",
+    "publicFamilyName": "Champagne Parchment",
+    "publicVariantName": "Champagne Parchment — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "rich colour with stronger presence interpretation of champagne parchment with softened aged edges",
+    "dominantColours": [
+      "cream",
+      "champagne",
+      "honey",
+      "warm umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "burgundy",
+      "deep bronze"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Champagne Parchment: champagne parchment with softened aged edges; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002/hw-bg-002-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-002-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Champagne Parchment, deep colour mood: rich colour with stronger presence champagne parchment with softened aged edges background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-002-DARK",
+    "parentBackgroundId": "HW-BG-002",
+    "publicFamilyName": "Champagne Parchment",
+    "publicVariantName": "Champagne Parchment — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "dramatic and luxurious interpretation of champagne parchment with softened aged edges",
+    "dominantColours": [
+      "cream",
+      "champagne",
+      "honey",
+      "warm umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "burgundy",
+      "deep bronze"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Champagne Parchment: champagne parchment with softened aged edges; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-002/hw-bg-002-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-002-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Champagne Parchment, dark colour mood: dramatic and luxurious champagne parchment with softened aged edges background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-003-PALE",
+    "parentBackgroundId": "HW-BG-003",
+    "publicFamilyName": "Blush Petal Wash",
+    "publicVariantName": "Blush Petal Wash — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "SILVER",
+    "paletteDescription": "airy and luminous interpretation of diffused blush watercolour wash",
+    "dominantColours": [
+      "pearl",
+      "blush pink",
+      "dusty rose",
+      "plum"
+    ],
+    "recommendedTextColours": [
+      "plum",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Blush Petal Wash: diffused blush watercolour wash; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003/hw-bg-003-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-003-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Blush Petal Wash, pale colour mood: airy and luminous diffused blush watercolour wash background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-003-SUBTLE",
+    "parentBackgroundId": "HW-BG-003",
+    "publicFamilyName": "Blush Petal Wash",
+    "publicVariantName": "Blush Petal Wash — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "SILVER",
+    "paletteDescription": "balanced and restrained interpretation of diffused blush watercolour wash",
+    "dominantColours": [
+      "pearl",
+      "blush pink",
+      "dusty rose",
+      "plum"
+    ],
+    "recommendedTextColours": [
+      "plum",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Blush Petal Wash: diffused blush watercolour wash; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003/hw-bg-003-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-003-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Blush Petal Wash, subtle colour mood: balanced and restrained diffused blush watercolour wash background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-003-DEEP",
+    "parentBackgroundId": "HW-BG-003",
+    "publicFamilyName": "Blush Petal Wash",
+    "publicVariantName": "Blush Petal Wash — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "SILVER",
+    "paletteDescription": "rich colour with stronger presence interpretation of diffused blush watercolour wash",
+    "dominantColours": [
+      "pearl",
+      "blush pink",
+      "dusty rose",
+      "plum"
+    ],
+    "recommendedTextColours": [
+      "plum",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Blush Petal Wash: diffused blush watercolour wash; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003/hw-bg-003-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-003-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Blush Petal Wash, deep colour mood: rich colour with stronger presence diffused blush watercolour wash background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-003-DARK",
+    "parentBackgroundId": "HW-BG-003",
+    "publicFamilyName": "Blush Petal Wash",
+    "publicVariantName": "Blush Petal Wash — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "SILVER",
+    "paletteDescription": "dramatic and luxurious interpretation of diffused blush watercolour wash",
+    "dominantColours": [
+      "pearl",
+      "blush pink",
+      "dusty rose",
+      "plum"
+    ],
+    "recommendedTextColours": [
+      "plum",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Blush Petal Wash: diffused blush watercolour wash; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-003/hw-bg-003-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-003-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Blush Petal Wash, dark colour mood: dramatic and luxurious diffused blush watercolour wash background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-004-PALE",
+    "parentBackgroundId": "HW-BG-004",
+    "publicFamilyName": "Sage Serenity",
+    "publicVariantName": "Sage Serenity — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "airy and luminous interpretation of quiet sage mineral-paper texture",
+    "dominantColours": [
+      "mist green",
+      "sage",
+      "olive",
+      "forest"
+    ],
+    "recommendedTextColours": [
+      "forest",
+      "charcoal",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Sage Serenity: quiet sage mineral-paper texture; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004/hw-bg-004-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-004-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Sage Serenity, pale colour mood: airy and luminous quiet sage mineral-paper texture background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-004-SUBTLE",
+    "parentBackgroundId": "HW-BG-004",
+    "publicFamilyName": "Sage Serenity",
+    "publicVariantName": "Sage Serenity — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "balanced and restrained interpretation of quiet sage mineral-paper texture",
+    "dominantColours": [
+      "mist green",
+      "sage",
+      "olive",
+      "forest"
+    ],
+    "recommendedTextColours": [
+      "forest",
+      "charcoal",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Sage Serenity: quiet sage mineral-paper texture; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004/hw-bg-004-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-004-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Sage Serenity, subtle colour mood: balanced and restrained quiet sage mineral-paper texture background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-004-DEEP",
+    "parentBackgroundId": "HW-BG-004",
+    "publicFamilyName": "Sage Serenity",
+    "publicVariantName": "Sage Serenity — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "rich colour with stronger presence interpretation of quiet sage mineral-paper texture",
+    "dominantColours": [
+      "mist green",
+      "sage",
+      "olive",
+      "forest"
+    ],
+    "recommendedTextColours": [
+      "forest",
+      "charcoal",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Sage Serenity: quiet sage mineral-paper texture; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004/hw-bg-004-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-004-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Sage Serenity, deep colour mood: rich colour with stronger presence quiet sage mineral-paper texture background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-004-DARK",
+    "parentBackgroundId": "HW-BG-004",
+    "publicFamilyName": "Sage Serenity",
+    "publicVariantName": "Sage Serenity — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "BRONZE",
+    "paletteDescription": "dramatic and luxurious interpretation of quiet sage mineral-paper texture",
+    "dominantColours": [
+      "mist green",
+      "sage",
+      "olive",
+      "forest"
+    ],
+    "recommendedTextColours": [
+      "forest",
+      "charcoal",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Sage Serenity: quiet sage mineral-paper texture; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-004/hw-bg-004-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-004-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Sage Serenity, dark colour mood: dramatic and luxurious quiet sage mineral-paper texture background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-005-PALE",
+    "parentBackgroundId": "HW-BG-005",
+    "publicFamilyName": "Ruby Velvet",
+    "publicVariantName": "Ruby Velvet — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "SILVER",
+    "paletteDescription": "airy and luminous interpretation of matte ruby velvet with restrained tonal depth",
+    "dominantColours": [
+      "rose",
+      "ruby",
+      "garnet",
+      "oxblood"
+    ],
+    "recommendedTextColours": [
+      "burgundy",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Ruby Velvet: matte ruby velvet with restrained tonal depth; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005/hw-bg-005-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-005-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Ruby Velvet, pale colour mood: airy and luminous matte ruby velvet with restrained tonal depth background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-005-SUBTLE",
+    "parentBackgroundId": "HW-BG-005",
+    "publicFamilyName": "Ruby Velvet",
+    "publicVariantName": "Ruby Velvet — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "SILVER",
+    "paletteDescription": "balanced and restrained interpretation of matte ruby velvet with restrained tonal depth",
+    "dominantColours": [
+      "rose",
+      "ruby",
+      "garnet",
+      "oxblood"
+    ],
+    "recommendedTextColours": [
+      "burgundy",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Ruby Velvet: matte ruby velvet with restrained tonal depth; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005/hw-bg-005-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-005-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Ruby Velvet, subtle colour mood: balanced and restrained matte ruby velvet with restrained tonal depth background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-005-DEEP",
+    "parentBackgroundId": "HW-BG-005",
+    "publicFamilyName": "Ruby Velvet",
+    "publicVariantName": "Ruby Velvet — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "SILVER",
+    "paletteDescription": "rich colour with stronger presence interpretation of matte ruby velvet with restrained tonal depth",
+    "dominantColours": [
+      "rose",
+      "ruby",
+      "garnet",
+      "oxblood"
+    ],
+    "recommendedTextColours": [
+      "burgundy",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Ruby Velvet: matte ruby velvet with restrained tonal depth; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005/hw-bg-005-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-005-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Ruby Velvet, deep colour mood: rich colour with stronger presence matte ruby velvet with restrained tonal depth background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-005-DARK",
+    "parentBackgroundId": "HW-BG-005",
+    "publicFamilyName": "Ruby Velvet",
+    "publicVariantName": "Ruby Velvet — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "SILVER",
+    "paletteDescription": "dramatic and luxurious interpretation of matte ruby velvet with restrained tonal depth",
+    "dominantColours": [
+      "rose",
+      "ruby",
+      "garnet",
+      "oxblood"
+    ],
+    "recommendedTextColours": [
+      "burgundy",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Ruby Velvet: matte ruby velvet with restrained tonal depth; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-005/hw-bg-005-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-005-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Ruby Velvet, dark colour mood: dramatic and luxurious matte ruby velvet with restrained tonal depth background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-006-PALE",
+    "parentBackgroundId": "HW-BG-006",
+    "publicFamilyName": "Gilded Sandstone",
+    "publicVariantName": "Gilded Sandstone — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "GOLD",
+    "paletteDescription": "airy and luminous interpretation of fine sandstone and mineral plaster",
+    "dominantColours": [
+      "ivory",
+      "sandstone",
+      "ochre",
+      "dark umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "antique gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Gilded Sandstone: fine sandstone and mineral plaster; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006/hw-bg-006-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-006-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Gilded Sandstone, pale colour mood: airy and luminous fine sandstone and mineral plaster background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-006-SUBTLE",
+    "parentBackgroundId": "HW-BG-006",
+    "publicFamilyName": "Gilded Sandstone",
+    "publicVariantName": "Gilded Sandstone — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "GOLD",
+    "paletteDescription": "balanced and restrained interpretation of fine sandstone and mineral plaster",
+    "dominantColours": [
+      "ivory",
+      "sandstone",
+      "ochre",
+      "dark umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "antique gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Gilded Sandstone: fine sandstone and mineral plaster; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006/hw-bg-006-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-006-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Gilded Sandstone, subtle colour mood: balanced and restrained fine sandstone and mineral plaster background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-006-DEEP",
+    "parentBackgroundId": "HW-BG-006",
+    "publicFamilyName": "Gilded Sandstone",
+    "publicVariantName": "Gilded Sandstone — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "GOLD",
+    "paletteDescription": "rich colour with stronger presence interpretation of fine sandstone and mineral plaster",
+    "dominantColours": [
+      "ivory",
+      "sandstone",
+      "ochre",
+      "dark umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "antique gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Gilded Sandstone: fine sandstone and mineral plaster; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006/hw-bg-006-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-006-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Gilded Sandstone, deep colour mood: rich colour with stronger presence fine sandstone and mineral plaster background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-006-DARK",
+    "parentBackgroundId": "HW-BG-006",
+    "publicFamilyName": "Gilded Sandstone",
+    "publicVariantName": "Gilded Sandstone — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "GOLD",
+    "paletteDescription": "dramatic and luxurious interpretation of fine sandstone and mineral plaster",
+    "dominantColours": [
+      "ivory",
+      "sandstone",
+      "ochre",
+      "dark umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "antique gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Gilded Sandstone: fine sandstone and mineral plaster; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-006/hw-bg-006-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-006-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Gilded Sandstone, dark colour mood: dramatic and luxurious fine sandstone and mineral plaster background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-007-PALE",
+    "parentBackgroundId": "HW-BG-007",
+    "publicFamilyName": "Peacock Teal",
+    "publicVariantName": "Peacock Teal — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "SILVER",
+    "paletteDescription": "airy and luminous interpretation of matte paper-textile teal field",
+    "dominantColours": [
+      "aqua mist",
+      "teal",
+      "peacock",
+      "midnight teal"
+    ],
+    "recommendedTextColours": [
+      "deep teal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Peacock Teal: matte paper-textile teal field; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007/hw-bg-007-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-007-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Peacock Teal, pale colour mood: airy and luminous matte paper-textile teal field background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-007-SUBTLE",
+    "parentBackgroundId": "HW-BG-007",
+    "publicFamilyName": "Peacock Teal",
+    "publicVariantName": "Peacock Teal — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "SILVER",
+    "paletteDescription": "balanced and restrained interpretation of matte paper-textile teal field",
+    "dominantColours": [
+      "aqua mist",
+      "teal",
+      "peacock",
+      "midnight teal"
+    ],
+    "recommendedTextColours": [
+      "deep teal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Peacock Teal: matte paper-textile teal field; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007/hw-bg-007-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-007-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Peacock Teal, subtle colour mood: balanced and restrained matte paper-textile teal field background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-007-DEEP",
+    "parentBackgroundId": "HW-BG-007",
+    "publicFamilyName": "Peacock Teal",
+    "publicVariantName": "Peacock Teal — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "SILVER",
+    "paletteDescription": "rich colour with stronger presence interpretation of matte paper-textile teal field",
+    "dominantColours": [
+      "aqua mist",
+      "teal",
+      "peacock",
+      "midnight teal"
+    ],
+    "recommendedTextColours": [
+      "deep teal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Peacock Teal: matte paper-textile teal field; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007/hw-bg-007-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-007-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Peacock Teal, deep colour mood: rich colour with stronger presence matte paper-textile teal field background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-007-DARK",
+    "parentBackgroundId": "HW-BG-007",
+    "publicFamilyName": "Peacock Teal",
+    "publicVariantName": "Peacock Teal — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "SILVER",
+    "paletteDescription": "dramatic and luxurious interpretation of matte paper-textile teal field",
+    "dominantColours": [
+      "aqua mist",
+      "teal",
+      "peacock",
+      "midnight teal"
+    ],
+    "recommendedTextColours": [
+      "deep teal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Peacock Teal: matte paper-textile teal field; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/paper-textures/hw-bg-007/hw-bg-007-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-007-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H03",
+      "H07",
+      "H08"
+    ],
+    "altText": "Peacock Teal, dark colour mood: dramatic and luxurious matte paper-textile teal field background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-008-PALE",
+    "parentBackgroundId": "HW-BG-008",
+    "publicFamilyName": "Temple Ember",
+    "publicVariantName": "Temple Ember — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "airy and luminous interpretation of smoky amber illumination and ember atmosphere",
+    "dominantColours": [
+      "warm cream",
+      "amber",
+      "ember orange",
+      "soot brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Temple Ember: smoky amber illumination and ember atmosphere; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008/hw-bg-008-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-008-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Temple Ember, pale colour mood: airy and luminous smoky amber illumination and ember atmosphere background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-008-SUBTLE",
+    "parentBackgroundId": "HW-BG-008",
+    "publicFamilyName": "Temple Ember",
+    "publicVariantName": "Temple Ember — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "balanced and restrained interpretation of smoky amber illumination and ember atmosphere",
+    "dominantColours": [
+      "warm cream",
+      "amber",
+      "ember orange",
+      "soot brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Temple Ember: smoky amber illumination and ember atmosphere; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008/hw-bg-008-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-008-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Temple Ember, subtle colour mood: balanced and restrained smoky amber illumination and ember atmosphere background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-008-DEEP",
+    "parentBackgroundId": "HW-BG-008",
+    "publicFamilyName": "Temple Ember",
+    "publicVariantName": "Temple Ember — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "rich colour with stronger presence interpretation of smoky amber illumination and ember atmosphere",
+    "dominantColours": [
+      "warm cream",
+      "amber",
+      "ember orange",
+      "soot brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Temple Ember: smoky amber illumination and ember atmosphere; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008/hw-bg-008-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-008-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Temple Ember, deep colour mood: rich colour with stronger presence smoky amber illumination and ember atmosphere background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-008-DARK",
+    "parentBackgroundId": "HW-BG-008",
+    "publicFamilyName": "Temple Ember",
+    "publicVariantName": "Temple Ember — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "dramatic and luxurious interpretation of smoky amber illumination and ember atmosphere",
+    "dominantColours": [
+      "warm cream",
+      "amber",
+      "ember orange",
+      "soot brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Temple Ember: smoky amber illumination and ember atmosphere; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/environmental-scenes/hw-bg-008/hw-bg-008-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-008-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H02",
+      "H04",
+      "H05",
+      "H08"
+    ],
+    "altText": "Temple Ember, dark colour mood: dramatic and luxurious smoky amber illumination and ember atmosphere background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-009-PALE",
+    "parentBackgroundId": "HW-BG-009",
+    "publicFamilyName": "Golden Veil",
+    "publicVariantName": "Golden Veil — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "airy and luminous interpretation of luminous translucent gold veils",
+    "dominantColours": [
+      "pearl",
+      "champagne",
+      "burnished gold",
+      "black-brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "metallic gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Golden Veil: luminous translucent gold veils; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009/hw-bg-009-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-009-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Golden Veil, pale colour mood: airy and luminous luminous translucent gold veils background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-009-SUBTLE",
+    "parentBackgroundId": "HW-BG-009",
+    "publicFamilyName": "Golden Veil",
+    "publicVariantName": "Golden Veil — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "balanced and restrained interpretation of luminous translucent gold veils",
+    "dominantColours": [
+      "pearl",
+      "champagne",
+      "burnished gold",
+      "black-brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "metallic gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Golden Veil: luminous translucent gold veils; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009/hw-bg-009-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-009-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Golden Veil, subtle colour mood: balanced and restrained luminous translucent gold veils background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-009-DEEP",
+    "parentBackgroundId": "HW-BG-009",
+    "publicFamilyName": "Golden Veil",
+    "publicVariantName": "Golden Veil — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "rich colour with stronger presence interpretation of luminous translucent gold veils",
+    "dominantColours": [
+      "pearl",
+      "champagne",
+      "burnished gold",
+      "black-brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "metallic gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Golden Veil: luminous translucent gold veils; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009/hw-bg-009-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-009-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Golden Veil, deep colour mood: rich colour with stronger presence luminous translucent gold veils background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-009-DARK",
+    "parentBackgroundId": "HW-BG-009",
+    "publicFamilyName": "Golden Veil",
+    "publicVariantName": "Golden Veil — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "PLATINUM",
+    "paletteDescription": "dramatic and luxurious interpretation of luminous translucent gold veils",
+    "dominantColours": [
+      "pearl",
+      "champagne",
+      "burnished gold",
+      "black-brown"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "metallic gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Golden Veil: luminous translucent gold veils; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-009/hw-bg-009-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-009-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Golden Veil, dark colour mood: dramatic and luxurious luminous translucent gold veils background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-010-PALE",
+    "parentBackgroundId": "HW-BG-010",
+    "publicFamilyName": "Rosewater Cloud",
+    "publicVariantName": "Rosewater Cloud — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "GOLD",
+    "paletteDescription": "airy and luminous interpretation of rosewater cloud wash with mineral blooms",
+    "dominantColours": [
+      "pearl",
+      "peach",
+      "rose",
+      "aubergine"
+    ],
+    "recommendedTextColours": [
+      "aubergine",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Rosewater Cloud: rosewater cloud wash with mineral blooms; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010/hw-bg-010-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-010-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Rosewater Cloud, pale colour mood: airy and luminous rosewater cloud wash with mineral blooms background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-010-SUBTLE",
+    "parentBackgroundId": "HW-BG-010",
+    "publicFamilyName": "Rosewater Cloud",
+    "publicVariantName": "Rosewater Cloud — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "GOLD",
+    "paletteDescription": "balanced and restrained interpretation of rosewater cloud wash with mineral blooms",
+    "dominantColours": [
+      "pearl",
+      "peach",
+      "rose",
+      "aubergine"
+    ],
+    "recommendedTextColours": [
+      "aubergine",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Rosewater Cloud: rosewater cloud wash with mineral blooms; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010/hw-bg-010-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-010-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Rosewater Cloud, subtle colour mood: balanced and restrained rosewater cloud wash with mineral blooms background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-010-DEEP",
+    "parentBackgroundId": "HW-BG-010",
+    "publicFamilyName": "Rosewater Cloud",
+    "publicVariantName": "Rosewater Cloud — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "GOLD",
+    "paletteDescription": "rich colour with stronger presence interpretation of rosewater cloud wash with mineral blooms",
+    "dominantColours": [
+      "pearl",
+      "peach",
+      "rose",
+      "aubergine"
+    ],
+    "recommendedTextColours": [
+      "aubergine",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Rosewater Cloud: rosewater cloud wash with mineral blooms; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010/hw-bg-010-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-010-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Rosewater Cloud, deep colour mood: rich colour with stronger presence rosewater cloud wash with mineral blooms background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-010-DARK",
+    "parentBackgroundId": "HW-BG-010",
+    "publicFamilyName": "Rosewater Cloud",
+    "publicVariantName": "Rosewater Cloud — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "GOLD",
+    "paletteDescription": "dramatic and luxurious interpretation of rosewater cloud wash with mineral blooms",
+    "dominantColours": [
+      "pearl",
+      "peach",
+      "rose",
+      "aubergine"
+    ],
+    "recommendedTextColours": [
+      "aubergine",
+      "oxblood",
+      "ivory",
+      "pale gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Rosewater Cloud: rosewater cloud wash with mineral blooms; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-010/hw-bg-010-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-010-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H06",
+      "H08"
+    ],
+    "altText": "Rosewater Cloud, dark colour mood: dramatic and luxurious rosewater cloud wash with mineral blooms background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-011-PALE",
+    "parentBackgroundId": "HW-BG-011",
+    "publicFamilyName": "Amber Reverie",
+    "publicVariantName": "Amber Reverie — Pale",
+    "colourMood": "PALE",
+    "minimumTier": "GOLD",
+    "paletteDescription": "airy and luminous interpretation of soft-focus amber glow on smooth atmospheric paper",
+    "dominantColours": [
+      "cream",
+      "honey",
+      "amber",
+      "burnt umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Dark ink recommended; verify fine gold against the light centre.",
+    "promptRecord": "Create the pale colour mood for Amber Reverie: soft-focus amber glow on smooth atmospheric paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011/hw-bg-011-pale-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-011-pale-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Amber Reverie, pale colour mood: airy and luminous soft-focus amber glow on smooth atmospheric paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-011-SUBTLE",
+    "parentBackgroundId": "HW-BG-011",
+    "publicFamilyName": "Amber Reverie",
+    "publicVariantName": "Amber Reverie — Subtle",
+    "colourMood": "SUBTLE",
+    "minimumTier": "GOLD",
+    "paletteDescription": "balanced and restrained interpretation of soft-focus amber glow on smooth atmospheric paper",
+    "dominantColours": [
+      "cream",
+      "honey",
+      "amber",
+      "burnt umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Dark ink preferred; ivory may work only on darker edge zones.",
+    "promptRecord": "Create the subtle colour mood for Amber Reverie: soft-focus amber glow on smooth atmospheric paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011/hw-bg-011-subtle-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-011-subtle-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Amber Reverie, subtle colour mood: balanced and restrained soft-focus amber glow on smooth atmospheric paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-011-DEEP",
+    "parentBackgroundId": "HW-BG-011",
+    "publicFamilyName": "Amber Reverie",
+    "publicVariantName": "Amber Reverie — Deep",
+    "colourMood": "DEEP",
+    "minimumTier": "GOLD",
+    "paletteDescription": "rich colour with stronger presence interpretation of soft-focus amber glow on smooth atmospheric paper",
+    "dominantColours": [
+      "cream",
+      "honey",
+      "amber",
+      "burnt umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Ivory or pale gold recommended; dark ink only where the centre remains light.",
+    "promptRecord": "Create the deep colour mood for Amber Reverie: soft-focus amber glow on smooth atmospheric paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011/hw-bg-011-deep-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-011-deep-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Amber Reverie, deep colour mood: rich colour with stronger presence soft-focus amber glow on smooth atmospheric paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  },
+  {
+    "variantId": "HW-BG-011-DARK",
+    "parentBackgroundId": "HW-BG-011",
+    "publicFamilyName": "Amber Reverie",
+    "publicVariantName": "Amber Reverie — Dark",
+    "colourMood": "DARK",
+    "minimumTier": "GOLD",
+    "paletteDescription": "dramatic and luxurious interpretation of soft-focus amber glow on smooth atmospheric paper",
+    "dominantColours": [
+      "cream",
+      "honey",
+      "amber",
+      "burnt umber"
+    ],
+    "recommendedTextColours": [
+      "espresso",
+      "charcoal",
+      "ivory",
+      "champagne gold"
+    ],
+    "contrastNotes": "Ivory, warm white or gold typography recommended.",
+    "promptRecord": "Create the dark colour mood for Amber Reverie: soft-focus amber glow on smooth atmospheric paper; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.",
+    "provenance": "Retained from the first reviewed background batch and approved as this colour mood.",
+    "sourceFilePath": "design-library/hindu-wedding/components/backgrounds/colour-washes/hw-bg-011/hw-bg-011-dark-v1-1000x1778.webp",
+    "previewFilePath": "design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-011-dark-v1-option-card.webp",
+    "technical": {
+      "width": 1000,
+      "height": 1778,
+      "aspectRatio": "9:16",
+      "format": "WEBP",
+      "colourSpace": "sRGB",
+      "surveyPreviewWidth": 540,
+      "surveyPreviewHeight": 960
+    },
+    "intendedTemplates": [
+      "H01",
+      "H02",
+      "H05",
+      "H06",
+      "H08"
+    ],
+    "altText": "Amber Reverie, dark colour mood: dramatic and luxurious soft-focus amber glow on smooth atmospheric paper background with a clear central invitation area.",
+    "reviewStatus": "APPROVED",
+    "ownerApprovalDate": "2026-09-18"
+  }
+]

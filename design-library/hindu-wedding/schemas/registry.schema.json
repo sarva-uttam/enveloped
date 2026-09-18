@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/registry.schema.json",
+  "title": "registry schema",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "logicalCanvas",
+    "registryFiles"
+  ],
+  "properties": {
+    "id": {},
+    "name": {},
+    "version": {},
+    "logicalCanvas": {},
+    "registryFiles": {}
+  },
+  "additionalProperties": true
+}

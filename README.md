@@ -78,6 +78,123 @@ Before production release, the remaining work includes broader end-to-end covera
 
 See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for implementation evidence and [REVIEW_BRIEF.md](./REVIEW_BRIEF.md) for the independent-review history and security decisions.
 
+### Database schema
+
+`supabase/migrations/*.sql` is the versioned source of truth for the
+schema; `supabase/schema.sql` is a generated reference snapshot (see
+[supabase/migrations/README.md](./supabase/migrations/README.md) for the
+workflow). As of a 2026-09-09 reconciliation, the live database is ahead
+of the self-service flow described above — it also carries a concierge
+intake table (`requests`), a design-template catalogue (`templates`), an
+offline-payment ledger (`invite_payment_records`), and generator-oriented
+columns on `invites` (`design_spec`, `generator_content`, `composition`,
+`published_at`, and others), none of which the current application code
+reads or writes yet. `PROJECT_STATUS.md`'s "Stage 0" section has the full
+account, including a known defect (publication and payment are not yet
+independent for these columns) and a known limitation (the recovered
+`occasion` vocabulary is Hindu-wedding-specific, not the general,
+culturally-extensible model described below).
+
+A database-backed administrator identity (`app_admins` + `is_admin()`)
+and a server-protected `/admin` placeholder were added in Stage 2 —
+`PROJECT_STATUS.md`'s "Stage 2" section has the full design, including
+how to bootstrap the first administrator. Stage 3 then separated
+publication from payment: `published_at`, not `paid`, is now the sole
+gate on what a guest can see — an administrator may publish an unpaid
+invitation, and a paid invitation stays private until one does —
+correcting the Stage 0-documented defect where the two were conflated.
+See `PROJECT_STATUS.md`'s "Stage 3" section for the full publication/
+payment lifecycle, the legacy-row backfill rule, and what applying this
+to production will require. Neither migration exists anywhere but this
+repository and a local test database so far; neither has been applied to
+the live project.
+
+Stage 4 (application-layer only, no database change) replaced the public
+`/invite/[id]` page's client-only loading with server rendering: a
+published invitation's wording is now present in the initial HTML,
+before any hydration or authentication check, and owner-management/
+PayPal code no longer reaches a guest's browser at all. See
+`PROJECT_STATUS.md`'s "Stage 4" section for the full server/client split,
+the security boundary, and a documented trade-off (an owner viewing
+their own invite link temporarily lost their management view).
+
+Stage 5 adds one more forward-only migration: secure, tokenized,
+read-only preview links (`/preview/[token]`) let a concierge client
+review an invitation — published or not — without an account, and a
+dedicated authenticated `/dashboard/invite/[id]` route resolves Stage
+4's trade-off by re-hosting the owner-management view there instead of
+on the public page. See `PROJECT_STATUS.md`'s "Stage 5" section for the
+preview-token design (256-bit, one-way-hashed, rotatable, revocable),
+the RLS/RPC boundary, and the noindex/no-referrer privacy protections.
+Like Stage 2–4's migrations, Stage 5's is verified only against the
+local Supabase stack and not yet applied to the live project.
+
+Stage 6 builds the deterministic core of the browser invitation
+generator: structured invitation data → a strict, versioned composition
+schema → a trusted server-renderable component registry →
+server-rendered output — never arbitrary stored HTML/CSS/JavaScript.
+It also replaces the permanently Hindu-wedding-only event vocabulary
+(flagged as a known limitation since Stage 0) with a general,
+extensible `event_types` lookup table, and adds a two-pack cultural
+foundation (a culturally neutral default, and a Hindu wedding starting
+point) that later Muslim/Christian/civil/Mauritian-multicultural/
+birthday/corporate packs can register into without a schema change. See
+`PROJECT_STATUS.md`'s "Stage 6" section for the full composition
+architecture, the trusted renderer registry, the legacy-content
+adapter, and why arbitrary markup is structurally impossible to store.
+Both of this stage's migrations are, like every stage since Stage 2,
+verified only against the local Supabase stack and not yet applied to
+the live project.
+
+Stage 7 adds the interactive experience layer on top of that renderer
+(no database change): an original CSS/SVG envelope-opening entrance, a
+central `prefers-reduced-motion`-aware motion system built from a
+closed set of eight trusted animation presets (never arbitrary Framer
+Motion config from stored data), pack-specific ambient effects,
+scroll-reveal sequencing, and — replacing the previously fake toggle —
+a real, accessible `<audio>` player that never autoplays and renders
+nothing when an invitation has no track. The invitation's wording
+still lands in the server-rendered HTML before any hydration, and if
+JavaScript never runs the guest simply gets the invitation directly.
+See `PROJECT_STATUS.md`'s "Stage 7" section for the experience
+sequence, the reduced-motion guarantees, music/licensing
+responsibility, the ~14 KB first-load-JS cost, and the design
+refinements still outstanding — **the visual result is a technical
+foundation, not a finally-approved design.**
+
+Stage 8 builds the concierge workflow the product direction above
+describes as primary: a request-management area under `/admin/requests`
+(consultation-led status pipeline, database-validated transitions, an
+admin-read-only audit trail) and a structured composition-authoring
+generator under `/admin/invitations/[id]` — a form editor over the
+existing trusted composition schema and renderer, never a free-form
+page builder, with a live preview built from the SAME
+`CompositionRenderer`/`InvitationExperience` every public/preview route
+uses, optimistic-concurrency-protected saves, and a publication-
+readiness assessment (never automatic publication). See
+`PROJECT_STATUS.md`'s "Stage 8" section for the full architecture,
+including the one new migration (not yet applied live) and what remains
+deliberately out of scope (AI-assisted generation, client-facing
+approval, further cultural packs).
+
+Stage 9 adds the client-facing half Stage 8 deliberately left out: a
+version-aware approval workflow so the person holding a private preview
+link — never a verified identity, always described as such — can
+approve the exact composition revision they're looking at or request
+structured changes, without an account. A review round binds to one
+exact revision; a meaningful composition edit automatically supersedes
+an active round and invalidates a prior approval; and concierge
+publication now genuinely requires a client-approved current revision
+with no unresolved change request, enforced in the database itself, not
+just the admin UI — self-service publication is completely unaffected.
+See `PROJECT_STATUS.md`'s "Stage 9" section for the full domain model,
+the token-security design, two defects found and fixed during this
+stage's own visual review (an Origin-check bug specific to how Next.js
+Route Handlers report `req.url`, and a pre-existing Stage 8 gap where
+the admin UI's "preview link exists" indicator silently always read
+false), and what remains deliberately out of scope (email/SMS delivery,
+electronic signatures, file attachments, an emergency publish override).
+
 ## Generation philosophy
 
 The current system uses an LLM to produce structured invitation copy and palette suggestions from the host survey. The long-term generation model is intentionally being evaluated as a product decision rather than treated as “AI everywhere.”
@@ -122,14 +239,55 @@ npm run build
 
 Never commit real credentials. The expected variables and safety notes are documented in `.env.example`.
 
+### Database integration tests
+
+`npm test` above is fast and dependency-free by design — it never touches
+a database. Real Postgres/RLS behavior (as genuine `anon`/`authenticated`/
+`service_role` callers) is covered separately, against a local, disposable
+Docker-backed Supabase stack, never the live project:
+
+```bash
+npm run db:start   # once, or after npm run db:stop
+npm run test:db    # resets the local database, applies all migrations, runs the suite
+```
+
+See [tests/integration/README.md](./tests/integration/README.md) for
+prerequisites, the full script list, how these tests are guaranteed never
+to reach the live project, and WSL/Docker troubleshooting.
+
 ## Product direction
 
-Enveloped is being designed for two complementary service levels:
+Enveloped's primary business model is concierge-led: a client sends a
+request, the admin discusses the event and agrees on a price outside the
+application, the admin creates and controls the invitation, the client
+receives a private preview, and publication happens only after approval.
+Payment state and publication state are meant to remain independent, and
+PayPal is optional rather than mandatory.
 
-- **Instant creation:** the platform generates and publishes a controlled invitation experience automatically.
-- **Concierge creation:** complex or premium requests enter an owner workflow for human-assisted design and approval.
+A simpler self-service flow — survey → AI generation → fixed-tier PayPal
+checkout, described elsewhere in this README and still fully working in
+the current code — predates this concierge-first direction. **It is being
+preserved, not deleted, and is intended to be disabled from public use
+once the concierge-first flow is ready** — a later, explicitly-scoped
+change, not yet made. It must not control the primary architecture: any
+future generation, publication, or payment work is designed around the
+concierge model first.
 
-The website remains the source of truth for the survey, order, payment state, files, decisions, and delivery. Messaging channels such as WhatsApp can support reminders and customer communication, but should not become the system of record.
+The website remains the source of truth for requests, invitations, order,
+payment state, files, decisions, and delivery. Messaging channels such as
+WhatsApp can support reminders and customer communication, but should not
+become the system of record.
+
+**Weddings are the primary market and product focus**, but the domain
+model is meant to support general events (holidays, vacations, hotel
+packages, birthdays, and others already present in the category list
+above) through reusable **cultural packs**, not a single hardcoded
+tradition. Stage 0 flagged a known limitation in the then-live
+schema working against this direction (a Hindu-wedding-specific
+`occasion` vocabulary, recovered as-is rather than corrected); Stage 6
+replaces it — locally, not yet on the live project — with the general
+`event_types` model and a two-pack cultural foundation described in
+`PROJECT_STATUS.md`'s "Stage 6" section.
 
 ## Repository note
 

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/music.schema.json",
+  "title": "music schema",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "sourceType",
+    "requiresInteraction"
+  ],
+  "properties": {
+    "id": {},
+    "name": {},
+    "sourceType": {},
+    "requiresInteraction": {}
+  },
+  "additionalProperties": true
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Fraunces, Inter } from "next/font/google";
 import { LocaleProvider } from "@/lib/i18n/LocaleContext";
 import { AuthProvider } from "@/lib/auth/AuthContext";
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     "Create a beautiful, personalized digital invite for your wedding or event in minutes — tier by tier, delivered as a moment worth clicking.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html
       lang="en"
