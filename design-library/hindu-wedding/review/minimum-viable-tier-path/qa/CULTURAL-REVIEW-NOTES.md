@@ -1,6 +1,6 @@
 # Cultural Review Notes — Ivory Palace Progression
 
-Status: **HUMAN REVIEW REQUIRED / UNDER_REVIEW**
+Status: **OWNER APPROVED — DEPENDENCY BOUNDARY RETAINED**
 
 ## Scope and language
 
@@ -24,4 +24,4 @@ Status: **HUMAN REVIEW REQUIRED / UNDER_REVIEW**
 - Motion is restrained, non-blocking and disabled through `prefers-reduced-motion`.
 - No client photograph, real identity, celebrity likeness or reusable bespoke likeness is present.
 
-Human-review sign-off: pending.
+Human-review sign-off: Owner approved the listed trial assets on 2026-09-20. This approval does not approve `HW-FLORAL-010-V1-BASE`; botanical review of that dependency remains pending before the complete trial package can become production-selectable.

@@ -1,7 +1,7 @@
 # Ivory Palace Progression — Owner Review Package
 
-Status: **UNDER_REVIEW**  
-Production selectable: **No**  
+Status: **OWNER APPROVED**  
+Production selectable: **No — blocked only by the separately pending botanical dependency**  
 Base commit: `9259f25f2b0c68ab18d6bce8ff5abe1e62c02252`
 
 This package demonstrates one complete invitation identity progressing through Bronze, Silver, Gold and Platinum. It is a controlled trial composition, not H01–H08 approval.
@@ -35,8 +35,12 @@ The interface statement is: **“Your invitation is complete. You can finish wit
 
 The authoritative composition is `trial.html` plus `trial.css`; invitation text is semantic HTML and never raster source art. Trial-only fallbacks are Alex Brush 400 and Playfair Display 400/600 under OFL-1.1, with system serif/sans stacks. Mozart Script, Slight, Ms Claudy, Ecatherina and Modern Symphony remain excluded pending verified commercial/webfont licences.
 
+## Owner approval
+
+The Owner explicitly approved the trial assets on 2026-09-20. The approval record is in `qa/OWNER-APPROVAL.md`; exact per-asset status and eligibility are recorded in `metadata/review-manifest.json`.
+
 ## Approval boundary
 
 The brass lamps and peacocks are available both as combined fallback pairs and as independently placeable, independently authored-direction child files: `LEFT` and `RIGHT`. The split files are not mirrored; they retain the original anatomy, lighting and inward orientation.
 
-All new visuals remain `UNDER_REVIEW`. No registry production path was changed. Rejected v1 candidates are isolated in `rejected/`. After explicit Owner approval, retain only accepted candidates, move rejected files outside selectable paths, update registry/build sources and approval logs, then run all checks before a GitHub API commit.
+All listed trial visuals are `APPROVED`. Rejected v1 candidates remain isolated in `rejected/` and are not selectable. The existing `HW-FLORAL-010-V1-BASE` foundation entry remains an `UNDER_REVIEW_TRIAL_DEPENDENCY`; therefore this complete trial package remains non-selectable until that botanical dependency receives separate approval. No final template, merge or deployment is authorised by this record.

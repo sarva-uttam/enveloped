@@ -1,6 +1,6 @@
 # Technical QA — Minimum Viable Tier Path
 
-Status: **UNDER_REVIEW**  
+Status: **APPROVED — OWNER RECORD COMMITTED**  
 Run date: 2026-09-20
 
 ## Baseline before changes
@@ -16,12 +16,12 @@ Run date: 2026-09-20
 
 | Candidate | File/alpha | Construction/anatomy | Placement | Review result |
 |---|---|---|---|---|
-| HW-CANOPY-001-V2 | PNG alpha + WebP; full cord/loops | 21 coherent mango leaves on visible support | Upper canopy; centre remains open | PASS to Owner review |
-| HW-CEREM-002-V1 | PNG alpha + WebP; complete feet/flames | Equal paired brass lamps, joined shafts and stable bases | Shared lower baseline | PASS to ceremonial review |
-| HW-ANIMAL-002-V2 | PNG alpha + WebP; complete pair | Equal scale, inward-facing, two grounded legs/feet each | Lower corners, text-safe | CONDITIONAL — stylised broad crest needs Owner/biological review |
-| HW-EFFECT-004-V1 | PNG alpha + WebP | Sparse glints; no dense bokeh | Outer edges; centre remains readable | PASS to Owner review |
-| HW-EFFECT-002-V2 | PNG alpha + WebP; six isolated petals | Plausible rose petals; no flower heads | Six fixed paths; three-petal static fallback | CONDITIONAL — botanical dependency is not approved |
-| HW-PEOPLE-005-V2 | PNG alpha + WebP; complete heads/hands/feet | Rear-facing fictional adults, distinct joined hands, coherent garments/posture | Bottom-centre; text remains unobstructed | PASS to Owner and cultural review |
+| HW-CANOPY-001-V2 | PNG alpha + WebP; full cord/loops | 21 coherent mango leaves on visible support | Upper canopy; centre remains open | OWNER APPROVED |
+| HW-CEREM-002-V1 | PNG alpha + WebP; complete feet/flames | Equal paired brass lamps, joined shafts and stable bases | Shared lower baseline | OWNER APPROVED |
+| HW-ANIMAL-002-V2 | PNG alpha + WebP; complete pair | Equal scale, inward-facing, two grounded legs/feet each | Lower corners, text-safe | OWNER APPROVED — original QA note retained in manifest |
+| HW-EFFECT-004-V1 | PNG alpha + WebP | Sparse glints; no dense bokeh | Outer edges; centre remains readable | OWNER APPROVED |
+| HW-EFFECT-002-V2 | PNG alpha + WebP; six isolated petals | Plausible rose petals; no flower heads | Six fixed paths; three-petal static fallback | OWNER APPROVED — activation remains blocked by botanical dependency |
+| HW-PEOPLE-005-V2 | PNG alpha + WebP; complete heads/hands/feet | Rear-facing fictional adults, distinct joined hands, coherent garments/posture | Bottom-centre; text remains unobstructed | OWNER APPROVED |
 
 Exact dimensions, alpha bounding boxes, hashes, anchors and scale limits are machine-recorded in `metadata/review-manifest.json`. The lamp and peacock pairs also have non-mirrored LEFT/RIGHT transparent child masters, deliveries, cards, thumbnails and detail crops; the combined files remain controlled fallbacks.
 
@@ -48,4 +48,4 @@ Exact dimensions, alpha bounding boxes, hashes, anchors and scale limits are mac
 
 `node scripts/validate-tier-path-review.mjs` verifies six raster packages, alpha/sRGB, option-card and thumbnail dimensions, exact metadata presence, four tier previews at all three presentation sizes, semantic HTML, the completion message, reduced-motion CSS and exclusion of unlicensed preferred fonts.
 
-Owner decision: pending.
+Owner decision: APPROVED on 2026-09-20. Package-level production selection remains blocked by the separately unapproved `HW-FLORAL-010-V1-BASE` botanical dependency.
