@@ -1,0 +1,608 @@
+{
+  "schemaVersion": "1.0.0",
+  "trial": "Ivory Palace Progression",
+  "baseCommit": "9259f25f2b0c68ab18d6bce8ff5abe1e62c02252",
+  "approvalStatus": "UNDER_REVIEW",
+  "productionSelectable": false,
+  "foundation": [
+    "HW-BG-001:PALE",
+    "HW-ARCH-001-V2",
+    "HW-HEADER-001",
+    "HW-FLORAL-010-V1-BASE:UNDER_REVIEW_TRIAL_DEPENDENCY"
+  ],
+  "codeNativeAssets": [
+    {
+      "id": "HW-LIGHT-007-V1",
+      "tier": "SILVER",
+      "status": "UNDER_REVIEW",
+      "implementation": "trial.css .central-glow",
+      "staticFallback": "Identical CSS glow; no motion",
+      "note": "Broad feathered glow, no visible circle."
+    },
+    {
+      "id": "TRIAL-FALLING-PETALS-V1",
+      "tier": "GOLD",
+      "status": "UNDER_REVIEW",
+      "implementation": "trial.css fixed six-path animation",
+      "staticFallback": "Three petals at registered lower coordinates",
+      "reducedMotion": "Transforms disabled by prefers-reduced-motion."
+    },
+    {
+      "id": "HW-EFFECT-008-V1",
+      "tier": "PLATINUM",
+      "status": "UNDER_REVIEW",
+      "implementation": "trial.css opacity/clip reveal",
+      "staticFallback": "Exact HW-FLORAL-010-V1-BASE final placement",
+      "reducedMotion": "Final state shown immediately."
+    },
+    {
+      "id": "TRIAL-CINEMATIC-LIGHT-V1",
+      "tier": "PLATINUM",
+      "status": "UNDER_REVIEW",
+      "implementation": "trial.css .cinematic-light",
+      "staticFallback": "Identical static light",
+      "note": "Warm source aligned to couple and architecture."
+    }
+  ],
+  "typography": {
+    "status": "TRIAL_FALLBACK_NOT_FINAL_BRAND_APPROVAL",
+    "names": "Alex Brush 400, OFL-1.1",
+    "headingsDateVenue": "Playfair Display 400/600, OFL-1.1",
+    "body": "System serif",
+    "uiAccessibility": "System sans",
+    "prohibitedPendingLicence": [
+      "Mozart Script",
+      "Slight",
+      "Ms Claudy",
+      "Ecatherina",
+      "Modern Symphony"
+    ]
+  },
+  "assets": [
+    {
+      "id": "HW-CANOPY-001-V2",
+      "stableId": "HW-CANOPY-001",
+      "name": "Mango Leaf Toran",
+      "tier": "SILVER",
+      "file": "hw-canopy-001-v2-master.png",
+      "delivery": "hw-canopy-001-v2-delivery.webp",
+      "slot": "upper-canopy",
+      "anchor": "TOP_CENTER",
+      "maximumRenderedSize": [
+        880,
+        260
+      ],
+      "scaleLimits": [
+        0.82,
+        1,
+        1.06
+      ],
+      "altText": "Supported mango-leaf toran with a braided cord, tied end loops and coherent green leaves.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-HEADER-001",
+        "PAL-IVORY-GOLD"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create ONE complete supported mango-leaf toran as a clean premium editorial illustration isolated on a fully transparent RGBA canvas. OUTSIDE THE PHYSICAL CORD, LOOPS, BINDINGS, STEMS, AND LEAVES, EVERY PIXEL MUST HAVE ZERO ALPHA. Absolutely no ambient haze, aura, vignette, gradient, coloured glow, cast background, floor, wall, scene, or shadow field. Wide 8:3 canvas. One clearly visible braided natural-fibre support cord in a shallow downward arc, secure tied hanging loops fully visible at both ends, and exactly 21 individually readable mango leaves attached by short coherent stems and small antique-gold thread bindings. Mango leaves are long lance-shaped blades with tapered tips and coherent midribs, varied deep green to sage, subtle natural variation, no cloned stamping. Symmetric overall balance but independently shaped leaves. Soft highlights may exist only on the physical leaf/cord pixels. Entire object fully inside frame with generous empty transparent padding. Crisp clean anti-aliased alpha edges. NO text, watermark, logo, invitation, flowers, fruit, beads, bells, vines, banana leaves, betel leaves, floating leaves, disconnected parts, impossible knots, duplicates, crop, border, checkerboard, white/black/green background, matte, halo, smoke, fake script, sacred symbol.",
+      "reviewNotes": "Corrected v2 after v1 failed clean-alpha QA. Count/support/botanical coherence require Owner confirmation.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Original candidate generated for Enveloped in this trial; no downloaded reference pixels or client likeness.",
+      "master": "masters/hw-canopy-001-v2-master.png",
+      "deliveryFile": "delivery/hw-canopy-001-v2-delivery.webp",
+      "optionCard": "option-cards/hw-canopy-001-v2-option-card.webp",
+      "thumbnail": "thumbnails/hw-canopy-001-v2-thumbnail.webp",
+      "detailCrop": "details/hw-canopy-001-v2-detail.png",
+      "technical": {
+        "dimensions": [
+          2022,
+          778
+        ],
+        "alphaBounds": [
+          24,
+          33,
+          2006,
+          754
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 1155659,
+        "sha256": "73e73a33eeba73d2f9fe098377b45c11b459c860db34a7aaf77a977a063eb6b3"
+      }
+    },
+    {
+      "id": "HW-CEREM-002-V1",
+      "stableId": "HW-CEREM-002",
+      "name": "Paired Brass Standing Lamps",
+      "tier": "SILVER",
+      "file": "hw-cerem-002-v1-master.png",
+      "delivery": "hw-cerem-002-v1-delivery.webp",
+      "slot": "lower-ceremonial",
+      "anchor": "BOTTOM_CENTER",
+      "maximumRenderedSize": [
+        580,
+        300
+      ],
+      "scaleLimits": [
+        0.82,
+        1,
+        1.05
+      ],
+      "altText": "Pair of complete grounded brass standing oil lamps with a clear central gap.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create exactly TWO complete matching tall brass standing oil lamps as one reusable premium wedding-invitation component, isolated on a fully transparent RGBA canvas. OUTSIDE THE TWO PHYSICAL LAMPS, FLAMES, AND SMALL CONTACT SHADOWS, EVERY PIXEL MUST HAVE ZERO ALPHA: no background, haze, aura, vignette, gradient, floor, scene, or shadow field. Wide 8:5 canvas. Both lamps are equal scale and height, upright, separated by a large clear central gap, facing front in the same perspective. Each lamp must be physically plausible and complete from top to bottom: exactly one modest flame on one visible wick, one symmetric oil bowl with continuous rim, one joined central finial and straight turned shaft, and one stable broad circular foot resting on the same horizontal baseline. Polished aged brass with restrained champagne-gold highlights, refined editorial realism, soft warm light from upper centre. All joints visibly connected; both full flames and both full feet inside frame; subtle contact shadow directly beneath each foot only. No deity figure and no claim of a specific ritual tradition. NO extra lamps or flames, fused bowls, bent shafts, floating feet, unsupported fire, cropped base, ritual clutter, flowers, text, fake script, sacred symbol, watermark, logo, invitation, checkerboard, white/black/colour matte, halo, smoke, duplicate objects, impossible perspective.",
+      "reviewNotes": "Complete pair, equal scale and grounded. Ritual correctness remains a human-review gate.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Original candidate generated for Enveloped in this trial; no downloaded reference pixels or client likeness.",
+      "master": "masters/hw-cerem-002-v1-master.png",
+      "deliveryFile": "delivery/hw-cerem-002-v1-delivery.webp",
+      "optionCard": "option-cards/hw-cerem-002-v1-option-card.webp",
+      "thumbnail": "thumbnails/hw-cerem-002-v1-thumbnail.webp",
+      "detailCrop": "details/hw-cerem-002-v1-detail.png",
+      "technical": {
+        "dimensions": [
+          1586,
+          992
+        ],
+        "alphaBounds": [
+          57,
+          8,
+          1538,
+          976
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 517824,
+        "sha256": "e0f5478d928d8cd398997c809c455c9d0d5a3d0dfbe0660fd51a58b25d773366"
+      }
+    },
+    {
+      "id": "HW-ANIMAL-002-V2",
+      "stableId": "HW-ANIMAL-002",
+      "name": "Illustrated Paired Peacocks",
+      "tier": "GOLD",
+      "file": "hw-animal-002-v2-master.png",
+      "delivery": "hw-animal-002-v2-delivery.webp",
+      "slot": "lower-corners",
+      "anchor": "BOTTOM_CENTER",
+      "maximumRenderedSize": [
+        930,
+        430
+      ],
+      "scaleLimits": [
+        0.78,
+        1,
+        1.04
+      ],
+      "altText": "Two equal-scale illustrated peacocks standing inward-facing on one baseline.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD",
+        "H08"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create exactly TWO refined hand-painted editorial ILLUSTRATIONS of adult male Indian peafowl, not photoreal cutout photos, isolated on a fully transparent RGBA canvas. Outside the physical birds and tiny contact shadows, every pixel must be zero alpha: no background, plants, haze, aura, gradient, floor, scene, or shadow field. Wide 5:3 canvas. One bird at lower left faces inward right; one at lower right faces inward left. Equal scale and height, same baseline, large clear central gap. ANATOMY MUST BE ACCURATE: each has exactly one small head, one beak, one eye, a slender S-curved blue neck, one torso, two separate legs and two grounded feet with coherent toes, one folded wing, and one complete low trailing folded train. Each crown crest consists of several THIN UPRIGHT FEATHER SHAFTS ending in small spatulate tips—never a broad fan, mohawk, horn, halo or solid plume. Calm elegant independent poses; not copy-mirrored. Teal/ultramarine neck, muted green train with restrained ocelli, antique-gold ink accents; watercolor and fine ink on the bird only. Tails are not display fans and preserve central text. Entire crests, feet and all tail feathers fully inside frame. NO fan-shaped crest, photographic style, outward-facing birds, unequal scale, extra heads/eyes/legs/feet/wings, fused feet, impossible feathers, jewellery, riders, deity association, flowers, architecture, text, fake script, sacred symbols, watermark, invitation, checkerboard, matte, halo, crop or duplicates.",
+      "reviewNotes": "Pair/count/grounding/inward orientation pass. Broad stylised crests remain an explicit Owner/biological review point.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Original candidate generated for Enveloped in this trial; no downloaded reference pixels or client likeness.",
+      "master": "masters/hw-animal-002-v2-master.png",
+      "deliveryFile": "delivery/hw-animal-002-v2-delivery.webp",
+      "optionCard": "option-cards/hw-animal-002-v2-option-card.webp",
+      "thumbnail": "thumbnails/hw-animal-002-v2-thumbnail.webp",
+      "detailCrop": "details/hw-animal-002-v2-detail.png",
+      "technical": {
+        "dimensions": [
+          1619,
+          971
+        ],
+        "alphaBounds": [
+          0,
+          3,
+          1619,
+          945
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 1053087,
+        "sha256": "5e96cb2d01f687a46b2ca73836301878a5730b1ef546970700fcff1c0154336c"
+      }
+    },
+    {
+      "id": "HW-EFFECT-004-V1",
+      "stableId": "HW-EFFECT-004",
+      "name": "Gold Sparkles",
+      "tier": "GOLD",
+      "file": "hw-effect-004-v1-master.png",
+      "delivery": "hw-effect-004-v1-delivery.webp",
+      "slot": "ambient-perimeter",
+      "anchor": "CENTER",
+      "maximumRenderedSize": [
+        1000,
+        1778
+      ],
+      "scaleLimits": [
+        1,
+        1,
+        1
+      ],
+      "altText": "Sparse decorative champagne-gold sparkles around the invitation perimeter.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "PAL-IVORY-GOLD"
+      ],
+      "prompt": "Transparent PNG overlay asset only for a vertical 9:16 premium digital invitation. Create a very sparse field of exactly 32 tiny restrained champagne-gold sparkles distributed mostly in the outer left and right edges, with the central 60 percent text column almost completely empty. Sparkles are a mix of minute points and a few delicate four-point glints, varied subtly in size and opacity, refined warm metallic light. Outside the physical sparkle pixels, every pixel must have zero alpha. No background, haze, aura, vignette, gradient, bokeh wash, fog, visible circle, lens flare, spotlight, or colour matte. Vertical 1000:1778 composition. The overlay must preserve text readability and feel quiet, premium, and sparse. NO glitter carpet, confetti, stars as symbols, constellations, large bursts, dense particles, text, fake script, flower, object, watermark, logo, invitation, checkerboard, white/black/colour background, seam, border or cropped glints.",
+      "reviewNotes": "Sparse edge placement passes trial readability review.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Original candidate generated for Enveloped in this trial; no downloaded reference pixels or client likeness.",
+      "master": "masters/hw-effect-004-v1-master.png",
+      "deliveryFile": "delivery/hw-effect-004-v1-delivery.webp",
+      "optionCard": "option-cards/hw-effect-004-v1-option-card.webp",
+      "thumbnail": "thumbnails/hw-effect-004-v1-thumbnail.webp",
+      "detailCrop": "details/hw-effect-004-v1-detail.png",
+      "technical": {
+        "dimensions": [
+          941,
+          1672
+        ],
+        "alphaBounds": [
+          25,
+          25,
+          916,
+          1624
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 97518,
+        "sha256": "ac318f7a0d7c8d385493c64b48256a8d8fcdbbea6bc50d72464072bf9a36aa82"
+      }
+    },
+    {
+      "id": "HW-EFFECT-002-V2",
+      "stableId": "HW-EFFECT-002",
+      "name": "Rose Petal Sprite Set",
+      "tier": "GOLD",
+      "file": "hw-effect-002-v2-petal-sprite-master.png",
+      "delivery": "hw-effect-002-v2-petal-sprite-delivery.webp",
+      "slot": "ambient-overlay",
+      "anchor": "TOP",
+      "maximumRenderedSize": [
+        34,
+        34
+      ],
+      "scaleLimits": [
+        0.6,
+        1,
+        1.2
+      ],
+      "altText": "Six isolated deep-red rose petals for a restrained decorative motion effect.",
+      "compatibility": [
+        "HW-FLORAL-010-V1-BASE",
+        "ANIM-PETALS",
+        "PAL-IVORY-GOLD"
+      ],
+      "prompt": "ALPHA CUTOUT SPRITE SHEET, fully transparent background. Create exactly SIX separate individual deep-red rose petals arranged 3 across by 2 rows, generous empty space, no touching. IMPORTANT: all empty canvas pixels must be RGBA alpha 0. Do not render any red glow, dark red haze, vignette, gradient, surface, floor, backing card, shadow field, aura, or coloured matte. Only the six petal shapes may have visible pixels. Each petal is a distinct natural orientation and mild curl, botanically plausible with rounded softly notched upper edge, tapered attachment base, subtle vein, crimson-to-ruby shading contained inside the petal. Fine clean anti-aliased transparent edges. Landscape 3:2 canvas. NO whole flower, stem, leaf, extra petal, torn/confetti shape, motion blur, text, labels, grid lines, watermark, logo, checkerboard, white/black/red background, halo or crop.",
+      "reviewNotes": "Dependency remains blocked on botanical family approval; trial-only static/motion use.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Original candidate generated for Enveloped in this trial; no downloaded reference pixels or client likeness.",
+      "master": "masters/hw-effect-002-v2-petal-sprite-master.png",
+      "deliveryFile": "delivery/hw-effect-002-v2-petal-sprite-delivery.webp",
+      "optionCard": "option-cards/hw-effect-002-v2-petal-sprite-option-card.webp",
+      "thumbnail": "thumbnails/hw-effect-002-v2-petal-sprite-thumbnail.webp",
+      "detailCrop": "details/hw-effect-002-v2-petal-sprite-detail.png",
+      "technical": {
+        "dimensions": [
+          1536,
+          1024
+        ],
+        "alphaBounds": [
+          23,
+          23,
+          1518,
+          980
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 1940906,
+        "sha256": "cdc26021a01722f8112cb098734015ab56c340df43172f8ff6c63ece411e3678"
+      }
+    },
+    {
+      "id": "HW-PEOPLE-005-V2",
+      "stableId": "HW-PEOPLE-005",
+      "name": "Rear-Facing Cinematic Couple",
+      "tier": "PLATINUM",
+      "file": "hw-people-005-v2-master.png",
+      "delivery": "hw-people-005-v2-delivery.webp",
+      "slot": "centre-artwork",
+      "anchor": "BOTTOM_CENTER",
+      "maximumRenderedSize": [
+        380,
+        570
+      ],
+      "scaleLimits": [
+        0.8,
+        1,
+        1.04
+      ],
+      "altText": "Rear-facing fictional couple holding hands in ivory-and-gold and deep-red formal wedding attire.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD",
+        "H08"
+      ],
+      "prompt": "Edit this exact image only to create a clean transparent-background cutout. Preserve the two people, their anatomy, joined hands, hair, jewellery, garment embroidery, drape, hems, trousers, footwear, proportions, pose, scale, spacing and rim highlights exactly as shown. Do not redraw or change either person. Remove every atmospheric/background pixel: delete the brown/black/red haze, vignette, glow field, floor and all surrounding backdrop so that every pixel outside the physical figures and very small contact shadows immediately beneath their feet has alpha 0. Keep complete heads, hands, garments and feet. Produce clean anti-aliased edges with no coloured fringe or halo. No added objects, text, symbols, scene or crop.",
+      "sourcePrompt": "Transparent PNG cutout asset only. Create exactly TWO fictional adult people seen fully from behind as a refined cinematic editorial illustration for a premium digital wedding invitation, isolated on a fully transparent RGBA canvas. OUTSIDE THE TWO PHYSICAL FIGURES AND SMALL CONTACT SHADOWS, EVERY PIXEL MUST HAVE ZERO ALPHA: no background, architecture, floor, sky, haze, aura, vignette, gradient, scene, or shadow field. Vertical 2:3 canvas. Full-length rear view from head to footwear. They stand side-by-side on the same baseline with a small natural gap, calm upright posture, gently joining only their inner hands at comfortable hip height. ANATOMY MUST BE COHERENT: each person has one head, neck, two shoulders, torso, two arms, two hands, two legs and two grounded feet; the joined hands remain visibly two distinct anatomically plausible hands, five fingers where visible; no fused bodies or missing limbs. One figure wears elegant ivory Indian wedding formalwear described neutrally: a long tailored coat with subtle antique-gold embroidery, straight trousers and complete formal footwear. The other wears a deep red draped Indian formal ensemble with an ivory-and-antique-gold border, coherent folds, complete hem and footwear; elegant but not labelled as any particular family tradition. Restrained attached earrings and bangles only. Warm soft upper-centre rim light contained on garments and hair. Faces are not visible, no celebrity likeness. Entire heads, hands, garment hems and feet fully inside frame with generous transparent padding; open transparent area above shoulders. Small contact shadow immediately below each foot only. NO front or side faces, extra/missing fingers, arms, legs, feet or heads, fused hands, impossible posture, floating feet, broken drape, clipped garments, specific community label, sacred mark, ritual object, text, fake script, watermark, logo, invitation, checkerboard, white/black/colour matte, halo or crop.",
+      "reviewNotes": "Rear view, complete anatomy, hands, feet and garments pass initial visual QA. Cultural clothing interpretation remains human-review only; no family-tradition label is asserted.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Original candidate generated for Enveloped in this trial; no downloaded reference pixels or client likeness.",
+      "master": "masters/hw-people-005-v2-master.png",
+      "deliveryFile": "delivery/hw-people-005-v2-delivery.webp",
+      "optionCard": "option-cards/hw-people-005-v2-option-card.webp",
+      "thumbnail": "thumbnails/hw-people-005-v2-thumbnail.webp",
+      "detailCrop": "details/hw-people-005-v2-detail.png",
+      "technical": {
+        "dimensions": [
+          1024,
+          1536
+        ],
+        "alphaBounds": [
+          17,
+          33,
+          1010,
+          1512
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 2532951,
+        "sha256": "26ec601c88485e199fae164bfba5615ee8dcda24754ba3fdaec42e8641209354"
+      }
+    },
+    {
+      "id": "HW-CEREM-002-V1-LEFT",
+      "stableId": "HW-CEREM-002",
+      "name": "Brass Standing Lamp — Left",
+      "tier": "SILVER",
+      "file": "hw-cerem-002-v1-left-master.png",
+      "delivery": "hw-cerem-002-v1-left-delivery.webp",
+      "slot": "lower-left",
+      "anchor": "BOTTOM_LEFT",
+      "maximumRenderedSize": [
+        280,
+        300
+      ],
+      "scaleLimits": [
+        0.82,
+        1,
+        1.05
+      ],
+      "altText": "Complete grounded brass standing oil lamp for the left side of the invitation.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create exactly TWO complete matching tall brass standing oil lamps as one reusable premium wedding-invitation component, isolated on a fully transparent RGBA canvas. OUTSIDE THE TWO PHYSICAL LAMPS, FLAMES, AND SMALL CONTACT SHADOWS, EVERY PIXEL MUST HAVE ZERO ALPHA: no background, haze, aura, vignette, gradient, floor, scene, or shadow field. Wide 8:5 canvas. Both lamps are equal scale and height, upright, separated by a large clear central gap, facing front in the same perspective. Each lamp must be physically plausible and complete from top to bottom: exactly one modest flame on one visible wick, one symmetric oil bowl with continuous rim, one joined central finial and straight turned shaft, and one stable broad circular foot resting on the same horizontal baseline. Polished aged brass with restrained champagne-gold highlights, refined editorial realism, soft warm light from upper centre. All joints visibly connected; both full flames and both full feet inside frame; subtle contact shadow directly beneath each foot only. No deity figure and no claim of a specific ritual tradition. NO extra lamps or flames, fused bowls, bent shafts, floating feet, unsupported fire, cropped base, ritual clutter, flowers, text, fake script, sacred symbol, watermark, logo, invitation, checkerboard, white/black/colour matte, halo, smoke, duplicate objects, impossible perspective.",
+      "reviewNotes": "Complete pair, equal scale and grounded. Ritual correctness remains a human-review gate. Directional child retains the parent's original anatomy, lighting and orientation.",
+      "parent": "HW-CEREM-002-V1",
+      "parentCandidateId": "HW-CEREM-002-V1",
+      "derivation": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "master": "masters/hw-cerem-002-v1-left-master.png",
+      "deliveryFile": "delivery/hw-cerem-002-v1-left-delivery.webp",
+      "optionCard": "option-cards/hw-cerem-002-v1-left-option-card.webp",
+      "thumbnail": "thumbnails/hw-cerem-002-v1-left-thumbnail.webp",
+      "detailCrop": "details/hw-cerem-002-v1-left-detail.png",
+      "technical": {
+        "dimensions": [
+          399,
+          1023
+        ],
+        "alphaBounds": [
+          32,
+          32,
+          367,
+          991
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 314252,
+        "sha256": "fc30580719fa50aafb37833366cb17aeff26d1845c079eb3cb8d2a3fa8e1e14c"
+      }
+    },
+    {
+      "id": "HW-CEREM-002-V1-RIGHT",
+      "stableId": "HW-CEREM-002",
+      "name": "Brass Standing Lamp — Right",
+      "tier": "SILVER",
+      "file": "hw-cerem-002-v1-right-master.png",
+      "delivery": "hw-cerem-002-v1-right-delivery.webp",
+      "slot": "lower-right",
+      "anchor": "BOTTOM_RIGHT",
+      "maximumRenderedSize": [
+        280,
+        300
+      ],
+      "scaleLimits": [
+        0.82,
+        1,
+        1.05
+      ],
+      "altText": "Complete grounded brass standing oil lamp for the right side of the invitation.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create exactly TWO complete matching tall brass standing oil lamps as one reusable premium wedding-invitation component, isolated on a fully transparent RGBA canvas. OUTSIDE THE TWO PHYSICAL LAMPS, FLAMES, AND SMALL CONTACT SHADOWS, EVERY PIXEL MUST HAVE ZERO ALPHA: no background, haze, aura, vignette, gradient, floor, scene, or shadow field. Wide 8:5 canvas. Both lamps are equal scale and height, upright, separated by a large clear central gap, facing front in the same perspective. Each lamp must be physically plausible and complete from top to bottom: exactly one modest flame on one visible wick, one symmetric oil bowl with continuous rim, one joined central finial and straight turned shaft, and one stable broad circular foot resting on the same horizontal baseline. Polished aged brass with restrained champagne-gold highlights, refined editorial realism, soft warm light from upper centre. All joints visibly connected; both full flames and both full feet inside frame; subtle contact shadow directly beneath each foot only. No deity figure and no claim of a specific ritual tradition. NO extra lamps or flames, fused bowls, bent shafts, floating feet, unsupported fire, cropped base, ritual clutter, flowers, text, fake script, sacred symbol, watermark, logo, invitation, checkerboard, white/black/colour matte, halo, smoke, duplicate objects, impossible perspective.",
+      "reviewNotes": "Complete pair, equal scale and grounded. Ritual correctness remains a human-review gate. Directional child retains the parent's original anatomy, lighting and orientation.",
+      "parent": "HW-CEREM-002-V1",
+      "parentCandidateId": "HW-CEREM-002-V1",
+      "derivation": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "master": "masters/hw-cerem-002-v1-right-master.png",
+      "deliveryFile": "delivery/hw-cerem-002-v1-right-delivery.webp",
+      "optionCard": "option-cards/hw-cerem-002-v1-right-option-card.webp",
+      "thumbnail": "thumbnails/hw-cerem-002-v1-right-thumbnail.webp",
+      "detailCrop": "details/hw-cerem-002-v1-right-detail.png",
+      "technical": {
+        "dimensions": [
+          395,
+          1023
+        ],
+        "alphaBounds": [
+          32,
+          32,
+          363,
+          991
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 314081,
+        "sha256": "e2437ae5fbc9b71036f479cd13d00047b9fbd3b79a1dc7b926fc560229d9ff0b"
+      }
+    },
+    {
+      "id": "HW-ANIMAL-002-V2-LEFT",
+      "stableId": "HW-ANIMAL-002",
+      "name": "Illustrated Peacock — Left",
+      "tier": "GOLD",
+      "file": "hw-animal-002-v2-left-master.png",
+      "delivery": "hw-animal-002-v2-left-delivery.webp",
+      "slot": "lower-left",
+      "anchor": "BOTTOM_LEFT",
+      "maximumRenderedSize": [
+        450,
+        430
+      ],
+      "scaleLimits": [
+        0.78,
+        1,
+        1.04
+      ],
+      "altText": "Illustrated grounded peacock for the left side, facing inward toward the invitation centre.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD",
+        "H08"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create exactly TWO refined hand-painted editorial ILLUSTRATIONS of adult male Indian peafowl, not photoreal cutout photos, isolated on a fully transparent RGBA canvas. Outside the physical birds and tiny contact shadows, every pixel must be zero alpha: no background, plants, haze, aura, gradient, floor, scene, or shadow field. Wide 5:3 canvas. One bird at lower left faces inward right; one at lower right faces inward left. Equal scale and height, same baseline, large clear central gap. ANATOMY MUST BE ACCURATE: each has exactly one small head, one beak, one eye, a slender S-curved blue neck, one torso, two separate legs and two grounded feet with coherent toes, one folded wing, and one complete low trailing folded train. Each crown crest consists of several THIN UPRIGHT FEATHER SHAFTS ending in small spatulate tips—never a broad fan, mohawk, horn, halo or solid plume. Calm elegant independent poses; not copy-mirrored. Teal/ultramarine neck, muted green train with restrained ocelli, antique-gold ink accents; watercolor and fine ink on the bird only. Tails are not display fans and preserve central text. Entire crests, feet and all tail feathers fully inside frame. NO fan-shaped crest, photographic style, outward-facing birds, unequal scale, extra heads/eyes/legs/feet/wings, fused feet, impossible feathers, jewellery, riders, deity association, flowers, architecture, text, fake script, sacred symbols, watermark, invitation, checkerboard, matte, halo, crop or duplicates.",
+      "reviewNotes": "Pair/count/grounding/inward orientation pass. Broad stylised crests remain an explicit Owner/biological review point. Directional child retains the parent's original anatomy, lighting and orientation.",
+      "parent": "HW-ANIMAL-002-V2",
+      "parentCandidateId": "HW-ANIMAL-002-V2",
+      "derivation": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "master": "masters/hw-animal-002-v2-left-master.png",
+      "deliveryFile": "delivery/hw-animal-002-v2-left-delivery.webp",
+      "optionCard": "option-cards/hw-animal-002-v2-left-option-card.webp",
+      "thumbnail": "thumbnails/hw-animal-002-v2-left-thumbnail.webp",
+      "detailCrop": "details/hw-animal-002-v2-left-detail.png",
+      "technical": {
+        "dimensions": [
+          725,
+          783
+        ],
+        "alphaBounds": [
+          32,
+          32,
+          693,
+          751
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 625874,
+        "sha256": "e8a6ff3f7cacfd5ee26b53f6f31ea60cb564f46e077b031b00eba660f77c9680"
+      }
+    },
+    {
+      "id": "HW-ANIMAL-002-V2-RIGHT",
+      "stableId": "HW-ANIMAL-002",
+      "name": "Illustrated Peacock — Right",
+      "tier": "GOLD",
+      "file": "hw-animal-002-v2-right-master.png",
+      "delivery": "hw-animal-002-v2-right-delivery.webp",
+      "slot": "lower-right",
+      "anchor": "BOTTOM_RIGHT",
+      "maximumRenderedSize": [
+        450,
+        430
+      ],
+      "scaleLimits": [
+        0.78,
+        1,
+        1.04
+      ],
+      "altText": "Illustrated grounded peacock for the right side, facing inward toward the invitation centre.",
+      "compatibility": [
+        "HW-BG-001",
+        "HW-ARCH-001",
+        "HW-FLORAL-010-V1-BASE",
+        "PAL-IVORY-GOLD",
+        "H08"
+      ],
+      "prompt": "Transparent PNG cutout asset only. Create exactly TWO refined hand-painted editorial ILLUSTRATIONS of adult male Indian peafowl, not photoreal cutout photos, isolated on a fully transparent RGBA canvas. Outside the physical birds and tiny contact shadows, every pixel must be zero alpha: no background, plants, haze, aura, gradient, floor, scene, or shadow field. Wide 5:3 canvas. One bird at lower left faces inward right; one at lower right faces inward left. Equal scale and height, same baseline, large clear central gap. ANATOMY MUST BE ACCURATE: each has exactly one small head, one beak, one eye, a slender S-curved blue neck, one torso, two separate legs and two grounded feet with coherent toes, one folded wing, and one complete low trailing folded train. Each crown crest consists of several THIN UPRIGHT FEATHER SHAFTS ending in small spatulate tips—never a broad fan, mohawk, horn, halo or solid plume. Calm elegant independent poses; not copy-mirrored. Teal/ultramarine neck, muted green train with restrained ocelli, antique-gold ink accents; watercolor and fine ink on the bird only. Tails are not display fans and preserve central text. Entire crests, feet and all tail feathers fully inside frame. NO fan-shaped crest, photographic style, outward-facing birds, unequal scale, extra heads/eyes/legs/feet/wings, fused feet, impossible feathers, jewellery, riders, deity association, flowers, architecture, text, fake script, sacred symbols, watermark, invitation, checkerboard, matte, halo, crop or duplicates.",
+      "reviewNotes": "Pair/count/grounding/inward orientation pass. Broad stylised crests remain an explicit Owner/biological review point. Directional child retains the parent's original anatomy, lighting and orientation.",
+      "parent": "HW-ANIMAL-002-V2",
+      "parentCandidateId": "HW-ANIMAL-002-V2",
+      "derivation": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "status": "UNDER_REVIEW",
+      "productionEligible": false,
+      "model": "ChatGPT built-in image generation",
+      "provenance": "Lossless directional split from the reviewed combined transparent master; no mirroring, redrawing or generative modification.",
+      "master": "masters/hw-animal-002-v2-right-master.png",
+      "deliveryFile": "delivery/hw-animal-002-v2-right-delivery.webp",
+      "optionCard": "option-cards/hw-animal-002-v2-right-option-card.webp",
+      "thumbnail": "thumbnails/hw-animal-002-v2-right-thumbnail.webp",
+      "detailCrop": "details/hw-animal-002-v2-right-detail.png",
+      "technical": {
+        "dimensions": [
+          714,
+          780
+        ],
+        "alphaBounds": [
+          32,
+          32,
+          682,
+          748
+        ],
+        "colourSpace": "sRGB",
+        "alpha": true,
+        "bytes": 584504,
+        "sha256": "85d41fc6b9e0d187bea7bfa77bc55418cc63a83e0d4f73863c8a76458a3aa0c7"
+      }
+    }
+  ]
+}
