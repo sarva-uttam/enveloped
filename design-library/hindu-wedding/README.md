@@ -4,7 +4,9 @@ This registry maps Hindu wedding survey answers to controlled templates, visual 
 
 The HTML Invitation Studio architecture remains authoritative for rendering. Every finished template is a reviewed, trusted whole-document package. Registry components are catalogue records that may be supplied only to asset slots explicitly declared by that package; they are not arbitrary PNG layers from which the browser invents a page.
 
-The first approved visual batch contains eleven reusable background families, each with Pale, Subtle, Deep and Dark colour moods. Their production files, survey previews, family comparisons and metadata are tracked in this library. No architectural, sacred, floral or assembled-template artwork is approved yet. Sacred imagery, music and motion remain optional, and client text remains editable HTML.
+The approved library includes eleven background families with four moods, twelve architectural frames, ten Ganesha options, four sacred motifs and one neutral header. Botanical generation is paused at its recorded checkpoint; review-file presence does not imply approval. Later layers and H01–H08 remain planned. Sacred imagery, music and motion remain optional, and client text remains editable HTML.
+
+Before artwork work, read [`documentation/MASTER-ASSET-PRODUCTION-BLUEPRINT.md`](documentation/MASTER-ASSET-PRODUCTION-BLUEPRINT.md) and complete [`documentation/GENERATION-BRIEF-TEMPLATE.md`](documentation/GENERATION-BRIEF-TEMPLATE.md).
 
 ## Commands
 
