@@ -35,7 +35,12 @@ The Owner explicitly confirmed that the generated Minimum Viable Tier Path asset
 - The approval covers the assets and code-native treatments listed above.
 - Combined lamp and peacock pairs and their independent LEFT/RIGHT children are all approved; no automatic mirroring is authorised.
 - Rejected v1 candidates remain rejected and non-selectable.
-- `HW-FLORAL-010-V1-BASE` remains a separate `UNDER_REVIEW_TRIAL_DEPENDENCY`. The approved floral-reveal implementation must not be activated with that botanical asset until the botanical asset receives separate approval.
-- The complete trial package therefore remains package-level non-selectable for now, even though its accepted component records are approved.
+- `HW-FLORAL-010-V1-BASE` was subsequently reviewed and approved by the Owner for this controlled Minimum Viable Tier Path trial.
+- The floral reveal may now use that exact approved trial dependency.
+- The complete Bronze-to-Platinum trial package is eligible for website-survey integration.
 - This record does not approve H01–H08 templates, a merge to master, deployment or publication.
 - Pricing and the agreed commercial model are unchanged.
+
+## Subsequent dependency approval
+
+On 2026-09-20, the Owner confirmed that `HW-FLORAL-010-V1-BASE` had been reviewed, was acceptable for now, and was approved to proceed. This approval is limited to the controlled website-survey trial and does not resume or approve the wider paused floral/foliage batch.

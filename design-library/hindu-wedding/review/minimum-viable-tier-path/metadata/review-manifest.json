@@ -3,12 +3,12 @@
   "trial": "Ivory Palace Progression",
   "baseCommit": "9259f25f2b0c68ab18d6bce8ff5abe1e62c02252",
   "approvalStatus": "APPROVED",
-  "productionSelectable": false,
+  "productionSelectable": true,
   "foundation": [
     "HW-BG-001:PALE",
     "HW-ARCH-001-V2",
     "HW-HEADER-001",
-    "HW-FLORAL-010-V1-BASE:UNDER_REVIEW_TRIAL_DEPENDENCY"
+    "HW-FLORAL-010-V1-BASE:APPROVED_FOR_TRIAL"
   ],
   "codeNativeAssets": [
     {
@@ -39,8 +39,7 @@
       "staticFallback": "Exact HW-FLORAL-010-V1-BASE final placement",
       "reducedMotion": "Final state shown immediately.",
       "ownerApprovalDate": "2026-09-20",
-      "productionEligible": false,
-      "approvalConstraint": "Approved implementation; activation remains blocked by HW-FLORAL-010-V1-BASE:UNDER_REVIEW_TRIAL_DEPENDENCY."
+      "productionEligible": true
     },
     {
       "id": "TRIAL-CINEMATIC-LIGHT-V1",
@@ -630,6 +629,14 @@
     "approvedOn": "2026-09-20",
     "source": "Explicit Owner confirmation in the Enveloped asset-generation conversation",
     "scope": "Minimum Viable Tier Path trial assets from commit b13bd2c155a9bb41ae87f6713524eeceb6199026",
-    "boundary": "Approval covers the listed trial assets. The package remains non-selectable until the existing HW-FLORAL-010-V1-BASE botanical dependency is separately approved."
-  }
+    "boundary": "Owner approval now includes HW-FLORAL-010-V1-BASE for this trial path. All required trial dependencies are approved and the Bronze-to-Platinum survey path is selectable.",
+    "trialFloralDependency": {
+      "id": "HW-FLORAL-010-V1-BASE",
+      "decision": "APPROVED_FOR_TRIAL",
+      "approvedBy": "Owner",
+      "approvedOn": "2026-09-20",
+      "scope": "Minimum Viable Tier Path survey trial"
+    }
+  },
+  "surveySelectable": true
 }

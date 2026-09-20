@@ -1,7 +1,7 @@
 # Ivory Palace Progression — Owner Review Package
 
 Status: **OWNER APPROVED**  
-Production selectable: **No — blocked only by the separately pending botanical dependency**  
+Production selectable: **Yes — approved for the controlled website survey trial**  
 Base commit: `9259f25f2b0c68ab18d6bce8ff5abe1e62c02252`
 
 This package demonstrates one complete invitation identity progressing through Bronze, Silver, Gold and Platinum. It is a controlled trial composition, not H01–H08 approval.
@@ -43,4 +43,4 @@ The Owner explicitly approved the trial assets on 2026-09-20. The approval recor
 
 The brass lamps and peacocks are available both as combined fallback pairs and as independently placeable, independently authored-direction child files: `LEFT` and `RIGHT`. The split files are not mirrored; they retain the original anatomy, lighting and inward orientation.
 
-All listed trial visuals are `APPROVED`. Rejected v1 candidates remain isolated in `rejected/` and are not selectable. The existing `HW-FLORAL-010-V1-BASE` foundation entry remains an `UNDER_REVIEW_TRIAL_DEPENDENCY`; therefore this complete trial package remains non-selectable until that botanical dependency receives separate approval. No final template, merge or deployment is authorised by this record.
+All listed trial visuals are `APPROVED`. The Owner has also approved `HW-FLORAL-010-V1-BASE` for this controlled survey trial, removing the last dependency block. The Bronze-to-Platinum progression is now eligible for website-survey integration. Rejected v1 candidates remain isolated in `rejected/` and are not selectable. No H01–H08 template approval, merge, deployment or publication is authorised by this record.

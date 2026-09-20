@@ -7,9 +7,9 @@ const base = path.join(root, "design-library/hindu-wedding/review/minimum-viable
 const manifest = JSON.parse(await fs.readFile(path.join(base, "metadata/review-manifest.json"), "utf8"));
 const errors = [];
 
-if (manifest.approvalStatus !== "APPROVED" || manifest.productionSelectable !== false) errors.push("Manifest must record Owner approval while remaining package-level non-selectable until the floral dependency is approved.");
+if (manifest.approvalStatus !== "APPROVED" || manifest.productionSelectable !== true || manifest.surveySelectable !== true) errors.push("Manifest must be Owner-approved and selectable for the controlled survey trial.");
 if (manifest.assets.length !== 10) errors.push("Expected ten raster assets, including four directional child components.");
-if (!manifest.foundation.includes("HW-FLORAL-010-V1-BASE:UNDER_REVIEW_TRIAL_DEPENDENCY")) errors.push("Pending floral dependency boundary is missing.");
+if (!manifest.foundation.includes("HW-FLORAL-010-V1-BASE:APPROVED_FOR_TRIAL")) errors.push("Owner-approved trial floral dependency is missing.");
 if (!manifest.approval || manifest.approval.decision !== "APPROVED") errors.push("Owner approval record is missing.");
 
 for (const asset of manifest.assets) {
@@ -46,4 +46,4 @@ if (errors.length) {
   console.error(errors.join("\n"));
   process.exit(1);
 }
-console.log(`Tier-path review valid: ${manifest.assets.length} raster assets, 4 tier previews, mobile/desktop/9:16 coverage, semantic HTML, reduced-motion fallback.`);
+console.log(`Tier-path trial valid and survey-selectable: ${manifest.assets.length} raster assets, 4 tier previews, mobile/desktop/9:16 coverage, semantic HTML, reduced-motion fallback.`);

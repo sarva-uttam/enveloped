@@ -20,7 +20,7 @@ Run date: 2026-09-20
 | HW-CEREM-002-V1 | PNG alpha + WebP; complete feet/flames | Equal paired brass lamps, joined shafts and stable bases | Shared lower baseline | OWNER APPROVED |
 | HW-ANIMAL-002-V2 | PNG alpha + WebP; complete pair | Equal scale, inward-facing, two grounded legs/feet each | Lower corners, text-safe | OWNER APPROVED — original QA note retained in manifest |
 | HW-EFFECT-004-V1 | PNG alpha + WebP | Sparse glints; no dense bokeh | Outer edges; centre remains readable | OWNER APPROVED |
-| HW-EFFECT-002-V2 | PNG alpha + WebP; six isolated petals | Plausible rose petals; no flower heads | Six fixed paths; three-petal static fallback | OWNER APPROVED — activation remains blocked by botanical dependency |
+| HW-EFFECT-002-V2 | PNG alpha + WebP; six isolated petals | Plausible rose petals; no flower heads | Six fixed paths; three-petal static fallback | OWNER APPROVED — botanical dependency approved for trial |
 | HW-PEOPLE-005-V2 | PNG alpha + WebP; complete heads/hands/feet | Rear-facing fictional adults, distinct joined hands, coherent garments/posture | Bottom-centre; text remains unobstructed | OWNER APPROVED |
 
 Exact dimensions, alpha bounding boxes, hashes, anchors and scale limits are machine-recorded in `metadata/review-manifest.json`. The lamp and peacock pairs also have non-mirrored LEFT/RIGHT transparent child masters, deliveries, cards, thumbnails and detail crops; the combined files remain controlled fallbacks.
@@ -41,11 +41,11 @@ Exact dimensions, alpha bounding boxes, hashes, anchors and scale limits are mac
 - `HW-CANOPY-001-V1` rejected for broad semi-transparent atmosphere outside the object.
 - `HW-ANIMAL-002-V1` rejected for photoreal treatment and fan-like crest styling.
 - `HW-EFFECT-002-V1` rejected after alpha-background concern; corrected v2 retained.
-- The current registry contains no APPROVED floral or foliage component. `HW-FLORAL-010-V1-BASE` remains an explicit trial-only UNDER_REVIEW dependency.
+- `HW-FLORAL-010-V1-BASE` is Owner-approved specifically for the controlled Minimum Viable Tier Path survey trial. This does not approve the wider paused floral/foliage batch.
 - The semantic HTML/CSS composition is authoritative. Review PNGs are deterministic snapshots and contain generic placeholder copy, not final client text.
 
 ## Trial validator
 
 `node scripts/validate-tier-path-review.mjs` verifies six raster packages, alpha/sRGB, option-card and thumbnail dimensions, exact metadata presence, four tier previews at all three presentation sizes, semantic HTML, the completion message, reduced-motion CSS and exclusion of unlicensed preferred fonts.
 
-Owner decision: APPROVED on 2026-09-20. Package-level production selection remains blocked by the separately unapproved `HW-FLORAL-010-V1-BASE` botanical dependency.
+Owner decision: APPROVED on 2026-09-20. The Owner subsequently approved `HW-FLORAL-010-V1-BASE` for this trial, so the complete Bronze-to-Platinum path is eligible for controlled website-survey integration.
