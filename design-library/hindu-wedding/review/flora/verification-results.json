@@ -1,0 +1,29 @@
+{
+  "startingCommit": "5601ae05a2a1937efcfbf70f548809b52e7f3e43",
+  "branch": "integration/hindu-wedding-registry-v1",
+  "dateUTC": "2026-09-18",
+  "baseline": {
+    "testFilesPassed": 70,
+    "testsPassed": 831,
+    "differenceFromReported": 0
+  },
+  "final": {
+    "testsPassed": 831,
+    "testFilesPassed": 70,
+    "registryValidation": "PASS",
+    "lint": "PASS",
+    "typescript": "PASS",
+    "nextBuild": "PASS",
+    "reviewSchemaAndIsolation": "PASS",
+    "decodedImageFiles": 266,
+    "gitDiffCheck": "PASS"
+  },
+  "productionBlocks": [
+    "HW-FLORAL-015 native resolution and text geometry",
+    "Inactive role-specific slot proposals"
+  ],
+  "culturalCompatibility": "PENDING_CULTURAL_REVIEW",
+  "ownerApproval": null,
+  "committed": false,
+  "pushed": false
+}

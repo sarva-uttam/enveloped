@@ -1,0 +1,4100 @@
+{
+  "startingCommit": "5601ae05a2a1937efcfbf70f548809b52e7f3e43",
+  "dateUTC": "2026-09-18",
+  "reviewStatus": "UNDER_REVIEW",
+  "productionSelectable": false,
+  "entries": [
+    {
+      "candidateId": "HW-FLORAL-001-V1-BASE",
+      "id": "HW-FLORAL-001",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Ruby Rose",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "red roses",
+      "styleDescription": "compact horizontal cluster of three red roses, connected short rose stems and a few serrated rose leaves",
+      "colourMaterialVariant": "red roses",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact horizontal cluster of three red roses, connected short rose stems and a few serrated rose leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-001-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-001-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-001-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-001-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-001-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-001-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-001-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-001-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "330c449506526cb28b273c903dae5499df11376e254d087fc0a7ab38dcd2b28b",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          18,
+          23,
+          1758,
+          863
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          21,
+          119,
+          1751,
+          780
+        ],
+        "visiblePaddingMinimumPixels": 21
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 108,
+        "y": 1390,
+        "width": 785,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        865,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Ruby Rose: compact horizontal cluster of three red roses, connected short rose stems and a few serrated rose leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 163074,
+        "compressionWeightedRGBRMS": [
+          8.253255223360389,
+          4.038248035582932,
+          7.48851192292032
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-002-V1-BASE",
+      "id": "HW-FLORAL-002",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Blush Reverie",
+      "family": "GARDEN",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "blush roses",
+      "styleDescription": "compact horizontal cluster of three blush roses with connected stems and rose leaves",
+      "colourMaterialVariant": "blush roses",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact horizontal cluster of three blush roses with connected stems and rose leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-002-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-002-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-002-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-002-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-002-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-002-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-002-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-002-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "27c9924dfe37705c481fac566f5523295ca16e352ea2d81071dfed53cc60fb97",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          25,
+          9,
+          1758,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          42,
+          149,
+          1740,
+          795
+        ],
+        "visiblePaddingMinimumPixels": 34
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 106,
+        "y": 1390,
+        "width": 789,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        849,
+        323
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Blush Reverie: compact horizontal cluster of three blush roses with connected stems and rose leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 183662,
+        "compressionWeightedRGBRMS": [
+          8.971731407962242,
+          5.025014360315557,
+          10.917543557786262
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-003-V1-BASE",
+      "id": "HW-FLORAL-003",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Garden Romance",
+      "family": "GARDEN",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "pink garden roses",
+      "styleDescription": "compact spray of three softly pink garden roses with layered ruffled petals and rose leaves",
+      "colourMaterialVariant": "pink garden roses",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact spray of three softly pink garden roses with layered ruffled petals and rose leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-003-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-003-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-003-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-003-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-003-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-003-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-003-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-003-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "424ef54472eea63f94882fb45801b444c8f0fcccaa092cacdadc19c8cfd92a4a",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          0,
+          58,
+          1740,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          40,
+          60,
+          1735,
+          829
+        ],
+        "visiblePaddingMinimumPixels": 39
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 170,
+        "y": 1390,
+        "width": 661,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        847,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Garden Romance: compact spray of three softly pink garden roses with layered ruffled petals and rose leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 217566,
+        "compressionWeightedRGBRMS": [
+          7.791621352729178,
+          4.408421889338015,
+          9.24939313486407
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-004-V1-BASE",
+      "id": "HW-FLORAL-004",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Ivory Rose",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "white roses",
+      "styleDescription": "compact horizontal spray of three creamy white roses with coherent stems and rose leaves",
+      "colourMaterialVariant": "white roses",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact horizontal spray of three creamy white roses with coherent stems and rose leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-004-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-004-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-004-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-004-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-004-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-004-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-004-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-004-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "5dc08e83ad5d91352acdbe235613045aa00f9f99b7960e8a82ec26a7cc3c305e",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          22,
+          21,
+          1758,
+          869
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          25,
+          73,
+          1753,
+          780
+        ],
+        "visiblePaddingMinimumPixels": 21
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 134,
+        "y": 1390,
+        "width": 733,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        864,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Ivory Rose: compact horizontal spray of three creamy white roses with coherent stems and rose leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 184508,
+        "compressionWeightedRGBRMS": [
+          6.7562345708183695,
+          4.072490501094904,
+          11.308607892633672
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-005-V1-BASE",
+      "id": "HW-FLORAL-005",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Peony Grace",
+      "family": "GARDEN",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "blush peonies",
+      "styleDescription": "compact arrangement of two blush peonies, distinct ruffled petal bowls and attached peony leaves",
+      "colourMaterialVariant": "blush peonies",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact arrangement of two blush peonies, distinct ruffled petal bowls and attached peony leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-005-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-005-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-005-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-005-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-005-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-005-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-005-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-005-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "a4f20fbe25b9f9fc2aa090f2668d95a248f4fc4181b10c6e0553bea2fc23ad2c",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          0,
+          21,
+          1755,
+          839
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          29,
+          80,
+          1750,
+          827
+        ],
+        "visiblePaddingMinimumPixels": 24
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 155,
+        "y": 1390,
+        "width": 691,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        860,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Peony Grace: compact arrangement of two blush peonies, distinct ruffled petal bowls and attached peony leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 206154,
+        "compressionWeightedRGBRMS": [
+          5.33487584961379,
+          3.3765717638114197,
+          8.114628042249297
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-006-V1-BASE",
+      "id": "HW-FLORAL-006",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Jasmine Whisper",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "white jasmine",
+      "styleDescription": "delicate horizontal flowering jasmine sprig, five-petalled white jasmine blossoms attached to branching stems and simple green leaves",
+      "colourMaterialVariant": "white jasmine",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: delicate horizontal flowering jasmine sprig, five-petalled white jasmine blossoms attached to branching stems and simple green leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-006-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-006-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-006-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-006-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-006-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-006-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-006-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-006-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "9c3b57ab4b4bc14754e53900a25e80ee5248e203b7c85672ef3cb78d77b24393",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          25,
+          21,
+          1737,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          47,
+          125,
+          1730,
+          755
+        ],
+        "visiblePaddingMinimumPixels": 44
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 100,
+        "y": 1390,
+        "width": 801,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        841,
+        315
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Jasmine Whisper: delicate horizontal flowering jasmine sprig, five-petalled white jasmine blossoms attached to branching stems and simple green leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 167264,
+        "compressionWeightedRGBRMS": [
+          7.3095017029526055,
+          4.7974044182116895,
+          14.765278366692696
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-007-V1-BASE",
+      "id": "HW-FLORAL-007",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Marigold Radiance",
+      "family": "TEMPLE",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "marigolds",
+      "styleDescription": "compact horizontal cluster of three orange and saffron marigold flower heads with coherent stems and divided marigold leaves",
+      "colourMaterialVariant": "marigolds",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact horizontal cluster of three orange and saffron marigold flower heads with coherent stems and divided marigold leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-007-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-007-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-007-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-007-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-007-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-007-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-007-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-007-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "4b01febfc7d81e5e02bc775c8b167f0a6e90f17d0e161c420a0a492d92da24f3",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          45,
+          77,
+          1713,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          73,
+          80,
+          1710,
+          811
+        ],
+        "visiblePaddingMinimumPixels": 64
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 164,
+        "y": 1390,
+        "width": 672,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        818,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Marigold Radiance: compact horizontal cluster of three orange and saffron marigold flower heads with coherent stems and divided marigold leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 220406,
+        "compressionWeightedRGBRMS": [
+          8.427685164472908,
+          5.789527565358066,
+          11.79246215312362
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-008-V1-BASE",
+      "id": "HW-FLORAL-008",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Lotus Serenity",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "lotus",
+      "styleDescription": "one pink lotus flower, recognisable layered pointed petals surrounding yellow centre and attached short stem, no water or pot",
+      "colourMaterialVariant": "lotus",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: one pink lotus flower, recognisable layered pointed petals surrounding yellow centre and attached short stem, no water or pot. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-008-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-008-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-008-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-008-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-008-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-008-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-008-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-008-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "cebc51fc2d061add49535084ecd77dfdfbb5b06470e207f2b7c44735f4996326",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          17,
+          18,
+          1689,
+          877
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          120,
+          21,
+          1650,
+          873
+        ],
+        "visiblePaddingMinimumPixels": 14
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 231,
+        "y": 1390,
+        "width": 539,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        765,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Lotus Serenity: one pink lotus flower, recognisable layered pointed petals surrounding yellow centre and attached short stem, no water or pot. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 160008,
+        "compressionWeightedRGBRMS": [
+          6.951854268256159,
+          3.990126006002631,
+          7.3622882997612
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-009-V1-BASE",
+      "id": "HW-FLORAL-009",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Chrysanthemum Lace",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "white chrysanthemums",
+      "styleDescription": "compact spray of three white chrysanthemums with recognisable fine radial petals and coherent stems and lobed leaves",
+      "colourMaterialVariant": "white chrysanthemums",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: compact spray of three white chrysanthemums with recognisable fine radial petals and coherent stems and lobed leaves. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-009-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-009-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-009-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-009-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-009-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-009-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-009-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-009-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "06321333e15794a91aec3cca236cf62cd52d506101a26f6170d6adb08774771c",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          101,
+          45,
+          1694,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          106,
+          53,
+          1691,
+          848
+        ],
+        "visiblePaddingMinimumPixels": 39
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 201,
+        "y": 1390,
+        "width": 598,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        792,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Chrysanthemum Lace: compact spray of three white chrysanthemums with recognisable fine radial petals and coherent stems and lobed leaves. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 256516,
+        "compressionWeightedRGBRMS": [
+          5.4895425393132635,
+          3.5462325327065085,
+          10.570886165872343
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-010-V1-BASE",
+      "id": "HW-FLORAL-010",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Celebration Bloom",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "marigolds, white jasmine, red roses",
+      "styleDescription": "restrained horizontal bouquet of two red roses, two orange marigolds and a small white jasmine spray; species kept visually distinct",
+      "colourMaterialVariant": "marigolds, white jasmine, red roses",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: restrained horizontal bouquet of two red roses, two orange marigolds and a small white jasmine spray; species kept visually distinct. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-010-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-010-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-010-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-010-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-010-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-010-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-010-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-010-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "6e32af0511b3dba42d30206e9a673b33dd95b3b2fefdf88e08020341cf138ce0",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          23,
+          10,
+          1744,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          43,
+          129,
+          1737,
+          764
+        ],
+        "visiblePaddingMinimumPixels": 37
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 100,
+        "y": 1390,
+        "width": 800,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        847,
+        317
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Celebration Bloom: restrained horizontal bouquet of two red roses, two orange marigolds and a small white jasmine spray; species kept visually distinct. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 215098,
+        "compressionWeightedRGBRMS": [
+          8.379668989923909,
+          4.811206150735711,
+          11.424125980458443
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-011-V1-BASE",
+      "id": "HW-FLORAL-011",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Garden Corner",
+      "family": "BOTANICAL",
+      "componentRole": "floral-corner",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-011-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-011-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-011-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-011-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-011-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-011-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-011-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-011-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "deb956f54392a1dabcfbcbc2fc87f685ab92af4673b6523ae4f257309634b356",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          0,
+          11,
+          1754,
+          869
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          13,
+          13,
+          1178,
+          864
+        ],
+        "visiblePaddingMinimumPixels": 13
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 20,
+        "y": 1442,
+        "width": 340,
+        "height": 248,
+        "role": "floral-corner",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        582,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review",
+        "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+      ],
+      "altText": "Garden Corner: standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 140468,
+        "compressionWeightedRGBRMS": [
+          7.222321754780736,
+          4.601866512362649,
+          13.713927854063526
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review.",
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-012-V1-BASE",
+      "id": "HW-FLORAL-012",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Crown of Blossoms",
+      "family": "BOTANICAL",
+      "componentRole": "top-edge-cluster",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "shallow horizontal top-edge cluster of ivory and blush roses, white jasmine and two small marigold accents, compact continuous botanical cluster, nothing hanging, no strings, no suspended supports",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: shallow horizontal top-edge cluster of ivory and blush roses, white jasmine and two small marigold accents, compact continuous botanical cluster, nothing hanging, no strings, no suspended supports. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-012-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-012-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-012-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-012-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-012-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-012-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-012-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-012-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "7bee98bf6012d381c3a3ee964ba623a95b7821c58954936a898e85748c5e8f33",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          15,
+          18,
+          1758,
+          831
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          20,
+          25,
+          1755,
+          550
+        ],
+        "visiblePaddingMinimumPixels": 19
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 60,
+        "y": 40,
+        "width": 240,
+        "height": 73,
+        "role": "top-edge-cluster",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        867,
+        262
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review",
+        "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+      ],
+      "altText": "Crown of Blossoms: shallow horizontal top-edge cluster of ivory and blush roses, white jasmine and two small marigold accents, compact continuous botanical cluster, nothing hanging, no strings, no suspended supports. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 192982,
+        "compressionWeightedRGBRMS": [
+          7.597345872324826,
+          4.661648699537243,
+          13.91512775312662
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review.",
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-013-V1-BASE",
+      "id": "HW-FLORAL-013",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Garden at Dawn",
+      "family": "GARDEN",
+      "componentRole": "lower-floral-garden",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "low wide horizontal lower-edge garden spray of ivory and blush roses, jasmine and restrained orange marigold accents with coherent attached stems",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: low wide horizontal lower-edge garden spray of ivory and blush roses, jasmine and restrained orange marigold accents with coherent attached stems. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-013-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-013-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-013-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-013-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-013-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-013-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-013-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-013-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "38adfe28e02ac255676ebb8b968a2d98eeeb01be1464f0b9ec7f4374626f513c",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          16,
+          29,
+          1760,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          20,
+          242,
+          1754,
+          742
+        ],
+        "visiblePaddingMinimumPixels": 20
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 67,
+        "y": 1440,
+        "width": 867,
+        "height": 250,
+        "role": "lower-floral-garden",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        867,
+        250
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Garden at Dawn: low wide horizontal lower-edge garden spray of ivory and blush roses, jasmine and restrained orange marigold accents with coherent attached stems. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 202184,
+        "compressionWeightedRGBRMS": [
+          8.887603713832151,
+          5.33516788649584,
+          14.363545295073441
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-015-V2-BASE",
+      "id": "HW-FLORAL-015",
+      "variant": "base",
+      "version": 2,
+      "publicName": "Garden Embrace",
+      "family": "BOTANICAL",
+      "componentRole": "floral-border",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "complete tall portrait floral edge border, sparse ivory and blush roses, small jasmine sprays and restrained orange marigold accents along left right and bottom edges, very sparse upper corners; huge completely empty central opening and completely empty upper-centre sacred header opening; no garland or hanging strings",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: complete tall portrait floral edge border, sparse ivory and blush roses, small jasmine sprays and restrained orange marigold accents along left right and bottom edges, very sparse upper corners; huge completely empty central opening and completely empty upper-centre sacred header opening; no garland or hanging strings. Portrait border at high resolution, target 2160x3840. Critical correction: draw the entire border INSIDE a clearly visible 8-percent transparent margin on ALL four sides. All outer leaf tips and petals must be complete. Make the border itself much narrower, occupying only the outer 10 percent of the inner rectangle. Leave the top middle totally empty. Do not crop the left or right side. Author an illustration of an isolated complete U-shaped botanical border, NOT a full-bleed page border.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-015-v2-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-015-v2-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-015-v2-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-015-v2-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-015-v2-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-015-v2-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-015-v2-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-015-v2-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        941,
+        1672
+      ],
+      "deliveryDimensions": [
+        941,
+        1672
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "1bc134fdb4309ccd6e0d4c4df1f4e56d98ed8db4e4ba8f1fcee9738972ed5af8",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          13,
+          19,
+          933,
+          1636
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          17,
+          61,
+          927,
+          1628
+        ],
+        "visiblePaddingMinimumPixels": 14
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 0,
+        "y": 0,
+        "width": 1000,
+        "height": 1722,
+        "role": "floral-border",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        455,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 1,
+        "maximumTextOverlapAlpha": 255
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review",
+        "Native border resolution is below 2x full-page rendering; re-author at >=2000x3556 before full-page production.",
+        "Demonstrated border overlaps registered text rectangles; full-border slot/text geometry must be reviewed before production.",
+        "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+      ],
+      "altText": "Garden Embrace: complete tall portrait floral edge border, sparse ivory and blush roses, small jasmine sprays and restrained orange marigold accents along left right and bottom edges, very sparse upper corners; huge completely empty central opening and completely empty upper-centre sacred header opening; no garland or hanging strings. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 408884,
+        "compressionWeightedRGBRMS": [
+          12.52267845097082,
+          7.0247441055482325,
+          16.772978466530837
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "BLOCKED_FOR_FULL_PAGE_BORDER",
+        "placementIssues": [
+          "Native border resolution is below 2x full-page rendering; re-author at >=2000x3556 before full-page production.",
+          "Demonstrated border overlaps registered text rectangles; full-border slot/text geometry must be reviewed before production.",
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ],
+        "visualInspection": "ARTWORK_REVIEWED_FULLPAGE_PRODUCTION_BLOCKED",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review.",
+          "Native border resolution is below 2x full-page rendering; re-author at >=2000x3556 before full-page production.",
+          "Demonstrated border overlaps registered text rectangles; full-border slot/text geometry must be reviewed before production.",
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FOLIAGE-001-V1-BASE",
+      "id": "HW-FOLIAGE-001",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Mango Grace",
+      "family": "TROPICAL",
+      "componentRole": "foliage-accent",
+      "botanicalDescription": "mango leaves",
+      "styleDescription": "single horizontal branching mango-leaf spray, recognisable long narrow lanceolate mango leaves with coherent stems",
+      "colourMaterialVariant": "mango leaves",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: single horizontal branching mango-leaf spray, recognisable long narrow lanceolate mango leaves with coherent stems. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-foliage-001-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-foliage-001-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-001-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-001-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-foliage-001-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-foliage-001-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-001-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-001-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "efac7172b21de1323d0c2c5aaa9b5c6b27510bb925094830b0b442a5f82685f2",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          49,
+          7,
+          1754,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          63,
+          96,
+          1740,
+          822
+        ],
+        "visiblePaddingMinimumPixels": 34
+      },
+      "registeredSlot": "upper-canopy",
+      "registeredAnchor": "TOP_CENTER",
+      "registeredDefaultDimensions": [
+        600,
+        300
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 60,
+        "y": 40,
+        "width": 240,
+        "height": 104,
+        "role": "foliage-accent",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        838,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Mango Grace: single horizontal branching mango-leaf spray, recognisable long narrow lanceolate mango leaves with coherent stems. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 172692,
+        "compressionWeightedRGBRMS": [
+          10.020988111482492,
+          6.196375704935724,
+          15.82802956339052
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FOLIAGE-002-V1-BASE",
+      "id": "HW-FOLIAGE-002",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Tropical Silk",
+      "family": "TROPICAL",
+      "componentRole": "foliage-accent",
+      "botanicalDescription": "banana leaves",
+      "styleDescription": "two complete banana leaves attached to short coherent petioles, parallel venation, gently fanned horizontal composition; no trunk or plant pot",
+      "colourMaterialVariant": "banana leaves",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: two complete banana leaves attached to short coherent petioles, parallel venation, gently fanned horizontal composition; no trunk or plant pot. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-foliage-002-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-foliage-002-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-002-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-002-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-foliage-002-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-foliage-002-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-002-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-002-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "691f131f0cc7c6fccedc38b7cb3bb4ab5d90f15b008393680af1b532a9ec1db0",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          28,
+          37,
+          1758,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          31,
+          95,
+          1746,
+          815
+        ],
+        "visiblePaddingMinimumPixels": 28
+      },
+      "registeredSlot": "upper-canopy",
+      "registeredAnchor": "TOP_CENTER",
+      "registeredDefaultDimensions": [
+        600,
+        300
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 60,
+        "y": 40,
+        "width": 240,
+        "height": 101,
+        "role": "foliage-accent",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        857,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Tropical Silk: two complete banana leaves attached to short coherent petioles, parallel venation, gently fanned horizontal composition; no trunk or plant pot. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 119788,
+        "compressionWeightedRGBRMS": [
+          6.283344691619914,
+          4.15906824822704,
+          9.90715665443553
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FOLIAGE-005-V1-BASE",
+      "id": "HW-FOLIAGE-005",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Sage Mist",
+      "family": "BOTANICAL",
+      "componentRole": "foliage-accent",
+      "botanicalDescription": "sage-coloured eucalyptus-style decorative foliage",
+      "styleDescription": "horizontal branching eucalyptus-style sprig with rounded leaves, muted sage-green colour; decorative leaf form, not the sage plant",
+      "colourMaterialVariant": "sage-coloured eucalyptus-style decorative foliage",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: horizontal branching eucalyptus-style sprig with rounded leaves, muted sage-green colour; decorative leaf form, not the sage plant. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-foliage-005-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-foliage-005-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-005-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-005-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-foliage-005-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-foliage-005-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-005-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-005-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "56705149a59832d93f1d925007a7011b28ef4443fbbfa5a4ad955de1f115040f",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          33,
+          21,
+          1750,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          39,
+          141,
+          1746,
+          748
+        ],
+        "visiblePaddingMinimumPixels": 28
+      },
+      "registeredSlot": "upper-canopy",
+      "registeredAnchor": "TOP_CENTER",
+      "registeredDefaultDimensions": [
+        600,
+        300
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 60,
+        "y": 40,
+        "width": 240,
+        "height": 85,
+        "role": "foliage-accent",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        853,
+        303
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Sage Mist: horizontal branching eucalyptus-style sprig with rounded leaves, muted sage-green colour; decorative leaf form, not the sage plant. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 156068,
+        "compressionWeightedRGBRMS": [
+          9.484789125727218,
+          5.8983820717845745,
+          14.731039698544961
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FOLIAGE-006-V1-BASE",
+      "id": "HW-FOLIAGE-006",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Eucalyptus Air",
+      "family": "BOTANICAL",
+      "componentRole": "foliage-accent",
+      "botanicalDescription": "eucalyptus-style foliage",
+      "styleDescription": "horizontal branching eucalyptus-style sprig with recognisable rounded blue-green leaves and coherent attachment points",
+      "colourMaterialVariant": "eucalyptus-style foliage",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: horizontal branching eucalyptus-style sprig with recognisable rounded blue-green leaves and coherent attachment points. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-foliage-006-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-foliage-006-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-006-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-006-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-foliage-006-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-foliage-006-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-006-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-006-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "ea161dff447a70d10ac1b4936da37d7fd375d3c263515d7d54aa91e2a7a3253d",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          49,
+          39,
+          1741,
+          865
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          54,
+          74,
+          1733,
+          808
+        ],
+        "visiblePaddingMinimumPixels": 41
+      },
+      "registeredSlot": "upper-canopy",
+      "registeredAnchor": "TOP_CENTER",
+      "registeredDefaultDimensions": [
+        600,
+        300
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 60,
+        "y": 40,
+        "width": 240,
+        "height": 105,
+        "role": "foliage-accent",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        839,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Eucalyptus Air: horizontal branching eucalyptus-style sprig with recognisable rounded blue-green leaves and coherent attachment points. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 166042,
+        "compressionWeightedRGBRMS": [
+          10.410971399765304,
+          6.130689009740768,
+          13.0956391441251
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FOLIAGE-007-V1-BASE",
+      "id": "HW-FOLIAGE-007",
+      "variant": "base",
+      "version": 1,
+      "publicName": "Gilded Eucalyptus",
+      "family": "BOTANICAL",
+      "componentRole": "foliage-accent",
+      "botanicalDescription": "stylised metallic eucalyptus-style foliage",
+      "styleDescription": "horizontal branching eucalyptus-style sprig rendered as fine satin champagne-gold metallic ornament, rounded leaves on coherent stems; decorative metallic treatment, not a naturally gold plant",
+      "colourMaterialVariant": "stylised metallic eucalyptus-style foliage",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: horizontal branching eucalyptus-style sprig rendered as fine satin champagne-gold metallic ornament, rounded leaves on coherent stems; decorative metallic treatment, not a naturally gold plant. Wide horizontal component at high resolution, target 2048x1024.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-foliage-007-v1-base-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-foliage-007-v1-base-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-007-v1-base-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-foliage-007-v1-base-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-foliage-007-v1-base-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-foliage-007-v1-base-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-007-v1-base-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-foliage-007-v1-base-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "c277aacc9603f1e8a3cc549514d65697c003e55e58766b174ebb17897e62d94f",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          23,
+          21,
+          1754,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          31,
+          197,
+          1746,
+          703
+        ],
+        "visiblePaddingMinimumPixels": 28
+      },
+      "registeredSlot": "upper-canopy",
+      "registeredAnchor": "TOP_CENTER",
+      "registeredDefaultDimensions": [
+        600,
+        300
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 60,
+        "y": 40,
+        "width": 240,
+        "height": 71,
+        "role": "foliage-accent",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        857,
+        253
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Gilded Eucalyptus: horizontal branching eucalyptus-style sprig rendered as fine satin champagne-gold metallic ornament, rounded leaves on coherent stems; decorative metallic treatment, not a naturally gold plant. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 142518,
+        "compressionWeightedRGBRMS": [
+          11.760148094802892,
+          6.70255210563733,
+          17.649508495448124
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-010-V1-FULLER-SILVER",
+      "id": "HW-FLORAL-010",
+      "variant": "fuller-silver",
+      "version": 1,
+      "publicName": "Celebration Bloom",
+      "family": "BOTANICAL",
+      "componentRole": "floral-spray",
+      "botanicalDescription": "marigolds, white jasmine, red roses",
+      "styleDescription": "restrained horizontal bouquet of two red roses, two orange marigolds and a small white jasmine spray; species kept visually distinct",
+      "colourMaterialVariant": "marigolds, white jasmine, red roses",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "SILVER",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: restrained horizontal bouquet of two red roses, two orange marigolds and a small white jasmine spray; species kept visually distinct. Wide horizontal component at high resolution, target 2048x1024. Additional art direction: Replace the restrained bouquet direction with a fuller but elegant arrangement of four red roses, three marigolds and two small white jasmine sprays. Rich ruby and saffron colour, natural layering, ample negative space and complete connected stems. Do not add species.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-010-v1-fuller-silver-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-010-v1-fuller-silver-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-010-v1-fuller-silver-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-010-v1-fuller-silver-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-010-v1-fuller-silver-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-010-v1-fuller-silver-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-010-v1-fuller-silver-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-010-v1-fuller-silver-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "d4986db122ddccab2a3f2a244b49bbcbf56556b8186b821aa285c437c6dc75f4",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          0,
+          0,
+          1756,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          24,
+          104,
+          1744,
+          793
+        ],
+        "visiblePaddingMinimumPixels": 24
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 126,
+        "y": 1390,
+        "width": 749,
+        "height": 300,
+        "role": "floral-spray",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        860,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Celebration Bloom: restrained horizontal bouquet of two red roses, two orange marigolds and a small white jasmine spray; species kept visually distinct. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 250122,
+        "compressionWeightedRGBRMS": [
+          10.158773442531423,
+          5.391784152396097,
+          11.383986660993154
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-011-V1-LAYERED-GOLD",
+      "id": "HW-FLORAL-011",
+      "variant": "layered-gold",
+      "version": 1,
+      "publicName": "Garden Corner",
+      "family": "BOTANICAL",
+      "componentRole": "floral-corner",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "GOLD",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm. Wide horizontal component at high resolution, target 2048x1024. Additional art direction: Create a finely detailed layered lower-left corner arrangement, five ivory and blush roses, small distinct white jasmine sprays and two restrained saffron marigold accents. More botanical depth and refined petal detail, controlled L shape and negative space. Keep complete leaf and petal tips within generous padding.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-011-v1-layered-gold-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-011-v1-layered-gold-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-011-v1-layered-gold-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-011-v1-layered-gold-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-011-v1-layered-gold-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-011-v1-layered-gold-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-011-v1-layered-gold-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-011-v1-layered-gold-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "deb896f7f700715fe77124258c8d80238997c564eefbdb7d16436f8617840db5",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          31,
+          13,
+          1649,
+          877
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          35,
+          16,
+          1256,
+          874
+        ],
+        "visiblePaddingMinimumPixels": 13
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 20,
+        "y": 1451,
+        "width": 340,
+        "height": 239,
+        "role": "floral-corner",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        610,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review",
+        "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+      ],
+      "altText": "Garden Corner: standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 158250,
+        "compressionWeightedRGBRMS": [
+          7.86333811668041,
+          4.763926049818586,
+          13.102311779803722
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review.",
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-013-V1-LUXURY-PLATINUM",
+      "id": "HW-FLORAL-013",
+      "variant": "luxury-platinum",
+      "version": 1,
+      "publicName": "Garden at Dawn",
+      "family": "GARDEN",
+      "componentRole": "lower-floral-garden",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "low wide horizontal lower-edge garden spray of ivory and blush roses, jasmine and restrained orange marigold accents with coherent attached stems",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "PLATINUM",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: low wide horizontal lower-edge garden spray of ivory and blush roses, jasmine and restrained orange marigold accents with coherent attached stems. Wide horizontal component at high resolution, target 2048x1024. Additional art direction: Create a luxurious carefully balanced low horizontal garden arrangement with eight ivory and blush roses, delicate attached white jasmine sprays and only three tiny saffron marigold accents. Fine realistic petal detail, three depth layers, coherent stems, refined soft light, no excessive clutter. Leave generous transparent padding.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-013-v1-luxury-platinum-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-013-v1-luxury-platinum-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-013-v1-luxury-platinum-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-013-v1-luxury-platinum-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-013-v1-luxury-platinum-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-013-v1-luxury-platinum-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-013-v1-luxury-platinum-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-013-v1-luxury-platinum-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "4bebfe2162d62e19ce038d6069412c08adbcac0f30c8434461264e16344a5604",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          31,
+          21,
+          1758,
+          887
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          36,
+          156,
+          1750,
+          745
+        ],
+        "visiblePaddingMinimumPixels": 24
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 72,
+        "y": 1396,
+        "width": 856,
+        "height": 294,
+        "role": "lower-floral-garden",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        857,
+        294
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review"
+      ],
+      "altText": "Garden at Dawn: low wide horizontal lower-edge garden spray of ivory and blush roses, jasmine and restrained orange marigold accents with coherent attached stems. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 227858,
+        "compressionWeightedRGBRMS": [
+          7.692480801044656,
+          4.77407408066404,
+          15.143570393427675
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    },
+    {
+      "candidateId": "HW-FLORAL-011-V1-RIGHT",
+      "id": "HW-FLORAL-011",
+      "variant": "right",
+      "version": 1,
+      "publicName": "Garden Corner",
+      "family": "BOTANICAL",
+      "componentRole": "floral-corner",
+      "botanicalDescription": "roses, jasmine, marigold accents",
+      "styleDescription": "standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm",
+      "colourMaterialVariant": "roses, jasmine, marigold accents",
+      "registeredMinimumTier": "BRONZE",
+      "registeredAddOnClassification": "INCLUDED",
+      "proposedMinimumTier": "BRONZE",
+      "proposedAddOnClassification": null,
+      "pricingOrAccessChangesActivated": false,
+      "generationPrompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm. Wide horizontal component at high resolution, target 2048x1024. Additional art direction: IMPORTANT: this is the matching LOWER-RIGHT corner counterpart. A vertical floral arm rises at the RIGHT side and a horizontal arm extends LEFT across the bottom. Draw deliberately, do not simply mirror lighting: preserve consistent upper-left soft lighting. Three ivory and blush roses, white jasmine and one small marigold accent. Fully contain all leaves and petals with transparent padding.",
+      "generationMethod": "ChatGPT built-in image generation",
+      "model": null,
+      "modelAvailabilityNote": "Tool did not expose a model identifier.",
+      "generationDateUTC": "2026-09-18",
+      "provenance": "Original AI-generated artwork commissioned in this conversation; exact prompt retained; no downloaded botanical reference pixels.",
+      "referenceBasis": [
+        "Owner botanical decisions in this conversation",
+        "Approved architecture contact sheet inspected for artistic language"
+      ],
+      "licensingEvidence": "No third-party source imagery used. Model identifier and contractual rights evidence were not supplied by the generation tool; do not invent them.",
+      "masterPath": "design-library/hindu-wedding/review/flora/masters/hw-floral-011-v1-right-master.png",
+      "productionCandidatePath": "design-library/hindu-wedding/review/flora/delivery/hw-floral-011-v1-right-delivery.webp",
+      "previewPaths": [
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-011-v1-right-ivory-option-card.webp",
+        "design-library/hindu-wedding/review/flora/option-cards/hw-floral-011-v1-right-ruby-option-card.webp"
+      ],
+      "thumbnailPath": "design-library/hindu-wedding/review/flora/thumbnails/hw-floral-011-v1-right-thumbnail.webp",
+      "detailCropPath": "design-library/hindu-wedding/review/flora/detail-crops/hw-floral-011-v1-right-detail.png",
+      "fullResolutionQAPaths": [
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-011-v1-right-pale-full-resolution.jpg",
+        "design-library/hindu-wedding/review/flora/qa/hw-floral-011-v1-right-dark-full-resolution.jpg"
+      ],
+      "nativeDimensions": [
+        1774,
+        887
+      ],
+      "deliveryDimensions": [
+        1200,
+        600
+      ],
+      "formats": [
+        "PNG",
+        "WEBP"
+      ],
+      "colourSpace": "Delivery exports: sRGB. Native master colour profile not asserted.",
+      "masterSHA256": "8bd189e321106c90ad2baf9391c191401f938f81fafa730559f8d83c9d0b217d",
+      "transparency": {
+        "alpha": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "deliveryAlphaExact": true,
+        "rawAlphaBoundingBox": [
+          229,
+          19,
+          1773,
+          874
+        ],
+        "visibleBoundingBoxAlphaAbove32": [
+          699,
+          23,
+          1760,
+          870
+        ],
+        "visiblePaddingMinimumPixels": 14
+      },
+      "registeredSlot": "foreground",
+      "registeredAnchor": "BOTTOM_CENTER",
+      "registeredDefaultDimensions": [
+        1000,
+        420
+      ],
+      "proposedPlacement": {
+        "canvas": [
+          1000,
+          1778
+        ],
+        "x": 640,
+        "y": 1419,
+        "width": 340,
+        "height": 271,
+        "role": "floral-corner",
+        "activated": false
+      },
+      "native2xMaximumVisibleSize": [
+        530,
+        330
+      ],
+      "safeAreas": {
+        "sacredHeaderClearRectangle": [
+          350,
+          80,
+          650,
+          380
+        ],
+        "textRectangles": [
+          [
+            170,
+            330,
+            830,
+            450
+          ],
+          [
+            120,
+            450,
+            880,
+            640
+          ],
+          [
+            170,
+            650,
+            830,
+            930
+          ]
+        ],
+        "maximumHeaderOverlapAlpha": 0,
+        "maximumTextOverlapAlpha": 0
+      },
+      "compatibleBackgrounds": {
+        "demonstrated": [
+          "HW-BG-001-SUBTLE",
+          "HW-BG-005-DARK"
+        ],
+        "otherApprovedBackgrounds": "Not exhaustively visually verified."
+      },
+      "compatibleFrames": {
+        "demonstrated": [
+          "HW-ARCH-001",
+          "HW-ARCH-002"
+        ],
+        "otherFrames": "Pending individual placement review."
+      },
+      "compatibleHeaders": "Clear-space geometry checked; individual artwork combinations pending review.",
+      "incompatibleCombinations": [
+        "Any placement covering text or sacred-header clear space",
+        "Any undeclared template slot",
+        "Combining border with architecture without dedicated edge-slot review",
+        "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+      ],
+      "altText": "Garden Corner: standalone L-shaped lower-left corner arrangement of blush and ivory roses, white jasmine and one small saffron marigold accent, short attached stems, rising left arm and horizontal lower arm. Decorative illustration on transparent background.",
+      "technicalQA": {
+        "fileIntegrity": "PASS",
+        "genuineTransparency": "PASS",
+        "deliveryAlpha": "PASS",
+        "deliveryBytes": 130040,
+        "compressionWeightedRGBRMS": [
+          6.276211994230387,
+          4.071595373457492,
+          12.790035072185953
+        ],
+        "visiblePadding": "PASS",
+        "duplicateHash": "PASS",
+        "nativeResolution": "PASS_WITH_RECORDED_SCALE_LIMITS",
+        "placementIssues": [
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ],
+        "visualInspection": "PASS_AT_NATIVE_AND_MOBILE_WITH_RECORDED_SCALE_LIMITS",
+        "visualFindings": [
+          "Recognisable deliberately stylised botanical forms; no obvious fused blossoms, floating leaves, unrelated objects, text or visible cutout halos.",
+          "Individual combinations with other backgrounds, frames and sacred headers require placement review.",
+          "Role-specific slot proposal differs from current foreground registry record; inactive pending Owner review."
+        ]
+      },
+      "culturalQA": {
+        "classification": "DECORATIVE",
+        "traditionCompatibility": "PENDING_CULTURAL_REVIEW",
+        "notes": "Owner approved botanical scope; no universal Mauritian Hindu ceremonial suitability or religious meanings claimed."
+      },
+      "reviewStatus": "UNDER_REVIEW",
+      "productionSelectable": false,
+      "ownerApproval": null
+    }
+  ],
+  "rejected": [
+    {
+      "id": "HW-FLORAL-015",
+      "name": "Garden Embrace",
+      "botanical": "roses, jasmine, marigold accents",
+      "subject": "complete tall portrait floral edge border, sparse ivory and blush roses, small jasmine sprays and restrained orange marigold accents along left right and bottom edges, very sparse upper corners; huge completely empty central opening and completely empty upper-centre sacred header opening; no garland or hanging strings",
+      "prompt": "Create one original reusable standalone botanical illustration for Enveloped wedding components. Elegant restrained Bronze-quality hand-painted realistic botanical illustration with finely modelled forms, soft consistent upper-left lighting, refined matte finish matching warm ivory and champagne architectural artwork. Genuine transparent background with alpha, no background colour, no checkerboard drawn into artwork, no ground shadow. Complete uncropped petals and leaves with generous transparent padding. Recognisable species, plausible petals, coherent connected stems, natural scale and layering. No fused flowers, floating leaves, impossible branches, faces, text, logos, sacred symbols, people, animals, lamps, ceremonial objects, motion, falling petals, hanging strings, garlands, torans or invitations. No extra flower species. Subject: complete tall portrait floral edge border, sparse ivory and blush roses, small jasmine sprays and restrained orange marigold accents along left right and bottom edges, very sparse upper corners; huge completely empty central opening and completely empty upper-centre sacred header opening; no garland or hanging strings. Portrait border at high resolution, target 2160x3840.",
+      "version": 1,
+      "tier": "BRONZE",
+      "path": "design-library/hindu-wedding/review/flora/rejected/hw-floral-015-v1-base-rejected.png",
+      "status": "REJECTED",
+      "reason": "Outer leaves/petals reach image boundaries; insufficient border padding."
+    }
+  ],
+  "deferred": [
+    "HW-FOLIAGE-003",
+    "HW-FOLIAGE-004"
+  ],
+  "excluded": [
+    "HW-FLORAL-014"
+  ]
+}

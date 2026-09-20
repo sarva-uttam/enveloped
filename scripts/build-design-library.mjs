@@ -225,6 +225,40 @@ if (sacredReview) {
   }
 }
 
+// Floral review metadata never changes existing tier, pricing or placement access.
+const floraReviewPath = path.join(root, "review/flora/review-manifest.json");
+const floraReview = fs.existsSync(floraReviewPath) ? JSON.parse(fs.readFileSync(floraReviewPath, "utf8")) : null;
+if (floraReview) {
+  if (floraReview.reviewStatus !== "UNDER_REVIEW" || floraReview.productionSelectable !== false) {
+    throw new Error("Flora review importer supports review-only candidates; Owner approval needs a separate explicit promotion.");
+  }
+  for (const id of new Set(floraReview.entries.map((entry) => entry.id))) {
+    const component = components.find((entry) => entry.id === id);
+    if (!component || component.category !== "flora") throw new Error(`Unregistered flora review entry: ${id}`);
+    const variants = floraReview.entries.filter((entry) => entry.id === id);
+    const base = variants.find((entry) => entry.variant === "base" && entry.proposedMinimumTier === "BRONZE");
+    if (!base || variants.some((entry) => entry.reviewStatus !== "UNDER_REVIEW" || entry.productionSelectable !== false)) {
+      throw new Error(`Unsafe flora review status or missing Bronze base: ${id}`);
+    }
+    Object.assign(component, {
+      publicFamilyName: base.publicName, botanicalDescription: base.botanicalDescription,
+      approvalStatus: "UNDER_REVIEW", generationStatus: "VISUAL_QA", productionEligible: false,
+      sourceFilePath: null, deliveryFilePath: null, previewFilePath: base.previewPaths[0],
+      thumbnailFilePath: base.thumbnailPath, reviewMasterFilePath: base.masterPath,
+      reviewDeliveryFilePath: base.productionCandidatePath,
+      reviewManifestFilePath: "design-library/hindu-wedding/review/flora/review-manifest.json",
+      reviewCandidateIds: variants.map((entry) => entry.candidateId),
+      proposedTierVariants: variants.filter((entry) => entry.proposedMinimumTier !== "BRONZE").map((entry) => ({
+        candidateId: entry.candidateId, proposedMinimumTier: entry.proposedMinimumTier,
+        reviewStatus: "UNDER_REVIEW", active: false, priceAdjustment: 0
+      })),
+      altText: base.altText, provenance: base.provenance, generationModel: null,
+      generationDate: base.generationDateUTC, traditionCompatibility: "PENDING_CULTURAL_REVIEW",
+      reviewerNotes: "Owner approved botanical scope only. Every image remains UNDER_REVIEW; existing Bronze/Included access preserved. See review manifest for native resolution and placement limitations."
+    });
+  }
+}
+
 const palettes = [
   ["PAL-IVORY-BLUSH", "Ivory and Blush", { background: "#F7F0E7", primary: "#B98686", accent: "#C9A45C", text: "#332821" }],
   ["PAL-IVORY-GOLD", "Ivory and Gold", { background: "#F5EFE3", primary: "#A7792D", accent: "#D8B86A", text: "#30271E" }],
@@ -282,6 +316,18 @@ if (sacredReview) {
     });
   }
   write(path.join(registryDir, "survey-mapping.json"), mappings);
+  write(path.join(registryDir, "asset-generation-status.json"), status);
+}
+
+if (floraReview) {
+  for (const record of status) {
+    const entry = floraReview.entries.find((candidate) => candidate.id === record.componentId && candidate.variant === "base");
+    if (entry) Object.assign(record, {
+      approvalStatus: "UNDER_REVIEW", generationStatus: "VISUAL_QA",
+      reviewMasterFilePath: entry.masterPath, reviewDeliveryFilePath: entry.productionCandidatePath,
+      notes: "Botanical scope authorised; image approval pending. Review-only paths; original Bronze/Included access retained. See floral manifest for technical limits."
+    });
+  }
   write(path.join(registryDir, "asset-generation-status.json"), status);
 }
 
