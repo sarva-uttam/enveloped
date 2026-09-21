@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/pricing.schema.json",
+  "title": "pricing schema",
+  "type": "object",
+  "required": [
+    "version",
+    "status",
+    "products"
+  ],
+  "properties": {
+    "version": {},
+    "status": {},
+    "products": {}
+  },
+  "additionalProperties": true
+}

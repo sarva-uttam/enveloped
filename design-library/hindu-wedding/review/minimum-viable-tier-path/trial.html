@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ivory Palace Progression — Trial Preview</title>
+  <link rel="stylesheet" href="trial.css">
+</head>
+<body>
+  <main id="invitation" class="trial-invitation" data-tier="bronze" aria-label="Trial wedding invitation preview">
+    <img class="layer background" src="../../components/backgrounds/paper-textures/hw-bg-001/hw-bg-001-pale-v1-1000x1778.webp" alt="">
+    <img class="layer architecture" src="../../components/architecture/delivery/hw-arch-001-v2-delivery.webp" alt="">
+    <div class="layer central-glow tier-silver" aria-hidden="true"></div>
+    <div class="layer cinematic-light tier-platinum" aria-hidden="true"></div>
+    <img class="layer toran tier-silver" src="delivery/hw-canopy-001-v2-delivery.webp" alt="">
+    <img class="layer header" src="../../components/typography/ornaments/delivery/hw-header-001-v1-delivery.webp" alt="">
+
+    <section class="copy" aria-labelledby="trial-couple-names">
+      <p class="eyebrow">Together with their families</p>
+      <h1 id="trial-couple-names" class="names">Couple Name</h1>
+      <h2 class="heading">Wedding Celebration</h2>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="date"><time datetime="2027-01-01">Date · Time</time></p>
+      <p class="venue">Venue Name</p>
+      <p class="details">Event details remain editable, accessible HTML and will be personalised after the visual direction is approved.</p>
+      <button class="action" type="button">View details</button>
+    </section>
+
+    <img class="layer couple tier-platinum" src="delivery/hw-people-005-v2-delivery.webp" alt="Rear-facing fictional couple in formal wedding attire">
+    <img class="layer lamps tier-silver" src="delivery/hw-cerem-002-v1-delivery.webp" alt="Pair of grounded brass standing lamps">
+    <img class="layer peacocks tier-gold" src="delivery/hw-animal-002-v2-delivery.webp" alt="Pair of illustrated inward-facing peacocks">
+    <img class="layer sparkles tier-gold" src="delivery/hw-effect-004-v1-delivery.webp" alt="">
+    <div class="tier-gold" aria-hidden="true">
+      <img class="petal-piece" src="delivery/petals/petal-01.webp" alt="">
+      <img class="petal-piece" src="delivery/petals/petal-02.webp" alt="">
+      <img class="petal-piece" src="delivery/petals/petal-03.webp" alt="">
+      <img class="petal-piece" src="delivery/petals/petal-04.webp" alt="">
+      <img class="petal-piece" src="delivery/petals/petal-05.webp" alt="">
+      <img class="petal-piece" src="delivery/petals/petal-06.webp" alt="">
+    </div>
+    <img class="layer flora floral-reveal tier-platinum" src="../../review/flora/delivery/hw-floral-010-v1-base-delivery.webp" alt="">
+    <img class="layer flora tier-bronze-only" src="../../review/flora/delivery/hw-floral-010-v1-base-delivery.webp" alt="">
+    <p class="brand" aria-label="Enveloped trial branding">Enveloped</p>
+  </main>
+  <aside class="completion-panel" aria-live="polite">
+    <strong>Your invitation is complete.</strong>
+    <span>You can finish with Bronze or explore Silver enhancements.</span>
+  </aside>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const tier = ["bronze", "silver", "gold", "platinum"].includes(params.get("tier")) ? params.get("tier") : "bronze";
+    const invitation = document.getElementById("invitation");
+    invitation.dataset.tier = tier;
+    if (params.get("poster") === "1" || params.get("reduced") === "1") invitation.classList.add("is-poster");
+  </script>
+</body>
+</html>

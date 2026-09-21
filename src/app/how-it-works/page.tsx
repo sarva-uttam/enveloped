@@ -1,51 +1,34 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { ConciergeVsSelfService } from "@/components/site/ConciergeVsSelfService";
+import { ClosingCTA } from "@/components/site/ClosingCTA";
+import { Section } from "@/components/ui/Section";
 
 export const metadata = { title: "How it works — Enveloped" };
 
-const STAGES = [
-  {
-    title: "1. Tell us the occasion",
-    body: "A short survey — the type of event, your names, date, venue, colors, and even the song you want playing in the background. Weddings across every tradition, holidays, vacations, hotel packages — anything worth celebrating.",
-  },
-  {
-    title: "2. Choose a tier",
-    body: "Bronze is clean and fast. Platinum is a full cinematic experience with a uniquely named invite generated for every guest on your list.",
-  },
-  {
-    title: "3. We write and design it",
-    body: "Your answers become warm, tasteful copy and a fully assembled invite — headline, welcome message, event details, and a matching color palette — in under a minute.",
-  },
-  {
-    title: "4. Deliver it as a moment",
-    body: "Share one link for everyone, or — on Platinum — send each guest their own link disguised behind a warm line like \"There's a little surprise for you. Click me.\" No gibberish URLs in the chat preview.",
-  },
-];
-
+/**
+ * Stage 11 — reconciled with the homepage's already-approved How-It-Works
+ * treatment instead of keeping a second, plainer description of the same
+ * four steps (the two had drifted into inconsistent copy). Now the
+ * dedicated page for this topic: the same approved component, plus the
+ * fuller concierge-vs-self-service explanation the homepage only teases.
+ */
 export default function HowItWorksPage() {
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        <section className="mx-auto max-w-3xl px-6 py-20">
+        <Section innerClassName="max-w-3xl pb-0 pt-20 text-center sm:pt-24">
           <h1 className="font-display text-5xl">How it works</h1>
-          <div className="mt-14 space-y-10">
-            {STAGES.map((s) => (
-              <div key={s.title} className="border-l-2 border-line pl-6">
-                <h2 className="font-display text-2xl">{s.title}</h2>
-                <p className="mt-2 text-ink-soft">{s.body}</p>
-              </div>
-            ))}
-          </div>
-          <Link
-            href="/survey"
-            className="mt-14 inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
-          >
-            Start my invite <ArrowRight className="h-4 w-4" />
-          </Link>
-        </section>
+          <p className="mx-auto mt-4 max-w-xl text-ink-soft">
+            Whether you want to answer a few questions yourself or hand the
+            whole thing to our team, here&apos;s exactly what happens.
+          </p>
+        </Section>
+        <HowItWorks id="how-detail" />
+        <ConciergeVsSelfService />
+        <ClosingCTA />
       </main>
       <Footer />
     </>

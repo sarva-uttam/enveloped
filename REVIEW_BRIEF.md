@@ -48,6 +48,195 @@ buyer approving checkout → real `COMPLETED` capture →
 `verifyCaptureResponse()` against a genuine body). Needs a browser +
 sandbox buyer account; still worth a reviewer's eyes.
 
+## Update — 2026-09-09: Stage 0 repository/live database reconciliation
+
+Before this date, `supabase/migrations/` held only two files and
+`supabase/schema.sql` described a database that was **three migrations
+behind** the live project — `list_migrations` on `ravfwnqfxngphncuyyxo`
+recorded seven applied `schema_migrations` versions; this repository
+accounted for only four, and two of those under different filenames. The
+three unaccounted-for versions (`requests_and_templates`,
+`generator_composition`, `generator_payment_publish_split`, all applied
+live on or before 2026-09-05) had added tables `requests`, `templates`,
+`invite_payment_records` and eight new columns on `invites`
+(`request_id`/`occasion`/`generator_kind`/`design_spec`/
+`generator_content`/`composition`/`published_at`/`created_by_admin_id`) —
+none of it present anywhere in this repository.
+
+**The source code that produced this schema (a live column comment names
+it: `invites.server.ts` / `generateHinduInvite`) could not be found and is
+treated as lost** — a documented, exhaustive read-only search covered this
+repository's full git history (every ref, reflog, stash, and dangling
+object), every other local checkout of this project, and every
+locally-retrievable Claude session transcript. See `PROJECT_STATUS.md`'s
+"Missing browser-generator-v1 source" for the full account. This means
+Stage 0 could reconstruct the **schema** with high confidence (every
+object was read directly from the live database) but not the **exact
+per-migration statement grouping** for the three 2026-09-05 versions
+(medium confidence, inferred from column ordinal position and naming) or
+the application code that used these columns at all.
+
+All seven migrations now have a versioned file whose filename matches its
+live `schema_migrations` version exactly; `supabase/schema.sql` was
+rebuilt from verified live state. See `supabase/migrations/README.md` for
+the current file-by-file status and `PROJECT_STATUS.md`'s "Stage 0"
+section for the full validation record. **Two known issues, both
+pre-existing and neither introduced nor fixed by this reconciliation**
+(Stage 0 was documentation/reconciliation only — no behavioral migration
+was written or applied): (1) `get_published_invite()` does not actually
+decouple payment from publication despite `generator_payment_publish_split`'s
+name — every generator-aware column is still gated on `i.paid` as a hard
+AND; (2) the recovered `occasion` vocabulary
+(`haldi`/`sangeet_mehendi`/`wedding_day`/`reception`) is Hindu-wedding-
+specific, not the general, culturally-extensible model the product
+direction calls for. Both are new scrutiny items — see #12 and #13 below.
+
+## Update — 2026-09-09: Stage 2 admin identity and authorization boundary
+
+A database-backed administrator identity (`app_admins` + `is_admin()`,
+`supabase/migrations/20260909120000_admin_identity.sql`) and a server-
+protected `/admin` placeholder (`src/app/admin/`) were added. No
+generator, request-management, template-editor, invitation-editor,
+payment interface, or publication workflow was built — see
+`PROJECT_STATUS.md`'s "Stage 2" section for the full design. **New
+scrutiny item — see #14 below.** Key points for a reviewer: `app_admins`
+has no insert/update/delete policy for any role at all, including an
+administrator's own client — admin membership can only be granted by a
+trusted, service-role/direct-database write (see
+`supabase/migrations/README.md`'s bootstrap procedure), never through the
+app. `is_admin()` is SECURITY DEFINER for the same structural reason
+`can_insert_rsvp()` needed to be (Round 5) — worth confirming that
+reasoning holds here too. This migration has **not** been applied to the
+live project; it exists only in the repository and against the local
+Supabase stack from Stage 1.
+
+## Update — 2026-09-09: Stage 3 separates publication from payment
+
+Fixes the payment/publication coupling defect scrutiny item #12 (below)
+was written about — `published_at` is now the sole public-access gate
+(`supabase/migrations/20260909150000_publication_payment_split.sql`),
+`paid` records payment status only. **New scrutiny item — see #15
+below.** Also NOT applied to the live project; local-only, same as
+Stage 2's migration. One thing worth a reviewer's specific attention:
+this migration found and fixed a real gap in its own first draft — an
+`is_admin()`-only trigger exception would have let an administrator who
+also owns an invitation backdate `published_at` via a raw client update,
+bypassing the `publish_invite()`/`unpublish_invite()` functions' `now()`-
+only guarantee entirely. Fixed with a transaction-local
+`enveloped.publish_action` flag those two functions set immediately
+before their own update, which the trigger checks instead of `is_admin()`
+directly — worth independently confirming this actually closes the gap
+(verified against the local stack in
+`tests/integration/publication-authorization.test.ts`, not just
+reasoned about).
+
+## Update — 2026-09-09: Stage 4 server-renders the public invitation
+
+Application-layer only, no database change. `/invite/[id]` is now an
+async Server Component; the public invitation's wording is present in
+the initial HTML instead of requiring client-side auth + two/three
+sequential fetches first. **New scrutiny item — see #16 below.**
+Worth a reviewer's attention specifically: `src/app/invite/[id]/InviteClient.tsx`
+(now exporting `OwnerPreview`) is retained but deliberately NOT imported
+by `page.tsx` — an owner visiting their own invite link currently sees
+the same public/unavailable view a guest would, having lost the
+paywall/share-panel UI that used to live there. This is documented as a
+real, deliberate trade-off (see that file's header comment and
+PROJECT_STATUS.md's Stage 4 "Remaining risks"), not an oversight — worth
+independently confirming it reads as intentional, and that nothing else
+in the app still assumes the owner view is reachable at this URL.
+
+## Update — 2026-09-10: Stage 5 adds private preview links and a real owner-management route
+
+One new, forward-only migration (`invite_previews` + four functions —
+NOT applied to the live project). **New scrutiny item — see #17 below.**
+Resolves Stage 4's disclosed trade-off: `src/app/invite/[id]/InviteClient.tsx`
+is now deleted (its behavior moved, not left disconnected) — the owner
+view lives at `/dashboard/invite/[id]` instead, with a real server-side
+ownership check.
+
+## Update — 2026-09-10: Stage 6 adds a versioned composition schema, trusted renderer registry, and wedding-first cultural-pack foundation
+
+Two new, forward-only migrations (an `event_types` lookup table
+replacing the Hindu-wedding-only `occasion` CHECK constraints; a
+`composition`-field protection trigger + `admin_save_invite_composition()`
+— NOT applied to the live project). **New scrutiny item — see #18
+below.** The old monolithic `PublicInviteView.tsx` is deleted; all
+three rendering surfaces (public/preview/owner-management) now render
+through `CompositionRenderer.tsx` + a per-section-type trusted
+component registry, fed either by a real, Zod-validated `composition`
+or — for every pre-existing invitation — a legacy adapter synthesizing
+one from the old `content` shape on every request (deliberately
+temporary, see `legacy-adapter.ts`'s own header).
+
+## Update — 2026-09-10: Stage 7 adds the interactive experience layer
+
+No database change, no migration. The composition schema gained
+BACKWARD-COMPATIBLE OPTIONAL fields only (a per-section `motionPreset`
+naming one of eight trusted presets, `featureConfig.envelopeOpening`,
+and real `music` config — `src`/`title`/`credit`/`loop`/`startVolume`).
+`InvitationExperience.tsx` (a server component) wraps the unchanged
+`CompositionRenderer` with a client-only envelope-opening overlay and a
+`prefers-reduced-motion`-aware motion layer. The old fake `MusicToggle`
+is deleted and replaced by a real `<audio>`-backed `AudioPlayer` that
+renders nothing when an invitation has no track. Two dev-only test
+deps added (`jsdom` + `@testing-library/react`). A synthesized,
+license-free `public/audio/sample-test-tone.wav` is committed as a test
+fixture. **New scrutiny item — see #19 below.** **The visual result is
+explicitly NOT approved** — it is a technical foundation for owner
+visual review.
+
+## Update — 2026-09-12: Stage 8 adds concierge request management and a
+structured admin invitation generator
+
+One migration (`20260912100000_concierge_admin_generator.sql`), not
+applied to the live project. Summary: `requests.status` moves to a
+consultation-led vocabulary (remapping any existing row rather than
+leaving it invalid); a BEFORE UPDATE trigger validates status
+transitions and writes an audit row; a new `admin_audit_log` table
+(admin-read-only, function-write-only, same zero-client-policy shape as
+`invite_previews`); ONE new `invites` RLS policy — admin SELECT only
+(every admin WRITE still goes through a dedicated SECURITY DEFINER
+function, never a general admin update policy); `invites.composition_
+revision` backs optimistic concurrency on `admin_save_invite_
+composition()` (signature changed — drop+recreate, same lesson as every
+prior signature change in this project); a partial unique index makes
+"one invitation per request" structural; `admin_create_invitation_from_
+request()` is the one new way a concierge invitation is created. The
+admin UI (`src/app/admin/requests/`, `src/app/admin/invitations/[id]/`)
+sits entirely under the existing `AdminLayout` boundary (Stage 2) — no
+new authorization mechanism, only new admin-gated functions and one new
+read-only RLS policy. **New scrutiny item — see #20 below.**
+
+## Update — 2026-09-13: Stage 9 adds a secure, version-aware client
+approval and revision workflow
+
+One migration (`20260913120000_client_review_workflow.sql`), not
+applied to the live project. Two new tables, `review_rounds` and
+`review_feedback_items`, same zero-client-policy shape as
+`invite_previews`/`admin_audit_log` — every write goes through one
+narrow, single-purpose `SECURITY DEFINER` function per action, never a
+generic "set status" endpoint. A review round binds to exactly one
+`composition_revision` at creation and never re-points afterward; a
+partial unique index makes "one active round per invitation"
+structural. `admin_save_invite_composition()`'s return type changed
+from `text` to `jsonb` (drop+recreate — a return-type change requires
+it) so it can report whether a save was a genuine no-op (identical
+content, revision NOT bumped) versus meaningful (revision bumped, and
+any active round for that invitation auto-superseded, with a distinct
+audit event if it had been approved). `publish_invite()`'s body changed
+(signature unchanged) to require, for `generator_kind = 'concierge'`
+invitations ONLY, a `client_approved` round bound to the CURRENT
+revision and no unresolved `changes_requested` round — self-service
+publication is untouched, verified directly. Two new anonymous,
+token-gated RPCs (`get_invite_review_context`, `submit_review_approval`,
+`submit_review_changes`, `mark_review_round_opened` — four, not two)
+hash the raw token inside themselves, the same trust shape as Stage 5's
+`get_invite_preview()`, and return the same generic outcome for every
+failure reason. **Two genuine defects were found and fixed during this
+stage's own visual review, not by a unit test** — see #21 below for
+both. **New scrutiny item — see #21 below.**
+
 ## Context not visible from the code alone
 
 - **AI branding is intentionally downplayed.** The product is AI-generated,
@@ -177,8 +366,8 @@ sandbox buyer account; still worth a reviewer's eyes.
    API** (all but the wallet approval + genuine `COMPLETED` body) — see
    scrutiny item #10 and `PROJECT_STATUS.md` → "Round 7".
 2. **Supabase RLS on the `paid` column** (`supabase/schema.sql`,
-   `supabase/migrations/20260828000000_auth_ownership.sql`,
-   `supabase/migrations/20260829000000_payment_integrity.sql`): as of
+   `supabase/migrations/20260901114159_auth_ownership.sql`,
+   `supabase/migrations/20260901114212_payment_integrity.sql`): as of
    round 6, an authenticated owner can no longer flip
    `paid`/`paypal_order_id` on their OWN invite directly via the client
    SDK either — a new `invites_reject_client_paid_update` trigger raises
@@ -214,15 +403,20 @@ sandbox buyer account; still worth a reviewer's eyes.
    unit-tested (`ownership.test.ts`) rather than trusted by inspection
    alone; a second pass at both the function and its test coverage is
    worth the time.
-4. **Migration/schema drift risk** — partially addressed. A real
-   `supabase/migrations/` directory now exists (the auth_ownership
-   migration lives there as a proper versioned, timestamped file); the
-   older payment-gating migration is still just an inline SQL block at
-   the bottom of `schema.sql`, not moved into that folder — worth
-   deciding whether to retrofit it in for consistency, and whether the
-   project should actually adopt the Supabase CLI's migration tooling
-   (`supabase migration up` / `db push`) rather than manual SQL-editor
-   pastes, now that there's a real folder structure for it.
+4. **Migration/schema drift risk** — addressed by the Stage 0
+   reconciliation (2026-09-09; see "Update — 2026-09-09" above and
+   `PROJECT_STATUS.md`'s "Stage 0" section). `supabase/migrations/` now
+   holds seven files whose filenames match every version Supabase's
+   `list_migrations` records live, including three (`requests_and_
+   templates`, `generator_composition`, `generator_payment_publish_split`)
+   that existed live since on-or-before 2026-09-05 with no file, and no
+   recoverable source, anywhere in this repository before Stage 0. The
+   project still does not use the Supabase CLI's migration tooling
+   (`supabase db push` / `migration up`) — every migration to date,
+   including all seven now on file, was applied by hand (dashboard SQL
+   editor or the Supabase MCP `apply_migration`) — see
+   `supabase/migrations/README.md` for the current workflow and what
+   adopting the CLI would require.
 5. **RLS is reviewed but not integration-tested — treat as a hard
    pre-production blocker, not routine polish.** The auth_ownership
    migration's policies are covered by two kinds of test, neither of
@@ -275,7 +469,7 @@ sandbox buyer account; still worth a reviewer's eyes.
    (`safe-redirect.test.ts`) missed, since this is exactly the kind of
    validator where one overlooked edge case reopens the whole class of
    bug. `can_insert_rsvp()` and the `invite_rsvps` insert policy in
-   `supabase/migrations/20260828000000_auth_ownership.sql` — this is the
+   `supabase/migrations/20260901114159_auth_ownership.sql` — this is the
    function that replaced round 4's broken inline-subquery version (see
    "Round 5" above); confirm the SECURITY DEFINER + table-ownership
    reasoning that lets it bypass RLS for its own internal queries is
@@ -311,7 +505,7 @@ sandbox buyer account; still worth a reviewer's eyes.
     2-5; (d) the `payments` table's RLS (no insert/update/delete policy
     for anon/authenticated at all) and the new
     `invites_reject_client_paid_update` trigger
-    (`supabase/migrations/20260829000000_payment_integrity.sql`) actually
+    (`supabase/migrations/20260901114212_payment_integrity.sql`) actually
     close the "owner flips their own `paid` flag directly" gap this
     brief previously flagged as scrutiny item #2 — also unverified
     against real Postgres. `custom_id` is set to the invitation's
@@ -334,6 +528,277 @@ sandbox buyer account; still worth a reviewer's eyes.
 11. Anything else that looks like a genuine bug, security gap, or
     accessibility issue — the above is a starting list, not an
     exhaustive one.
+12. **`get_published_invite()`'s payment/publication coupling defect**
+    (`supabase/migrations/20260905091530_generator_payment_publish_split.sql`)
+    — recovered and documented, not fixed, by the 2026-09-09 Stage 0
+    reconciliation. Every generator-aware output column is gated
+    `i.paid AND (i.generator_kind IS NULL OR i.published_at IS NOT NULL)`
+    — `published_at` only ever narrows visibility further for a generator
+    invite; `paid` remains a hard, unconditional AND. This directly
+    contradicts the concierge-first product requirement that payment
+    state and publication state stay independent (a client-approved,
+    admin-published invite must not require PayPal payment to become
+    visible). `resolve_invite_guest()`/`can_insert_rsvp()` have no
+    awareness of `published_at` at all either. Worth confirming this
+    reading against the function's live definition directly, and worth
+    scoping the correct fix (likely: an OR, not an AND, once "published"
+    and "paid" are meant to each independently unlock visibility) before
+    any Stage 1+ work builds further on top of the current behavior.
+13. **Hindu-wedding-specific `occasion` vocabulary** — `invites.occasion`,
+    `templates.occasion`, and `requests.requested_occasions` are all
+    CHECK-constrained to exactly `{haldi, sangeet_mehendi, wedding_day,
+    reception}` (recovered from live, `supabase/migrations/
+    20260905084115_generator_composition.sql`). Per explicit product
+    direction, weddings are the primary market but the permanent domain
+    model must support general events through reusable cultural packs —
+    this fixed enum is not that model and was reproduced verbatim by
+    Stage 0 (documentation only, no schema correction). Worth flagging
+    early since three separate tables now depend on this exact constraint
+    text, which will need a coordinated migration to generalize.
+14. **Admin identity and authorization boundary** (Stage 2,
+    `supabase/migrations/20260909120000_admin_identity.sql`,
+    `src/lib/auth/admin.server.ts`, `src/app/admin/`) — worth confirming
+    independently: (a) `app_admins` genuinely has no INSERT/UPDATE/DELETE
+    policy for any role — verified in this batch via both a text-pattern
+    guard (`src/lib/rls-policy.test.ts`) and real Postgres as
+    anon/authenticated/admin callers
+    (`tests/integration/admin.test.ts`, tests 8/9 specifically — an
+    administrator's own client cannot grant admin rights to anyone,
+    including itself); (b) `is_admin()`'s SECURITY DEFINER + empty
+    search_path + fully-qualified `public.app_admins` reasoning is sound
+    — same pattern as `can_insert_rsvp()`, not a new one; (c)
+    `src/app/admin/layout.tsx` genuinely re-derives both authentication
+    and admin status from the database on every request rather than
+    trusting anything cached/client-supplied, and `src/proxy.ts`'s
+    `/admin` entry is genuinely just an optimistic session-presence
+    redirect, not a security check masquerading as one; (d) the migration
+    is NOT yet applied to the live project — confirm it stays that way
+    until the owner deliberately runs the bootstrap procedure in
+    `supabase/migrations/README.md`.
+15. **Publication/payment split** (Stage 3,
+    `supabase/migrations/20260909150000_publication_payment_split.sql`)
+    — worth confirming independently: (a) `get_published_invite()`/
+    `resolve_invite_guest()`/`can_insert_rsvp()` genuinely gate on
+    `published_at` alone now — no residual `paid`/`generator_kind`
+    condition anywhere in any of the three (checked in this batch via
+    both a text-pattern guard and real Postgres in
+    `tests/integration/published-invite.test.ts`, covering all four
+    paid × published combinations); (b) `publish_invite()`/
+    `unpublish_invite()` genuinely cannot be reached by anon
+    (`revoke execute ... from anon` — needed because Supabase's default
+    privileges grant EXECUTE to anon on every new function otherwise;
+    worth confirming this revoke is still present and effective, not
+    just assumed); (c) the transaction-local `enveloped.publish_action`
+    flag actually prevents an administrator's own raw client update from
+    setting `published_at` — this is the subtlest part of the whole
+    migration and the one place a naive `is_admin()`-only trigger check
+    would have quietly failed (see the "Update — 2026-09-09: Stage 3"
+    note above for the exact gap found); (d) `markInvitePaid()`
+    genuinely never sets `published_at`, and the legacy backfill
+    genuinely never auto-publishes an unpaid or paid-generator-without-
+    published_at row — both asserted in
+    `tests/integration/legacy-backfill.test.ts`/
+    `publication-authorization.test.ts` against real Postgres, not just
+    reasoned about in the migration's comments; (e) this migration is
+    NOT yet applied to the live project — confirm it stays that way, and
+    see PROJECT_STATUS.md's Stage 3 "Production rollout and rollback"
+    section before it ever is.
+16. **Server-rendered public invitation** (Stage 4,
+    `src/app/invite/[id]/page.tsx`, `src/lib/invite-view-model.ts`,
+    `src/components/invite/PublicInviteView.tsx`/`UnavailableInvite.tsx`)
+    — worth confirming independently: (a) `page.tsx` genuinely never
+    imports `getInviteServer` (the owner-only read) or anything from
+    `supabase.auth` — grep for both; (b) `buildPublicInviteViewModel()`
+    genuinely collapses every "not viewable" reason (missing, unpublished,
+    invalid guest token) into the same `null` result, and `page.tsx`
+    genuinely renders the identical `UnavailableInvite` output for all of
+    them — `page.test.tsx`'s "a missing invitation and an unpublished one
+    render the IDENTICAL safe unavailable HTML" test asserts this by
+    direct string equality, worth spot-checking that assertion is
+    actually meaningful (not comparing two accidentally-empty strings);
+    (c) `InviteViewModel`'s field list is genuinely exhaustive — no path
+    by which a raw `PublicInvite`/database row reaches a client
+    component's props instead of going through the model; (d) the
+    bundle-composition claim in PROJECT_STATUS.md's Stage 4 "Performance"
+    section (PayPal/owner-management code absent from every built chunk)
+    is reproducible — `npm run build` then `grep -r "PaywallPanel\|sandbox.paypal.com" .next/static/chunks/`
+    should return nothing; (e) the owner-preview regression (see the
+    "Update — 2026-09-09: Stage 4" note above) is acceptable as a
+    temporary state, not something that should have been silently
+    avoided by re-mounting `OwnerPreview` on the public route instead.
+17. **Private preview links and owner-management separation** (Stage 5,
+    `supabase/migrations/20260910120000_private_preview_links.sql`,
+    `src/lib/preview-tokens.server.ts`, `src/lib/preview-admin.server.ts`,
+    `src/app/preview/[token]/page.tsx`, `src/app/dashboard/invite/[id]/`)
+    — worth confirming independently: (a) `invite_previews` genuinely has
+    zero RLS policies for any role — try a raw insert/update/select as
+    each of anon/an ordinary authenticated user/an administrator's own
+    client and confirm every one is denied (the integration test suite
+    does this; worth reproducing by hand too); (b) a token's raw value is
+    never persisted anywhere — grep the diff for `token_hash` write sites
+    and confirm the raw token variable never reaches a table, a log line,
+    or `localStorage`/`sessionStorage`; (c) `get_invite_preview()`
+    genuinely never gates on `published_at`, and `get_published_invite()`
+    is genuinely unmodified by this migration (diff the two); (d)
+    rotation/revocation genuinely take effect immediately — the
+    integration suite proves this against a real Postgres, worth
+    spot-checking the specific assertions rather than trusting the
+    migration's own comments; (e) the bundle-isolation claim in
+    PROJECT_STATUS.md's Stage 5 "Public-route isolation" section
+    (`/invite/[id]` and `/preview/[token]` share byte-identical first-load
+    JS; `/dashboard/invite/[id]` is the only route pulling in the
+    PayPal/owner-management chunk) is reproducible — `npm run build` then
+    compare `.next/diagnostics/route-bundle-stats.json` entries for the
+    three routes; (f) `/dashboard/invite/[id]`'s ownership check is
+    genuinely server-side and genuinely collapses "doesn't exist" and
+    "belongs to someone else" into one response — try requesting another
+    real user's invitation slug while signed in as a different user and
+    confirm the response is indistinguishable from a nonexistent slug;
+    (g) this migration is NOT yet applied to the live project — confirm
+    it stays that way.
+18. **Composition schema, renderer registry, and event taxonomy** (Stage
+    6, `src/lib/composition/schema.ts`, `src/components/composition/
+    registry.tsx`/`CompositionRenderer.tsx`, `src/lib/composition/
+    legacy-adapter.ts`, `src/lib/composition-admin.server.ts`,
+    `supabase/migrations/20260910130000_wedding_event_taxonomy.sql`,
+    `supabase/migrations/20260910140000_composition_authoring.sql`) —
+    worth confirming independently: (a) every free-text field in
+    `schema.ts` genuinely rejects `<`/`>` and `javascript:`-looking
+    content, and every URL field genuinely allowlists protocols — try a
+    few payloads by hand, not just trusting schema.test.ts; (b) the
+    renderer registry (`SECTION_REGISTRY`) is genuinely a static object
+    literal with no dynamic `require`/import-by-string anywhere in the
+    render path — grep for it; (c) `resolveComposition()` genuinely
+    never falls back to legacy `content` rendering when a REAL,
+    present-but-invalid composition fails validation — it should render
+    the same `UnavailableInvite` as a missing invitation, not a
+    partially-correct page; (d) the generator-field trigger extension
+    genuinely blocks a direct owner update to `composition` (and
+    `occasion`/`design_spec`/`generator_content`/`generator_kind`) —
+    `tests/integration/composition-authoring.test.ts` proves this
+    against real Postgres, worth spot-checking by hand too; (e)
+    `designPackId`'s `z.enum` genuinely only contains `neutral-classic`
+    and `hindu-wedding` — every other pack name mentioned anywhere in
+    `cultural-packs.ts`'s comments should be REJECTED by
+    `InvitationCompositionSchema`, not merely absent from a UI; (f) no
+    section component anywhere uses `dangerouslySetInnerHTML` or an
+    equivalent — grep for it across `src/components/composition/`; (g)
+    both new migrations are NOT yet applied to the live project —
+    confirm they stay that way.
+19. **Interactive experience layer** (Stage 7, `src/components/
+    experience/*`, `src/lib/motion/*`, `src/components/composition/
+    CompositionRenderer.tsx`/`sections.tsx`, `src/components/invite/
+    AnimateIn.tsx`, `src/lib/composition/schema.ts`, `src/app/
+    globals.css`, `public/audio/`) — no database change, but worth
+    confirming independently: (a) the composition wording still lands
+    in the server-rendered HTML with JS disabled, and the guest reaches
+    the full invitation (not a stuck opaque overlay) — the envelope
+    overlay is rendered ONLY client-side via `useIsClient()`, never in
+    SSR output; view-source or curl `/invite/demo-hindu` and confirm;
+    (b) `prefers-reduced-motion: reduce` genuinely bypasses the
+    envelope entrance, petals/glow effects, and scroll-reveal motion —
+    emulate it in devtools and reload; content and every control must
+    remain; (c) motion is driven ONLY by the eight-name `MOTION_PRESETS`
+    `z.enum` — arbitrary Framer Motion config (`duration`, `ease`,
+    `keyframes`, `transition`, event handlers) in a stored section is
+    rejected by `schema.ts`'s `.strict()`, proven in `schema.test.ts`
+    but worth a hand payload; (d) the `AudioPlayer` never calls
+    `audio.play()` except from the click handler, has no `autoplay`
+    attribute, uses `preload="none"`, and renders NOTHING (not a fake
+    control) when a section has no `src`; grep the component and check
+    a no-music demo; (e) `music.src` only accepts an internal path or
+    an `https:` URL — `http:`/`javascript:`/`data:`/`//host` are
+    rejected by `safeAudioUrl` (note: `https://open.spotify.com/...`
+    passes the URL check — it is the `<audio>` element, not the schema,
+    that makes an embed impossible; documented in `schema.test.ts`);
+    (f) `public/audio/sample-test-tone.wav` is a synthesized 432 Hz
+    sine tone (see `public/audio/README.md`), not a recording or
+    sample — it exists only as a test/demo fixture and carries no
+    third-party rights; (g) decorative effect layers are `aria-hidden`,
+    `pointer-events: none`, bounded in count, and paused via
+    `data-effects-paused` on `visibilitychange`; (h) first-load JS for
+    `/invite/[id]` and `/preview/[token]` is still byte-identical, and
+    `/dashboard/invite/[id]` is still the only route with the
+    PayPal/owner chunk (Stage 7 adds ~14 KB to all three); (i) the
+    preview token still never appears in client props or HTML on
+    `/preview/[token]` — `InvitationExperience` is a server component
+    and passes only `mode="review"`; (j) **the visual design is NOT
+    approved** — do not flag "looks unfinished" as a defect; that is
+    the explicit Stage 8 scope.
+20. **Concierge request management and admin generator** (Stage 8,
+    `supabase/migrations/20260912100000_concierge_admin_generator.sql`,
+    `src/lib/requests-admin.server.ts`, `src/lib/invitation-admin.
+    server.ts`, `src/app/admin/requests/`, `src/app/admin/invitations/
+    [id]/`) — worth confirming independently: (a) an administrator's
+    own ordinary authenticated client genuinely cannot directly `UPDATE`
+    an `invites` row (`select` policy only) — try
+    `.from("invites").update({tier:"platinum"}).eq(...)` as the admin
+    fixture and confirm it matches zero rows; (b) the same client
+    genuinely cannot set an invalid request-status transition — try
+    `.from("requests").update({status:"completed"}).eq(...)` on a `new`
+    request and confirm it errors; (c) `admin_create_invitation_from_
+    request()` genuinely cannot create a second invitation for the same
+    request — the partial unique index
+    (`invites_request_id_unique_idx`) should reject it even under a
+    service-role direct insert, not just the function's own pre-check;
+    (d) a fresh invitation created this way has `paid = false`,
+    `published_at = null`, `owner_id = null`, `generator_kind =
+    'concierge'` — confirm by hand, not just via the test; (e)
+    `admin_save_invite_composition()`'s stale-revision path — call it
+    twice with the same `p_expected_revision` and confirm the SECOND
+    call returns `'stale'`, not an overwrite; (f) `admin_audit_log` has
+    no insert/update/delete policy for any client role — confirm an
+    admin's own client cannot `.from("admin_audit_log").insert(...)`
+    directly; (g) grep `src/app/admin/invitations/[id]/` for any raw
+    preview token ever being sent to `admin_audit_log` or logged —
+    should find none (Stage 8 deliberately does not audit-log preview-
+    link operations at all yet, see PROJECT_STATUS.md's Stage 8 "remaining
+    risks"); (h) the live preview's `canRsvp` is hardcoded `false` in
+    `preview-frame/page.tsx`'s own render call, not something a posted
+    message can override — confirm no code path threads a caller-
+    supplied `canRsvp` into it; (i) this migration is NOT yet applied to
+    the live project — confirm it stays that way.
+21. **Client approval and revision workflow** (Stage 9,
+    `supabase/migrations/20260913120000_client_review_workflow.sql`,
+    `src/lib/review-admin.server.ts`, `src/lib/review-client.server.ts`,
+    `src/lib/review-submission-guard.server.ts`, `src/app/preview/[token]/
+    ReviewSection.tsx`, `src/app/admin/invitations/[id]/ReviewPanel.tsx`)
+    — worth confirming independently: (a) approve the SAME round twice
+    through `submit_review_approval` with the same token — the second
+    call must return `'unavailable'`, not overwrite the first decision;
+    (b) after an approval, save a meaningful composition edit
+    (`admin_save_invite_composition` with different content) and confirm
+    the round's status flips to `superseded` AND `publish_invite` then
+    raises "no client approval" for that invitation; (c) confirm a
+    `changes_requested` round genuinely blocks `publish_invite` with its
+    OWN specific exception message, even before checking for approval;
+    (d) confirm self-service invitations (`generator_kind is null`)
+    publish with zero review state and zero review-related checks —
+    create one via `createInviteFixture` with no `generatorKind` and
+    publish it directly; (e) confirm `review_rounds`/
+    `review_feedback_items` have no SELECT/UPDATE/INSERT policy for
+    `anon`/`authenticated` — only the one admin SELECT policy exists;
+    (f) grep `admin_audit_log.detail` for a submitted decision's row and
+    confirm it contains no raw token, no token hash, and no verbatim
+    feedback message text; (g) **the Origin-check fix**: inside a real
+    Next.js Route Handler, confirm `req.headers.get("host")` — not
+    `new URL(req.url).origin` — is what `src/lib/review-submission-
+    guard.server.ts`'s `checkRequestOrigin()` actually compares against;
+    this was a genuine bug this stage's own visual review caught (a
+    same-origin browser request was being rejected as cross-origin)
+    that no unit test using directly-constructed `Request` objects could
+    have caught on its own — confirm the regression test
+    (`review-submission-guard.server.test.ts`) specifically documents and
+    exercises this; (h) **the preview-link-visibility fix**: confirm
+    `admin_invite_has_preview_link()` returns `true`/`false` correctly
+    and that no blanket admin SELECT policy was added to
+    `invite_previews` (that table must still carry zero policies for any
+    role — `token_hash` must remain unreachable via any raw table read,
+    admin included); (i) confirm the client decision UI
+    (`ReviewSection.tsx`) never renders feedback text via
+    `dangerouslySetInnerHTML` and rejects `<`/`>` characters client-side
+    before ever calling `fetch()`; (j) this migration is NOT yet applied
+    to the live project — confirm it stays that way.
 
 ## What NOT to flag as issues
 
@@ -360,3 +825,20 @@ sandbox buyer account; still worth a reviewer's eyes.
   `useSyncExternalStore` instead of effect+setState for reading
   `localStorage` — worth a look since it's a more involved change than
   the other three's one-line fixes.
+- Invisible default focus-ring color on plain `<button>` elements across
+  most of the ADMIN UI (`PreviewLinkPanel.tsx`, `PublishControl`,
+  `RequestStatusControl.tsx`, and most of `InvitationEditor.tsx`'s own
+  buttons — this is a Stage 7/8 pattern, not something Stage 9
+  introduced). Stage 9 found this directly (the outline color computed
+  to match the page background almost exactly) while capturing its own
+  required keyboard-focus screenshot, and fixed it ONLY in the one
+  CLIENT-facing surface that screenshot covers
+  (`src/app/preview/[token]/ReviewSection.tsx`, via a `focusRingClass`
+  constant matching `Navbar.tsx`'s own already-working
+  `focus:ring-ink` pattern) — not retrofitted across the admin UI, which
+  would have meant either an inconsistent look within Stage 9's own new
+  `ReviewPanel.tsx` (matching its neighbors' invisible focus vs. not) or
+  a much larger, separately-scoped accessibility pass across every
+  pre-existing admin button. Recommended as real follow-up work, not
+  silently left broken — see `PROJECT_STATUS.md`'s Stage 9 "remaining
+  risks."

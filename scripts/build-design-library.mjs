@@ -1,0 +1,344 @@
+import fs from "node:fs";
+import path from "node:path";
+
+const root = path.resolve("design-library/hindu-wedding");
+const registryDir = path.join(root, "registry");
+const schemaDir = path.join(root, "schemas");
+const today = "2026-09-18";
+const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, typeof value === "string" ? `${value.trim()}\n` : `${JSON.stringify(value, null, 2)}\n`); };
+const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+const templates = [
+  ["H01", "Botanical Elegance", "BOTANICAL", ["BRONZE", "SILVER"], "PAL-IVORY-BLUSH", ["fine gold arch", "corner flora", "open central text", "restrained motion"]],
+  ["H02", "Ivory Mandap", "TEMPLE", ["SILVER", "GOLD"], "PAL-IVORY-GOLD", ["carved mandap", "pillars", "bells", "kalash", "brass lamps"]],
+  ["H03", "Royal Burgundy", "ROYAL", ["GOLD", "PLATINUM"], "PAL-BURGUNDY-GOLD", ["ornate royal arch", "roses", "peacocks", "lanterns"]],
+  ["H04", "Golden Temple", "TEMPLE", ["GOLD", "PLATINUM"], "PAL-TEMPLE-GOLD", ["temple doors", "marigolds", "diyas", "rangoli", "doorway light"]],
+  ["H05", "Tropical Hindu", "TROPICAL", ["BRONZE", "SILVER", "GOLD"], "PAL-SAGE-IVORY", ["banana leaves", "jasmine", "mango toran", "brass lamps"]],
+  ["H06", "Blush Garden", "GARDEN", ["SILVER", "GOLD"], "PAL-BLUSH-PEACH", ["blush paper", "curtains", "romantic flowers", "warm lights"]],
+  ["H07", "Peacock Royalty", "ROYAL", ["GOLD", "PLATINUM"], "PAL-TEAL-MAROON", ["paired peacocks", "jewelled ornament", "strong symmetry"]],
+  ["H08", "Bespoke Cinematic", "CINEMATIC", ["PLATINUM"], "PAL-CINEMATIC-AMBER", ["custom environment", "premium reveal", "custom couple", "layered atmosphere"]],
+].map(([id, name, family, tiers, palette, motifs]) => ({
+  id, name, description: `${name} is a controlled ${String(family).toLowerCase()} Hindu wedding invitation composition.`, designFamily: family,
+  renderingModel: "TRUSTED_HTML_DOCUMENT_PACKAGE", documentPackageId: null, documentPackageStatus: "NOT_IMPLEMENTED",
+  registryRole: "The registry constrains survey choices and assets exposed through this template's declared slots; it never synthesizes arbitrary HTML, CSS or JavaScript.",
+  supportedTiers: tiers, defaultPalette: palette, alternativePalettes: palettesFor(family), requiredSlots: ["full-background", "couple-names", "event-summary", "branding-footer"], optionalSlots: ["upper-canopy", "sacred-header", "centre-artwork", "lower-ceremonial", "foreground"], prohibitedSlots: [],
+  supportedOpeningExperiences: id === "H08" ? ["DOOR_OPEN", "CURTAIN_OPEN", "ENVELOPE_OPEN"] : ["NONE", "FADE"], supportedAnimations: tiers.includes("PLATINUM") ? ["ANIM-PETALS", "ANIM-LIGHT-PARTICLES", "ANIM-FADE"] : ["ANIM-FADE"], typographyFamily: family === "ROYAL" ? "TYPE-LUXURY-SERIF" : "TYPE-FORMAL-CALLIGRAPHY",
+  textSafeAreas: ["invitation-introduction", "couple-names", "event-summary"], mobileLayout: "Native 9:16 canvas; preserve safe zones and contain all principal art.", desktopLayout: "Centered 9:16 canvas within a wider neutral interface; never stretch to viewport width.", previewBehavior: "Progressively compose approved slots and retain 9:16 ratio.", accessibilityBehavior: "Editable HTML text, validated contrast, semantic controls and descriptive alternatives.", reducedMotionBehavior: "Replace movement with final static state or short opacity fade.", pricingClassification: id === "H08" ? "BESPOKE" : "INCLUDED", assetStatus: "NOT_STARTED", approvalStatus: "PLANNED", version: "1.0.0", provenance: "Original Enveloped registry plan; no artwork generated.", compatibilityList: motifs,
+  fixedTemplateProduct: { fixedPrice: null, currency: null, commercialDecision: "PENDING_OWNER_DECISION", permittedCustomisation: ["names", "dates", "venues", "editable wording", "approved palette variants"] }
+}));
+function palettesFor(family) { return family === "ROYAL" ? ["PAL-BURGUNDY-GOLD", "PAL-TEAL-MAROON"] : family === "TROPICAL" ? ["PAL-SAGE-IVORY", "PAL-IVORY-GOLD"] : ["PAL-IVORY-BLUSH", "PAL-BLUSH-PEACH"]; }
+
+const specs = [
+  ["BG", "backgrounds", "paper-textures", "background", "full-background", "BRONZE", ["Handmade Ivory Cotton Paper", "Warm Cream Parchment", "Blush Watercolour Paper", "Sage Green Handmade Paper", "Burgundy Velvet Field", "Sandstone Temple Texture", "Teal Royal Background", "Dark Cinematic Temple Interior", "Gold Central Glow", "Blush Atmospheric Wash", "Warm Amber Vignette"]],
+  ["ARCH", "architecture", "architectural-frames", "architecture", "centre-artwork", "BRONZE", ["Palace Whisper", "Champagne Colonnade", "Sandstone Grace", "Royal Scallop", "Gilded Courtyard", "Teal Darbar", "Amber Pavilion", "Moonlit Haveli", "Jaali Reverie", "Blackened Gold Portal", "Imperial Depth", "Nocturne Colonnade"]],
+  ["GANESHA", "sacred", "ganesha", "principal-sacred-header", "sacred-header", "BRONZE", ["Minimal Gold Line Ganesha", "Classic Gold Line Ganesha", "Lotus Gold Line Ganesha", "Floral Ganesha Emblem", "Traditional Illustrated Ganesha", "Ornamental Ganesha Crest", "Temple Ganesha Crest", "Botanical Ganesha Emblem", "Royal Antique Gold Ganesha", "Peacock Motif Ganesha Crest"]],
+  ["SACRED", "sacred", "sacred-motifs", "principal-sacred-header", "sacred-header", "BRONZE", ["Minimal Om Symbol", "Floral Om Symbol", "Gold Sacred Motif", "Lotus Mandala Blessing Symbol"]],
+  ["FLORAL", "flora", "flowers", "flower-family", "foreground", "BRONZE", ["Red Rose Clusters", "Blush Rose Clusters", "Pink Garden Roses", "White Roses", "Blush Peonies", "White Jasmine", "Marigold Clusters", "Lotus Flowers", "White Chrysanthemums", "Mixed Traditional Flowers", "Corner Flower Arrangement", "Top Flower Canopy", "Lower Flower Garden", "Hanging Flower Strings", "Full Floral Border"]],
+  ["FOLIAGE", "flora", "foliage", "foliage-family", "upper-canopy", "BRONZE", ["Mango Leaves", "Banana Leaves", "Hanging Vines", "Tropical Foliage", "Sage Greenery", "Eucalyptus Style Foliage", "Fine Gold Botanical Foliage"]],
+  ["CEREM", "ceremonial", "objects", "ceremonial-object", "lower-ceremonial", "BRONZE", ["Correct Coconut and Mango Leaf Kalash", "Paired Brass Standing Lamps", "Paired Diyas", "Puja Thali", "Grounded Rangoli", "Hanging Temple Bells", "Grounded Banana Plants", "Fruit Offerings", "Lotus Arrangement", "Marigold Baskets", "Red Ceremonial Carpet"]],
+  ["ANIMAL", "animals", "paired-animals", "principal-animal", "lower-left", "GOLD", ["Realistic Paired Peacocks", "Illustrated Paired Peacocks", "Royal Stylised Peacocks", "Decorated Inward Facing Elephants"]],
+  ["PEOPLE", "people", "couples", "couple-representation", "centre-artwork", "BRONZE", ["No Couple Artwork", "Full Length Romantic Couple", "Traditional Bride and Groom Figures", "Seated Ceremony Couple", "Rear Facing Cinematic Couple", "Symbolic Joined Hands", "Client Photograph", "Bespoke Custom Illustration"]],
+  ["LIGHT", "lighting", "lighting", "lighting-family", "foreground", "SILVER", ["Hanging Lanterns", "Floor Lanterns", "Decorative Brass Lamps", "Warm Fairy Lights", "Diya Glow", "Doorway Glow", "Central Text Glow", "Warm Light Rays", "Ceremonial Chandelier"]],
+  ["EFFECT", "effects", "effects", "ambient-animation", "foreground", "GOLD", ["Blush Petals", "Rose Petals", "Marigold Petals", "Gold Sparkles", "Floating Light Particles", "Incense Smoke", "Warm Mist", "Soft Floral Reveal", "Curtain Movement", "Bell Sway", "Garland Sway", "Door Opening Sequence"]],
+  ["TYPE", "typography", "styles", "typography-names", "couple-names", "BRONZE", ["Formal Calligraphy", "Romantic Calligraphy", "Traditional Indian Calligraphy", "Luxury Serif", "Classical Serif", "Readable Supporting Serif", "Accessible Sans Serif", "Date Display Style", "Venue Display Style", "Multilingual Style", "Devanagari Support Style", "Tamil Script Support Style"]],
+  ["TYPEBODY", "typography", "body-styles", "typography-body", "event-summary", "BRONZE", ["Accessible Body Serif"]],
+  ["CANOPY", "canopy", "garlands", "upper-canopy", "upper-canopy", "SILVER", ["Mango Leaf Toran", "Marigold Garland", "Jasmine Garland", "Bead Strings", "Flower Strings"]],
+  ["FABRIC", "fabric", "curtains", "fabric-frame", "upper-canopy", "SILVER", ["Blush Translucent Curtains", "Ivory Temple Drapes", "Burgundy Royal Curtains", "Red Ceremonial Fabric"]],
+  ["BRAND", "branding", "signatures", "branding", "branding-footer", "BRONZE", ["Enveloped Signature", "Enveloped Minimal Mark"]],
+];
+
+const components = [];
+for (const [code, category, subcategory, group, slot, baseTier, names] of specs) names.forEach((name, index) => {
+  const n = String(index + 1).padStart(3, "0");
+  const isBespoke = /Bespoke|Client Photograph/.test(name);
+  const isMotion = category === "effects" && /Movement|Sway|Sequence|Petals|Sparkles|Particles|Smoke|Mist|Reveal/.test(name);
+  const tier = isBespoke ? "PLATINUM" : category === "effects" ? (index > 6 ? "PLATINUM" : "GOLD") : baseTier;
+  const id = `HW-${code}-${n}`;
+  const sacred = category === "sacred";
+  components.push({
+    id, name, shortDescription: `${name} for an approved Hindu wedding composition.`, internalProductionDescription: `Create an original, culturally reviewed ${name.toLowerCase()} asset with clean edges and slot-safe composition.`, category, subcategory, designFamily: inferFamily(name), culturalClassification: sacred ? "SACRED" : category === "ceremonial" ? "CEREMONIAL" : "DECORATIVE", assetType: category === "backgrounds" ? "FULL_BACKGROUND" : isMotion ? "ANIMATED_OVERLAY" : category === "typography" ? "HTML_STYLE_TOKEN" : "TRANSPARENT_COMPONENT", intendedOutputFormat: category === "backgrounds" ? ["WEBP", "AVIF"] : isMotion ? ["WEBM", "LOTTIE", "PNG_POSTER"] : category === "typography" ? ["CSS_TOKEN"] : ["PNG", "WEBP"],
+    usageModel: "TEMPLATE_DECLARED_SLOT_ONLY", executableContentAllowed: false,
+    sourceFilePath: null, previewFilePath: null, thumbnailFilePath: null, layerNumber: layerFor(category), slot, anchor: sacred ? "TOP_CENTER" : anchorFor(slot), defaultWidth: sacred ? 180 : defaultSize(slot)[0], defaultHeight: sacred ? 180 : defaultSize(slot)[1], minimumSize: sacred ? [140, 140] : [80, 80], maximumSize: sacred ? [220, 220] : [1000, 1778], mobilePlacement: `Use ${slot} placement rule on the native 9:16 canvas.`, desktopPlacement: "Use identical logical coordinates inside centered 9:16 canvas.", zIndex: layerFor(category) * 10, safeAreaBehavior: sacred ? "Never crop; preserve 40-unit clear space; never place under feet, buttons, or low-opacity backgrounds." : "Respect text-safe regions and contain unless explicitly registered as a covering background.",
+    supportedTemplates: templateSupport(name, category), supportedPalettes: paletteSupport(name), supportedEventTypes: ["wedding-hindu"], conflictingComponents: [], requiredCompanionComponents: /Bells/.test(name) ? ["RULE:VISIBLE_UPPER_SUPPORT"] : [], maximumSelectionCount: group === "flower-family" ? 3 : 1, singleChoiceGroup: group, tier, pricingClassification: isBespoke ? "BESPOKE" : tier === "BRONZE" ? "INCLUDED" : tier === "SILVER" ? "ENHANCED" : "PREMIUM", priceAdjustment: isBespoke ? null : 0, currency: isBespoke ? null : "CONFIGURED_AT_RUNTIME", animationAllowed: isMotion && !sacred, supportedAnimations: isMotion ? [id.replace("HW-EFFECT", "ANIM")] : [], reducedMotionFallback: isMotion ? "Static final-state poster frame or opacity fade." : "Static presentation.", altText: sacred ? `${name}, presented respectfully at the top centre of the invitation.` : `${name} decorative option.`, culturalUsageNotes: sacred ? "Principal sacred image: optional, never cropped, obscured, placed beneath feet, or treated as texture. Human cultural review required." : culturalNote(category, name), accessibilityNotes: "Decorative imagery should be hidden from assistive technology when redundant; meaningful imagery uses this alt text.", licensingSource: "ORIGINAL_ASSET_TO_BE_CREATED; licence review pending", provenance: "Planned by Enveloped from original requirements; asset does not yet exist.", approvalStatus: "PLANNED", generationStatus: "NOT_STARTED", version: "1.0.0", createdDate: today, updatedDate: today, reviewerNotes: "Requires generation, technical QA, visual QA and cultural review before approval."
+  });
+});
+
+const backgroundFamilyDefinitions = [
+  ["001", "Ivory Whisper", "BRONZE", "paper-textures", "warm ivory handmade paper", ["ivory", "cream", "parchment beige"], ["charcoal", "espresso", "antique gold"], "PALE"],
+  ["002", "Champagne Parchment", "BRONZE", "paper-textures", "champagne parchment with softened aged edges", ["cream", "champagne", "honey", "warm umber"], ["espresso", "burgundy", "deep bronze"], "SUBTLE"],
+  ["003", "Blush Petal Wash", "SILVER", "colour-washes", "diffused blush watercolour wash", ["pearl", "blush pink", "dusty rose", "plum"], ["plum", "oxblood", "ivory", "pale gold"], "PALE"],
+  ["004", "Sage Serenity", "BRONZE", "paper-textures", "quiet sage mineral-paper texture", ["mist green", "sage", "olive", "forest"], ["forest", "charcoal", "ivory", "pale gold"], "SUBTLE"],
+  ["005", "Ruby Velvet", "SILVER", "paper-textures", "matte ruby velvet with restrained tonal depth", ["rose", "ruby", "garnet", "oxblood"], ["burgundy", "ivory", "champagne gold"], "DEEP"],
+  ["006", "Gilded Sandstone", "GOLD", "paper-textures", "fine sandstone and mineral plaster", ["ivory", "sandstone", "ochre", "dark umber"], ["espresso", "charcoal", "ivory", "antique gold"], "SUBTLE"],
+  ["007", "Peacock Teal", "SILVER", "paper-textures", "matte paper-textile teal field", ["aqua mist", "teal", "peacock", "midnight teal"], ["deep teal", "ivory", "champagne gold"], "DEEP"],
+  ["008", "Temple Ember", "PLATINUM", "environmental-scenes", "smoky amber illumination and ember atmosphere", ["warm cream", "amber", "ember orange", "soot brown"], ["espresso", "ivory", "pale gold"], "DARK"],
+  ["009", "Golden Veil", "PLATINUM", "colour-washes", "luminous translucent gold veils", ["pearl", "champagne", "burnished gold", "black-brown"], ["espresso", "charcoal", "ivory", "metallic gold"], "PALE"],
+  ["010", "Rosewater Cloud", "GOLD", "colour-washes", "rosewater cloud wash with mineral blooms", ["pearl", "peach", "rose", "aubergine"], ["aubergine", "oxblood", "ivory", "pale gold"], "PALE"],
+  ["011", "Amber Reverie", "GOLD", "colour-washes", "soft-focus amber glow on smooth atmospheric paper", ["cream", "honey", "amber", "burnt umber"], ["espresso", "charcoal", "ivory", "champagne gold"], "DARK"]
+];
+const backgroundMoodDefinitions = {
+  PALE: ["airy and luminous", "Dark ink recommended; verify fine gold against the light centre."],
+  SUBTLE: ["balanced and restrained", "Dark ink preferred; ivory may work only on darker edge zones."],
+  DEEP: ["rich colour with stronger presence", "Ivory or pale gold recommended; dark ink only where the centre remains light."],
+  DARK: ["dramatic and luxurious", "Ivory, warm white or gold typography recommended."]
+};
+const backgroundVariants = [];
+for (const [number, publicName, minimumTier, storageSubcategory, palette, dominantColours, recommendedTextColours, retainedMood] of backgroundFamilyDefinitions) {
+  const parentId = `HW-BG-${number}`;
+  const parent = components.find((component) => component.id === parentId);
+  const familyDir = `design-library/hindu-wedding/components/backgrounds/${storageSubcategory}/hw-bg-${number}`;
+  Object.assign(parent, {
+    name: publicName, publicFamilyName: publicName,
+    shortDescription: `${publicName} is an Owner-approved reusable background family with four art-directed colour moods.`,
+    internalProductionDescription: `${palette}; preserve a clean central invitation-content area across every mood.`,
+    subcategory: storageSubcategory, intendedOutputFormat: ["WEBP"], sourceFilePath: familyDir,
+    previewFilePath: `design-library/hindu-wedding/previews/tier-comparisons/backgrounds/hw-bg-${number}-family-comparison.png`,
+    thumbnailFilePath: `design-library/hindu-wedding/previews/option-cards/backgrounds/hw-bg-${number}-${retainedMood.toLowerCase()}-v1-option-card.webp`,
+    tier: minimumTier, pricingClassification: minimumTier === "BRONZE" ? "INCLUDED" : minimumTier === "SILVER" ? "ENHANCED" : "PREMIUM",
+    paletteDescription: palette, dominantColours, recommendedTextColours,
+    colourMoodValues: ["PALE", "SUBTLE", "DEEP", "DARK"], defaultColourMood: retainedMood,
+    billingBehavior: "Browsing colourways is free; only the active selected component or applicable tier is charged.",
+    altText: `${publicName} decorative background family with a clear central invitation area.`,
+    licensingSource: "Original asset generated with ChatGPT built-in image generation; Owner-approved for Enveloped production use.",
+    provenance: "Generated specifically for Enveloped's Mauritian Hindu wedding library; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    approvalStatus: "APPROVED", generationStatus: "COMPLETE", version: "2.0.0", updatedDate: today,
+    reviewerNotes: "Owner approved all four colour moods after contact-sheet review."
+  });
+  for (const mood of ["PALE", "SUBTLE", "DEEP", "DARK"]) {
+    const variantSlug = `hw-bg-${number}-${mood.toLowerCase()}`;
+    backgroundVariants.push({
+      variantId: `${parentId}-${mood}`, parentBackgroundId: parentId, publicFamilyName: publicName,
+      publicVariantName: `${publicName} — ${mood[0]}${mood.slice(1).toLowerCase()}`, colourMood: mood, minimumTier,
+      paletteDescription: `${backgroundMoodDefinitions[mood][0]} interpretation of ${palette}`,
+      dominantColours, recommendedTextColours, contrastNotes: backgroundMoodDefinitions[mood][1],
+      promptRecord: `Create the ${mood.toLowerCase()} colour mood for ${publicName}: ${palette}; preserve family texture and identity; clean central invitation-safe area; controlled lighting and vignette; 9:16 composition; no text, symbols, frames, flowers, people, sacred imagery, objects, seams, watermarks or artefacts.`,
+      provenance: mood === retainedMood ? "Retained from the first reviewed background batch and approved as this colour mood." : "Generated separately with ChatGPT built-in image generation for the approved background-family extension.",
+      sourceFilePath: `${familyDir}/${variantSlug}-v1-1000x1778.webp`,
+      previewFilePath: `design-library/hindu-wedding/previews/option-cards/backgrounds/${variantSlug}-v1-option-card.webp`,
+      technical: { width: 1000, height: 1778, aspectRatio: "9:16", format: "WEBP", colourSpace: "sRGB", surveyPreviewWidth: 540, surveyPreviewHeight: 960 },
+      intendedTemplates: parent.supportedTemplates,
+      altText: `${publicName}, ${mood.toLowerCase()} colour mood: ${backgroundMoodDefinitions[mood][0]} ${palette} background with a clear central invitation area.`,
+      reviewStatus: "APPROVED", ownerApprovalDate: today
+    });
+  }
+}
+
+const architectureDefinitions = [
+  ["001", "Palace Whisper", "BRONZE", "warm ivory with antique-gold trim", ["HW-BG-001", "HW-BG-002", "HW-BG-003", "HW-BG-004"], ["charcoal", "espresso", "deep burgundy"], "v2"],
+  ["002", "Champagne Colonnade", "BRONZE", "champagne gold", ["HW-BG-001", "HW-BG-003", "HW-BG-004", "HW-BG-005"], ["charcoal", "espresso", "deep burgundy"], "v1"],
+  ["003", "Sandstone Grace", "BRONZE", "warm sandstone", ["HW-BG-001", "HW-BG-004", "HW-BG-006", "HW-BG-007"], ["espresso", "charcoal", "ivory"], "v1"],
+  ["004", "Royal Scallop", "SILVER", "antique gold", ["HW-BG-001", "HW-BG-003", "HW-BG-005", "HW-BG-007"], ["espresso", "ivory", "deep burgundy"], "v1"],
+  ["005", "Gilded Courtyard", "SILVER", "champagne and antique gold", ["HW-BG-001", "HW-BG-003", "HW-BG-004", "HW-BG-006"], ["espresso", "charcoal", "deep burgundy"], "v1"],
+  ["006", "Teal Darbar", "SILVER", "peacock teal and muted gold", ["HW-BG-001", "HW-BG-002", "HW-BG-003", "HW-BG-009"], ["ivory", "champagne gold", "charcoal"], "v1"],
+  ["007", "Amber Pavilion", "GOLD", "amber sandstone and antique gold", ["HW-BG-001", "HW-BG-004", "HW-BG-007", "HW-BG-010"], ["espresso", "charcoal", "ivory"], "v2"],
+  ["008", "Moonlit Haveli", "GOLD", "cool ivory, smoky blue-grey and champagne gold", ["HW-BG-002", "HW-BG-003", "HW-BG-005", "HW-BG-011"], ["charcoal", "deep navy", "ivory"], "v2"],
+  ["009", "Jaali Reverie", "GOLD", "warm ivory and antique gold", ["HW-BG-001", "HW-BG-004", "HW-BG-005", "HW-BG-007"], ["espresso", "charcoal", "deep burgundy"], "v1"],
+  ["010", "Blackened Gold Portal", "PLATINUM", "blackened bronze and aged gold", ["HW-BG-001", "HW-BG-003", "HW-BG-009", "HW-BG-010"], ["ivory", "warm white", "champagne gold"], "v2"],
+  ["011", "Imperial Depth", "PLATINUM", "ivory stone and burnished champagne gold", ["HW-BG-003", "HW-BG-005", "HW-BG-007", "HW-BG-011"], ["espresso", "deep burgundy", "charcoal"], "v1"],
+  ["012", "Nocturne Colonnade", "PLATINUM", "deep burgundy stone and blackened gold", ["HW-BG-001", "HW-BG-003", "HW-BG-009", "HW-BG-010"], ["ivory", "warm white", "champagne gold"], "v1"]
+];
+for (const [number, publicName, minimumTier, finish, compatibleBackgroundFamilies, recommendedTextColours, assetVersion] of architectureDefinitions) {
+  const id = `HW-ARCH-${number}`;
+  const component = components.find((candidate) => candidate.id === id);
+  const fileStem = `hw-arch-${number}-${assetVersion}`;
+  Object.assign(component, {
+    name: publicName,
+    publicFamilyName: publicName,
+    shortDescription: `${publicName} is a non-sacred architectural review candidate for premium Mauritian Hindu wedding invitations.`,
+    internalProductionDescription: `${finish} architectural frame; preserve strict symmetry, physical coherence and a large central text-safe opening.`,
+    subcategory: "architectural-frames",
+    componentRole: "FULL_FRAME",
+    finish,
+    tier: minimumTier,
+    pricingClassification: minimumTier === "BRONZE" ? "INCLUDED" : minimumTier === "SILVER" ? "ENHANCED" : "PREMIUM",
+    sourceFilePath: `design-library/hindu-wedding/components/architecture/masters/${fileStem}-master.png`,
+    deliveryFilePath: `design-library/hindu-wedding/components/architecture/delivery/${fileStem}-delivery.webp`,
+    previewFilePath: `design-library/hindu-wedding/previews/option-cards/architecture/${fileStem}-option-card.webp`,
+    thumbnailFilePath: `design-library/hindu-wedding/previews/option-cards/architecture/${fileStem}-option-card.webp`,
+    anchor: "BOTTOM_CENTER",
+    anchorPoint: { x: 500, y: 1688 },
+    textSafeArea: { x: 210, y: 330, width: 580, height: 900 },
+    scaleLimits: { minimum: 0.8, default: 1, maximum: 1.08 },
+    opacityLimits: { minimum: 0.72, default: 0.9, maximum: 1 },
+    presentationModes: ["EDGE_FRAME", "SOFT_ARCHITECTURAL_SURROUND", "DEPTH_REVEAL"],
+    defaultPresentationMode: minimumTier === "BRONZE" ? "EDGE_FRAME" : minimumTier === "SILVER" ? "SOFT_ARCHITECTURAL_SURROUND" : "DEPTH_REVEAL",
+    edgeFadeLimits: { minimum: 0, default: minimumTier === "BRONZE" ? 0.04 : 0.1, maximum: 0.16 },
+    permittedBlendModes: ["NORMAL"],
+    motionPolicy: minimumTier === "GOLD" || minimumTier === "PLATINUM" ? { depthRevealAllowed: true, durationSeconds: [1.5, 2.5], reducedMotionFallback: "EDGE_FRAME", skippable: true } : { depthRevealAllowed: false, reducedMotionFallback: "EDGE_FRAME", skippable: true },
+    responsiveBehavior: "Contain the complete frame inside the centered 9:16 canvas; scale uniformly; never crop pillars or arch; preserve the registered text-safe area.",
+    compatibleBackgroundFamilies,
+    incompatibleCombinations: ["another active architecture component", "cropping that intersects the registered text-safe area"],
+    recommendedTextColours,
+    sourceGenerationPrompt: `Generate ${publicName} as original, strictly non-sacred, symmetrical decorative architecture on genuine transparency; ${finish}; large central text-safe opening; no people, animals, plants, fabric, objects, text or symbols.`,
+    generationModel: "ChatGPT built-in image generation",
+    generationDate: today,
+    technical: { masterFormat: "PNG", masterDimensions: [1400, 2489], deliveryFormat: "WEBP", deliveryDimensions: [700, 1245], colourSpace: "sRGB", transparency: true, logicalCanvas: [1000, 1778], surveyPreview: [540, 960] },
+    technicalQaResult: "PASS",
+    culturalUsageNotes: "Non-sacred decorative architecture. No claim of a specific religious or historical tradition; confirm family preference before client use.",
+    altText: `${publicName}, a symmetrical ${finish} decorative architectural frame with a large open centre.`,
+    licensingSource: "Original asset generated with ChatGPT built-in image generation for Enveloped; Owner-approved for production use.",
+    provenance: "Generated specifically for Enveloped's architectural batch; no third-party asset incorporated; technically and visually reviewed, then explicitly approved by the Owner on 2026-09-18.",
+    approvalStatus: "APPROVED",
+    generationStatus: "COMPLETE",
+    version: assetVersion === "v2" ? "2.0.0" : "1.0.0",
+    updatedDate: today,
+    reviewerNotes: "Owner approved the complete architectural batch, tier assignments and controlled presentation model on 2026-09-18."
+  });
+}
+function inferFamily(name) { if (/Burgundy|Royal|Peacock/.test(name)) return "ROYAL"; if (/Temple|Mandap|Kalash|Marigold|Diya/.test(name)) return "TEMPLE"; if (/Blush|Garden|Peon/.test(name)) return "GARDEN"; if (/Banana|Tropical|Mango/.test(name)) return "TROPICAL"; if (/Cinematic|Door/.test(name)) return "CINEMATIC"; return "BOTANICAL"; }
+function layerFor(category) { return ({ backgrounds: 0, architecture: 2, fabric: 3, canopy: 4, sacred: 5, typography: 6, people: 7, ceremonial: 8, animals: 8, flora: 9, lighting: 10, effects: 11, interface: 20, branding: 12 })[category] ?? 1; }
+function anchorFor(slot) { return slot.includes("left") ? "BOTTOM_LEFT" : slot.includes("right") ? "BOTTOM_RIGHT" : slot.includes("upper") ? "TOP_CENTER" : slot.includes("background") ? "CENTER" : "BOTTOM_CENTER"; }
+function defaultSize(slot) { return slot === "full-background" ? [1000, 1778] : slot === "centre-artwork" ? [700, 800] : slot === "foreground" ? [1000, 420] : [600, 300]; }
+function templateSupport(name, category) { if (/Peacock|Royal|Burgundy/.test(name)) return ["H03", "H07", "H08"]; if (/Temple|Mandap|Kalash|Marigold|Diya|Bell/.test(name)) return ["H02", "H04", "H05", "H08"]; if (/Banana|Tropical|Mango|Jasmine/.test(name)) return ["H05", "H08"]; if (/Blush|Peon|Garden|Curtain/.test(name)) return ["H01", "H06", "H08"]; if (category === "branding" || category === "typography" || category === "sacred") return templates.map((t) => t.id); return ["H01", "H02", "H05", "H06", "H08"]; }
+function paletteSupport(name) { if (/Burgundy|Royal/.test(name)) return ["PAL-BURGUNDY-GOLD", "PAL-TEAL-MAROON"]; if (/Blush|Pink|Peon/.test(name)) return ["PAL-IVORY-BLUSH", "PAL-BLUSH-PEACH"]; return ["PAL-IVORY-GOLD", "PAL-SAGE-IVORY", "PAL-TEMPLE-GOLD"]; }
+function culturalNote(category, name) { if (category === "ceremonial") return `${name} must be physically grounded and reviewed for ritual correctness; do not imply universal regional use.`; if (category === "animals") return "Paired animals face inward where registered and remain decorative rather than sacred."; return "Decorative option; confirm regional fit and client intent where traditions differ."; }
+
+// Sacred-header catalogue: production paths require recorded Owner approval.
+const sacredReviewPath = path.join(root, "review/sacred-header/review-manifest.json");
+const sacredReview = fs.existsSync(sacredReviewPath) ? JSON.parse(fs.readFileSync(sacredReviewPath, "utf8")) : null;
+if (sacredReview) {
+  for (const entry of sacredReview.entries) {
+    let component = components.find((c) => c.id === entry.id);
+    if (!component && entry.id === "HW-HEADER-001") {
+      component = { ...components.find((c) => c.id === "HW-GANESHA-001"), id: entry.id,
+        category: "typography", subcategory: "ornaments", culturalClassification: "DECORATIVE",
+        supportedTemplates: templates.map((t) => t.id), culturalUsageNotes: "Purely non-religious scrollwork; candidate for the no-sacred-imagery design path." };
+      components.push(component);
+    }
+    if (!component) throw new Error(`Unregistered sacred-header review entry: ${entry.id}`);
+    Object.assign(component, {
+      name: entry.publicName, publicFamilyName: entry.publicName, shortDescription: entry.altText,
+      internalProductionDescription: entry.exactGenerationPrompt, style: entry.style, finish: entry.finish,
+      approvalStatus: entry.approvalStatus, generationStatus: entry.approvalStatus === "APPROVED" ? "COMPLETE" : "VISUAL_QA", productionEligible: entry.approvalStatus === "APPROVED",
+      sourceFilePath: entry.approvalStatus === "APPROVED" ? entry.sourceFilePath : null, deliveryFilePath: entry.approvalStatus === "APPROVED" ? entry.deliveryFilePath : null, previewFilePath: entry.reviewPreviewFilePath,
+      thumbnailFilePath: entry.reviewThumbnailFilePath, reviewMasterFilePath: entry.reviewMasterFilePath,
+      reviewDeliveryFilePath: entry.reviewDeliveryFilePath,
+      reviewManifestFilePath: "design-library/hindu-wedding/review/sacred-header/review-manifest.json",
+      defaultWidth: 170, defaultHeight: 170, maximumSize: [170,170], minimumSize: [140,140],
+      altText: entry.altText, provenance: entry.provenance, version: entry.version,
+      sourceGenerationPrompt: entry.exactGenerationPrompt, generationModel: null,
+      generationDate: entry.generationDate, updatedDate: entry.generationDate,
+      licensingSource: entry.licenceReview, traditionCompatibility: entry.traditionCompatibility,
+      permittedFinishes: entry.permittedFinishes, placement: entry.placement,
+      technical: entry.technical, ownerApprovalRecord: entry.ownerApprovalRecord ?? null, reviewerNotes: entry.approvalStatus === "APPROVED" ? "Owner approved batch on 2026-09-18; documented family/cultural limitations remain. No independent cultural certification claimed." : "UNDER_REVIEW; technical QA is not cultural approval. Production paths remain null."
+    });
+  }
+}
+
+// Floral review metadata never changes existing tier, pricing or placement access.
+const floraReviewPath = path.join(root, "review/flora/review-manifest.json");
+const floraReview = fs.existsSync(floraReviewPath) ? JSON.parse(fs.readFileSync(floraReviewPath, "utf8")) : null;
+if (floraReview) {
+  if (floraReview.reviewStatus !== "UNDER_REVIEW" || floraReview.productionSelectable !== false) {
+    throw new Error("Flora review importer supports review-only candidates; Owner approval needs a separate explicit promotion.");
+  }
+  for (const id of new Set(floraReview.entries.map((entry) => entry.id))) {
+    const component = components.find((entry) => entry.id === id);
+    if (!component || component.category !== "flora") throw new Error(`Unregistered flora review entry: ${id}`);
+    const variants = floraReview.entries.filter((entry) => entry.id === id);
+    const base = variants.find((entry) => entry.variant === "base" && entry.proposedMinimumTier === "BRONZE");
+    if (!base || variants.some((entry) => entry.reviewStatus !== "UNDER_REVIEW" || entry.productionSelectable !== false)) {
+      throw new Error(`Unsafe flora review status or missing Bronze base: ${id}`);
+    }
+    Object.assign(component, {
+      publicFamilyName: base.publicName, botanicalDescription: base.botanicalDescription,
+      approvalStatus: "UNDER_REVIEW", generationStatus: "VISUAL_QA", productionEligible: false,
+      sourceFilePath: null, deliveryFilePath: null, previewFilePath: base.previewPaths[0],
+      thumbnailFilePath: base.thumbnailPath, reviewMasterFilePath: base.masterPath,
+      reviewDeliveryFilePath: base.productionCandidatePath,
+      reviewManifestFilePath: "design-library/hindu-wedding/review/flora/review-manifest.json",
+      reviewCandidateIds: variants.map((entry) => entry.candidateId),
+      proposedTierVariants: variants.filter((entry) => entry.proposedMinimumTier !== "BRONZE").map((entry) => ({
+        candidateId: entry.candidateId, proposedMinimumTier: entry.proposedMinimumTier,
+        reviewStatus: "UNDER_REVIEW", active: false, priceAdjustment: 0
+      })),
+      altText: base.altText, provenance: base.provenance, generationModel: null,
+      generationDate: base.generationDateUTC, traditionCompatibility: "PENDING_CULTURAL_REVIEW",
+      reviewerNotes: "Owner approved botanical scope only. Every image remains UNDER_REVIEW; existing Bronze/Included access preserved. See review manifest for native resolution and placement limitations."
+    });
+  }
+}
+
+const palettes = [
+  ["PAL-IVORY-BLUSH", "Ivory and Blush", { background: "#F7F0E7", primary: "#B98686", accent: "#C9A45C", text: "#332821" }],
+  ["PAL-IVORY-GOLD", "Ivory and Gold", { background: "#F5EFE3", primary: "#A7792D", accent: "#D8B86A", text: "#30271E" }],
+  ["PAL-BURGUNDY-GOLD", "Burgundy and Gold", { background: "#4A1020", primary: "#D3AE62", accent: "#F0D79B", text: "#FFF5DD" }],
+  ["PAL-TEMPLE-GOLD", "Temple Gold", { background: "#8A511D", primary: "#E0B65C", accent: "#A83224", text: "#FFF5DA" }],
+  ["PAL-SAGE-IVORY", "Sage and Ivory", { background: "#E9E8D8", primary: "#64735B", accent: "#B38B45", text: "#293127" }],
+  ["PAL-BLUSH-PEACH", "Blush and Peach", { background: "#F8E4DF", primary: "#B86F6B", accent: "#D8A15E", text: "#3E2928" }],
+  ["PAL-TEAL-MAROON", "Peacock Teal and Maroon", { background: "#0D5257", primary: "#7A1F3D", accent: "#C6A354", text: "#FFF4D6" }],
+  ["PAL-CINEMATIC-AMBER", "Cinematic Amber", { background: "#17120E", primary: "#C78432", accent: "#F2C56D", text: "#FFF1D5" }]
+].map(([id, name, colors]) => ({ id, name, colors, contrastNotes: "Validate WCAG contrast for every text token before production approval.", approvalStatus: "PLANNED" }));
+
+const typography = [{"id":"TYPE-001","name":"Mozart Script","role":"NAMES_AND_SHORT_HEADINGS","fontFamily":"Mozart Script","licenceStatus":"TO_VERIFY","source":null,"approvalStatus":"APPROVED_IN_PRINCIPLE","productionEligible":false,"note":"Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."},{"id":"TYPE-002","name":"Slight","role":"NAMES_AND_SHORT_HEADINGS","fontFamily":"Slight","licenceStatus":"TO_VERIFY","source":null,"approvalStatus":"APPROVED_IN_PRINCIPLE","productionEligible":false,"note":"Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."},{"id":"TYPE-003","name":"Ms Claudy","role":"NAMES_AND_SHORT_HEADINGS","fontFamily":"Ms Claudy","licenceStatus":"TO_VERIFY","source":null,"approvalStatus":"APPROVED_IN_PRINCIPLE","productionEligible":false,"note":"Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."},{"id":"TYPE-004","name":"Ecatherina","role":"NAMES_AND_SHORT_HEADINGS","fontFamily":"Ecatherina","licenceStatus":"TO_VERIFY","source":null,"approvalStatus":"APPROVED_IN_PRINCIPLE","productionEligible":false,"note":"Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."},{"id":"TYPE-005","name":"Modern Symphony","role":"NAMES_AND_SHORT_HEADINGS","fontFamily":"Modern Symphony","licenceStatus":"TO_VERIFY","source":null,"approvalStatus":"APPROVED_IN_PRINCIPLE","productionEligible":false,"note":"Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."}];
+const animations = [["ANIM-FADE", "Gentle Fade", "REVEAL"], ["ANIM-PETALS", "Falling Petals", "AMBIENT"], ["ANIM-LIGHT-PARTICLES", "Floating Light Particles", "AMBIENT"], ["ANIM-CURTAIN", "Curtain Opening", "OPENING"], ["ANIM-DOOR", "Temple Door Opening", "OPENING"], ["ANIM-ENVELOPE", "Envelope Opening", "OPENING"], ["ANIM-BELL", "Bell Sway", "AMBIENT"], ["ANIM-GARLAND", "Garland Sway", "AMBIENT"]].map(([id, name, kind]) => ({ id, name, kind, userInteractionRequired: kind === "OPENING", reducedMotionFallback: "Show the final static state using an optional short opacity fade.", approvalStatus: "PLANNED" }));
+const music = [{ id: "MUSIC-NONE", name: "No Music", sourceType: "NONE" }, { id: "MUSIC-CLIENT", name: "Client Provided Licensed Track", sourceType: "CLIENT_PROVIDED" }, { id: "MUSIC-LIBRARY", name: "Approved Licensed Library Track", sourceType: "LICENSED_LIBRARY" }].map((m) => ({ ...m, requiresInteraction: true, autoplay: false, licenceEvidenceRequired: m.sourceType !== "NONE", approvalStatus: m.sourceType === "NONE" ? "APPROVED" : "PLANNED" }));
+
+const placements = [
+  ["full-background", 0, 0, 1000, 1778, 0, [0, 9], "COVER"], ["upper-canopy", 60, 40, 880, 260, 30, [30, 49], "CONTAIN"], ["sacred-header", 390, 120, 220, 220, 40, [50, 59], "PROHIBITED"], ["invitation-introduction", 170, 330, 660, 120, 24, [60, 69], "CONTAIN"], ["couple-names", 120, 450, 760, 190, 30, [60, 69], "CONTAIN"], ["event-summary", 170, 650, 660, 280, 24, [60, 69], "CONTAIN"], ["centre-artwork", 150, 880, 700, 430, 30, [70, 79], "CONTAIN"], ["lower-ceremonial", 150, 1260, 700, 250, 25, [80, 89], "CONTAIN"], ["lower-left", 20, 1180, 360, 420, 20, [80, 89], "CONTAIN"], ["lower-right", 620, 1180, 360, 420, 20, [80, 89], "CONTAIN"], ["foreground", 0, 1370, 1000, 330, 0, [90, 119], "CONTAIN"], ["branding-footer", 300, 1700, 400, 58, 20, [120, 129], "CONTAIN"]
+].map(([slot, x, y, width, height, safeMargin, zIndexRange, cropping], i) => ({ id: `PLACE-${String(i + 1).padStart(3, "0")}`, slot, x, y, width, height, safeMargin, zIndexRange, cropping, logicalCanvas: [1000, 1778], mobileScaling: "Scale uniformly to container width.", desktopPresentation: "Center unchanged 9:16 canvas inside wider UI.", textOverlapRestriction: ["couple-names", "event-summary", "invitation-introduction"].includes(slot) ? "TEXT_ONLY_EXCEPT_APPROVED_ORNAMENTS" : "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES", objectFit: cropping === "COVER" ? "cover" : "contain" }));
+
+const rules = [
+  ["CR-SACRED-001", "sacred", "ERROR", "Only one principal sacred header may be selected; Ganesha and Om share the same slot."], ["CR-SACRED-002", "sacred", "ERROR", "Sacred imagery must never be cropped, obscured, placed beneath feet or controls, or used as a low-opacity texture."], ["CR-ARCH-001", "architecture", "ERROR", "Only one primary architectural structure; pillars must match its family."], ["CR-ARCH-002", "architecture", "ERROR", "Architecture must stay within its declared anchors and scale limits and must preserve the registered central text-safe area."], ["CR-FLORA-001", "flora", "ERROR", "Select at most three principal flower families."], ["CR-FLORA-002", "flora", "ERROR", "Flowers must not cover critical text; foreground flowers remain below text-safe regions."], ["CR-CEREM-001", "ceremonial", "ERROR", "Rangoli, lamps, kalash and banana plants must remain physically grounded and correctly constructed."], ["CR-ANIMAL-001", "animals", "ERROR", "Only one principal animal family; inward-facing pairs may not compete for the same corners."], ["CR-TYPE-001", "typography", "ERROR", "Calligraphy is limited to names and short headings; body text stays readable, editable HTML."], ["CR-MOTION-001", "motion", "ERROR", "Select at most three continuous ambient animation families."], ["CR-MOTION-002", "motion", "ERROR", "Door, curtain and envelope opening experiences are mutually exclusive; reduced motion uses static states."], ["CR-MUSIC-001", "music", "ERROR", "Music starts only after user interaction and must be optional."], ["CR-PRICE-001", "pricing", "ERROR", "Browsing is free; only active selections are priced, and replacement removes the prior charge."], ["CR-PRICE-002", "pricing", "WARNING", "Recommend a higher tier when it includes the same features for less than the current tier plus additions."], ["CR-ACCESS-001", "accessibility", "ERROR", "Required usability and accessibility features are never premium add-ons."]
+].map(([id, scope, severity, message]) => ({ id, scope, severity, message, maxSelections: id === "CR-FLORA-001" || id === "CR-MOTION-001" ? 3 : undefined, machineCondition: conditionFor(id) }));
+function conditionFor(id) { return ({ "CR-SACRED-001": { group: "principal-sacred-header", max: 1 }, "CR-ARCH-001": { group: "architecture", max: 1 }, "CR-FLORA-001": { group: "flower-family", max: 3 }, "CR-ANIMAL-001": { group: "principal-animal", max: 1 }, "CR-MOTION-001": { group: "ambient-animation", max: 3 }, "CR-MOTION-002": { group: "opening-experience", max: 1 } })[id] ?? { validator: id }; }
+
+const surveySteps = [
+  ["01", "Client details", "ADMINISTRATIVE", false, null, null], ["02", "Selected events", "CONTENT", false, null, "events"], ["03", "Couple and family information", "CONTENT", true, "couple-names", "content.people"], ["04", "Invitation experience", "VISUAL", true, null, "design.openingExperience"], ["05", "Main visual style", "VISUAL", true, null, "design.templateId"], ["06", "Colour palette", "VISUAL", true, "full-background", "design.paletteId"], ["07", "Paper and background", "VISUAL", true, "full-background", "design.components"], ["08", "Frame and architecture", "VISUAL", true, "centre-artwork", "design.components"], ["09", "Flowers and foliage", "VISUAL", true, "foreground", "design.components"], ["10", "Hindu ceremonial elements", "VISUAL", true, "lower-ceremonial", "design.components"], ["11", "Decorative motifs", "VISUAL", true, "sacred-header", "design.components"], ["12", "Couple representation", "VISUAL", true, "centre-artwork", "design.components"], ["13", "Typography", "VISUAL", true, "couple-names", "design.typography"], ["14", "Motion and special effects", "VISUAL", true, "foreground", "design.animations"], ["15", "Music", "FUNCTIONAL", false, null, "experience.music"], ["16", "Invitation sections", "CONTENT", true, "event-summary", "content.sections"], ["17", "RSVP preference", "FUNCTIONAL", false, null, "features.rsvp"], ["18", "Guest personalisation", "FUNCTIONAL", true, "invitation-introduction", "features.personalisation"], ["19", "Privacy", "PRIVACY", false, null, "access.privacy"], ["20", "Enveloped branding", "VISUAL", true, "branding-footer", "design.branding"], ["21", "Budget and service level", "PRICING", false, null, "pricing"], ["22", "Review and submission", "ADMINISTRATIVE", false, null, "workflow.submission"]
+];
+const mappings = surveySteps.map(([number, name, kind, affectsPreview, previewSlot, destination]) => ({ id: `SURVEY-${number}`, stepId: number, stepName: name, questionId: `hw-${number}-${slug(name)}`, questionType: kind === "CONTENT" ? "STRUCTURED_CONTENT" : kind === "ADMINISTRATIVE" ? "FORM" : kind === "PRIVACY" ? "RADIO" : "VISUAL_OPTION_CARD", kind, required: !["11", "14", "15", "17", "18"].includes(number), affectsPreview, selectionMode: ["02", "09", "10", "16"].includes(number) ? "MULTIPLE" : "SINGLE", maximumSelections: number === "09" ? 3 : ["02", "10", "16"].includes(number) ? null : 1, registryCategory: ({ "05": "templates", "06": "palettes", "07": "backgrounds", "08": "architecture", "09": "flora", "10": "ceremonial", "11": "sacred", "12": "people", "13": "typography", "14": "animations", "15": "music", "20": "branding" })[number] ?? null, previewSlot, dataDestination: destination, pricingEffect: ["05", "07", "08", "09", "10", "11", "12", "13", "14", "15", "20", "21"].includes(number) ? "RECALCULATE_ACTIVE_SELECTIONS" : "NONE", tierAvailability: ["BRONZE", "SILVER", "GOLD", "PLATINUM"], conditionalDisplayRules: number === "15" ? ["SHOW_WHEN_TIER_SUPPORTS_MUSIC_OR_AS_ADDON"] : [], compatibilityValidation: affectsPreview ? "VALIDATE_BEFORE_APPLY" : "VALIDATE_ON_SUBMIT", defaultSelection: null, letEnvelopedChoose: affectsPreview ? { enabled: true, behavior: "Choose a compatible included option for the current tier; do not add a premium charge without confirmation." } : { enabled: false }, clientExplanation: `${name}: choose what fits your celebration. Unavailable choices remain visible with a clear reason.`, adminExplanation: `Store ${kind.toLowerCase()} data at ${destination ?? "the administrative record"}; ${affectsPreview ? "update the live preview." : "do not create a visual asset."}` }));
+const culturalStyleStep = mappings.find((mapping) => mapping.stepId === "05");
+Object.assign(culturalStyleStep, {"initialCulturalMarket":"MAURITIAN_HINDU_WEDDINGS","traditionProfile":{"questionId":"hw-05-family-tradition","required":true,"selectionMode":"SINGLE","dataDestination":"design.culturalProfile","options":[{"id":"MAURITIAN_HINDU","label":"Mauritian Hindu"},{"id":"MAURITIAN_TAMIL_HINDU","label":"Mauritian Tamil Hindu"},{"id":"MIXED_HINDU_TRADITIONS","label":"Mixed Hindu traditions"},{"id":"NOT_SURE","label":"Not sure"},{"id":"LET_ENVELOPED_ADVISE","label":"Let Enveloped advise me"},{"id":"NO_SACRED_IMAGERY","label":"No sacred imagery"}],"humanReviewRequiredFor":["MIXED_HINDU_TRADITIONS","NOT_SURE","LET_ENVELOPED_ADVISE"],"noSacredImageryOption":"NO_SACRED_IMAGERY"}});
+
+const pricing = {"version":"1.1.0","status":"APPROVED_OWNER_DECISION","effectiveDate":"2026-09-17","note":"Custom-invitation pricing only. Existing self-serve prices in src/lib/tiers.ts remain unchanged.","regionalPolicy":{"billingCountryDeterminesRegion":true,"currencyConversionOnly":false,"purchasingPowerConsidered":true,"manualReviewAllowed":true,"antiAbuseReviewAllowed":true},"products":{"fixedTemplates":{"pricingMode":"FIXED","status":"PENDING_PER_TEMPLATE_COMMERCIAL_DECISION","prices":[{"templateId":"H01","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H02","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H03","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H04","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H05","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H06","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H07","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"},{"templateId":"H08","amount":null,"currency":null,"decision":"PENDING_OWNER_DECISION"}]},"customInvitations":{"pricingMode":"TIER_PLUS_ACTIVE_ADDITIONS","regionalPriceGroups":[{"id":"MAURITIUS","billingCountries":["MU"],"currency":"MUR","status":"APPROVED","tiers":{"BRONZE":990,"SILVER":2490,"GOLD":3990,"PLATINUM":6490}},{"id":"AFFORDABLE_INTERNATIONAL","billingCountries":[],"currency":"USD","status":"POLICY_DEFINED_PRICES_PENDING","selectionBasis":"Owner-approved country grouping using local purchasing power, not exchange rate alone.","tiers":null},{"id":"STANDARD_INTERNATIONAL","billingCountries":[],"currency":"USD","status":"APPROVED","tiers":{"BRONZE":59,"SILVER":95,"GOLD":139,"PLATINUM":209}},{"id":"HIGHER_INCOME_MARKETS","billingCountries":[],"currency":"USD","status":"POLICY_DEFINED_PRICES_PENDING","selectionBasis":"Owner-approved higher-income country grouping.","tiers":null}],"addOns":{"MAURITIUS":{"currency":"MUR","INCLUDED":{"min":0,"max":0},"ENHANCED":{"min":75,"max":150},"PREMIUM":{"min":200,"max":400},"BESPOKE":{"quotationRequired":true}},"INTERNATIONAL":{"currency":"USD","INCLUDED":{"min":0,"max":0},"ENHANCED":{"min":2,"max":5},"PREMIUM":{"min":8,"max":16},"BESPOKE":{"quotationRequired":true}}},"browsingAddsCharge":false,"replacementRemovesPriorCharge":true,"chargeOnlyActiveSelection":true,"bespokeRequiresQuote":true,"higherTierRecommendation":true,"recommendationRule":"When the active tier plus selected add-ons costs more than the next tier offering the same features, recommend the next tier without changing it automatically."}}};
+const status = components.map((c) => ({ componentId: c.id, generationStatus: c.generationStatus, approvalStatus: c.approvalStatus, sourceFilePath: c.sourceFilePath, deliveryFilePath: c.deliveryFilePath ?? null, previewFilePath: c.previewFilePath, reviewer: c.category === "backgrounds" || c.category === "architecture" ? "OWNER" : null, notes: c.category === "backgrounds" ? "All four colour moods approved by the Owner on 2026-09-18." : c.category === "architecture" ? "Owner approved the complete architectural batch and controlled presentation model on 2026-09-18." : "Planned only; no asset generated." }));
+const registry = { id: "HW-REGISTRY-001", name: "Enveloped Hindu Wedding Component Registry", version: "1.3.0", initialCulturalMarket: { id: "MAURITIAN_HINDU_WEDDINGS", status: "APPROVED_OWNER_DECISION", supportedProfiles: ["MAURITIAN_HINDU", "MAURITIAN_TAMIL_HINDU", "MIXED_HINDU_TRADITIONS", "NOT_SURE", "LET_ENVELOPED_ADVISE", "NO_SACRED_IMAGERY"], internationalExpansion: "DEFERRED_PENDING_CULTURAL_REVIEW" }, logicalCanvas: { width: 1000, height: 1778, aspectRatio: "9:16" }, products: ["FIXED_TEMPLATE", "CUSTOM_TIERED"], architecture: { renderingModel: "TRUSTED_HTML_DOCUMENT_PACKAGE", authority: "docs/html-invitation-studio/ARCHITECTURE.md", componentRole: "CATALOGUE_AND_TEMPLATE_DECLARED_ASSET_SLOT", prohibitedModel: "ARBITRARY_RUNTIME_LAYER_COMPOSER", storedExecutableMarkup: false, personalizationTiming: "SERVE_TIME_ONLY" }, registryFiles: ["templates.json", "components.json", "background-families.json", "palettes.json", "typography.json", "animations.json", "music.json", "pricing.json", "compatibility-rules.json", "survey-mapping.json", "placement-rules.json", "asset-generation-status.json"], approvalPolicy: "Only APPROVED records with valid production files may be selectable in production; selection is limited to slots declared by a reviewed HTML document package.", updatedDate: today };
+
+write(path.join(registryDir, "registry.json"), registry); write(path.join(registryDir, "templates.json"), templates); write(path.join(registryDir, "components.json"), components); write(path.join(registryDir, "background-families.json"), backgroundVariants); write(path.join(registryDir, "palettes.json"), palettes); write(path.join(registryDir, "typography.json"), typography); write(path.join(registryDir, "animations.json"), animations); write(path.join(registryDir, "music.json"), music); write(path.join(registryDir, "pricing.json"), pricing); write(path.join(registryDir, "compatibility-rules.json"), rules); write(path.join(registryDir, "survey-mapping.json"), mappings); write(path.join(registryDir, "placement-rules.json"), placements); write(path.join(registryDir, "asset-generation-status.json"), status);
+
+if (sacredReview) {
+  const motifStep = mappings.find((m) => m.stepId === "11");
+  const approvedHeaders = sacredReview.approvalStatus === "APPROVED";
+  motifStep[approvedHeaders ? "approvedHeaderChoices" : "reviewOnlyHeaderChoices"] = {
+    approvalStatus: sacredReview.approvalStatus, productionEligible: approvedHeaders,
+    candidateIds: sacredReview.entries.map((e) => e.id),
+    neutralHeaderId: "HW-HEADER-001", noSacredImageryState: {
+      id: "NO_SACRED_IMAGERY", isSelectionState: true, imageFilePath: null,
+      action: "CLEAR_PRINCIPAL_HEADER", preserveNeutralDecorativeChoice: true
+    },
+    rule: "When NO_SACRED_IMAGERY is selected, exclude all sacred candidates; a neutral ornament is optional. Human review applies to mixed, uncertain and advisory profiles."
+  };
+  for (const record of status) {
+    const entry = sacredReview.entries.find((e) => e.id === record.componentId);
+    if (entry) Object.assign(record, {
+      reviewMasterFilePath: entry.reviewMasterFilePath, reviewDeliveryFilePath: entry.reviewDeliveryFilePath,
+      notes: entry.approvalStatus === "APPROVED" ? "Owner approved sacred-header batch on 2026-09-18; production files verified. Family/cultural limitations retained." : "Generated and technically reviewed; UNDER_REVIEW. Owner approval pending. No production paths."
+    });
+  }
+  write(path.join(registryDir, "survey-mapping.json"), mappings);
+  write(path.join(registryDir, "asset-generation-status.json"), status);
+}
+
+if (floraReview) {
+  for (const record of status) {
+    const entry = floraReview.entries.find((candidate) => candidate.id === record.componentId && candidate.variant === "base");
+    if (entry) Object.assign(record, {
+      approvalStatus: "UNDER_REVIEW", generationStatus: "VISUAL_QA",
+      reviewMasterFilePath: entry.masterPath, reviewDeliveryFilePath: entry.productionCandidatePath,
+      notes: "Botanical scope authorised; image approval pending. Review-only paths; original Bronze/Included access retained. See floral manifest for technical limits."
+    });
+  }
+  write(path.join(registryDir, "asset-generation-status.json"), status);
+}
+
+const schemaNames = ["registry", "template", "component", "background-family", "palette", "typography", "animation", "music", "pricing", "compatibility-rule", "survey-mapping", "placement-rule", "asset-generation-status"];
+const required = { registry: ["id", "name", "version", "logicalCanvas", "registryFiles"], template: ["id", "name", "supportedTiers", "defaultPalette", "requiredSlots", "approvalStatus", "version"], component: ["id", "name", "category", "subcategory", "slot", "tier", "pricingClassification", "approvalStatus", "generationStatus", "altText", "provenance"], "background-family": ["variantId", "parentBackgroundId", "publicFamilyName", "colourMood", "minimumTier", "sourceFilePath", "previewFilePath", "altText", "reviewStatus"], palette: ["id", "name", "colors", "contrastNotes"], typography: ["id", "name", "licenceStatus"], animation: ["id", "name", "kind", "reducedMotionFallback"], music: ["id", "name", "sourceType", "requiresInteraction"], pricing: ["version", "status", "products"], "compatibility-rule": ["id", "scope", "severity", "message", "machineCondition"], "survey-mapping": ["id", "stepId", "questionId", "kind", "affectsPreview", "dataDestination"], "placement-rule": ["id", "slot", "x", "y", "width", "height", "logicalCanvas"], "asset-generation-status": ["componentId", "generationStatus", "approvalStatus"] };
+for (const name of schemaNames) write(path.join(schemaDir, `${name}.schema.json`), { $schema: "https://json-schema.org/draft/2020-12/schema", $id: `https://enveloped.local/schemas/${name}.schema.json`, title: `${name} schema`, type: "object", required: required[name], properties: Object.fromEntries(required[name].map((field) => [field, {}])), additionalProperties: true });
+
+for (const t of templates) { const dir = path.join(root, "templates", `${t.id}-${slug(t.name)}`); write(path.join(dir, "README.md"), `# ${t.id} — ${t.name}\n\nPlanned template. No production artwork exists yet. Add only reviewed assets to \`assets/\` and 9:16 selection previews to \`previews/\`. See \`manifest.json\` for the controlled slot model.`); write(path.join(dir, "manifest.json"), t); write(path.join(dir, "assets", "README.md"), "# Assets\n\nOnly approved, licensed production assets for this template belong here."); write(path.join(dir, "previews", "README.md"), "# Previews\n\nApproved 9:16 template previews and thumbnails belong here."); }
+
+const componentDirs = ["backgrounds/paper-textures", "backgrounds/colour-washes", "backgrounds/environmental-scenes", "backgrounds/distant-scenery", "architecture/arches", "architecture/pillars", "architecture/temple-doors", "architecture/mandaps", "architecture/pavilions", "architecture/ornamental-corners", "fabric/curtains", "fabric/drapes", "fabric/ceremonial-fabric", "fabric/carpets", "canopy/torans", "canopy/marigold-garlands", "canopy/jasmine-garlands", "canopy/mango-leaf-garlands", "canopy/bead-strings", "canopy/flower-strings", "flora/floral-borders", "flora/floral-clusters", "flora/hanging-flowers", "flora/foreground-flowers", "flora/roses", "flora/peonies", "flora/jasmine", "flora/marigolds", "flora/lotuses", "flora/chrysanthemums", "flora/filler-flowers", "flora/foliage", "flora/banana-leaves", "flora/mango-leaves", "flora/vines", "flora/tropical-leaves", "flora/sage-greenery", "sacred/ganesha", "sacred/om", "sacred/sacred-motifs", "sacred/blessing-symbols", "ceremonial/kalash", "ceremonial/coconuts", "ceremonial/mango-leaf-kalash", "ceremonial/brass-lamps", "ceremonial/diyas", "ceremonial/puja-thalis", "ceremonial/rangoli", "ceremonial/bells", "ceremonial/fruit-offerings", "ceremonial/banana-plants", "animals/peacocks", "animals/elephants", "people/couples", "people/bride", "people/groom", "people/symbolic-hands", "people/ceremony-scenes", "people/rear-facing-couples", "lighting/lanterns", "lighting/chandeliers", "lighting/fairy-lights", "lighting/diya-glows", "lighting/doorway-glows", "lighting/ambient-glows", "effects/petals", "effects/sparkles", "effects/particles", "effects/smoke", "effects/mist", "effects/light-rays", "typography/name-styles", "typography/heading-styles", "typography/body-styles", "typography/date-styles", "typography/multilingual-styles", "typography/ornaments", "typography/dividers", "interface/icons", "interface/maps", "interface/rsvp", "interface/music-controls", "interface/accessibility-controls", "branding/enveloped-signatures", "branding/trademark-marks"];
+for (const dir of componentDirs) write(path.join(root, "components", dir, "README.md"), `# ${dir.split("/").at(-1).replaceAll("-", " ")}\n\nAsset storage location. Files are selectable only after registry approval and validation.`);
+for (const dir of ["option-cards", "template-previews", "compatibility-examples", "tier-comparisons"]) write(path.join(root, "previews", dir, "README.md"), `# ${dir.replaceAll("-", " ")}\n\nApproved 9:16 preview material belongs here; planned records do not imply visual approval.`);
+write(path.join(root, "references", "reference-index.json"), []); write(path.join(root, "references", "README.md"), "# References\n\nRecord links and permissions as metadata only. Do not commit copyrighted reference artwork without explicit permission.");
+console.log(`Built Hindu Wedding registry with ${templates.length} templates and ${components.length} planned components.`);

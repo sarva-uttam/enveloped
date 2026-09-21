@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/typography.schema.json",
+  "title": "typography schema",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "licenceStatus"
+  ],
+  "properties": {
+    "id": {},
+    "name": {},
+    "licenceStatus": {}
+  },
+  "additionalProperties": true
+}

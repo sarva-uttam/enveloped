@@ -1,0 +1,76 @@
+{
+  "id": "H08",
+  "name": "Bespoke Cinematic",
+  "description": "Bespoke Cinematic is a controlled cinematic Hindu wedding invitation composition.",
+  "designFamily": "CINEMATIC",
+  "renderingModel": "TRUSTED_HTML_DOCUMENT_PACKAGE",
+  "documentPackageId": null,
+  "documentPackageStatus": "NOT_IMPLEMENTED",
+  "registryRole": "The registry constrains survey choices and assets exposed through this template's declared slots; it never synthesizes arbitrary HTML, CSS or JavaScript.",
+  "supportedTiers": [
+    "PLATINUM"
+  ],
+  "defaultPalette": "PAL-CINEMATIC-AMBER",
+  "alternativePalettes": [
+    "PAL-IVORY-BLUSH",
+    "PAL-BLUSH-PEACH"
+  ],
+  "requiredSlots": [
+    "full-background",
+    "couple-names",
+    "event-summary",
+    "branding-footer"
+  ],
+  "optionalSlots": [
+    "upper-canopy",
+    "sacred-header",
+    "centre-artwork",
+    "lower-ceremonial",
+    "foreground"
+  ],
+  "prohibitedSlots": [],
+  "supportedOpeningExperiences": [
+    "DOOR_OPEN",
+    "CURTAIN_OPEN",
+    "ENVELOPE_OPEN"
+  ],
+  "supportedAnimations": [
+    "ANIM-PETALS",
+    "ANIM-LIGHT-PARTICLES",
+    "ANIM-FADE"
+  ],
+  "typographyFamily": "TYPE-FORMAL-CALLIGRAPHY",
+  "textSafeAreas": [
+    "invitation-introduction",
+    "couple-names",
+    "event-summary"
+  ],
+  "mobileLayout": "Native 9:16 canvas; preserve safe zones and contain all principal art.",
+  "desktopLayout": "Centered 9:16 canvas within a wider neutral interface; never stretch to viewport width.",
+  "previewBehavior": "Progressively compose approved slots and retain 9:16 ratio.",
+  "accessibilityBehavior": "Editable HTML text, validated contrast, semantic controls and descriptive alternatives.",
+  "reducedMotionBehavior": "Replace movement with final static state or short opacity fade.",
+  "pricingClassification": "BESPOKE",
+  "assetStatus": "NOT_STARTED",
+  "approvalStatus": "PLANNED",
+  "version": "1.0.0",
+  "provenance": "Original Enveloped registry plan; no artwork generated.",
+  "compatibilityList": [
+    "custom environment",
+    "premium reveal",
+    "custom couple",
+    "layered atmosphere"
+  ],
+  "fixedTemplateProduct": {
+    "fixedPrice": null,
+    "currency": null,
+    "commercialDecision": "PENDING_OWNER_DECISION",
+    "permittedCustomisation": [
+      "names",
+      "dates",
+      "venues",
+      "editable wording",
+      "approved palette variants"
+    ]
+  }
+}

@@ -4,7 +4,7 @@ import { supabaseAdmin, supabaseAdminConfigured } from "./supabase/admin";
 
 /**
  * Server-only persistence for the `payments` table (see
- * supabase/migrations/20260829000000_payment_integrity.sql). Every
+ * supabase/migrations/20260901114212_payment_integrity.sql). Every
  * function here uses the ADMIN (service-role) client — this is
  * deliberate and matches the table's own RLS: `payments` has no insert/
  * update policy for anon/authenticated at all, so the browser

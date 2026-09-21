@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/animation.schema.json",
+  "title": "animation schema",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "kind",
+    "reducedMotionFallback"
+  ],
+  "properties": {
+    "id": {},
+    "name": {},
+    "kind": {},
+    "reducedMotionFallback": {}
+  },
+  "additionalProperties": true
+}

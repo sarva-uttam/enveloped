@@ -1,0 +1,266 @@
+[
+  {
+    "id": "PLACE-001",
+    "slot": "full-background",
+    "x": 0,
+    "y": 0,
+    "width": 1000,
+    "height": 1778,
+    "safeMargin": 0,
+    "zIndexRange": [
+      0,
+      9
+    ],
+    "cropping": "COVER",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "cover"
+  },
+  {
+    "id": "PLACE-002",
+    "slot": "upper-canopy",
+    "x": 60,
+    "y": 40,
+    "width": 880,
+    "height": 260,
+    "safeMargin": 30,
+    "zIndexRange": [
+      30,
+      49
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-003",
+    "slot": "sacred-header",
+    "x": 390,
+    "y": 120,
+    "width": 220,
+    "height": 220,
+    "safeMargin": 40,
+    "zIndexRange": [
+      50,
+      59
+    ],
+    "cropping": "PROHIBITED",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-004",
+    "slot": "invitation-introduction",
+    "x": 170,
+    "y": 330,
+    "width": 660,
+    "height": 120,
+    "safeMargin": 24,
+    "zIndexRange": [
+      60,
+      69
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "TEXT_ONLY_EXCEPT_APPROVED_ORNAMENTS",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-005",
+    "slot": "couple-names",
+    "x": 120,
+    "y": 450,
+    "width": 760,
+    "height": 190,
+    "safeMargin": 30,
+    "zIndexRange": [
+      60,
+      69
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "TEXT_ONLY_EXCEPT_APPROVED_ORNAMENTS",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-006",
+    "slot": "event-summary",
+    "x": 170,
+    "y": 650,
+    "width": 660,
+    "height": 280,
+    "safeMargin": 24,
+    "zIndexRange": [
+      60,
+      69
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "TEXT_ONLY_EXCEPT_APPROVED_ORNAMENTS",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-007",
+    "slot": "centre-artwork",
+    "x": 150,
+    "y": 880,
+    "width": 700,
+    "height": 430,
+    "safeMargin": 30,
+    "zIndexRange": [
+      70,
+      79
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-008",
+    "slot": "lower-ceremonial",
+    "x": 150,
+    "y": 1260,
+    "width": 700,
+    "height": 250,
+    "safeMargin": 25,
+    "zIndexRange": [
+      80,
+      89
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-009",
+    "slot": "lower-left",
+    "x": 20,
+    "y": 1180,
+    "width": 360,
+    "height": 420,
+    "safeMargin": 20,
+    "zIndexRange": [
+      80,
+      89
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-010",
+    "slot": "lower-right",
+    "x": 620,
+    "y": 1180,
+    "width": 360,
+    "height": 420,
+    "safeMargin": 20,
+    "zIndexRange": [
+      80,
+      89
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-011",
+    "slot": "foreground",
+    "x": 0,
+    "y": 1370,
+    "width": 1000,
+    "height": 330,
+    "safeMargin": 0,
+    "zIndexRange": [
+      90,
+      119
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  },
+  {
+    "id": "PLACE-012",
+    "slot": "branding-footer",
+    "x": 300,
+    "y": 1700,
+    "width": 400,
+    "height": 58,
+    "safeMargin": 20,
+    "zIndexRange": [
+      120,
+      129
+    ],
+    "cropping": "CONTAIN",
+    "logicalCanvas": [
+      1000,
+      1778
+    ],
+    "mobileScaling": "Scale uniformly to container width.",
+    "desktopPresentation": "Center unchanged 9:16 canvas inside wider UI.",
+    "textOverlapRestriction": "MUST_NOT_OBSCURE_TEXT_SAFE_ZONES",
+    "objectFit": "contain"
+  }
+]
