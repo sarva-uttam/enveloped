@@ -1,0 +1,1843 @@
+{
+  "schemaVersion": 1,
+  "status": "editorial-candidates-human-review-required",
+  "frames": {
+    "welcome": 80,
+    "haldi": 160,
+    "wedding": 240,
+    "finale": 300
+  },
+  "fields": {
+    "identity.invitationLanguage": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "identity.brideName": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "identity.groomName": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "identity.brideFamilyName": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "identity.groomFamilyName": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "identity.brideParents": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "identity.groomParents": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "identity.brideGrandparents": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "identity.groomGrandparents": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "identity.rememberedRelatives": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "identity.invitingFamilies": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "identity.guestName": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "identity.sacredImageryPreference": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "identity.sacredInvocationPreference": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "welcome.sacredInvocation": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "welcome.decorativeHeading": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "welcome.romanticOpening": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "welcome.formalWelcome": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "welcome.coupleNames": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "welcome.hostIntroduction": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "welcome.transitionLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.ceremonyTitle": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": null
+    },
+    "haldi.optionalHindiTitle": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.ceremonyDescription": {
+      "required": false,
+      "maxRecommendedCharacters": 200,
+      "mobileLines": 3,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.hostWording": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.honouree": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.date": {
+      "required": true,
+      "maxRecommendedCharacters": 80,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "haldi.time": {
+      "required": true,
+      "maxRecommendedCharacters": 80,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "haldi.venue": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "haldi.address": {
+      "required": false,
+      "maxRecommendedCharacters": 200,
+      "mobileLines": 3,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.attireGuidance": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.colourGuidance": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.guestInstruction": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "haldi.closingLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.sacredHeading": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.ceremonyTitle": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": null
+    },
+    "wedding.grandparentBlessingLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.rememberedRelativeLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.parentHostLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.formalInvitation": {
+      "required": false,
+      "maxRecommendedCharacters": 200,
+      "mobileLines": 3,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.brideName": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.groomName": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.parentageLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.date": {
+      "required": true,
+      "maxRecommendedCharacters": 80,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "wedding.time": {
+      "required": true,
+      "maxRecommendedCharacters": 80,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "wedding.venue": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "wedding.address": {
+      "required": false,
+      "maxRecommendedCharacters": 200,
+      "mobileLines": 3,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.dressGuidance": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.giftPreference": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "wedding.ceremonyInstruction": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "human-review-required",
+      "fallback": "omit-whole-field"
+    },
+    "finale.gratitudeLine": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.blessingRequest": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.attendanceSentiment": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.familySignature": {
+      "required": true,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; preserve full name; move optional lines to detail view",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": null
+    },
+    "finale.quotation": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.directionsLabel": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.rsvpHeading": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.rsvpDeadline": {
+      "required": false,
+      "maxRecommendedCharacters": 80,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    },
+    "finale.responseLabel": {
+      "required": false,
+      "maxRecommendedCharacters": 120,
+      "mobileLines": 2,
+      "longNameBehaviour": "wrap at words; omit entire optional field if absent",
+      "language": "client-selected; sacred invocation remains Sanskrit",
+      "culturalReviewStatus": "editorial-candidate",
+      "fallback": "omit-whole-field"
+    }
+  },
+  "invocations": [
+    {
+      "id": "ganesha-salutation",
+      "devanagari": "ॐ श्री गणेशाय नमः",
+      "roman": "Om Shri Ganeshaya Namah",
+      "iast": "Oṃ Śrī Gaṇeśāya Namaḥ",
+      "meaning": "Reverent salutations to Lord Ganesha.",
+      "suitability": "Optional opening before welcome or Hindu wedding content; confirm with family and officiant.",
+      "culturalUse": "Keep as a complete, legible text line; never repeat as ornament or place in controls.",
+      "fluentHumanReviewRequired": true,
+      "reviewStatus": "linguistically-checked-editorial-not-culturally-approved"
+    }
+  ],
+  "families": [
+    {
+      "id": "formal-en",
+      "label": "Formal English",
+      "language": "en",
+      "tone": "formal",
+      "culturalReviewStatus": "editorial-candidate",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "You are cordially invited to celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "You are cordially invited to celebrate the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Please join us for the Haldi ceremony as the families offer blessings before the wedding.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Please join us for the Haldi ceremony as the families offer blessings before the wedding. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "The {brideFamily} and {groomFamily} families request the pleasure of your company at the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "The {brideFamily} and {groomFamily} families request the pleasure of your company at the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "We would be honoured by your presence. With warm regards, the {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "We would be honoured by your presence. With warm regards, the {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "romantic-en",
+      "label": "Romantic English",
+      "language": "en",
+      "tone": "romantic",
+      "culturalReviewStatus": "editorial-candidate",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Two paths meet, and a new story begins. Celebrate {bride} and {groom} with us.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Two paths meet, and a new story begins. Celebrate {bride} and {groom} with us. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Golden turmeric, heartfelt blessings and music welcome the next chapter for {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Golden turmeric, heartfelt blessings and music welcome the next chapter for {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Come witness {bride} and {groom} begin their married life, surrounded by those they love.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Come witness {bride} and {groom} begin their married life, surrounded by those they love. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "The story is brighter with you in it. With love, the {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "The story is brighter with you in it. With love, the {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "traditional-en",
+      "label": "Traditional English",
+      "language": "en",
+      "tone": "traditional",
+      "culturalReviewStatus": "human-review-required",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "With the blessings of our elders, we invite you to the wedding celebrations of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "With the blessings of our elders, we invite you to the wedding celebrations of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Join our families for the Haldi ceremony and offer your blessings to the couple.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Join our families for the Haldi ceremony and offer your blessings to the couple. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "With the blessings of their elders, the {families} invite you to the Hindu wedding ceremony of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "With the blessings of their elders, the {families} invite you to the Hindu wedding ceremony of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "May your blessings accompany the couple. The {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "May your blessings accompany the couple. The {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "family-en",
+      "label": "Warm family-centred English",
+      "language": "en",
+      "tone": "warm",
+      "culturalReviewStatus": "editorial-candidate",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Our families are coming together, and we would love to welcome you as {bride} and {groom} celebrate.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Our families are coming together, and we would love to welcome you as {bride} and {groom} celebrate. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Gather with us for turmeric, music and the warmth of family at Haldi.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Gather with us for turmeric, music and the warmth of family at Haldi. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "The {families} warmly invite you to share in the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "The {families} warmly invite you to share in the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Having you with us will make this celebration more special. Love, the {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Having you with us will make this celebration more special. Love, the {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "mobile-en",
+      "label": "Concise mobile English",
+      "language": "en",
+      "tone": "concise",
+      "culturalReviewStatus": "editorial-candidate",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Celebrate {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Celebrate {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Join us for Haldi and blessings.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Join us for Haldi and blessings. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Join us for the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Join us for the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Thank you for celebrating with us. The {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Thank you for celebrating with us. The {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "modern-hi-en",
+      "label": "Modern Hindi-English bilingual",
+      "language": "hi-en",
+      "tone": "modern bilingual",
+      "culturalReviewStatus": "human-review-required",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "शुभ विवाह · A new chapter begins for {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "शुभ विवाह · A new chapter begins for {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "हल्दी समारोह · Join us for blessings, turmeric and joyful music.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "हल्दी समारोह · Join us for blessings, turmeric and joyful music. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "शुभ विवाह · Celebrate the wedding of {bride} and {groom} with our families.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "शुभ विवाह · Celebrate the wedding of {bride} and {groom} with our families. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "आपका स्वागत है · Your presence means so much to the {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "आपका स्वागत है · Your presence means so much to the {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "traditional-hi-en",
+      "label": "Traditional Hindi-English bilingual",
+      "language": "hi-en",
+      "tone": "traditional bilingual",
+      "culturalReviewStatus": "human-review-required",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "सप्रेम निमंत्रण · With our elders’ blessings, we invite you to celebrate {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "सप्रेम निमंत्रण · With our elders’ blessings, we invite you to celebrate {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "हल्दी समारोह · Please join our families to bless the couple at Haldi.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "हल्दी समारोह · Please join our families to bless the couple at Haldi. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "शुभ विवाह · The {families} request your presence at the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "शुभ विवाह · The {families} request your presence at the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "सादर धन्यवाद · With gratitude, the {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "सादर धन्यवाद · With gratitude, the {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "sanskrit-en",
+      "label": "Sanskrit invocation plus English",
+      "language": "sa-en",
+      "tone": "devotional",
+      "culturalReviewStatus": "human-review-required",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "ॐ श्री गणेशाय नमः · With blessings, welcome to the wedding celebrations of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "ॐ श्री गणेशाय नमः · With blessings, welcome to the wedding celebrations of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Join our families for Haldi, turmeric and heartfelt blessings.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Join our families for Haldi, turmeric and heartfelt blessings. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "ॐ श्री गणेशाय नमः · With our families’ blessings, please join the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "ॐ श्री गणेशाय नमः · With our families’ blessings, please join the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "With gratitude for your blessings, the {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "With gratitude for your blessings, the {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "neutral-en",
+      "label": "Sacred-imagery-disabled neutral English",
+      "language": "en",
+      "tone": "neutral",
+      "culturalReviewStatus": "editorial-candidate",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Welcome to the celebrations for {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Welcome to the celebrations for {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Join us for the Haldi ceremony and a joyful family gathering.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Join us for the Haldi ceremony and a joyful family gathering. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "The {families} invite you to celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "The {families} invite you to celebrate the wedding of {bride} and {groom}. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Thank you for sharing this day with us. The {families}.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Thank you for sharing this day with us. The {families}. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    },
+    {
+      "id": "international-en",
+      "label": "International-guest-friendly English",
+      "language": "en",
+      "tone": "explanatory",
+      "culturalReviewStatus": "editorial-candidate",
+      "chapters": {
+        "welcome": {
+          "micro": {
+            "text": "Welcome, {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join {bride} and {groom} as their families celebrate.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Welcome to the wedding celebrations of {bride} and {groom} in Mauritius.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Welcome to the wedding celebrations of {bride} and {groom} in Mauritius. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "haldi": {
+          "micro": {
+            "text": "Haldi · Blessings and joy.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Join our families for Haldi, turmeric and blessings.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Haldi is a family ceremony centred on turmeric, blessings and celebration. Please join us.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Haldi is a family ceremony centred on turmeric, blessings and celebration. Please join us. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "wedding": {
+          "micro": {
+            "text": "Wedding · {bride} and {groom}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Celebrate the wedding of {bride} and {groom}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Please join {bride} and {groom} for their Hindu wedding ceremony.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Please join {bride} and {groom} for their Hindu wedding ceremony. We look forward to welcoming you and sharing this occasion together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        },
+        "finale": {
+          "micro": {
+            "text": "With thanks, the {families}.",
+            "maxRecommendedCharacters": 48,
+            "mobileLines": 2
+          },
+          "conciseMobile": {
+            "text": "Thank you for joining us. The {families}.",
+            "maxRecommendedCharacters": 100,
+            "mobileLines": 3
+          },
+          "standard": {
+            "text": "Thank you for joining our families. Directions and response details are below.",
+            "maxRecommendedCharacters": 180,
+            "mobileLines": 5
+          },
+          "formalExtended": {
+            "text": "Thank you for joining our families. Directions and response details are below. We hope to see you there and share a memorable day together.",
+            "maxRecommendedCharacters": 300,
+            "mobileLines": 7
+          }
+        }
+      }
+    }
+  ],
+  "alternatives": {
+    "romanticOpening": [
+      {
+        "id": "romanticOpening.elegant",
+        "text": "A new chapter begins as {bride} and {groom} come together.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "romanticOpening.romantic",
+        "text": "Destiny brought them together; love invites us to celebrate what comes next.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "romanticOpening.spiritual",
+        "text": "With blessings and gratitude, {bride} and {groom} begin their life together.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "romanticOpening.traditional",
+        "text": "With the blessings of their elders, {bride} and {groom} invite you to celebrate.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "romanticOpening.contemporary",
+        "text": "Here’s to {bride}, {groom}, and everything ahead.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "romanticOpening.veryConcise",
+        "text": "Together, a new beginning.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "romanticOpening.familyCentred",
+        "text": "Two families gather in joy for {bride} and {groom}.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      }
+    ],
+    "haldiTitle": [
+      {
+        "id": "haldiTitle.neutral",
+        "text": "Haldi Ceremony",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "haldiTitle.playfulHinglish",
+        "text": "Rang De Haldi",
+        "language": "hi-Latn",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "haldiTitle.HindiCeremonial",
+        "text": "Haldi Utsav",
+        "language": "hi-Latn",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "haldiTitle.HindiDevanagari",
+        "text": "हल्दी समारोह",
+        "language": "hi-en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "haldiTitle.bilingual",
+        "text": "हल्दी समारोह · Haldi Ceremony",
+        "language": "hi-en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "haldiTitle.mobile",
+        "text": "Haldi",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      }
+    ],
+    "haldiDescription": [
+      {
+        "id": "haldiDescription.colour",
+        "text": "Gather among marigolds and colour as our families celebrate Haldi.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "haldiDescription.blessings",
+        "text": "Join our families in offering blessings at the Haldi ceremony.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "haldiDescription.turmeric",
+        "text": "Share in the turmeric tradition as the wedding celebrations begin.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "haldiDescription.family",
+        "text": "Come together with family for a warm Haldi celebration.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "haldiDescription.music",
+        "text": "Join us for Haldi, with music, blessings and joy.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "haldiDescription.attire",
+        "text": "Wear a touch of yellow if you wish, and join us for Haldi.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      }
+    ],
+    "weddingTitle": [
+      {
+        "id": "weddingTitle.neutral",
+        "text": "Wedding Ceremony",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "weddingTitle.devotionalEnglish",
+        "text": "Sacred Wedding Ceremony",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "weddingTitle.ritualSpecific",
+        "text": "Vivaah Vidhi",
+        "language": "hi-Latn",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "weddingTitle.auspiciousHindi",
+        "text": "Shubh Vivaah",
+        "language": "hi-Latn",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "weddingTitle.bilingual",
+        "text": "शुभ विवाह · Wedding Ceremony",
+        "language": "hi-en",
+        "reviewStatus": "human-review-required"
+      }
+    ],
+    "familyInvitation": [
+      {
+        "id": "familyInvitation.brideParents",
+        "text": "{brideParents} invite you to celebrate the wedding of their daughter {bride} and {groom}.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.groomParents",
+        "text": "{groomParents} invite you to celebrate the wedding of their son {groom} and {bride}.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.bothFamilies",
+        "text": "The {families} invite you to celebrate the wedding of {bride} and {groom}.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.grandparents",
+        "text": "With the blessings of {grandparents}, the {families} invite you to celebrate {bride} and {groom}.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.remembrance",
+        "text": "Remembering {rememberedRelative} with love, the {families} invite you to celebrate {bride} and {groom}.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.couple",
+        "text": "{bride} and {groom} invite you to celebrate their wedding.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.noParentage",
+        "text": "Join us as {bride} and {groom} celebrate their wedding.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      },
+      {
+        "id": "familyInvitation.genderNeutralHosts",
+        "text": "Together with their loved ones, {bride} and {groom} invite you to celebrate.",
+        "language": "en",
+        "reviewStatus": "human-review-required"
+      }
+    ],
+    "giftPreference": [
+      {
+        "id": "giftPreference.noGifts",
+        "text": "Your presence is gift enough; please, no gifts.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "giftPreference.noBoxedGifts",
+        "text": "Kindly refrain from bringing boxed gifts.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "giftPreference.blessingsOnly",
+        "text": "Your blessings are all we ask for; please, no gifts.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "giftPreference.charity",
+        "text": "If you wish to mark the occasion, please consider a donation to {charityName}.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "giftPreference.optional",
+        "text": "Gifts are welcome but never expected.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "giftPreference.omit",
+        "text": "",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      }
+    ],
+    "closing": [
+      {
+        "id": "closing.formal",
+        "text": "We would be honoured by your presence. With warm regards, the {families}.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "closing.warm",
+        "text": "We cannot wait to celebrate with you. Love, the {families}.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "closing.spiritual",
+        "text": "Please join us in blessing the couple as they begin married life.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "closing.romantic",
+        "text": "A beautiful beginning is sweeter when shared with you.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "closing.concise",
+        "text": "With love and thanks, the {families}.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "closing.familyCentred",
+        "text": "Your presence will mean so much to both our families.",
+        "language": "en",
+        "reviewStatus": "editorial-candidate"
+      },
+      {
+        "id": "closing.bilingual",
+        "text": "सादर धन्यवाद · With gratitude, the {families}.",
+        "language": "hi-en",
+        "reviewStatus": "human-review-required"
+      }
+    ]
+  },
+  "sample": {
+    "fictional": true,
+    "identity": {
+      "bride": "Mihika Rajan",
+      "groom": "Tanish Narayan",
+      "brideParents": "Arvind and Meera Rajan",
+      "groomParents": "Rajesh and Kavita Narayan",
+      "grandparents": "Mahendra and Kamini Rajan",
+      "rememberedRelative": "Harish Rajan",
+      "additionalElder": "Shanta Devi",
+      "families": "Rajan and Narayan families"
+    },
+    "events": {
+      "haldi": {
+        "date": "Saturday, 22 August 2026",
+        "time": "6:30 PM",
+        "venue": "Magnolia Hall",
+        "address": "Greenview Gardens, Harmony Road, Vacoas"
+      },
+      "wedding": {
+        "date": "Sunday, 23 August 2026",
+        "time": "1:15 PM",
+        "venue": "Magnolia Hall",
+        "address": "Greenview Gardens, Harmony Road, Vacoas"
+      }
+    },
+    "giftPreference": "unspecified",
+    "rsvpEnabled": false
+  }
+}
