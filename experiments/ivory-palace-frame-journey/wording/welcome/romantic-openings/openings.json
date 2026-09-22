@@ -1,0 +1,708 @@
+{
+  "edition": "Ivory Palace — Signature Edition",
+  "chapter": "welcome",
+  "frame": 80,
+  "status": "owner-approved-alternatives",
+  "variations": [
+    {
+      "id": "ivory.welcome.romantic.001",
+      "category": "Destiny and serendipity",
+      "text": "Somehow, every road led them to each other.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.002",
+      "category": "Destiny and serendipity",
+      "text": "Of all the moments life could have chosen, it chose theirs.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.003",
+      "category": "Destiny and serendipity",
+      "text": "Their paths crossed, and everything ahead began to change.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.004",
+      "category": "Destiny and serendipity",
+      "text": "A chance meeting became the beginning of forever.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.005",
+      "category": "Destiny and serendipity",
+      "text": "The world was wide, yet their hearts found home together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.006",
+      "category": "Destiny and serendipity",
+      "text": "Two separate journeys found a beautiful way forward together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.007",
+      "category": "Destiny and serendipity",
+      "text": "What began by chance grew into a love worth celebrating.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.008",
+      "category": "Destiny and serendipity",
+      "text": "Somewhere between chance and choice, they found each other.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.009",
+      "category": "Destiny and serendipity",
+      "text": "Life brought them together; love gave them a reason to stay.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.010",
+      "category": "Destiny and serendipity",
+      "text": "Their story began when two paths became one shared journey.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.011",
+      "category": "Love as a beginning",
+      "text": "Their love has brought them to a beautiful new beginning.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.012",
+      "category": "Love as a beginning",
+      "text": "A new chapter begins with the person they chose, and keep choosing.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.013",
+      "category": "Love as a beginning",
+      "text": "Together, they begin a story only they can write.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.014",
+      "category": "Love as a beginning",
+      "text": "Love led them here; the best pages are still to come.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.015",
+      "category": "Love as a beginning",
+      "text": "Every great love story has a moment like this.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.016",
+      "category": "Love as a beginning",
+      "text": "Their next chapter begins with love, hope, and each other.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.017",
+      "category": "Love as a beginning",
+      "text": "One promise opens the door to a lifetime of shared moments.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.018",
+      "category": "Love as a beginning",
+      "text": "This is the beginning of all they will build together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.019",
+      "category": "Love as a beginning",
+      "text": "Today, their love turns toward everything still to come.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.020",
+      "category": "Love as a beginning",
+      "text": "Their story is growing into a life they will share.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.021",
+      "category": "Quiet and elegant",
+      "text": "Two hearts, one beautiful beginning.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.022",
+      "category": "Quiet and elegant",
+      "text": "A love to cherish. A life to share.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.023",
+      "category": "Quiet and elegant",
+      "text": "Here begins a lifetime together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.024",
+      "category": "Quiet and elegant",
+      "text": "Love has found its place between them.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.025",
+      "category": "Quiet and elegant",
+      "text": "Their hearts have found a home in each other.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.026",
+      "category": "Quiet and elegant",
+      "text": "Side by side, they begin anew.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.027",
+      "category": "Quiet and elegant",
+      "text": "A little moment with a lifetime inside it.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.028",
+      "category": "Quiet and elegant",
+      "text": "Together is a beautiful place to begin.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.029",
+      "category": "Quiet and elegant",
+      "text": "Some beginnings are meant to be shared.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.030",
+      "category": "Quiet and elegant",
+      "text": "Their love deserves a moment to remember.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.031",
+      "category": "Poetic imagery",
+      "text": "Like two rivers meeting, their lives now flow together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.032",
+      "category": "Poetic imagery",
+      "text": "In a world of passing moments, they found something lasting.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.033",
+      "category": "Poetic imagery",
+      "text": "Two paths met beneath the same sky and chose to continue together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.034",
+      "category": "Poetic imagery",
+      "text": "Love arrived softly and made a home in their hearts.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.035",
+      "category": "Poetic imagery",
+      "text": "One shared horizon now stretches before them.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.036",
+      "category": "Poetic imagery",
+      "text": "What once were separate dreams now have room to grow together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.037",
+      "category": "Poetic imagery",
+      "text": "The sweetest journeys begin with someone beside you.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.038",
+      "category": "Poetic imagery",
+      "text": "Their love is the light that welcomes a new day.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.039",
+      "category": "Poetic imagery",
+      "text": "Two stories meet, and a new one begins.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.040",
+      "category": "Poetic imagery",
+      "text": "The future feels brighter when they face it together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.041",
+      "category": "Chosen love",
+      "text": "They found each other, and chose to make a life together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.042",
+      "category": "Chosen love",
+      "text": "Love grows in every little choice to stay close.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.043",
+      "category": "Chosen love",
+      "text": "They chose each other; now, they invite you to celebrate that choice.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.044",
+      "category": "Chosen love",
+      "text": "Their love is made of ordinary days and extraordinary devotion.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.045",
+      "category": "Chosen love",
+      "text": "In each other, they found a partner for every season.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.046",
+      "category": "Chosen love",
+      "text": "Love brought them close; commitment carries them forward.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.047",
+      "category": "Chosen love",
+      "text": "Each new day is another chance to choose each other.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.048",
+      "category": "Chosen love",
+      "text": "A lasting love begins with two people saying yes to tomorrow.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.049",
+      "category": "Chosen love",
+      "text": "Together, they have found the courage to dream bigger.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.050",
+      "category": "Chosen love",
+      "text": "Their promise is simple: to keep walking through life together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.051",
+      "category": "Tender and intimate",
+      "text": "In each other, they found a place to belong.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.052",
+      "category": "Tender and intimate",
+      "text": "Every shared smile brought them a little closer to today.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.053",
+      "category": "Tender and intimate",
+      "text": "Their favourite place has become wherever they are together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.054",
+      "category": "Tender and intimate",
+      "text": "In the little moments, a great love took shape.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.055",
+      "category": "Tender and intimate",
+      "text": "They learned that home can be a person.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.056",
+      "category": "Tender and intimate",
+      "text": "A thousand small moments led to this one beautiful beginning.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.057",
+      "category": "Tender and intimate",
+      "text": "Their love feels like coming home.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.058",
+      "category": "Tender and intimate",
+      "text": "With each other, even the ordinary feels special.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.059",
+      "category": "Tender and intimate",
+      "text": "The tenderness they found together has brought them here.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.060",
+      "category": "Tender and intimate",
+      "text": "This moment belongs to the love they have patiently grown.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.061",
+      "category": "Joyful and contemporary",
+      "text": "They found their person. Now the celebration begins.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.062",
+      "category": "Joyful and contemporary",
+      "text": "The best kind of adventure is the one they take together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.063",
+      "category": "Joyful and contemporary",
+      "text": "Here's to the love that brought them here.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.064",
+      "category": "Joyful and contemporary",
+      "text": "They fell in love. Then they kept choosing more life together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.065",
+      "category": "Joyful and contemporary",
+      "text": "From their first hello to this new beginning, what a journey.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.066",
+      "category": "Joyful and contemporary",
+      "text": "Two favourite people, one unforgettable beginning.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.067",
+      "category": "Joyful and contemporary",
+      "text": "They are ready for the next adventure, side by side.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.068",
+      "category": "Joyful and contemporary",
+      "text": "A love this joyful deserves to be celebrated.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.069",
+      "category": "Joyful and contemporary",
+      "text": "Their next chapter starts here, with hearts full of hope.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.070",
+      "category": "Joyful and contemporary",
+      "text": "They make a wonderful team, and their story is just beginning.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.071",
+      "category": "Family and shared joy",
+      "text": "Their love has brought two circles of loved ones together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.072",
+      "category": "Family and shared joy",
+      "text": "Their joy becomes a celebration shared with everyone they love.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.073",
+      "category": "Family and shared joy",
+      "text": "Their story has room for all the people who helped shape it.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.074",
+      "category": "Family and shared joy",
+      "text": "Love has brought them together, and joy has gathered us here.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.075",
+      "category": "Family and shared joy",
+      "text": "A new chapter begins, surrounded by the people who matter most.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.076",
+      "category": "Family and shared joy",
+      "text": "What began between two hearts now fills two families with joy.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.077",
+      "category": "Family and shared joy",
+      "text": "Their love is theirs; this celebration is one we share.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.078",
+      "category": "Family and shared joy",
+      "text": "Together with their loved ones, they welcome a beautiful beginning.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.079",
+      "category": "Family and shared joy",
+      "text": "The happiest beginnings are the ones we share with family and friends.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.080",
+      "category": "Family and shared joy",
+      "text": "Two people found love, and many hearts came together to celebrate it.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.081",
+      "category": "Timeless and ceremonial",
+      "text": "With love in their hearts, they step into a life together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.082",
+      "category": "Timeless and ceremonial",
+      "text": "Their journey together begins with a promise made in love.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.083",
+      "category": "Timeless and ceremonial",
+      "text": "A bond built with care becomes a promise for the years ahead.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.084",
+      "category": "Timeless and ceremonial",
+      "text": "They come together with hope for all their tomorrows.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.085",
+      "category": "Timeless and ceremonial",
+      "text": "In love and friendship, they begin this new chapter.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.086",
+      "category": "Timeless and ceremonial",
+      "text": "Their hearts are ready for a lifetime of shared days.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.087",
+      "category": "Timeless and ceremonial",
+      "text": "A cherished love now becomes a shared future.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.088",
+      "category": "Timeless and ceremonial",
+      "text": "Their celebration honours the love that has grown between them.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.089",
+      "category": "Timeless and ceremonial",
+      "text": "Their promise marks the beginning of a life lived side by side.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.090",
+      "category": "Timeless and ceremonial",
+      "text": "Love has brought them here, and hope will carry them onward.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.091",
+      "category": "Dreamlike and luminous",
+      "text": "A beautiful kind of forever begins with this moment.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.092",
+      "category": "Dreamlike and luminous",
+      "text": "The days ahead shine a little brighter when imagined together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.093",
+      "category": "Dreamlike and luminous",
+      "text": "Among all life's possibilities, they found a future in each other.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.094",
+      "category": "Dreamlike and luminous",
+      "text": "Their dreams have found a place to grow side by side.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.095",
+      "category": "Dreamlike and luminous",
+      "text": "For a moment, the world slows down to celebrate their love.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.096",
+      "category": "Dreamlike and luminous",
+      "text": "What they found in each other feels like the start of everything.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.097",
+      "category": "Dreamlike and luminous",
+      "text": "Love has made the ordinary world feel wonderfully new.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.098",
+      "category": "Dreamlike and luminous",
+      "text": "The best part of tomorrow is knowing they will meet it together.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.099",
+      "category": "Dreamlike and luminous",
+      "text": "Their hearts have written the first line of a new story.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    },
+    {
+      "id": "ivory.welcome.romantic.100",
+      "category": "Dreamlike and luminous",
+      "text": "Here, surrounded by beauty, their next chapter begins.",
+      "language": "en",
+      "status": "owner-approved-alternative"
+    }
+  ]
+}
