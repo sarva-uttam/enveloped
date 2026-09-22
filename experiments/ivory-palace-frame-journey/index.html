@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Ivory Palace — Chapter Journey (Frame Prototype)</title>
+<meta name="description" content="Feasibility prototype: 300-frame chapter-stop wedding invitation journey." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<noscript>
+  <div class="noscript-fallback">
+    <img src="frames/ezgif-frame-001.jpg" alt="Ivory Palace doors" />
+    <p>This journey needs JavaScript enabled to play through. Please enable JavaScript and reload.</p>
+  </div>
+</noscript>
+
+<main id="app" class="app" hidden>
+
+  <!-- Fixed 9:16 stage. No page scroll; navigation is chapter-stepped via arrows/swipe/keys. -->
+  <div class="stage">
+    <div class="frame-box" id="frameBox">
+
+      <canvas id="frameCanvas" class="frame-canvas" aria-label=""></canvas>
+
+      <!-- Loading fallback -->
+      <div id="loader" class="loader" role="status" aria-live="polite">
+        <div class="loader-mark" aria-hidden="true"></div>
+        <p>Loading the journey&hellip;</p>
+      </div>
+
+      <!-- Chapter navigation: previous (up) / next (down) -->
+      <button id="navUp" class="nav-btn nav-up" type="button" aria-label="Previous chapter">
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+      <button id="navDown" class="nav-btn nav-down" type="button" aria-label="Next chapter">
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
