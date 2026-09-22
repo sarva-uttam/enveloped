@@ -1124,12 +1124,12 @@
             "mobileLines": 3
           },
           "standard": {
-            "text": "आपका स्वागत है · Your presence means so much to the {families}.",
+            "text": "सादर धन्यवाद · Your presence means so much to the {families}.",
             "maxRecommendedCharacters": 180,
             "mobileLines": 5
           },
           "formalExtended": {
-            "text": "आपका स्वागत है · Your presence means so much to the {families}. We hope to see you there and share a memorable day together.",
+            "text": "सादर धन्यवाद · Your presence means so much to the {families}. We hope to see you there and share a memorable day together.",
             "maxRecommendedCharacters": 300,
             "mobileLines": 7
           }
