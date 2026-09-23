@@ -1,39 +1,118 @@
 # Ivory Palace — Signature Edition: modular wording system
 
-**Status:** editorial candidate for Owner and culturally fluent human review. No copy is approved for guests. The catalogue is isolated at `experiments/ivory-palace-frame-journey/wording/catalogue.json`. It is data, not a renderer or production template. Run `node --test experiments/ivory-palace-frame-journey/wording/validate.test.cjs` for focused checks. `build_catalogue.py` is the editable editorial source that reproduces the JSON.
+**Status:** mixed, recorded per item. The catalogue contains 348 Owner-approved reusable wording alternatives. It also contains client-editable personal-information fields, approved wording that may be used only after the client confirms a fact, sacred, Sanskrit and Hindi wording that still needs culturally fluent human review, items still pending Owner review, rejected decisions, and older unapproved legacy drafts. None of these categories implies another. Owner approval of a wording choice is not approval of any client's facts, and it does not replace cultural review.
+
+The catalogue is isolated at `experiments/ivory-palace-frame-journey/wording/catalogue.json`. It is data, not a renderer or production template. No wording is placed in frames or displayed by the current HTML experiment.
+
+## Sources of truth and regeneration
+
+The individual approved files under `experiments/ivory-palace-frame-journey/wording/` are authoritative:
+
+| Collection | Authoritative file | Frame |
+| --- | --- | --- |
+| `welcome.romanticOpenings` | `welcome/romantic-openings/openings.json` (with `REVIEW-DRAFT.md`) | 80 |
+| `haldi.titles` | `haldi/titles/titles.json` (with `TITLES.md`) | 160 |
+| `haldi.introductions` | `haldi/introductions/introductions.json` (with `INTRODUCTIONS.md`) | 160 |
+| `haldi.welcomeLines` | `haldi/welcome-lines/welcome-lines.json` (with `WELCOME-LINES.md`) | 160 |
+| `haldi.hostStructures` | `haldi/host-structures/host-structures.json` (with `HOSTS.md`) | 160 |
+| `wedding.titles` | `wedding/titles/TITLES.md` | 240 |
+| `wedding.invitations` | `wedding/invitations/INVITATIONS.md` | 240 |
+| `wedding.giftPreference` | `wedding/REVIEW-NOTES.md` (orange zone) | 240 |
+| `wedding.joiningSymbols` | `wedding/symbols/README.md` | 240 |
+| `wedding.elderBlessings` | `wedding/elders/ELDERS.md` | 240 |
+| `finale.presenceLines`, `finale.complimentsSignOff` | `finale/presence-and-compliments/presence-and-compliments.json` (with `PRESENCE-AND-COMPLIMENTS.md`) | 300 |
+
+`catalogue.json` is generated. Regenerate it with `python3 experiments/ivory-palace-frame-journey/wording/build_catalogue.py`. The builder reads every approved collection directly from these files and never restates approved sentences, so regeneration cannot erase or drift from them. Where an approved collection is Markdown only, the builder parses its table or its exact quoted phrase, and it exits with an error if the expected wording is missing. The builder also holds the older legacy drafts, which are kept only as labelled, unapproved material. To change approved wording, edit the individual file, regenerate, and run the tests.
+
+Run `node --test experiments/ivory-palace-frame-journey/wording/validate.test.cjs`. The tests check the exact collection counts, verbatim preservation against both the JSON and Markdown sources, the required phrases, that rejected wording stays rejected, the status separation, placeholder safety, and that regeneration reproduces `catalogue.json` byte for byte.
+
+## Status vocabulary
+
+The catalogue defines each status in `statusVocabulary`. Every approved item also carries two independent flags: `clientFactConfirmationRequired` and `culturalReviewRequired`.
+
+| Status / flag | Meaning |
+| --- | --- |
+| `owner-approved-reusable-wording` | Owner-approved alternative, reusable across invitations. Every selection remains editable per invitation or may be omitted. |
+| `client-editable-personal-information` | Names, relationships, surnames, dates, times, venues and addresses. Always client data, never a catalogue constant. The fictional sample values are demonstration only. |
+| `clientFactConfirmationRequired: true` | The wording asserts something about the event or family, such as music, turmeric application, marigolds, yellow attire, blessings, parent/child relationships, a specific rite, or a gift preference. Use it only after the client confirms. |
+| `culturalReviewRequired: true` / `cultural-review-required` | Sacred, Sanskrit, Hindi or Hindi/Urdu wording. It needs a culturally and linguistically fluent reviewer and, where relevant, the family or officiant. This applies even to Owner-approved titles. |
+| `pending-owner-review` | Recorded, but not approved. |
+| `rejected` | Decision history only. Never selectable. |
+| `legacy-editorial-candidate` | An earlier draft that was never Owner-approved. |
+
+## Final wording totals
+
+| Collection | Approved | Needing client fact confirmation | Needing cultural review |
+| --- | --- | --- | --- |
+| Welcome romantic openings | 100 | 0 | 0 |
+| Haldi titles | 12 | 2 (HT-03 blessings, HT-16 ritual focus) | 10 Hindi/Hindustani titles |
+| Haldi introductions | 100 | 30 (music, yellow attire, marigolds/turmeric application) | 0 |
+| Haldi welcome lines | 100 | 20 (blessings, yellow attire) | 0 |
+| Haldi host structures | 10 | 10 (hosts, honouree and relationship) | 0 |
+| Wedding titles (WT-01, WT-06, WT-10, WT-11 “Vivah Vidhi”) | 4 | 4 (ceremonial suitability) | 4 |
+| Wedding parent invitation leads | 10 | 10 (confirmed bride's-parent hosts) | 0 |
+| Wedding gift sentence | 1 | 1 (client chooses it) | 0 |
+| Finale guest-presence lines | 10 | 0 | 0 |
+| Finale fixed “Best Compliments From:” label | 1 | 0 (label); the family display line is client data | 0 |
+| **Total** | **348** | **77** | **14** |
+
+The catalogue also holds:
+
+- **Pending Owner review (14):** the seven unapproved Sanskrit title candidates (WT-02, WT-03, WT-04, WT-05, WT-07, WT-08, WT-09), six elder-blessing cases and the “In loving memory of” line.
+- **Rejected (10):** five Haldi titles (HT-02 The Haldi Celebration, HT-04 A Golden Beginning, HT-05 The Golden Haldi, HT-07 Haldi Utsav, HT-12 हल्दी उत्सव · Haldi Celebration) and all five joining-symbol studies. The joining mark between the names is undecided.
+- **Legacy editorial candidates (175 strings):** unapproved drafts, covered in the last section.
+
+## Fixed and exact decisions
+
+- **Gift:** the only gift sentence is exactly `No gift boxes please`. It is optional, included only if the client chooses it, and no alternatives are offered. The older six-way gift menu has been removed.
+- **Wedding titles:** only WT-01 `विवाहः`, WT-06 `विवाहकर्म`, WT-10 `विवाहयज्ञः` and WT-11 `Vivah Vidhi` (Devanagari `विवाह विधि`) are approved. WT-10 is highly ritual-specific. All four still need fluent Sanskrit/Hindi review and family or officiant confirmation of suitability. The older unapproved spellings and labels (“Vivaah Vidhi”, “Shubh Vivaah”, “Sacred Wedding Ceremony”) are no longer offered.
+- **Finale sign-off:** the label `Best Compliments From:` is fixed and shown exactly as written. The next line is client data, `{brideFamilySurname} & {groomFamilySurname} Family` (fictional example `Rajan & Narayan Family`). Confirm the preferred display when a surname is shared, absent or insufficient. Legacy closings such as “With warm regards, the {families}” never replace this label.
+- **Guest presence:** FP-01 `Your presence will be highly appreciated.` preserves the reference wording. FP-02 to FP-10 are approved variations. Select one.
+- **Joining symbols:** all five studies are rejected and must not appear as selectable symbols.
+- **Invocation:** `ॐ श्री गणेशाय नमः` / `Om Shri Ganeshaya Namah` is optional sacred text with status `cultural-review-required`. The Roman line is an accessible reading, not a second invocation.
 
 ## Content philosophy and boundary
 
-Keep identity, sacred language, ceremony, hosts, schedule, guest instructions and actions independent. A client selects a tone, edits every field, and omits whole optional lines. The four approved stops are Welcome 80, Haldi 160, Wedding 240 and Finale 300. No content is placed in frames or displayed by the current HTML experiment. The catalogue is not connected to the survey, routes, payments or authentication. Treat client copy as untrusted text: validate bounds, escape for the eventual output context, and allowlist action URLs in the future renderer. Never interpret catalogue values as HTML.
+Keep identity, sacred language, ceremony, hosts, schedule, guest instructions and actions independent. A client selects wording, edits every field, and omits whole optional lines. The four approved stops are Welcome 80, Haldi 160, Wedding 240 and Finale 300. The catalogue is not connected to the survey, routes, payments or authentication. Treat client copy as untrusted text: validate bounds, escape for the eventual output context, and allowlist action URLs in the future renderer. Never interpret catalogue values as HTML.
 
-## Source analysis and corrections
+Each invitation, and each event within it, holds its own selections and overrides. Bride-side, groom-side and joint Haldi events can each have different hosts, honourees, venues and wording. Editing one never changes another. Stable wording IDs select defaults; they never lock the client to stock sentences.
 
-| Source | Candidate treatment | Meaning to confirm |
-| --- | --- | --- |
-| “Destiny brought them together … seal their bond forever” | Romantic option: “Destiny brought them together; love invites us to celebrate what comes next.” | Retain the stronger original metaphor only if the couple likes it. |
-| “A pinch of Haldi, dance and music” | “Join our families for Haldi, turmeric, music and heartfelt blessings.” | Confirm whether music is actually planned. |
-| “Rang De Haldi” | Playful Hindi/Hinglish title, optionally paired with “Haldi Ceremony.” | Not a Sanskrit invocation or a formal ritual label. |
-| “Vivaah Vidhi” | Ritual-specific title only when the family means the wedding rites; otherwise “Wedding Ceremony.” | *Vivāha* means marriage; *vidhi* means procedure or prescribed rite. This title can imply the ritual proceedings rather than the whole celebration. |
-| “With the blessings of the grandparents” | Name the confirmed elders as a separate blessing line, then introduce hosts. | Which side each elder belongs to and whether Shanta Devi is living must be confirmed. |
-| “Late Mr. Harish & Mrs. Shanta Devi” | “Remembering Harish Rajan with love” on its own line; list Shanta Devi separately only after her relationship is confirmed. | Never imply Shanta Devi is deceased or married to Harish without confirmation. |
-| “13:15 PM” | “1:15 PM” (or “13:15” in a fully 24-hour invitation). | Use one format consistently. |
-| “No gift box please” | Select separately: no gifts, no boxed gifts, blessings only, charitable giving, gifts optional, or silence. | Ambiguous original cannot determine preference. |
-| “Your presence will be highly appreciated” | “We would be honoured by your presence.” | Warmer, still formal. |
-| “Best Compliments From” | “With warm regards, the Rajan and Narayan families.” | “Best compliments” is locally familiar but may sound unusual internationally. |
+## Reference-source reconciliation
 
-The dates in the fictional sample are Saturday 22 August 2026 and Sunday 23 August 2026; times are 6:30 PM and 1:15 PM. Never mix 13:15 with PM. Render dates with a locale-aware formatter only after verifying the calendar date and the event timezone (Mauritius, UTC+4). Preserve the client’s chosen spelling and capitalization of names.
+| Source | Current treatment |
+| --- | --- |
+| “Destiny brought them together … seal their bond forever” | Superseded by the 100 approved romantic openings. |
+| “A pinch of Haldi, dance and music” | Superseded by the 100 approved Haldi introductions. Music, turmeric application, marigolds and yellow attire lines are flagged for client confirmation. |
+| “Rang De Haldi” | Approved as HT-06, a playful Hindi/Hinglish title. It needs fluent review and is not a Sanskrit invocation. |
+| “Vivaah Vidhi” | Approved as WT-11, spelled `Vivah Vidhi`. Treat it as a modern invitation heading: Monier-Williams glosses *vivāhavidhi* as “law of marriage”. Confirm spelling and suitability locally. |
+| “Haldi Utsav” | Rejected (HT-07). |
+| “With the blessings of the grandparents” | The elder-blessing leads are pending Owner review. Names, relationships and living status are client facts. |
+| “Late Mr. Harish & Mrs. Shanta Devi” | A separate optional “In loving memory of” line, only after the client confirms the death (pending Owner review). Never imply Shanta Devi is deceased or married to Harish. |
+| “13:15 PM” | Use “1:15 PM”, or “13:15” in a fully 24-hour invitation. |
+| “No gift box please” | Approved as exactly `No gift boxes please`, optional, with no alternatives. |
+| “Your presence will be highly appreciated” | Approved as FP-01 and preserved verbatim. |
+| “Best Compliments From” | Approved as the fixed label `Best Compliments From:`. |
+
+The dates in the fictional sample are Saturday 22 August 2026 and Sunday 23 August 2026; the times are 6:30 PM and 1:15 PM. Never mix 13:15 with PM. Render dates with a locale-aware formatter only after verifying the calendar date and the event timezone (Mauritius, UTC+4). Preserve the client's chosen spelling and capitalization of names.
 
 ## Language and cultural notes
 
-The sole sacred invocation candidate is **ॐ श्री गणेशाय नमः**. Its consistent plain Roman form is **Om Shri Ganeshaya Namah**, and an academic IAST representation is **Oṃ Śrī Gaṇeśāya Namaḥ**. Its plain meaning is “Reverent salutations to Lord Ganesha.” This is a short Sanskrit salutation, not a composed verse. It can appear as a legible standalone opening before welcome or wedding material if the family wants it. It should not be repeated as ornament, embedded in a button, or assumed appropriate for every Hindu family. Spelling and grammatical sense have been editorially checked; a fluent Sanskrit reader and the family or officiant must confirm exact presentation and religious suitability before release.
+The sole sacred invocation is **ॐ श्री गणेशाय नमः**. Its plain Roman form is **Om Shri Ganeshaya Namah**, and its IAST form is **Oṃ Śrī Gaṇeśāya Namaḥ**. It means “Reverent salutations to Lord Ganesha.” It is a short Sanskrit salutation, not a composed verse. Use it as a legible standalone line only when the family enables it. Never repeat it as ornament, embed it in a button, or assume it suits every Hindu family. A fluent Sanskrit reader and the family or officiant must confirm its presentation and religious suitability.
 
-Hindi labels are distinct from that Sanskrit invocation. **हल्दी समारोह** means “Haldi ceremony” in ordinary Hindi; **शुभ विवाह** means “auspicious wedding”; **सप्रेम निमंत्रण** is a warm invitation heading; **सादर धन्यवाद** is a respectful expression of thanks. The Roman titles “Haldi Utsav” (celebration/festival of Haldi) and “Rang De Haldi” (a playful colour-themed phrase) have different registers. **Vivaah Vidhi** is a ritual-focused Sanskrit-derived Hindi expression. These editorial labels and all Devanagari copy require fluent Hindi review for naturalness, community register and punctuation. No English poem has been translated word for word into Hindi. Roman transliteration of labels is a convenience, not an assertion that colloquial Hindi is Sanskrit.
+Hindi and Hindustani titles are distinct from Sanskrit. Approved Haldi titles such as **हल्दी समारोह**, “Haldi Ki Rasam” or “Khushiyon Ki Haldi” carry `culturalReviewRequired`. Their Owner approval does not settle naturalness, idiom or local register. The Sanskrit wedding titles need review of spelling, inflection and pronunciation. Ritual-specific titles must match the ceremony actually performed. Roman transliteration is a convenience, not a claim that colloquial Hindi is Sanskrit.
 
-Mauritian Hindu families vary by linguistic heritage, sampradaya, household, officiant, event order, invitation custom and views on sacred imagery. Confirm whether Haldi is hosted for one partner or both, whether its turmeric application is part of the event, whether yellow attire is requested, whether blessings are invoked, and which relatives are named. Do not claim all guests participate in rites. Ask which family members are living and their exact relationships before pairing names, honorifics or “late.” Sacred imagery off and invocation off are independent preferences; a neutral line must remain available even if the visual world contains mandap imagery. Human cultural review remains required for every client-specific religious claim.
+Mauritian Hindu families vary by linguistic heritage, sampradaya, household, officiant, event order, invitation custom and views on sacred imagery. Confirm whether Haldi is hosted for one partner or both, whether turmeric application happens, whether yellow attire is requested, whether blessings are invoked, and which relatives are named, living, and related how. Sacred imagery and the invocation are independent preferences.
 
 ## Field matrix
 
-The machine-readable `fields` map is the authoritative per-field matrix. Every entry carries `required`, `maxRecommendedCharacters`, `mobileLines`, `longNameBehaviour`, `language`, `culturalReviewStatus` and `fallback`. The complete keys are:
+The machine-readable `fields` map is the per-field matrix. Every entry carries:
+
+- `required`, `maxRecommendedCharacters`, `mobileLines`, `longNameBehaviour`, `language` and `fallback`;
+- `contentClass`: `client-editable-personal-information`, `client-preference`, `sacred-optional`, `owner-approved-reusable-wording`, `pending-owner-review` or `legacy-editorial-candidate`;
+- `clientFactConfirmationRequired` and `culturalReviewStatus`;
+- where one applies, the `collection` that supplies its wording.
+
+`finale.familySignature` also records its `fixedLabel`.
 
 | Group | Fields |
 | --- | --- |
@@ -43,47 +122,33 @@ The machine-readable `fields` map is the authoritative per-field matrix. Every e
 | Wedding | sacredHeading, ceremonyTitle, grandparentBlessingLine, rememberedRelativeLine, parentHostLine, formalInvitation, brideName, groomName, parentageLine, date, time, venue, address, dressGuidance, giftPreference, ceremonyInstruction |
 | Finale | gratitudeLine, blessingRequest, attendanceSentiment, familySignature, quotation, directionsLabel, rsvpHeading, rsvpDeadline, responseLabel |
 
-Required values are identity and minimum event identity; all other lines can be omitted as complete units. Never leave dangling conjunctions, commas or honorifics. A future renderer must independently validate full populated output; catalogue length guidance is not a security boundary.
-
-## Wording-family matrix
-
-| Family ID | Voice | Language | Review |
-| --- | --- | --- | --- |
-| `formal-en` | Cordial invitation and respectful close | English | Editorial |
-| `romantic-en` | New story and shared affection | English | Editorial |
-| `traditional-en` | Elders and ceremonial blessing | English | Family review |
-| `family-en` | Families as hosts | English | Editorial |
-| `mobile-en` | Short direct invitation | English | Editorial |
-| `modern-hi-en` | Contemporary bilingual headings | Hindi and English | Fluent review |
-| `traditional-hi-en` | Respectful bilingual invitation | Hindi and English | Fluent review |
-| `sanskrit-en` | Sanskrit salutation with English | Sanskrit and English | Fluent and family review |
-| `neutral-en` | Secular phrasing with imagery disabled | English | Editorial |
-| `international-en` | Explains Haldi to unfamiliar guests | English | Editorial |
-
-Each family contains four independently editable chapters in four lengths: `micro`, `conciseMobile`, `standard`, `formalExtended`. These are 160 candidate strings. The catalogue also contains 45 labelled alternatives across romantic openings, Haldi titles and descriptions, wedding titles, host structures, gift meanings and closings. These are candidate alternatives rather than approved final wording; tone and cultural register are recorded with each label. Select one coherent family as a starting point and replace individual lines only after checking the resulting voice.
+Required values are identity and minimum event identity. Every other line can be omitted as a complete unit. Never leave dangling conjunctions, commas or honorifics. A future renderer must independently validate the fully populated output; catalogue length guidance is not a security boundary.
 
 ### Length and layout guidance
 
-Micro aims for 48 characters and two mobile lines; concise mobile 100 and three; standard 180 and five; formal extended 300 and seven. These are per wording item, before personalisation. Actual names can exceed them. At each stop, prefer a title, names and one brief message; show schedule and address as separate live fields. Preserve full names, allow wrapping at words, and shift optional lines into a secondary phase or accessible detail view. Never shrink Devanagari into illegibility or truncate a name with an ellipsis. For bilingual copy use one short Devanagari heading followed by a separate English explanation; set each span’s language for assistive technology (`lang="hi"`, `lang="sa"`, `lang="en"` in the eventual trusted renderer). Use a font tested for Devanagari conjuncts, and never transliterate a family name without their approval.
+Preserve full names, allow wrapping at words, and move optional lines into a secondary phase or an accessible detail view. Never shrink Devanagari into illegibility or truncate a name with an ellipsis. For bilingual copy, set each span's language for assistive technology (`lang="hi"`, `lang="sa"`, `lang="en"` in the eventual trusted renderer). Use a font tested for Devanagari conjuncts, and never transliterate a family name without the family's approval.
 
 ## Editorial rules
 
-Use “and” in sentences. An ampersand may be used in a short paired-name display if the couple approves; never attach “Mr.” or “Mrs.” to a combined ampersand phrase that obscures individual names. Parents are hosts only if confirmed. “Son of” and “daughter of” are optional family choices, never mandatory or inferred from surnames. Offer both-family, couple-led and gender-neutral hosts. Grandparents can be named in an independent blessing line; list sides and relationships only after confirmation. “In loving memory of” is reserved for a confirmed deceased person and must never automatically propagate to a spouse or adjacent elder. Do not infer whether remembrance implies religious blessing.
+Use “and” in sentences. An ampersand may be used in a short paired-name display, such as the finale family line. Never attach “Mr.” or “Mrs.” to a combined ampersand phrase that obscures individual names.
 
-Gift options have distinct semantics. “No gifts” excludes all gifts; “no boxed gifts” excludes only boxed items and may imply other gifts are welcome; “blessings only” pairs affection with no gifts; charitable donations require a real recipient and a confirmed preference; “gifts optional” permits gifts; omission says nothing. Do not infer one from the source’s “No gift box please.” Keep RSVP optional; when disabled, omit heading, deadline and action together. Directions and RSVP labels are interface text only and never carry an invocation. Use descriptive action labels such as “Get directions” and “Respond by 15 August” once the actual destination and deadline exist.
+Hosts and relationships follow confirmed client data. “Their daughter” and “their son” are used only for that person's confirmed parents. The approved wedding invitation leads are bride-side parent wording; other host arrangements need their own wording. “Son of” and “daughter of” are optional family choices, never inferred from surnames. “In loving memory of” is reserved for a confirmed deceased person and must never propagate automatically to a spouse or adjacent elder.
 
-For accessibility, do not rely on yellow alone to express dress guidance, read dates in an unambiguous form, keep actual text selectable outside images, and supply screen-reader order that follows the four chapters. Actions need their own accessible names and valid URLs; no guest-specific URL belongs in the shared catalogue. Do not bake any wording into frame artwork.
+Keep RSVP optional. When it is disabled, omit the heading, deadline and action together. For accessibility, do not rely on yellow alone to express dress guidance, keep actual text selectable outside images, and follow the four chapters in screen-reader order. Do not bake any wording into frame artwork.
 
 ## Fictional four-stop stress layout
 
-The sample is demonstration data; it asserts no complete genealogy. Lines below are separate editable fields, not one paragraph.
+The sample is demonstration data and asserts no complete genealogy. Each line below is a separate editable field. Every selection shown is Owner-approved but still subject to its flags.
 
-| Stop | Visible phase | Candidate wording |
-| --- | --- | --- |
-| 80 Welcome | Optional sacred line, opening, names | “ॐ श्री गणेशाय नमः” (only if selected); “Two paths meet, and a new story begins.”; “Mihika Rajan and Tanish Narayan”; “Our families warmly welcome you.” |
-| 160 Haldi | Title, short meaning, schedule | “Haldi Ceremony”; “Join us for turmeric, blessings and music.”; “Saturday, 22 August 2026 · 6:30 PM”; “Magnolia Hall”; optional “Wear a touch of yellow if you wish.” |
-| 240 Wedding, phase 1 | Invitation and names | “Wedding Ceremony”; “The Rajan and Narayan families invite you to celebrate the wedding of”; “Mihika Rajan and Tanish Narayan.” |
-| 240 Wedding, phase 2 | Schedule | “Sunday, 23 August 2026 · 1:15 PM”; “Magnolia Hall”; “Greenview Gardens, Harmony Road, Vacoas.” |
-| 300 Finale | Thanks, families, actions | “Thank you for celebrating with us.”; “The Rajan and Narayan families”; “Get directions”; optional “RSVP” and its deadline; gift guidance only after meaning is confirmed. |
+| Stop | Selected wording |
+| --- | --- |
+| 80 Welcome | Optional `ॐ श्री गणेशाय नमः` (cultural review); opening 039 “Two stories meet, and a new one begins.”; “Mihika Rajan and Tanish Narayan” (client data) |
+| 160 Haldi | HT-01 “Haldi Ceremony”; HI-001 “Join us as the warmth of Haldi begins the wedding celebrations.”; HS-01 host line “Arvind and Meera Rajan” / “warmly invite you to the Haldi ceremony of their daughter” / “Mihika Rajan” (relationship confirmed); “Saturday, 22 August 2026 · 6:30 PM”; “Magnolia Hall”; HW-001 “We cannot wait to welcome you.” |
+| 240 Wedding | WT-11 “Vivah Vidhi” (cultural and officiant review); “Arvind and Meera Rajan” / WI-01 “warmly invite you to the wedding of their daughter” / “Mihika Rajan”; joining mark pending design; “Tanish Narayan”; “Sunday · 23 · August · 2026 · 1:15 PM”; “Magnolia Hall”, “Greenview Gardens”, “Harmony Road, Vacoas”; optional “No gift boxes please” |
+| 300 Finale | FP-01 “Your presence will be highly appreciated.”; “Best Compliments From:”; “Rajan & Narayan Family” (client data) |
 
-Prototype values: bride’s parents Arvind and Meera Rajan; groom’s parents Rajesh and Kavita Narayan; grandparents Mahendra and Kamini Rajan; Harish Rajan remembered separately; Shanta Devi is an additional elder with an unconfirmed relationship. Do not publish those lines until confirmed. No gift preference is selected; RSVP is disabled in the sample. Stress cases should also try long first and surnames, four hosts, multiple grandparents, remembrance, bilingual wrapping, long hall and street names, both RSVP states and both sacred states. The focused test exercises structural combinations but cannot replace visual mobile review or fluent language review.
+Other prototype values: the groom's parents are Rajesh and Kavita Narayan; the grandparents are Mahendra and Kamini Rajan; Harish Rajan is remembered separately. Shanta Devi's relationship and status are unconfirmed, so she is omitted. The elder lines stay unpublished until they are Owner-approved and the client confirms the facts. Stress cases should also try long names, four hosts, multiple grandparents, remembrance, bilingual wrapping, long hall and street names, both RSVP states and both sacred states.
+
+## Legacy editorial candidates
+
+`legacyEditorialCandidates` keeps the ten earlier wording families (`formal-en`, `romantic-en`, `traditional-en`, `family-en`, `mobile-en`, `modern-hi-en`, `traditional-hi-en`, `sanskrit-en`, `neutral-en`, `international-en`). Each has four chapters in four lengths, for 160 strings. It also keeps 15 legacy `familyInvitation` and `closing` alternatives. All 175 strings are `legacy-editorial-candidate`. They were never Owner-approved and must not be presented as approved. The superseded legacy categories are removed rather than kept alongside the approved collections: romantic openings, Haldi titles (including the rejected “Haldi Utsav”), Haldi descriptions, wedding titles and gift preference. `supersededCategories` maps each one to its replacement. The legacy `modern-hi-en` finale heading remains corrected to **सादर धन्यवाद**. All legacy Devanagari still requires fluent review.
