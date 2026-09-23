@@ -304,6 +304,54 @@
     return (frames / SOURCE_FPS) * 1000;
   }
 
+  // ---------- Stop surfaces ----------
+  //
+  // Presentation-only layers above the canvas (see METHOD §11). At the
+  // Welcome, Haldi and Wedding stops a mist-edged ivory paper layer fades
+  // in once the target frame has landed; the Finale instead dissolves the
+  // whole invitation into warm light. The visual state is one attribute,
+  // frameBox[data-surface] = "none" | "mist" | "finale"; CSS owns every
+  // fade. Leaving a stop clears the surface first and only then starts
+  // frame travel, so no surface is ever visible while the palace moves.
+  var FINALE_INDEX = CHAPTERS.length - 1;
+
+  function cssMs(name) {
+    var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
+    return isNaN(v) ? 0 : v;
+  }
+
+  function enterSurface(index) {
+    frameBox.setAttribute("data-surface", index === FINALE_INDEX ? "finale" : "mist");
+  }
+
+  function leaveSurface(onCleared) {
+    var current = frameBox.getAttribute("data-surface");
+    frameBox.setAttribute("data-surface", "none");
+    if (current !== "mist" && current !== "finale") {
+      onCleared();
+      return;
+    }
+    // CSS transitions reverse from the current opacity, so leaving
+    // mid-entrance never jumps; waiting the full exit time guarantees
+    // the surface has cleared before the first frame moves.
+    setTimeout(onCleared, cssMs(current === "finale" ? "--finale-exit-ms" : "--mist-exit-ms"));
+  }
+
+  // Read-only introspection for testing/debugging; no functional effect.
+  window.__overlayState = function () {
+    var mist = document.getElementById("stopMist");
+    var light = document.getElementById("finaleLight");
+    return {
+      surface: frameBox.getAttribute("data-surface"),
+      mistOpacity: parseFloat(getComputedStyle(mist).opacity),
+      finaleOpacity: parseFloat(getComputedStyle(light).opacity),
+      mistTransform: getComputedStyle(mist).transform,
+      frame: currentFrame,
+      chapterIndex: chapterIndex,
+      isAnimating: isAnimating
+    };
+  };
+
   // ---------- Chapter state machine ----------
   // -1 = not yet arrived at "Welcome" (opening autoplay in progress).
   var chapterIndex = -1;
@@ -330,14 +378,20 @@
     // inside animateFrameTo, so don't rely on updateNavVisibility here).
     navUp.classList.remove("is-visible");
     navDown.classList.remove("is-visible");
-    var target = CHAPTERS[index].frame;
-    var duration = realTimeDuration(currentFrame, target);
-    animateFrameStepped(target, duration, gentleEase, function () {
-      chapterIndex = index;
-      // At rest: symmetric window, since we don't yet know whether the
-      // next move will be forward or backward.
-      slideWindowFor(target, 0);
-      updateNavVisibility();
+    // Lock every input source from this moment, not only once frames
+    // start moving: the stop surface dissolves first.
+    isAnimating = true;
+    leaveSurface(function () {
+      var target = CHAPTERS[index].frame;
+      var duration = realTimeDuration(currentFrame, target);
+      animateFrameStepped(target, duration, gentleEase, function () {
+        chapterIndex = index;
+        // At rest: symmetric window, since we don't yet know whether the
+        // next move will be forward or backward.
+        slideWindowFor(target, 0);
+        updateNavVisibility();
+        enterSurface(index);
+      });
     });
   }
 
@@ -429,6 +483,7 @@
       chapterIndex = 0;
       slideWindowFor(CHAPTERS[0].frame, 0);
       updateNavVisibility();
+      enterSurface(0);
     });
   }
 

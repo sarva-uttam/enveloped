@@ -261,6 +261,8 @@ time.
   scroll." Wheel/touch are captured with `preventDefault()` and
   reinterpreted as one discrete chapter-step per gesture.
 - `isAnimating` blocks every input source during an active transition.
+  Since §11 it is raised the moment a stop is left (while its surface
+  dissolves), not only once frames start moving.
   A separate **350ms momentum lock** (`lockUntil`) applies *only* to
   wheel and touch — it absorbs a trackpad's momentum tail or a
   multi-event touch gesture so one physical swipe can't fire multiple
@@ -271,7 +273,8 @@ time.
   hides at Welcome (no earlier chapter). Both re-fade in once the
   landing chapter is known.
 - `prefers-reduced-motion: reduce` collapses every transition duration
-  to 1ms (an effective instant cut) rather than the eased ramp.
+  to 1ms (an effective instant cut) rather than the eased ramp. Stop
+  surfaces keep their states with short opacity-only crossfades (§11).
 
 ## 9. Tests
 
@@ -306,7 +309,7 @@ Chromium, not manual eyeballing:
 A consolidated, reusable verification script lives at
 `experiments/ivory-palace-frame-journey/verify.js`. It spins up its
 own local static server, drives the page with Playwright, and asserts
-every property in §5–§9 above, printing a `PASS`/`FAIL` line per check.
+every property in §5–§9 and §11, printing a `PASS`/`FAIL` line per check.
 
 ```sh
 # From the repo root. Requires the `playwright` package (already a
@@ -314,11 +317,23 @@ every property in §5–§9 above, printing a `PASS`/`FAIL` line per check.
 node experiments/ivory-palace-frame-journey/verify.js
 ```
 
-Expected output ends with `ALL CHECKS PASSED` and exit code `0`
-(26 checks as of this writing: opening + 3 forward chapters + 3
-reverse chapters × landing/skip/fps checks, arrow visibility at both
-boundaries, the memory budget, one flicker screencast check, and the
-full mobile touch-swipe round trip).
+Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
+§11 there are 71 checks:
+
+- the original journey checks: landing, skips and the 30fps ceiling on
+  every transition, arrow visibility, the memory budget and 36-frame
+  cap, flicker, and the mobile swipe;
+- the stop-surface checks: rest state at every stop in both directions,
+  no surface during travel (per-animation-frame sampling), no opacity
+  jumps, rapid-input bursts at rest, mid-entrance, mid-exit and
+  mid-travel, the full-box finale light, the reverse from 300, and the
+  pixel-measured mist geometry;
+- seven responsive viewports;
+- reduced motion;
+- the empty, inert wording layer, with none of the 348 approved
+  catalogue sentences present in the page.
+
+Set `VERIFY_SHOTS=<dir>` to also save one screenshot per viewport.
 
 **Manual local preview** (same server, for visual review):
 
@@ -328,14 +343,146 @@ python3 -m http.server 4521 --bind 127.0.0.1
 # open http://127.0.0.1:4521/
 ```
 
+## 11. Misted paper stops (approved visual baseline)
+
+**Status: the approved visual baseline, pending the Owner's final review
+of the running prototype.** No invitation wording is displayed. The
+stop surfaces are presentation layers above the canvas. They are never
+baked into, and never require regenerating, the 300 frames.
+
+### Owner-approved treatment
+
+- **Frames 80, 160 and 240** show a large, near-square, mist-edged
+  ivory paper layer. Its footprint is about **90% of the visible
+  invitation's width × 90% of its height**, measured at the
+  half-opacity contour and centred in both axes. On portrait phones,
+  where the invitation fills the viewport, that is the approved
+  ~`90vw` × ~`90dvh`. On wider screens the 9:16 invitation is
+  pillarboxed, so the mist stays at 90% of the invitation rather than
+  spreading over the dark side bars.
+- The edges are **broad, smoky, cloudy and irregular on all four
+  sides**. There is no rectangle, border or clipped corner. The mist
+  fades to zero before the box edge, leaving only a narrow perimeter of
+  palace architecture.
+- The centre is **calm and substantially opaque**: about 94% opacity,
+  so a faint impression of the palace remains. The colour is **warm
+  ivory**, not cold white: a radial blend of `rgba(252,248,240,.95)` →
+  `rgba(245,236,219,.90)`. Near-invisible paper grain and soft mottling
+  sit on top.
+- **Frame 300** does not use the bounded mist. The whole invitation box
+  dissolves into warm luminous white
+  (`#fffdf9` → `#fcf7ee` → `#f8f0e2`), so no palace perimeter is left at
+  rest.
+- There is **no ornamental edge frame, floral frame or corner element**
+  yet; this was decided deliberately.
+
+### Implementation
+
+- **One reusable alpha mask**, `mist/paper-mist-mask.svg` (~2KB,
+  hand-authored SVG, no text or imagery). A broadly blurred rectangle
+  gives a soft distance field. Fractal noise is added to it, weighted by
+  `(1 − field)` so it only disturbs the edge band. The sum is gently
+  steepened and re-softened, so the boundary breaks into billowy puffs
+  while the interior stays solid. A second, tightly blurred falloff
+  mask guarantees zero alpha at the box edge. The mask is applied with
+  CSS `mask` at `100% 100%`, so one asset serves every stop and every
+  viewport.
+- **One tileable texture**, `mist/paper-grain.svg` (~1KB,
+  hand-authored). Fine grain plus low-frequency mottling in warm sepia
+  at very low alpha.
+- Both SVGs are original, code-generated assets written for this
+  experiment. They have no external source or licence dependency. CSS
+  masks must be fetched over HTTP, so preview through the local server,
+  not `file://`.
+- The visual state is a single attribute,
+  `#frameBox[data-surface] = "none" | "mist" | "finale"`. CSS owns every
+  fade. `script.js` only sets the attribute and reads the exit
+  durations from CSS custom properties, so the timings have one source.
+  Nothing animates inside the mist: no drifting particles and no
+  independent cloud motion.
+
+### Visual layer order (inside `.frame-box`)
+
+1. frame canvas;
+2. `.stop-veil`: a restrained warm wash (≤16% alpha) that softens the
+   visible perimeter while the mist is shown;
+3. `.stop-mist` (frames 80/160/240) or `.finale-light` (frame 300);
+4. `#stopContent`: the reserved future wording layer (see below);
+5. loader;
+6. navigation controls. They are always above every surface, with a
+   darker fill while a surface is shown so they stay legible.
+
+No surface receives pointer events.
+
+### Timing
+
+| Transition | Duration | Easing |
+|---|---|---|
+| Mist entrance (with the veil) | 800ms opacity; 1000ms scale settle from 1.012 → 1 | `cubic-bezier(0.22, 0.61, 0.36, 1)` (soft ease-out) |
+| Mist exit | 450ms | `cubic-bezier(0.55, 0.06, 0.68, 0.19)` (soft ease-in) |
+| Finale fade to light | 1200ms | `cubic-bezier(0.4, 0, 0.2, 1)` |
+| Finale dissolve (leaving 300) | 800ms | `ease-in-out` |
+| Reduced motion | 220 / 180 / 260 / 180ms | opacity only; no scale |
+
+### Sequences
+
+- **Arrival at a stop:** the camera travel completes and lands exactly on
+  the target frame. `animateFrameStepped` finishes (the canvas stops),
+  the chapter state updates, and only then is `data-surface` set, so the
+  entrance begins. The surface never appears during travel.
+- **Leaving a stop** (any input, either direction): all input is locked
+  at once (`isAnimating = true`), `data-surface` returns to `none`, and
+  the journey waits the full exit duration (450ms, or 800ms from the
+  finale). Only then does frame travel start, and it unlocks through the
+  existing state machine. The first moved frame is at least a further
+  33ms later, so the surface is fully cleared before the background
+  moves. If a stop is left while its mist is still fading in, the CSS
+  transition reverses from the current opacity, so there is no jump.
+- **Backward from 300:** the light dissolves and reveals frame 300, then
+  the reverse journey runs to 240, where the standard mist returns.
+
+### Reserved wording layer
+
+`<section id="stopContent" hidden inert>` sits above the mist. It is
+empty, hidden and inert in this phase, so it has no focus targets and
+no screen-reader output. It does not import or select catalogue
+wording. Its text-safe region is inset 15% vertically and 16%
+horizontally (respecting safe-area insets) with generous padding. That
+is inside the mist's solid core, so future wording never reaches the
+smoky edge. The mist's dimensions do not depend on this layer or on any
+placeholder text.
+
+### Responsive results
+
+Measured by `verify.js` from pixels (half-opacity contour) at frame 80, in one run (values vary by about ±0.2%):
+
+| Viewport | Invitation box | Mist footprint | Share of viewport |
+|---|---|---|---|
+| 320×568 narrow mobile | 320×568 | 287×510 (89.8% × 89.8%) | 89.7vw × 89.8vh |
+| 390×844 standard mobile | 390×844 | 349×758 (89.6% × 89.8%) | 89.6vw × 89.8vh |
+| 360×800 tall mobile | 360×800 | 322×717 (89.5% × 89.7%) | 89.5vw × 89.7vh |
+| 412×915 tall mobile | 412×915 | 369×821 (89.6% × 89.7%) | 89.6vw × 89.7vh |
+| 768×1024 tablet portrait | 576×1024 | 515×918 (89.5% × 89.7%) | 67.1vw × 89.7vh |
+| 900×1400 desktop portrait | 788×1400 | 706×1256 (89.6% × 89.7%) | 78.4vw × 89.7vh |
+| 1440×900 desktop landscape | 506×900 | 452×809 (89.4% × 89.9%) | 31.4vw × 89.9vh |
+
+None of these viewports has horizontal or vertical overflow. The mist
+never extends past the invitation box, the controls stay hit-testable,
+the edge opacity stays ≤5% and the core opacity ≥93% (relative to the
+centre). The stage height uses `100dvh` with a `100vh` fallback.
+
 ## Files
 
 ```
 experiments/ivory-palace-frame-journey/
-├── index.html      # canvas + loader + up/down nav buttons; no scroll track
-├── styles.css       # fixed 9:16 stage, canvas fade-in, nav-arrow styling
-├── script.js        # sliding cache, canvas renderer, frame-stepped easing, all input handling
+├── index.html      # canvas, stop surfaces, reserved wording layer, loader, nav buttons
+├── styles.css       # fixed 9:16 stage, stop-surface layers and timings, nav styling
+├── script.js        # sliding cache, canvas renderer, frame-stepped easing, input, stop-surface hook
 ├── verify.js         # reproducible Playwright verification (§10)
+├── mist/
+│   ├── paper-mist-mask.svg  # reusable smoky-edge alpha mask (§11)
+│   └── paper-grain.svg      # near-invisible paper grain tile (§11)
+├── wording/          # approved wording catalogue (not displayed yet)
 └── frames/           # 300 unaltered JPEGs, ezgif-frame-001.jpg … ezgif-frame-300.jpg
 ```
 
