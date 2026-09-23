@@ -1,0 +1,68 @@
+{
+  "status": "approved",
+  "presenceLines": [
+    {
+      "id": "FP-01",
+      "text": "Your presence will be highly appreciated.",
+      "status": "approved",
+      "source": "reference image"
+    },
+    {
+      "id": "FP-02",
+      "text": "Your presence will mean so much to us.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-03",
+      "text": "It would be a joy to celebrate with you.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-04",
+      "text": "We would be honoured by your presence.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-05",
+      "text": "Your presence will make our celebration even more special.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-06",
+      "text": "We look forward to celebrating with you.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-07",
+      "text": "Sharing this day with you would mean the world to us.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-08",
+      "text": "We hope you will join us for this special occasion.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-09",
+      "text": "Your company will make the day more memorable.",
+      "status": "approved",
+      "source": "variation"
+    },
+    {
+      "id": "FP-10",
+      "text": "It would mean so much to have you there.",
+      "status": "approved",
+      "source": "variation"
+    }
+  ],
+  "fixedComplimentsLabel": "Best Compliments From:",
+  "familyDisplayTemplate": "{brideFamilySurname} & {groomFamilySurname} Family",
+  "referenceFamilyDisplay": "Rajan & Narayan Family"
+}
