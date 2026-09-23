@@ -13,12 +13,13 @@
  *     (captured via CDP screencast, not periodic screenshots) is
  *     checked for an anomalous near-black flash
  *   - forward + reverse works via touch swipe on a mobile viewport
- *   - stop surfaces (METHOD §11): the misted paper layer is never visible
+ *   - stop surfaces (METHOD §11): the framed ivory panel is never visible
  *     during frame travel, rests fully visible at 80/160/240, frame 300
  *     rests on full-box warm light instead, leaving a stop clears the
  *     right surface, rapid input cannot strand or double a transition,
- *     opacity never jumps, the mist is a measured ~90% × ~90% centred
- *     oval with no hard edge, layouts hold across six viewport classes,
+ *     opacity never jumps, the panel keeps the frame artwork's ratio at
+ *     90% of the invitation's limiting side with an 85% ivory fill that
+ *     stays inside the frame, layouts hold across seven viewports,
  *     reduced motion keeps every state, and the reserved wording layer
  *     is empty, hidden and inert
  *
@@ -126,7 +127,7 @@ function installOverlaySampler() {
   (function sample() {
     if (window.__overlayState) {
       const o = window.__overlayState();
-      window.__overlaySamples.push([o.frame, o.surface, o.mistOpacity, o.finaleOpacity, performance.now()]);
+      window.__overlaySamples.push([o.frame, o.surface, o.panelOpacity, o.finaleOpacity, performance.now()]);
     }
     requestAnimationFrame(sample);
   })();
@@ -136,11 +137,11 @@ const overlay = (page) => page.evaluate(() => window.__overlayState());
 
 // Waits until the page is at rest on `chapter` with its surface fully in.
 async function waitSurface(page, frame, timeoutMs = 9000) {
-  const want = frame === 300 ? "finale" : "mist";
+  const want = frame === 300 ? "finale" : "panel";
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const o = await overlay(page);
-    const opacity = want === "finale" ? o.finaleOpacity : o.mistOpacity;
+    const opacity = want === "finale" ? o.finaleOpacity : o.panelOpacity;
     if (o.frame === frame && !o.isAnimating && o.surface === want && opacity >= 0.999) return o;
     await page.waitForTimeout(50);
   }
@@ -185,64 +186,71 @@ function analyzePng(page, png, body, arg) {
   );
 }
 
-// Measures the mist layer alone over the flat, dark frame-box background
-// (canvas, veil and controls hidden for the capture, then restored), so
-// its opacity at each pixel is (L - bg) / (L_centre - bg).
-async function measureMist(page) {
+// Measures the framed panel over the flat, dark frame-box background
+// (canvas and controls hidden for the capture, then restored): geometry
+// from the DOM, fill opacity and the frame's clear exterior from pixels.
+const FRAME_RATIO = 940 / 1672;
+async function measurePanel(page) {
+  const dom = await page.evaluate(() => {
+    const box = document.getElementById("frameBox").getBoundingClientRect();
+    const panel = document.getElementById("stopPanel").getBoundingClientRect();
+    const fill = document.querySelector(".stop-panel__fill");
+    const img = document.getElementById("stopFrameArt");
+    return {
+      boxW: box.width, boxH: box.height,
+      x: panel.left - box.left, y: panel.top - box.top, w: panel.width, h: panel.height,
+      fillAlpha: parseFloat((getComputedStyle(fill).backgroundColor.match(/,\s*([\d.]+)\)$/) || [0, 1])[1]),
+      img: { complete: img.complete, natural: img.naturalWidth + "x" + img.naturalHeight }
+    };
+  });
   await page.evaluate(() => {
-    for (const sel of ["#frameCanvas", ".stop-veil", ".nav-btn"])
-      document.querySelectorAll(sel).forEach((el) => (el.style.visibility = "hidden"));
+    for (const sel of ["#frameCanvas", ".nav-btn"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = "hidden"));
   });
   await page.waitForTimeout(120);
   const png = await page.locator("#frameBox").screenshot();
   await page.evaluate(() => {
-    for (const sel of ["#frameCanvas", ".stop-veil", ".nav-btn"])
-      document.querySelectorAll(sel).forEach((el) => (el.style.visibility = ""));
+    for (const sel of ["#frameCanvas", ".nav-btn"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = ""));
   });
-  return analyzePng(
+  const px = await analyzePng(
     page,
     png,
     `
-    const bg = lum(0, 0) < 60 ? Math.min(lum(0, 0), lum(w - 1, h - 1)) : 20.8;
-    const cx = Math.floor(w / 2), cy = Math.floor(h / 2);
-    let centre = 0, n = 0;
-    for (let y = cy - 10; y <= cy + 10; y++) for (let x = cx - 10; x <= cx + 10; x++) { centre += lum(x, y); n++; }
-    centre /= n;
-    const a = (x, y) => (lum(x, y) - bg) / (centre - bg);
-    const span = (len, at) => {
-      let lo = -1, hi = -1;
-      for (let i = 0; i < len; i++) if (at(i) >= 0.5) { lo = i; break; }
-      for (let i = len - 1; i >= 0; i--) if (at(i) >= 0.5) { hi = i; break; }
-      return lo < 0 ? 0 : (hi - lo + 1) / len;
-    };
-    // Oval axes on the centre row/column; a row 20% of the box above
-    // centre should span sqrt(1 - (0.2/0.45)^2) ~ 0.9 of the axis for an
-    // ellipse, where a rectangle would span the full axis.
-    const width = span(w, (x) => a(x, cy));
-    const height = span(h, (y) => a(cx, y));
-    const offRowWidth = span(w, (x) => a(x, Math.floor(h * 0.3)));
-    let edgeMax = 0;
-    for (let x = 0; x < w; x++) edgeMax = Math.max(edgeMax, a(x, 0), a(x, h - 1));
-    for (let y = 0; y < h; y++) edgeMax = Math.max(edgeMax, a(0, y), a(w - 1, y));
-    // Calm centre: everything within 75% of the oval's radius.
-    let coreMin = 1;
-    for (let y = 0; y < h; y += 4)
-      for (let x = 0; x < w; x += 4) {
-        const dx = (x - cx) / (w * 0.45), dy = (y - cy) / (h * 0.45);
-        if (dx * dx + dy * dy <= 0.75 * 0.75) coreMin = Math.min(coreMin, a(x, y));
-      }
-    const [r, g, b] = rgb(cx, cy);
-    return { w, h, width, height, oval: offRowWidth / width, edgeMax, coreMin,
-      centreAlpha: (centre - bg) / (246 - bg), warm: r - b };
-  `
+    const bg = Math.min(lum(1, 1), lum(w - 2, h - 2));
+    const sx = w / arg.boxW, sy = h / arg.boxH;
+    const at = (fx, fy) => [Math.round((arg.x + fx * arg.w) * sx), Math.round((arg.y + fy * arg.h) * sy)];
+    const mean = (fx, fy, r) => { const [cx, cy] = at(fx, fy); let t = 0, n = 0;
+      for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++) { t += lum(x, y); n++; } return t / n; };
+    // Fill colour rgba(253,249,241) has luminance ~249.3; alpha from the centre.
+    const centreAlpha = (mean(0.5, 0.5, 6) - bg) / (249.3 - bg);
+    const [cx, cy] = at(0.5, 0.5); const [r, , b] = rgb(cx, cy);
+    // The artwork's transparent exterior margin, outside its ornament band.
+    const margin = [[0.03, 0.5], [0.97, 0.5], [0.3, 0.02], [0.7, 0.02], [0.3, 0.985], [0.7, 0.985]]
+      .map(([fx, fy]) => mean(fx, fy, 1) - bg);
+    // Box area just outside the panel, where there is room for it.
+    let outside = 0; const top = Math.floor(arg.y * sy), bottom = Math.ceil((arg.y + arg.h) * sy);
+    for (let x = 2; x < w - 2; x += 3) {
+      if (top > 4) outside = Math.max(outside, lum(x, top - 3) - bg);
+      if (h - bottom > 4) outside = Math.max(outside, lum(x, bottom + 3) - bg);
+    }
+    return { bg, centreAlpha, warm: r - b, marginMax: Math.max(...margin), outside };
+  `,
+    dom
   );
+  return { ...dom, ...px, ratio: dom.w / dom.h, fracW: dom.w / dom.boxW, fracH: dom.h / dom.boxH };
 }
 
-// ~90% on both axes, oval (not rectangular) off-centre spans, no visible
-// edge at the box boundary, and a calm, solid centre.
-function mistOk(m) {
-  return m.width >= 0.86 && m.width <= 0.94 && m.height >= 0.86 && m.height <= 0.94 &&
-    m.oval >= 0.82 && m.oval <= 0.94 && m.edgeMax < 0.1 && m.coreMin >= 0.93;
+// Artwork ratio preserved; fits inside 90% x 90% of the invitation and
+// reaches 90% on its limiting side; 85% fill confirmed in pixels; nothing
+// drawn in the artwork's transparent margin or outside the panel.
+function panelOk(m) {
+  return Math.abs(m.ratio - FRAME_RATIO) < 0.004 && m.fracW <= 0.905 && m.fracH <= 0.905 &&
+    Math.max(m.fracW, m.fracH) >= 0.895 && m.fillAlpha === 0.85 && Math.abs(m.centreAlpha - 0.85) < 0.03 &&
+    m.warm >= 3 && m.marginMax < 4 && m.outside < 4 && m.img.complete && m.img.natural === "940x1672";
+}
+
+function describePanel(m) {
+  return `panel ${m.w.toFixed(0)}x${m.h.toFixed(0)}px = ${(m.fracW * 100).toFixed(1)}% x ${(m.fracH * 100).toFixed(1)}% of ${m.boxW.toFixed(0)}x${m.boxH.toFixed(0)} box; ` +
+    `ratio=${m.ratio.toFixed(4)} fill=${m.fillAlpha} centreAlpha=${m.centreAlpha.toFixed(3)} marginMax=${m.marginMax.toFixed(1)} outside=${m.outside.toFixed(1)} img=${m.img.natural}`;
 }
 
 async function measureFinale(page) {
@@ -274,13 +282,13 @@ function analyzeOverlaySamples(samples, maxJump) {
   let travelSamples = 0;
   let worstJump = 0;
   for (let i = 0; i < samples.length; i++) {
-    const [frame, surface, mist, finale] = samples[i];
+    const [frame, surface, panel, finale] = samples[i];
     if (frame > 1 && !stops.has(frame)) {
       travelSamples++;
-      if (surface !== "none" || mist > 0.02 || finale > 0.02) travelLeaks++;
+      if (surface !== "none" || panel > 0.02 || finale > 0.02) travelLeaks++;
     }
     if (i > 0) {
-      worstJump = Math.max(worstJump, Math.abs(mist - samples[i - 1][2]), Math.abs(finale - samples[i - 1][3]));
+      worstJump = Math.max(worstJump, Math.abs(panel - samples[i - 1][2]), Math.abs(finale - samples[i - 1][3]));
     }
   }
   return { travelLeaks, travelSamples, worstJump, ok: worstJump <= maxJump };
@@ -340,9 +348,9 @@ async function main() {
     const restChecks = async (frame, label) => {
       const o = await waitSurface(page, frame);
       if (frame === 300) {
-        check(`${label}: frame 300 rests on full-box finale light, not the bounded mist`, o.surface === "finale" && o.finaleOpacity >= 0.995 && o.mistOpacity <= 0.005, JSON.stringify(o));
+        check(`${label}: frame 300 rests on full-box finale light, not the framed panel`, o.surface === "finale" && o.finaleOpacity >= 0.995 && o.panelOpacity <= 0.005, JSON.stringify(o));
       } else {
-        check(`${label}: mist fully visible at rest on ${frame}`, o.surface === "mist" && o.mistOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
+        check(`${label}: framed panel fully visible at rest on ${frame}`, o.surface === "panel" && o.panelOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
       }
       const up = frame !== 80, down = frame !== 300;
       check(`${label}: navigation controls remain interactive above the surface at ${frame}`, (!up || (await navHit(page, "navUp"))) && (!down || (await navHit(page, "navDown"))));
@@ -446,44 +454,44 @@ async function main() {
     let o = await waitSurface(page, 160);
     log = await page.evaluate(() => window.__frameLog);
     let maxFrame = Math.max(...log.map((x) => x[0]));
-    check("burst of 7 inputs at 80 advances exactly one chapter to 160", o.frame === 160 && o.chapterIndex === 1 && maxFrame === 160 && o.surface === "mist", `max=${maxFrame} ${JSON.stringify(o)}`);
+    check("burst of 7 inputs at 80 advances exactly one chapter to 160", o.frame === 160 && o.chapterIndex === 1 && maxFrame === 160 && o.surface === "panel", `max=${maxFrame} ${JSON.stringify(o)}`);
 
-    // Mid-entrance reversal: navigate away while the mist is still fading in.
+    // Mid-entrance reversal: navigate away while the panel is still fading in.
     await page.keyboard.press("ArrowDown");
     const midStart = Date.now();
     while (Date.now() - midStart < 9000) {
       const s = await overlay(page);
-      if (s.chapterIndex === 2 && s.surface === "mist" && s.mistOpacity > 0.05 && s.mistOpacity < 0.9) break;
+      if (s.chapterIndex === 2 && s.surface === "panel" && s.panelOpacity > 0.05 && s.panelOpacity < 0.9) break;
       await page.waitForTimeout(10);
     }
     await page.keyboard.press("ArrowUp");
     await page.keyboard.press("ArrowUp");
     o = await waitSurface(page, 160);
-    check("leaving mid-entrance reverses cleanly back to 160 with one mist", o.frame === 160 && o.chapterIndex === 1 && o.surface === "mist" && o.mistOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
+    check("leaving mid-entrance reverses cleanly back to 160 with one panel", o.frame === 160 && o.chapterIndex === 1 && o.surface === "panel" && o.panelOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
 
     // Mid-travel spam toward the finale, then straight back.
     await page.keyboard.press("ArrowDown");
     await page.waitForTimeout(900);
     for (let k = 0; k < 6; k++) await page.keyboard.press(k % 2 ? "ArrowUp" : "ArrowDown");
     o = await waitSurface(page, 240);
-    check("keys pressed mid-travel are ignored; lands on 240 with mist", o.frame === 240 && o.surface === "mist" && o.mistOpacity >= 0.995, JSON.stringify(o));
+    check("keys pressed mid-travel are ignored; lands on 240 with panel", o.frame === 240 && o.surface === "panel" && o.panelOpacity >= 0.995, JSON.stringify(o));
     await page.evaluate(() => document.getElementById("navDown").click());
     o = await waitSurface(page, 300);
-    check("finale reached after rapid-input sequence", o.surface === "finale" && o.finaleOpacity >= 0.995 && o.mistOpacity <= 0.005, JSON.stringify(o));
+    check("finale reached after rapid-input sequence", o.surface === "finale" && o.finaleOpacity >= 0.995 && o.panelOpacity <= 0.005, JSON.stringify(o));
     const finale = await measureFinale(page);
     check("frame 300 is a complete full-box warm-white field (no palace perimeter)", finale.min >= 225 && finale.warm >= 3, JSON.stringify(finale));
     await page.evaluate(() => document.getElementById("navUp").click());
     await page.evaluate(() => document.getElementById("navUp").click());
     o = await waitSurface(page, 240);
-    check("backward from 300 dissolves the light and returns to 240 mist", o.frame === 240 && o.surface === "mist" && o.mistOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
+    check("backward from 300 dissolves the light and returns to 240 panel", o.frame === 240 && o.surface === "panel" && o.panelOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
     samples = await page.evaluate(() => window.__overlaySamples);
     ov = analyzeOverlaySamples(samples, 0.2);
     check("rapid-input run: no surface during travel, no opacity jumps", ov.travelLeaks === 0 && ov.ok, `leaks=${ov.travelLeaks} worst=${ov.worstJump.toFixed(3)}`);
-    const mist = await measureMist(page);
+    const panelM = await measurePanel(page);
     check(
-      "mist is a centred ~90% x ~90% oval, soft to zero at every edge, solid warm centre",
-      mistOk(mist) && mist.warm >= 3,
-      `width=${(mist.width * 100).toFixed(1)}% height=${(mist.height * 100).toFixed(1)}% oval=${mist.oval.toFixed(3)} edgeMax=${mist.edgeMax.toFixed(3)} coreMin=${mist.coreMin.toFixed(3)} centreAlpha=${mist.centreAlpha.toFixed(3)}`
+      "framed panel: artwork ratio kept, 90% of limiting side, 85% ivory fill inside the frame only",
+      panelOk(panelM),
+      describePanel(panelM)
     );
     check("no page errors on desktop", pageErrors.length === 0, JSON.stringify(pageErrors));
 
@@ -509,7 +517,7 @@ async function main() {
     });
     await cdp.send("Page.startScreencast", { format: "png", everyNthFrame: 1, maxWidth: 300, maxHeight: 534 });
     await fpage.click("#navDown");
-    await fpage.waitForTimeout(4400); // mist exit (~450ms) + 80-frame travel
+    await fpage.waitForTimeout(4400); // panel exit (~450ms) + 80-frame travel
     await cdp.send("Page.stopScreencast");
     await fpage.waitForTimeout(150); // let any in-flight screencastFrame settle before closing
 
@@ -564,14 +572,14 @@ async function main() {
     landed = await waitSettle(mpage, mGetFrame, 80, 6000);
     check("mobile: upward swipe returns to 80", landed);
     let mo = await waitSurface(mpage, 80);
-    check("mobile: mist returns at 80 after the swipe round trip", mo.surface === "mist" && mo.mistOpacity >= 0.995, JSON.stringify(mo));
+    check("mobile: panel returns at 80 after the swipe round trip", mo.surface === "panel" && mo.panelOpacity >= 0.995, JSON.stringify(mo));
     const mOv = analyzeOverlaySamples(await mpage.evaluate(() => window.__overlaySamples), 0.2);
     check("mobile: no surface visible during swipe travel", mOv.travelLeaks === 0 && mOv.travelSamples > 50, `leaks=${mOv.travelLeaks}`);
     check("no page errors on mobile", mErrors.length === 0, JSON.stringify(mErrors));
 
     await mctx.close();
 
-    // ---------------- Responsive: mist geometry across viewport classes ----------------
+    // ---------------- Responsive: panel geometry across viewport classes ----------------
     const viewports = [
       ["narrow mobile portrait", 320, 568, true],
       ["standard mobile portrait", 390, 844, true],
@@ -590,27 +598,25 @@ async function main() {
       const vo = await waitSurface(vpage, 80);
       const layout = await vpage.evaluate(() => {
         const box = document.getElementById("frameBox").getBoundingClientRect();
-        const mist = document.getElementById("stopMist").getBoundingClientRect();
+        const panel = document.getElementById("stopPanel").getBoundingClientRect();
         const de = document.documentElement;
         return {
           overflowX: de.scrollWidth > window.innerWidth || document.body.scrollWidth > window.innerWidth,
           overflowY: de.scrollHeight > window.innerHeight,
           boxW: box.width, boxH: box.height, vw: window.innerWidth, vh: window.innerHeight,
-          mistInside: mist.left >= box.left - 0.5 && mist.right <= box.right + 0.5 && mist.top >= box.top - 0.5 && mist.bottom <= box.bottom + 0.5,
+          panelInside: panel.left >= box.left - 0.5 && panel.right <= box.right + 0.5 && panel.top >= box.top - 0.5 && panel.bottom <= box.bottom + 0.5,
           boxInside: box.left >= -0.5 && box.right <= window.innerWidth + 0.5 && box.top >= -0.5 && box.bottom <= window.innerHeight + 0.5
         };
       });
       const hit = await navHit(vpage, "navDown");
-      if (SHOTS_DIR) await vpage.screenshot({ path: path.join(SHOTS_DIR, `mist-${width}x${height}.png`) });
-      const m = await measureMist(vpage);
-      const mistPxW = m.width * layout.boxW, mistPxH = m.height * layout.boxH;
+      if (SHOTS_DIR) await vpage.screenshot({ path: path.join(SHOTS_DIR, `panel-${width}x${height}.png`) });
+      const m = await measurePanel(vpage);
       check(
-        `${name} ${width}x${height}: mist ~90%x90% of invitation, contained, no overflow, controls usable`,
-        vo.surface === "mist" && vo.mistOpacity >= 0.995 && !layout.overflowX && !layout.overflowY && layout.mistInside && layout.boxInside && hit &&
-          mistOk(m) && vErrors.length === 0,
-        `mist ${mistPxW.toFixed(0)}x${mistPxH.toFixed(0)}px = ${(m.width * 100).toFixed(1)}% x ${(m.height * 100).toFixed(1)}% of ${layout.boxW.toFixed(0)}x${layout.boxH.toFixed(0)} box; ` +
-          `${((mistPxW / layout.vw) * 100).toFixed(1)}vw x ${((mistPxH / layout.vh) * 100).toFixed(1)}vh; oval=${m.oval.toFixed(3)} edgeMax=${m.edgeMax.toFixed(3)} coreMin=${m.coreMin.toFixed(3)}` +
-          `; opacity=${vo.mistOpacity} overflow=${layout.overflowX || layout.overflowY} contained=${layout.mistInside && layout.boxInside} navHit=${hit} errors=${vErrors.length}`
+        `${name} ${width}x${height}: framed panel fits 90%x90%, ratio kept, contained, no overflow, controls usable`,
+        vo.surface === "panel" && vo.panelOpacity >= 0.995 && !layout.overflowX && !layout.overflowY && layout.panelInside && layout.boxInside && hit &&
+          panelOk(m) && vErrors.length === 0,
+        describePanel(m) + `; ${((m.w / layout.vw) * 100).toFixed(1)}vw x ${((m.h / layout.vh) * 100).toFixed(1)}vh` +
+          `; overflow=${layout.overflowX || layout.overflowY} contained=${layout.panelInside && layout.boxInside} navHit=${hit} errors=${vErrors.length}`
       );
       await vctx.close();
     }
@@ -625,9 +631,9 @@ async function main() {
     let ro = await waitSurface(rpage, 80);
     const rTiming = await rpage.evaluate(() => {
       const cs = getComputedStyle(document.documentElement);
-      return { enter: parseFloat(cs.getPropertyValue("--mist-enter-ms")), exit: parseFloat(cs.getPropertyValue("--mist-exit-ms")), finale: parseFloat(cs.getPropertyValue("--finale-enter-ms")) };
+      return { enter: parseFloat(cs.getPropertyValue("--panel-enter-ms")), exit: parseFloat(cs.getPropertyValue("--panel-exit-ms")), finale: parseFloat(cs.getPropertyValue("--finale-enter-ms")) };
     });
-    check("reduced motion: mist still shown at 80 with no scale motion", ro.surface === "mist" && ro.mistOpacity >= 0.995 && ro.mistTransform === "none", JSON.stringify(ro));
+    check("reduced motion: framed panel still shown at 80", ro.surface === "panel" && ro.panelOpacity >= 0.995, JSON.stringify(ro));
     check("reduced motion: crossfades shortened to <=300ms", rTiming.enter <= 300 && rTiming.exit <= 300 && rTiming.finale <= 300, JSON.stringify(rTiming));
     for (const f of [160, 240, 300]) {
       await rpage.keyboard.press("ArrowDown");
@@ -636,7 +642,7 @@ async function main() {
     check("reduced motion: finale full light still reached at 300", ro.surface === "finale" && ro.finaleOpacity >= 0.995, JSON.stringify(ro));
     await rpage.keyboard.press("ArrowUp");
     ro = await waitSurface(rpage, 240);
-    check("reduced motion: back from 300 restores mist at 240", ro.surface === "mist" && ro.mistOpacity >= 0.995 && ro.finaleOpacity <= 0.005, JSON.stringify(ro));
+    check("reduced motion: back from 300 restores the panel at 240", ro.surface === "panel" && ro.panelOpacity >= 0.995 && ro.finaleOpacity <= 0.005, JSON.stringify(ro));
     const rOv = analyzeOverlaySamples(await rpage.evaluate(() => window.__overlaySamples), 1);
     check("reduced motion: no surface visible during travel", rOv.travelLeaks === 0, `leaks=${rOv.travelLeaks}`);
     check("no page errors in reduced motion", rErrors.length === 0, JSON.stringify(rErrors));

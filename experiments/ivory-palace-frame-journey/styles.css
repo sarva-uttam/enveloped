@@ -7,8 +7,8 @@
 
   /* Stop surfaces (METHOD §11). JS reads the exit durations from here so
      CSS and the navigation state machine share one source of timing. */
-  --mist-enter-ms: 800ms;
-  --mist-exit-ms: 450ms;
+  --panel-enter-ms: 800ms;
+  --panel-exit-ms: 450ms;
   --finale-enter-ms: 1200ms;
   --finale-exit-ms: 800ms;
   --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -85,61 +85,69 @@ html, body {
 
 .frame-canvas.is-ready { opacity: 1; }
 
-/* ---------- Stop surfaces: veil, misted paper, finale light ---------- */
+/* ---------- Stop surfaces: framed panel, finale light ---------- */
 /*
- * Layer order inside .frame-box: canvas → veil (1) → mist / finale light (2)
- * → reserved wording layer (4) → loader (5) → navigation (6).
- * Each layer fills the invitation box. The mist is a centred vertical oval,
- * ~90% × ~90% of the box, whose edge is feathered by a blur sized to the
- * box width, so it softens by the same amount in every direction.
- * Nothing here receives pointer events.
+ * Layer order inside .frame-box: canvas → framed panel (2): ivory fill →
+ * ornamental frame → reserved wording layer; finale light (2) → loader (5)
+ * → navigation (6). Nothing here receives pointer events.
+ *
+ * The panel keeps the frame artwork's own 940 × 1672 ratio and is as large
+ * as fits in 90% × 90% of the invitation box (cq units; see .frame-box).
  */
 
-.stop-veil,
-.stop-mist,
+.stop-panel,
 .finale-light {
   position: absolute;
-  inset: 0;
   pointer-events: none;
   opacity: 0;
 }
 
-.stop-veil {
-  z-index: 1;
-  background: radial-gradient(ellipse 75% 70% at 50% 50%, rgba(246, 238, 222, 0.05), rgba(246, 238, 222, 0.16));
-  transition: opacity var(--mist-exit-ms) var(--ease-dissolve);
-}
-
-.stop-mist {
+.stop-panel {
   z-index: 2;
-  transform: scale(1.012);
-  transition:
-    opacity var(--mist-exit-ms) var(--ease-dissolve),
-    transform var(--mist-exit-ms) var(--ease-dissolve);
+  left: 50%;
+  top: 50%;
+  width: 90%; /* fallback where container units are unsupported */
+  width: min(90cqw, calc(90cqh * 940 / 1672));
+  aspect-ratio: 940 / 1672;
+  transform: translate(-50%, -50%);
+  will-change: opacity;
+  transition: opacity var(--panel-exit-ms) var(--ease-dissolve);
 }
 
-/* The oval itself: its half-opacity edge sits on the 90% × 90% ellipse. */
-.stop-mist::before,
-.stop-mist::after {
-  content: "";
+/* Ivory fill, 85% opaque, only inside the frame. It starts under the
+   ornament band's outer vine (≈6% in from the artwork's sides, 5% from
+   top and bottom) and feathers up to full strength at the band's inner
+   edge (≈13% / 7.8%), so no straight fill edge shows between the
+   wandering vines and nothing reaches the transparent exterior margin. */
+.stop-panel__fill {
   position: absolute;
-  inset: 5%;
-  border-radius: 50%;
+  top: 5%;
+  bottom: 5%;
+  left: 6.4%;
+  right: 6.4%;
+  background: rgba(253, 249, 241, 0.85);
+  -webkit-mask:
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+    linear-gradient(to bottom, transparent, #000 3.2%, #000 96.8%, transparent);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+    linear-gradient(to bottom, transparent, #000 3.2%, #000 96.8%, transparent);
+  mask-composite: intersect;
 }
-.stop-mist::before {
-  background: radial-gradient(closest-side, rgba(252, 248, 240, 0.97), rgba(250, 244, 233, 0.96) 70%, rgba(246, 238, 222, 0.95));
-  filter: blur(9px); /* fallback where container units are unsupported */
-  filter: blur(2.4cqw);
-}
-/* Near-invisible paper grain, kept out of the blur and faded well inside
-   the oval's edge. */
-.stop-mist::after {
-  background: url("mist/paper-grain.svg") 0 0 / 240px 240px repeat;
-  -webkit-mask: radial-gradient(closest-side, #000 60%, transparent 92%);
-  mask: radial-gradient(closest-side, #000 60%, transparent 92%);
+
+.stop-panel__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .finale-light {
+  inset: 0;
   z-index: 2;
   background:
     url("mist/paper-grain.svg") 0 0 / 240px 240px repeat,
@@ -147,36 +155,29 @@ html, body {
   transition: opacity var(--finale-exit-ms) ease-in-out;
 }
 
-.frame-box[data-surface="mist"] .stop-veil {
+.frame-box[data-surface="panel"] .stop-panel {
   opacity: 1;
-  transition: opacity var(--mist-enter-ms) var(--ease-settle);
-}
-.frame-box[data-surface="mist"] .stop-mist {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity var(--mist-enter-ms) var(--ease-settle),
-    transform calc(var(--mist-enter-ms) * 1.25) var(--ease-settle);
+  transition: opacity var(--panel-enter-ms) var(--ease-settle);
 }
 .frame-box[data-surface="finale"] .finale-light {
   opacity: 1;
   transition: opacity var(--finale-enter-ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Future wording region: smaller than the mist footprint so text never
-   reaches the smoky perimeter. Empty, hidden and inert in this phase. */
+/* Future wording region, inside the panel: inset past the ornament band
+   (clear opening ≈ 13–87% × 8–92% of the artwork) with generous padding.
+   Empty, hidden and inert in this phase. */
 .stop-content {
   position: absolute;
-  z-index: 4;
-  top: max(15%, calc(env(safe-area-inset-top) + 10%));
-  bottom: max(15%, calc(env(safe-area-inset-bottom) + 10%));
-  left: max(16%, calc(env(safe-area-inset-left) + 12%));
-  right: max(16%, calc(env(safe-area-inset-right) + 12%));
+  top: 11%;
+  bottom: 11%;
+  left: 17%;
+  right: 17%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(12px, 4%, 32px);
+  padding: clamp(8px, 4%, 24px);
   text-align: center;
   color: #3b2b1b;
   overflow-wrap: anywhere;
@@ -254,13 +255,13 @@ html, body {
   transform: translateX(-50%) scale(0.9);
 }
 
-/* Keep the dark-on-ivory controls legible over the mist and finale light. */
-.frame-box[data-surface="mist"] .nav-btn,
+/* Keep the dark-on-ivory controls legible over the panel and finale light. */
+.frame-box[data-surface="panel"] .nav-btn,
 .frame-box[data-surface="finale"] .nav-btn {
   background: rgba(74, 54, 33, 0.55);
   border-color: rgba(74, 54, 33, 0.3);
 }
-.frame-box[data-surface="mist"] .nav-btn:hover,
+.frame-box[data-surface="panel"] .nav-btn:hover,
 .frame-box[data-surface="finale"] .nav-btn:hover {
   background: rgba(74, 54, 33, 0.7);
 }
@@ -298,15 +299,10 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   /* Same resting states; a short opacity-only crossfade. */
   :root {
-    --mist-enter-ms: 220ms;
-    --mist-exit-ms: 180ms;
+    --panel-enter-ms: 220ms;
+    --panel-exit-ms: 180ms;
     --finale-enter-ms: 260ms;
     --finale-exit-ms: 180ms;
-  }
-  .stop-mist,
-  .frame-box[data-surface="mist"] .stop-mist {
-    transform: none;
-    transition-property: opacity;
   }
   .frame-canvas,
   .loader,

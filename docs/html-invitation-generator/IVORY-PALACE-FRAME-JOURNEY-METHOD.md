@@ -327,7 +327,7 @@ Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
   no surface during travel (per-animation-frame sampling), no opacity
   jumps, rapid-input bursts at rest, mid-entrance, mid-exit and
   mid-travel, the full-box finale light, the reverse from 300, and the
-  pixel-measured oval geometry;
+  measured panel geometry, 85% fill and clear frame exterior;
 - seven responsive viewports;
 - reduced motion;
 - the empty, inert wording layer, with none of the 348 approved
@@ -343,148 +343,162 @@ python3 -m http.server 4521 --bind 127.0.0.1
 # open http://127.0.0.1:4521/
 ```
 
-## 11. Misted paper stops (approved visual baseline)
+## 11. Framed ivory stop panels (approved visual baseline)
 
 **Status: the approved visual baseline, pending the Owner's final review
 of the running prototype.** No invitation wording is displayed. The
 stop surfaces are presentation layers above the canvas. They are never
 baked into, and never require regenerating, the 300 frames.
 
+History: first a smoky, mist-edged rectangle, then a smooth oval mist.
+Both are superseded by the framed panel below, and their styling, code
+and mask asset have been removed.
+
 ### Owner-approved treatment
 
-- **Frames 80, 160 and 240** show a smooth, centred **vertical oval** of
-  ivory mist (revised from an earlier rough, smoke-edged rectangle). Its
-  footprint is about **90% of the visible invitation's width × 90% of
-  its height**, measured at the half-opacity contour and centred in both
-  axes. On portrait phones,
-  where the invitation fills the viewport, that is the approved
-  ~`90vw` × ~`90dvh`. On wider screens the 9:16 invitation is
-  pillarboxed, so the mist stays at 90% of the invitation rather than
-  spreading over the dark side bars.
-- The edge is **softly and evenly feathered in every direction**, with
-  no corners, streaks or irregular cut-offs. The mist fades to zero
-  before the box edge, and the palace architecture stays visible around
-  the oval.
-- The centre is **calm and opaque**: about 95–97% opacity, so only the
-  faintest impression of the palace remains. The colour is **warm
-  ivory**, not cold white: a radial blend of `rgba(252,248,240,.97)` →
-  `rgba(246,238,222,.95)`. Near-invisible paper grain and soft mottling
-  sit inside it.
-- **Frame 300** does not use the bounded mist. The whole invitation box
-  dissolves into warm luminous white
-  (`#fffdf9` → `#fcf7ee` → `#f8f0e2`), so no palace perimeter is left at
-  rest.
-- There is **no ornamental edge frame, floral frame or corner element**
-  yet; this was decided deliberately.
+- **Frames 80, 160 and 240** show the Owner-approved ivory-and-gold
+  ornamental frame artwork over a warm ivory-white inner panel at
+  **85% opacity**, so the palace stays faintly visible through the
+  centre.
+- The complete framed panel keeps the artwork's own **940 × 1672**
+  ratio. It is centred and as large as fits within **90% × 90%** of the
+  invitation box (`width: min(90cqw, 90cqh × 940/1672)`), so it reaches
+  90% on whichever side limits it and is never stretched. The
+  invitation is 9:16, the same as the artwork, on desktop and tablet
+  (90% × 90% exactly). On tall phones the invitation box is taller than
+  9:16, so the panel is 90% wide and about 72–74% tall.
+- **Frame 300** keeps its distinct, previously approved full-box
+  warm-light ending, unchanged.
+
+### Frame asset
+
+- `experiments/ivory-palace-frame-journey/assets/ivory-palace-ornamental-frame.png`
+  is a 940 × 1672 RGBA PNG, ~0.7MB.
+- **Provenance:** the Owner-supplied frame artwork. As delivered, its
+  PNG had an alpha channel but was **fully opaque, on a flat black
+  matte** (every pixel alpha 255). The transparency was therefore
+  derived: "unmultiply black" with a knee `K = 120`, so
+  `α = min(1, max(r,g,b) / K)` and `rgb = rgb / α`, and near-black matte
+  noise (`max ≤ 4`) becomes fully transparent. Composited back over
+  black, the result reproduces the delivered image to within 4/255 per
+  channel. Ornament bodies are fully opaque; only the soft glow and
+  darkest shading are translucent. 82.4% of pixels are fully
+  transparent, 11.0% fully opaque and 6.6% partial.
+- It is encoded losslessly (zlib level 9, adaptive filtering, no
+  palette reduction), and the re-decoded pixels were checked to equal
+  the encoded buffer exactly.
+- If a natively transparent original becomes available, replace the
+  file at the same path; no code change is needed.
 
 ### Implementation
 
-- **The oval is pure CSS.** `.stop-mist::before` is inset 5% within the
-  invitation box, with `border-radius: 50%` (an ellipse of exactly
-  90% × 90%). It is feathered with `filter: blur(2.4cqw)`. The blur
-  radius is a fraction of the invitation's width, not of each axis, so
-  the feather is the same number of pixels in every direction and scales
-  with the invitation. `.frame-box` declares `container-type: size` for
-  this, and a `blur(9px)` fallback covers browsers without container
-  units. The blurred edge's half-opacity line falls on the ellipse
-  itself, and the tail reaches (near) zero before the box edge.
-- **Paper grain** is `.stop-mist::after`: the tileable
-  `mist/paper-grain.svg` (~1KB, hand-authored, original, no text or
-  imagery). It is kept out of the blur and faded out well inside the
-  oval by a radial-gradient mask. The finale light uses the same grain.
-- The earlier SVG smoke mask (`paper-mist-mask.svg`) has been removed.
-  The mist no longer depends on any mask asset.
+- `#stopPanel` is one element that fades as a unit. Inside it:
+  1. `.stop-panel__fill`, the rgba(253, 249, 241, 0.85) ivory fill.
+     It spans from under the ornament band's outer vine (6.4% from the
+     artwork's sides, 5% from top and bottom) and is feathered by two
+     intersecting linear-gradient masks. It reaches full 85% strength
+     at the band's inner edge, so no straight fill edge shows between
+     the wandering vines, and nothing is drawn in the artwork's
+     transparent exterior margin.
+  2. `#stopFrameArt`, the frame PNG, drawn at the panel's exact size.
+  3. `#stopContent`, the reserved wording layer.
+- Before the first fade-in, the script waits for `HTMLImageElement.decode()`
+  of the artwork, so the panel never appears without its ornament. A
+  surface token stops a late decode from re-showing a panel after its
+  stop has been left.
 - The visual state is a single attribute,
-  `#frameBox[data-surface] = "none" | "mist" | "finale"`. CSS owns every
+  `#frameBox[data-surface] = "none" | "panel" | "finale"`. CSS owns every
   fade. `script.js` only sets the attribute and reads the exit
-  durations from CSS custom properties, so the timings have one source.
-  Nothing animates inside the mist: no drifting particles and no
-  independent cloud motion.
+  durations from CSS custom properties.
 
 ### Visual layer order (inside `.frame-box`)
 
-1. frame canvas;
-2. `.stop-veil`: a restrained warm wash (≤16% alpha) that softens the
-   visible perimeter while the mist is shown;
-3. `.stop-mist` (frames 80/160/240) or `.finale-light` (frame 300);
-4. `#stopContent`: the reserved future wording layer (see below);
-5. loader;
-6. navigation controls. They are always above every surface, with a
-   darker fill while a surface is shown so they stay legible.
+1. animated palace background (frame canvas);
+2. warm ivory-white inner panel, 85% opaque (`.stop-panel__fill`);
+3. transparent ivory-and-gold frame (`#stopFrameArt`);
+4. reserved live-wording layer (`#stopContent`);
+5. navigation controls, above everything, with a darker fill while a
+   surface is shown.
 
-No surface receives pointer events.
+The finale light shares level 2 but is never shown at the same time as
+the panel. No surface receives pointer events.
 
 ### Timing
 
 | Transition | Duration | Easing |
 |---|---|---|
-| Mist entrance (with the veil) | 800ms opacity; 1000ms scale settle from 1.012 → 1 | `cubic-bezier(0.22, 0.61, 0.36, 1)` (soft ease-out) |
-| Mist exit | 450ms | `cubic-bezier(0.55, 0.06, 0.68, 0.19)` (soft ease-in) |
-| Finale fade to light | 1200ms | `cubic-bezier(0.4, 0, 0.2, 1)` |
-| Finale dissolve (leaving 300) | 800ms | `ease-in-out` |
-| Reduced motion | 220 / 180 / 260 / 180ms | opacity only; no scale |
+| Panel entrance | 800ms opacity | `cubic-bezier(0.22, 0.61, 0.36, 1)` (soft ease-out) |
+| Panel exit | 450ms opacity | `cubic-bezier(0.55, 0.06, 0.68, 0.19)` (soft ease-in) |
+| Finale fade to light | 1200ms | `cubic-bezier(0.4, 0, 0.2, 1)` (unchanged) |
+| Finale dissolve (leaving 300) | 800ms | `ease-in-out` (unchanged) |
+| Reduced motion | 220 / 180 / 260 / 180ms | same states, short crossfades |
+
+The panel fades by opacity only. There is no scale, so the ornament
+detail never resamples mid-transition.
 
 ### Sequences
 
-- The fade timings and sequences below are unchanged by the oval
-  revision; only the shape changed.
 - **Arrival at a stop:** the camera travel completes and lands exactly on
   the target frame. `animateFrameStepped` finishes (the canvas stops),
-  the chapter state updates, and only then is `data-surface` set, so the
-  entrance begins. The surface never appears during travel.
+  the chapter state updates, and only then is `data-surface` set to
+  `panel` (after the artwork has decoded), so the fade begins. No
+  surface ever appears during travel.
 - **Leaving a stop** (any input, either direction): all input is locked
   at once (`isAnimating = true`), `data-surface` returns to `none`, and
   the journey waits the full exit duration (450ms, or 800ms from the
   finale). Only then does frame travel start, and it unlocks through the
   existing state machine. The first moved frame is at least a further
-  33ms later, so the surface is fully cleared before the background
-  moves. If a stop is left while its mist is still fading in, the CSS
+  33ms later, so the panel is fully cleared before the background moves.
+  If a stop is left while its panel is still fading in, the CSS
   transition reverses from the current opacity, so there is no jump.
 - **Backward from 300:** the light dissolves and reveals frame 300, then
-  the reverse journey runs to 240, where the standard mist returns.
+  the reverse journey runs to 240, where the framed panel returns.
 
 ### Reserved wording layer
 
-`<section id="stopContent" hidden inert>` sits above the mist. It is
-empty, hidden and inert in this phase, so it has no focus targets and
-no screen-reader output. It does not import or select catalogue
-wording. Its text-safe region is inset 15% vertically and 16%
-horizontally (respecting safe-area insets) with generous padding. That
-is inside the mist's solid core, so future wording never reaches the
-smoky edge. The mist's dimensions do not depend on this layer or on any
-placeholder text.
+`<section id="stopContent" hidden inert>` sits inside the panel, above
+the frame art. It is empty, hidden and inert in this phase, so it has
+no focus targets and no screen-reader output. It does not import or
+select catalogue wording. Its text-safe region is inset 11% top and
+bottom and 17% left and right of the panel, inside the frame's clear
+opening (about 13–87% × 8–92% of the artwork), with padding. It
+therefore scales with the panel and never reaches the ornaments.
 
 ### Responsive results
 
-Measured by `verify.js` from pixels (half-opacity contour) at frame 80, in one run (values vary by about ±0.2%):
+Measured by `verify.js` at frame 80:
 
-| Viewport | Invitation box | Oval axes | Share of viewport |
+| Viewport | Invitation box | Framed panel | Share of viewport |
 |---|---|---|---|
-| 320×568 narrow mobile | 320×568 | 288×510 (90.0% × 89.8%) | 89.9vw × 89.8vh |
-| 390×844 standard mobile | 390×844 | 349×758 (89.5% × 89.8%) | 89.5vw × 89.8vh |
-| 360×800 tall mobile | 360×800 | 324×718 (90.0% × 89.8%) | 90.0vw × 89.8vh |
-| 412×915 tall mobile | 412×915 | 370×821 (89.8% × 89.7%) | 89.8vw × 89.7vh |
-| 768×1024 tablet portrait | 576×1024 | 516×920 (89.6% × 89.8%) | 67.2vw × 89.8vh |
-| 900×1400 desktop portrait | 788×1400 | 706×1256 (89.6% × 89.7%) | 78.4vw × 89.7vh |
-| 1440×900 desktop landscape | 506×900 | 454×810 (89.8% × 90.0%) | 31.6vw × 90.0vh |
+| 320×568 narrow mobile | 320×568 | 287×511 (90.0% × 90.0%) | 89.8vw × 90.0vh |
+| 390×844 standard mobile | 390×844 | 351×624 (90.0% × 74.0%) | 90.0vw × 74.0vh |
+| 360×800 tall mobile | 360×800 | 324×576 (90.0% × 72.0%) | 90.0vw × 72.0vh |
+| 412×915 tall mobile | 412×915 | 371×660 (90.0% × 72.1%) | 90.0vw × 72.1vh |
+| 768×1024 tablet portrait | 576×1024 | 518×922 (89.9% × 90.0%) | 67.5vw × 90.0vh |
+| 900×1400 desktop portrait | 788×1400 | 708×1260 (90.0% × 90.0%) | 78.7vw × 90.0vh |
+| 1440×900 desktop landscape | 506×900 | 455×810 (90.0% × 90.0%) | 31.6vw × 90.0vh |
 
-None of these viewports has horizontal or vertical overflow. The mist
-never extends past the invitation box, and the controls stay
-hit-testable. The oval check confirms the shape: a row 20% of the box
-above centre spans about 0.895 of the full width, against 0.898 for an
-ideal ellipse and 1.0 for a rectangle. The edge opacity stays ≤5% and
-the core (within 75% of the radius) stays ≥94% of the centre. The stage height uses `100dvh` with a `100vh` fallback.
+At every size:
+
+- the ratio stays 0.5622 (the artwork's ratio);
+- the centre measures 85.0% opacity from pixels;
+- the artwork's exterior margin and the box outside the panel are
+  untouched;
+- there is no overflow;
+- the controls stay hit-testable.
 
 ## Files
 
 ```
 experiments/ivory-palace-frame-journey/
-├── index.html      # canvas, stop surfaces, reserved wording layer, loader, nav buttons
+├── index.html      # canvas, framed stop panel, reserved wording layer, finale light, loader, nav buttons
 ├── styles.css       # fixed 9:16 stage, stop-surface layers and timings, nav styling
 ├── script.js        # sliding cache, canvas renderer, frame-stepped easing, input, stop-surface hook
 ├── verify.js         # reproducible Playwright verification (§10)
+├── assets/
+│   └── ivory-palace-ornamental-frame.png  # Owner-approved stop frame artwork (§11)
 ├── mist/
-│   └── paper-grain.svg      # near-invisible paper grain tile (§11)
+│   └── paper-grain.svg      # paper grain tile used by the frame-300 finale light
 ├── wording/          # approved wording catalogue (not displayed yet)
 └── frames/           # 300 unaltered JPEGs, ezgif-frame-001.jpg … ezgif-frame-300.jpg
 ```

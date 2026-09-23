@@ -26,13 +26,15 @@
       <canvas id="frameCanvas" class="frame-canvas" aria-label=""></canvas>
 
       <!-- Stop surfaces: presentation-only layers above the canvas, driven by
-           frameBox[data-surface] ("none" | "mist" | "finale"). Never baked into frames. -->
-      <div class="stop-veil" aria-hidden="true"></div>
-      <div class="stop-mist" id="stopMist" aria-hidden="true"></div>
+           frameBox[data-surface] ("none" | "panel" | "finale"). Never baked into frames. -->
+      <div class="stop-panel" id="stopPanel">
+        <div class="stop-panel__fill" aria-hidden="true"></div>
+        <img class="stop-panel__frame" id="stopFrameArt" src="assets/ivory-palace-ornamental-frame.png"
+             width="940" height="1672" alt="" />
+        <!-- Reserved for future live wording. Intentionally empty, hidden and inert. -->
+        <section class="stop-content" id="stopContent" hidden inert></section>
+      </div>
       <div class="finale-light" id="finaleLight" aria-hidden="true"></div>
-
-      <!-- Reserved for future live wording. Intentionally empty, hidden and inert. -->
-      <section class="stop-content" id="stopContent" hidden inert></section>
 
       <!-- Loading fallback -->
       <div id="loader" class="loader" role="status" aria-live="polite">

@@ -307,45 +307,62 @@
   // ---------- Stop surfaces ----------
   //
   // Presentation-only layers above the canvas (see METHOD §11). At the
-  // Welcome, Haldi and Wedding stops a mist-edged ivory paper layer fades
-  // in once the target frame has landed; the Finale instead dissolves the
-  // whole invitation into warm light. The visual state is one attribute,
-  // frameBox[data-surface] = "none" | "mist" | "finale"; CSS owns every
-  // fade. Leaving a stop clears the surface first and only then starts
-  // frame travel, so no surface is ever visible while the palace moves.
+  // Welcome, Haldi and Wedding stops a framed ivory panel (85% ivory fill
+  // under the ornamental frame artwork) fades in once the target frame has
+  // landed; the Finale instead dissolves the whole invitation into warm
+  // light. The visual state is one attribute, frameBox[data-surface] =
+  // "none" | "panel" | "finale"; CSS owns every fade. Leaving a stop clears
+  // the surface first and only then starts frame travel, so no surface is
+  // ever visible while the palace moves.
   var FINALE_INDEX = CHAPTERS.length - 1;
+  var frameArt = document.getElementById("stopFrameArt");
+  var surfaceToken = 0;
 
   function cssMs(name) {
     var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
     return isNaN(v) ? 0 : v;
   }
 
+  // Resolves once the frame artwork is decoded, so the panel never fades
+  // in with its ornament missing and then pops it in afterwards.
+  var frameArtReady = frameArt.decode
+    ? frameArt.decode().catch(function () {})
+    : Promise.resolve();
+
   function enterSurface(index) {
-    frameBox.setAttribute("data-surface", index === FINALE_INDEX ? "finale" : "mist");
+    var token = ++surfaceToken;
+    if (index === FINALE_INDEX) {
+      frameBox.setAttribute("data-surface", "finale");
+      return;
+    }
+    frameArtReady.then(function () {
+      // A stop left before the artwork was ready must not re-show it.
+      if (token === surfaceToken) frameBox.setAttribute("data-surface", "panel");
+    });
   }
 
   function leaveSurface(onCleared) {
     var current = frameBox.getAttribute("data-surface");
+    surfaceToken++;
     frameBox.setAttribute("data-surface", "none");
-    if (current !== "mist" && current !== "finale") {
+    if (current !== "panel" && current !== "finale") {
       onCleared();
       return;
     }
     // CSS transitions reverse from the current opacity, so leaving
     // mid-entrance never jumps; waiting the full exit time guarantees
     // the surface has cleared before the first frame moves.
-    setTimeout(onCleared, cssMs(current === "finale" ? "--finale-exit-ms" : "--mist-exit-ms"));
+    setTimeout(onCleared, cssMs(current === "finale" ? "--finale-exit-ms" : "--panel-exit-ms"));
   }
 
   // Read-only introspection for testing/debugging; no functional effect.
   window.__overlayState = function () {
-    var mist = document.getElementById("stopMist");
+    var panel = document.getElementById("stopPanel");
     var light = document.getElementById("finaleLight");
     return {
       surface: frameBox.getAttribute("data-surface"),
-      mistOpacity: parseFloat(getComputedStyle(mist).opacity),
+      panelOpacity: parseFloat(getComputedStyle(panel).opacity),
       finaleOpacity: parseFloat(getComputedStyle(light).opacity),
-      mistTransform: getComputedStyle(mist).transform,
       frame: currentFrame,
       chapterIndex: chapterIndex,
       isAnimating: isAnimating
