@@ -323,11 +323,15 @@
     return isNaN(v) ? 0 : v;
   }
 
-  // Resolves once the frame artwork is decoded, so the panel never fades
-  // in with its ornament missing and then pops it in afterwards.
-  var frameArtReady = frameArt.decode
-    ? frameArt.decode().catch(function () {})
-    : Promise.resolve();
+  // Resolves once the frame artwork and the fill's opening mask are
+  // decoded, so the panel never fades in with either missing and then
+  // pops it in afterwards.
+  function decoded(img) {
+    return img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+  }
+  var openingMask = new Image();
+  openingMask.src = "assets/ivory-palace-arch-frame-opening.png";
+  var frameArtReady = Promise.all([decoded(frameArt), decoded(openingMask)]);
 
   function enterSurface(index) {
     var token = ++surfaceToken;

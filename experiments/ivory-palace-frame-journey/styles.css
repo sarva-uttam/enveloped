@@ -91,7 +91,7 @@ html, body {
  * ornamental frame → reserved wording layer; finale light (2) → loader (5)
  * → navigation (6). Nothing here receives pointer events.
  *
- * The panel keeps the frame artwork's own 940 × 1672 ratio and is as large
+ * The panel keeps the frame artwork's own 941 × 1672 ratio and is as large
  * as fits in 90% × 90% of the invitation box (cq units; see .frame-box).
  */
 
@@ -107,33 +107,23 @@ html, body {
   left: 50%;
   top: 50%;
   width: 90%; /* fallback where container units are unsupported */
-  width: min(90cqw, calc(90cqh * 940 / 1672));
-  aspect-ratio: 940 / 1672;
+  width: min(90cqw, calc(90cqh * 941 / 1672));
+  aspect-ratio: 941 / 1672;
   transform: translate(-50%, -50%);
   will-change: opacity;
   transition: opacity var(--panel-exit-ms) var(--ease-dissolve);
 }
 
-/* Ivory fill, 85% opaque, only inside the frame. It starts under the
-   ornament band's outer vine (≈6% in from the artwork's sides, 5% from
-   top and bottom) and feathers up to full strength at the band's inner
-   edge (≈13% / 7.8%), so no straight fill edge shows between the
-   wandering vines and nothing reaches the transparent exterior margin. */
+/* Ivory fill, 85% opaque, only inside the frame: masked to the artwork's
+   own clear opening (the cusped arch and curved lower corners, derived
+   from the artwork and grown ~4px to tuck under the inner gold line), so
+   the spandrels, lattice corners and transparent exterior stay clear. */
 .stop-panel__fill {
   position: absolute;
-  top: 5%;
-  bottom: 5%;
-  left: 6.4%;
-  right: 6.4%;
+  inset: 0;
   background: rgba(253, 249, 241, 0.85);
-  -webkit-mask:
-    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
-    linear-gradient(to bottom, transparent, #000 3.2%, #000 96.8%, transparent);
-  -webkit-mask-composite: source-in;
-  mask:
-    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
-    linear-gradient(to bottom, transparent, #000 3.2%, #000 96.8%, transparent);
-  mask-composite: intersect;
+  -webkit-mask: url("assets/ivory-palace-arch-frame-opening.png") center / 100% 100% no-repeat;
+  mask: url("assets/ivory-palace-arch-frame-opening.png") center / 100% 100% no-repeat;
 }
 
 .stop-panel__frame {
@@ -164,15 +154,16 @@ html, body {
   transition: opacity var(--finale-enter-ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Future wording region, inside the panel: inset past the ornament band
-   (clear opening ≈ 13–87% × 8–92% of the artwork) with generous padding.
-   Empty, hidden and inert in this phase. */
+/* Future wording region, inside the panel: below the arch's shoulders and
+   inside the side pillars (clear opening ≈ 8–92% × 6–91% of the artwork,
+   full width only below ≈ 20%) with generous padding. Empty, hidden and
+   inert in this phase. */
 .stop-content {
   position: absolute;
-  top: 11%;
-  bottom: 11%;
-  left: 17%;
-  right: 17%;
+  top: 18%;
+  bottom: 12%;
+  left: 14%;
+  right: 14%;
   display: flex;
   flex-direction: column;
   align-items: center;

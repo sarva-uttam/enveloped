@@ -189,7 +189,7 @@ function analyzePng(page, png, body, arg) {
 // Measures the framed panel over the flat, dark frame-box background
 // (canvas and controls hidden for the capture, then restored): geometry
 // from the DOM, fill opacity and the frame's clear exterior from pixels.
-const FRAME_RATIO = 940 / 1672;
+const FRAME_RATIO = 941 / 1672;
 async function measurePanel(page) {
   const dom = await page.evaluate(() => {
     const box = document.getElementById("frameBox").getBoundingClientRect();
@@ -223,8 +223,10 @@ async function measurePanel(page) {
     // Fill colour rgba(253,249,241) has luminance ~249.3; alpha from the centre.
     const centreAlpha = (mean(0.5, 0.5, 6) - bg) / (249.3 - bg);
     const [cx, cy] = at(0.5, 0.5); const [r, , b] = rgb(cx, cy);
-    // The artwork's transparent exterior margin, outside its ornament band.
-    const margin = [[0.03, 0.5], [0.97, 0.5], [0.3, 0.02], [0.7, 0.02], [0.3, 0.985], [0.7, 0.985]]
+    // The artwork's transparent exterior margin, plus the arch spandrels
+    // between the cusped arch and the top bar (clear in both artwork and
+    // fill mask), must stay empty.
+    const margin = [[0.03, 0.5], [0.97, 0.5], [0.3, 0.02], [0.7, 0.02], [0.3, 0.985], [0.7, 0.985], [0.3, 0.075], [0.7, 0.075], [0.25, 0.1], [0.75, 0.1]]
       .map(([fx, fy]) => mean(fx, fy, 1) - bg);
     // Box area just outside the panel, where there is room for it.
     let outside = 0; const top = Math.floor(arg.y * sy), bottom = Math.ceil((arg.y + arg.h) * sy);
@@ -241,11 +243,11 @@ async function measurePanel(page) {
 
 // Artwork ratio preserved; fits inside 90% x 90% of the invitation and
 // reaches 90% on its limiting side; 85% fill confirmed in pixels; nothing
-// drawn in the artwork's transparent margin or outside the panel.
+// drawn in the artwork's transparent margin, its arch spandrels or outside the panel.
 function panelOk(m) {
   return Math.abs(m.ratio - FRAME_RATIO) < 0.004 && m.fracW <= 0.905 && m.fracH <= 0.905 &&
     Math.max(m.fracW, m.fracH) >= 0.895 && m.fillAlpha === 0.85 && Math.abs(m.centreAlpha - 0.85) < 0.03 &&
-    m.warm >= 3 && m.marginMax < 4 && m.outside < 4 && m.img.complete && m.img.natural === "940x1672";
+    m.warm >= 3 && m.marginMax < 4 && m.outside < 4 && m.img.complete && m.img.natural === "941x1672";
 }
 
 function describePanel(m) {

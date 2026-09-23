@@ -350,19 +350,21 @@ of the running prototype.** No invitation wording is displayed. The
 stop surfaces are presentation layers above the canvas. They are never
 baked into, and never require regenerating, the 300 frames.
 
-History: first a smoky, mist-edged rectangle, then a smooth oval mist.
-Both are superseded by the framed panel below, and their styling, code
-and mask asset have been removed.
+History: first a smoky, mist-edged rectangle, then a smooth oval mist,
+then a first framed panel using a lotus-vine frame. All three are
+superseded by the cusped-arch frame below. Their styling, code and
+assets have been removed.
 
 ### Owner-approved treatment
 
 - **Frames 80, 160 and 240** show the Owner-approved ivory-and-gold
-  ornamental frame artwork over a warm ivory-white inner panel at
+  **cusped Mughal-arch frame** (pillared sides, lattice corner
+  spandrels, lotus finials) over a warm ivory-white inner panel at
   **85% opacity**, so the palace stays faintly visible through the
   centre.
-- The complete framed panel keeps the artwork's own **940 × 1672**
+- The complete framed panel keeps the artwork's own **941 × 1672**
   ratio. It is centred and as large as fits within **90% × 90%** of the
-  invitation box (`width: min(90cqw, 90cqh × 940/1672)`), so it reaches
+  invitation box (`width: min(90cqw, 90cqh × 941/1672)`), so it reaches
   90% on whichever side limits it and is never stretched. The
   invitation is 9:16, the same as the artwork, on desktop and tablet
   (90% × 90% exactly). On tall phones the invitation box is taller than
@@ -370,10 +372,10 @@ and mask asset have been removed.
 - **Frame 300** keeps its distinct, previously approved full-box
   warm-light ending, unchanged.
 
-### Frame asset
+### Frame assets
 
-- `experiments/ivory-palace-frame-journey/assets/ivory-palace-ornamental-frame.png`
-  is a 940 × 1672 RGBA PNG, ~0.7MB.
+- `experiments/ivory-palace-frame-journey/assets/ivory-palace-arch-frame.png`
+  is the frame artwork: a 941 × 1672 RGBA PNG, ~0.57MB.
 - **Provenance:** the Owner-supplied frame artwork. As delivered, its
   PNG had an alpha channel but was **fully opaque, on a flat black
   matte** (every pixel alpha 255). The transparency was therefore
@@ -381,29 +383,36 @@ and mask asset have been removed.
   `α = min(1, max(r,g,b) / K)` and `rgb = rgb / α`, and near-black matte
   noise (`max ≤ 4`) becomes fully transparent. Composited back over
   black, the result reproduces the delivered image to within 4/255 per
-  channel. Ornament bodies are fully opaque; only the soft glow and
-  darkest shading are translucent. 82.4% of pixels are fully
-  transparent, 11.0% fully opaque and 6.6% partial.
-- It is encoded losslessly (zlib level 9, adaptive filtering, no
-  palette reduction), and the re-decoded pixels were checked to equal
-  the encoded buffer exactly.
+  channel. The gold and ivory bodies are fully opaque; only the thin
+  anti-aliased and glow edges are translucent. 85.2% of pixels are
+  fully transparent, 13.6% fully opaque and 1.2% partial. The lattice
+  openings are transparent, so the palace shows through them.
+- `experiments/ivory-palace-frame-journey/assets/ivory-palace-arch-frame-opening.png`
+  is the fill mask (941 × 1672, ~7KB): white, with alpha only where
+  the ivory fill may appear. It was derived from the same source by
+  flood-filling the dark matte from the centre, which gives exactly the
+  cusped-arch and curved-corner opening (62.8% of the artwork, 8–92% ×
+  6–91%, with no leak to the exterior). The opening was then grown by
+  4px so the fill tucks under the inner gold line, and softened by a
+  0.6px blur.
+- Both files are encoded losslessly. For the frame, the re-decoded
+  pixels were checked to equal the encoded buffer exactly.
 - If a natively transparent original becomes available, replace the
-  file at the same path; no code change is needed.
+  frame file at the same path. Regenerate the opening mask only if the
+  frame's inner line moves.
 
 ### Implementation
 
 - `#stopPanel` is one element that fades as a unit. Inside it:
-  1. `.stop-panel__fill`, the rgba(253, 249, 241, 0.85) ivory fill.
-     It spans from under the ornament band's outer vine (6.4% from the
-     artwork's sides, 5% from top and bottom) and is feathered by two
-     intersecting linear-gradient masks. It reaches full 85% strength
-     at the band's inner edge, so no straight fill edge shows between
-     the wandering vines, and nothing is drawn in the artwork's
-     transparent exterior margin.
+  1. `.stop-panel__fill`, the rgba(253, 249, 241, 0.85) ivory fill,
+     masked by the opening mask at `100% 100%` of the panel. It fills
+     exactly the arch-shaped opening. The arch spandrels, lattice
+     corners and transparent exterior margin stay clear.
   2. `#stopFrameArt`, the frame PNG, drawn at the panel's exact size.
   3. `#stopContent`, the reserved wording layer.
-- Before the first fade-in, the script waits for `HTMLImageElement.decode()`
-  of the artwork, so the panel never appears without its ornament. A
+- The opening mask is preloaded (`<link rel="preload">`). Before the
+  first fade-in, the script waits for `HTMLImageElement.decode()` of both
+  the artwork and the mask, so the panel never appears without either. A
   surface token stops a late decode from re-showing a panel after its
   stop has been left.
 - The visual state is a single attribute,
@@ -459,9 +468,10 @@ detail never resamples mid-transition.
 `<section id="stopContent" hidden inert>` sits inside the panel, above
 the frame art. It is empty, hidden and inert in this phase, so it has
 no focus targets and no screen-reader output. It does not import or
-select catalogue wording. Its text-safe region is inset 11% top and
-bottom and 17% left and right of the panel, inside the frame's clear
-opening (about 13–87% × 8–92% of the artwork), with padding. It
+select catalogue wording. Its text-safe region is inset 18% from the
+top (below the arch's shoulders at about 20%), 12% from the bottom and
+14% from the sides of the panel, inside the frame's clear opening
+(about 8–92% × 6–91% of the artwork), with padding. It
 therefore scales with the panel and never reaches the ornaments.
 
 ### Responsive results
@@ -470,20 +480,20 @@ Measured by `verify.js` at frame 80:
 
 | Viewport | Invitation box | Framed panel | Share of viewport |
 |---|---|---|---|
-| 320×568 narrow mobile | 320×568 | 287×511 (90.0% × 90.0%) | 89.8vw × 90.0vh |
-| 390×844 standard mobile | 390×844 | 351×624 (90.0% × 74.0%) | 90.0vw × 74.0vh |
+| 320×568 narrow mobile | 320×568 | 288×511 (90.0% × 90.0%) | 89.9vw × 90.0vh |
+| 390×844 standard mobile | 390×844 | 351×624 (90.0% × 73.9%) | 90.0vw × 73.9vh |
 | 360×800 tall mobile | 360×800 | 324×576 (90.0% × 72.0%) | 90.0vw × 72.0vh |
-| 412×915 tall mobile | 412×915 | 371×660 (90.0% × 72.1%) | 90.0vw × 72.1vh |
-| 768×1024 tablet portrait | 576×1024 | 518×922 (89.9% × 90.0%) | 67.5vw × 90.0vh |
-| 900×1400 desktop portrait | 788×1400 | 708×1260 (90.0% × 90.0%) | 78.7vw × 90.0vh |
-| 1440×900 desktop landscape | 506×900 | 455×810 (90.0% × 90.0%) | 31.6vw × 90.0vh |
+| 412×915 tall mobile | 412×915 | 371×659 (90.0% × 72.0%) | 90.0vw × 72.0vh |
+| 768×1024 tablet portrait | 576×1024 | 518×921 (90.0% × 89.9%) | 67.5vw × 89.9vh |
+| 900×1400 desktop portrait | 788×1400 | 709×1259 (90.0% × 90.0%) | 78.8vw × 90.0vh |
+| 1440×900 desktop landscape | 506×900 | 456×810 (90.0% × 90.0%) | 31.6vw × 90.0vh |
 
 At every size:
 
-- the ratio stays 0.5622 (the artwork's ratio);
+- the ratio stays 0.5628 (the artwork's ratio);
 - the centre measures 85.0% opacity from pixels;
-- the artwork's exterior margin and the box outside the panel are
-  untouched;
+- the artwork's exterior margin, the arch spandrels and the box outside
+  the panel are untouched;
 - there is no overflow;
 - the controls stay hit-testable.
 
@@ -496,7 +506,8 @@ experiments/ivory-palace-frame-journey/
 ├── script.js        # sliding cache, canvas renderer, frame-stepped easing, input, stop-surface hook
 ├── verify.js         # reproducible Playwright verification (§10)
 ├── assets/
-│   └── ivory-palace-ornamental-frame.png  # Owner-approved stop frame artwork (§11)
+│   ├── ivory-palace-arch-frame.png          # Owner-approved stop frame artwork (§11)
+│   └── ivory-palace-arch-frame-opening.png  # fill mask: the frame's clear opening (§11)
 ├── mist/
 │   └── paper-grain.svg      # paper grain tile used by the frame-300 finale light
 ├── wording/          # approved wording catalogue (not displayed yet)
