@@ -318,15 +318,15 @@ node experiments/ivory-palace-frame-journey/verify.js
 ```
 
 Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
-§11 there are 71 checks:
+§11 there are 75 checks:
 
 - the original journey checks: landing, skips and the 30fps ceiling on
   every transition, arrow visibility, the memory budget and 36-frame
   cap, flicker, and the mobile swipe;
 - the stop-surface checks: rest state at every stop in both directions,
   no surface during travel (per-animation-frame sampling), no opacity
-  jumps, rapid-input bursts at rest, mid-entrance, mid-exit and
-  mid-travel, the full-box finale light, the reverse from 300, and the
+  jumps, measured fade-in and fade-out timing, rapid-input bursts at
+  rest, during the fade-in (ignored), mid-exit and mid-travel, the full-box finale light, the reverse from 300, and the
   measured panel geometry, 85% fill and clear frame exterior;
 - seven responsive viewports;
 - reduced motion;
@@ -436,11 +436,15 @@ the panel. No surface receives pointer events.
 
 | Transition | Duration | Easing |
 |---|---|---|
-| Panel entrance | 800ms opacity | `cubic-bezier(0.22, 0.61, 0.36, 1)` (soft ease-out) |
-| Panel exit | 450ms opacity | `cubic-bezier(0.55, 0.06, 0.68, 0.19)` (soft ease-in) |
+| Panel entrance | 1400ms opacity | `cubic-bezier(0.22, 0.61, 0.36, 1)` (smooth cinematic ease-out) |
+| Panel exit | 1000ms opacity | `cubic-bezier(0.42, 0, 1, 1)` (gentle ease-in) |
 | Finale fade to light | 1200ms | `cubic-bezier(0.4, 0, 0.2, 1)` (unchanged) |
 | Finale dissolve (leaving 300) | 800ms | `ease-in-out` (unchanged) |
 | Reduced motion | 220 / 180 / 260 / 180ms | same states, short crossfades |
+
+Measured by `verify.js` from per-animation-frame sampling: each
+entrance reaches full opacity after about 1.32s, and the first frame
+moves about 1.08s after a departure begins.
 
 The panel fades by opacity only. There is no scale, so the ornament
 detail never resamples mid-transition.
@@ -451,15 +455,18 @@ detail never resamples mid-transition.
   the target frame. `animateFrameStepped` finishes (the canvas stops),
   the chapter state updates, and only then is `data-surface` set to
   `panel` (after the artwork has decoded), so the fade begins. No
-  surface ever appears during travel.
+  surface ever appears during travel. Every input source stays locked
+  until the 1.4s fade-in has completed, so the entrance cannot be
+  interrupted or doubled. The navigation controls appear once the panel
+  has settled. The finale is unchanged: its controls return on landing.
 - **Leaving a stop** (any input, either direction): all input is locked
   at once (`isAnimating = true`), `data-surface` returns to `none`, and
-  the journey waits the full exit duration (450ms, or 800ms from the
+  the journey waits the full exit duration (1000ms, or 800ms from the
   finale). Only then does frame travel start, and it unlocks through the
   existing state machine. The first moved frame is at least a further
   33ms later, so the panel is fully cleared before the background moves.
-  If a stop is left while its panel is still fading in, the CSS
-  transition reverses from the current opacity, so there is no jump.
+  Input is ignored for the whole exit and travel, and (at panel stops)
+  until the next fade-in completes.
 - **Backward from 300:** the light dissolves and reveals frame 300, then
   the reverse journey runs to 240, where the framed panel returns.
 

@@ -296,6 +296,24 @@ function analyzeOverlaySamples(samples, maxJump) {
   return { travelLeaks, travelSamples, worstJump, ok: worstJump <= maxJump };
 }
 
+// From the rAF samples: how long each panel entrance takes to reach full
+// opacity, and how long after a departure starts (surface -> none) the
+// first frame actually moves.
+function analyzePanelTiming(samples) {
+  const enters = [], exits = [];
+  for (let i = 1; i < samples.length; i++) {
+    const [frame, surface, , , t] = samples[i];
+    const prev = samples[i - 1][1];
+    if (surface === "panel" && prev === "none") {
+      for (let j = i; j < samples.length; j++) if (samples[j][2] >= 0.999) { enters.push(samples[j][4] - t); break; }
+    }
+    if (surface === "none" && prev === "panel") {
+      for (let j = i; j < samples.length; j++) if (samples[j][0] !== frame) { exits.push(samples[j][4] - samples[i - 1][4]); break; }
+    }
+  }
+  return { enters, exits };
+}
+
 async function wordingLayerChecks(page, label) {
   const layer = await page.evaluate(() => {
     const el = document.getElementById("stopContent");
@@ -435,6 +453,22 @@ async function main() {
     );
 
     let samples = await page.evaluate(() => window.__overlaySamples);
+    const timing = analyzePanelTiming(samples);
+    check(
+      `panel fade-in takes ~1.4s at every stop (${timing.enters.length} entrances)`,
+      timing.enters.length >= 6 && timing.enters.every((t) => t >= 1250 && t <= 1700),
+      timing.enters.map((t) => t.toFixed(0) + "ms").join(", ")
+    );
+    check(
+      `frames move only after the ~1s fade-out completes (${timing.exits.length} departures)`,
+      timing.exits.length >= 5 && timing.exits.every((t) => t >= 1000 && t <= 1300),
+      timing.exits.map((t) => t.toFixed(0) + "ms").join(", ")
+    );
+    const cssTiming = await page.evaluate(() => {
+      const cs = getComputedStyle(document.documentElement);
+      return [cs.getPropertyValue("--panel-enter-ms").trim(), cs.getPropertyValue("--panel-exit-ms").trim(), cs.getPropertyValue("--ease-settle").trim(), cs.getPropertyValue("--ease-dissolve").trim().replace(/\s*\/\*.*$/, "")];
+    });
+    check("panel timings are 1400ms ease-out in / 1000ms ease-in out", cssTiming[0] === "1400ms" && cssTiming[1] === "1000ms", JSON.stringify(cssTiming));
     let ov = analyzeOverlaySamples(samples, 0.2);
     check(`no stop surface visible during frame travel (${ov.travelSamples} travel samples)`, ov.travelSamples > 200 && ov.travelLeaks === 0, `leaks=${ov.travelLeaks}`);
     check("surface opacity never jumps between animation frames", ov.ok, `worst=${ov.worstJump.toFixed(3)}`);
@@ -458,22 +492,33 @@ async function main() {
     let maxFrame = Math.max(...log.map((x) => x[0]));
     check("burst of 7 inputs at 80 advances exactly one chapter to 160", o.frame === 160 && o.chapterIndex === 1 && maxFrame === 160 && o.surface === "panel", `max=${maxFrame} ${JSON.stringify(o)}`);
 
-    // Mid-entrance reversal: navigate away while the panel is still fading in.
+    // Input during the fade-in is ignored: the entrance completes, uninterrupted.
     await page.keyboard.press("ArrowDown");
     const midStart = Date.now();
+    let midOpacity = null;
     while (Date.now() - midStart < 9000) {
       const s = await overlay(page);
-      if (s.chapterIndex === 2 && s.surface === "panel" && s.panelOpacity > 0.05 && s.panelOpacity < 0.9) break;
+      if (s.chapterIndex === 2 && s.surface === "panel" && s.panelOpacity > 0.05 && s.panelOpacity < 0.9) { midOpacity = s.panelOpacity; break; }
       await page.waitForTimeout(10);
     }
     await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowDown");
+    await page.evaluate(() => document.getElementById("navUp").click());
+    const midNav = await page.evaluate(() => [document.getElementById("navUp").classList.contains("is-visible"), document.getElementById("navDown").classList.contains("is-visible")]);
+    o = await waitSurface(page, 240);
+    log = await page.evaluate(() => window.__frameLog);
+    check(
+      "input during the panel fade-in is ignored; the entrance completes at 240",
+      midOpacity !== null && !midNav[0] && !midNav[1] && o.frame === 240 && o.chapterIndex === 2 && o.surface === "panel" && o.panelOpacity >= 0.995 && log[log.length - 1][0] === 240,
+      `caught at opacity=${midOpacity} navVisible=${midNav} ${JSON.stringify(o)}`
+    );
     await page.keyboard.press("ArrowUp");
     o = await waitSurface(page, 160);
-    check("leaving mid-entrance reverses cleanly back to 160 with one panel", o.frame === 160 && o.chapterIndex === 1 && o.surface === "panel" && o.panelOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
+    check("after the fade-in settles, input works again (back to 160)", o.frame === 160 && o.chapterIndex === 1 && o.surface === "panel", JSON.stringify(o));
 
     // Mid-travel spam toward the finale, then straight back.
     await page.keyboard.press("ArrowDown");
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(1700); // past the 1000ms fade-out: frames are moving
     for (let k = 0; k < 6; k++) await page.keyboard.press(k % 2 ? "ArrowUp" : "ArrowDown");
     o = await waitSurface(page, 240);
     check("keys pressed mid-travel are ignored; lands on 240 with panel", o.frame === 240 && o.surface === "panel" && o.panelOpacity >= 0.995, JSON.stringify(o));
@@ -503,7 +548,7 @@ async function main() {
     const fctx = await browser.newContext({ viewport: { width: 430, height: 932 } });
     const fpage = await fctx.newPage();
     await fpage.goto(BASE_URL, { waitUntil: "load" });
-    await fpage.waitForTimeout(4200); // opening completes
+    await waitSurface(fpage, 80); // opening completes and the panel settles
 
     const cdp = await fctx.newCDPSession(fpage);
     const shots = [];
@@ -519,7 +564,7 @@ async function main() {
     });
     await cdp.send("Page.startScreencast", { format: "png", everyNthFrame: 1, maxWidth: 300, maxHeight: 534 });
     await fpage.click("#navDown");
-    await fpage.waitForTimeout(4400); // panel exit (~450ms) + 80-frame travel
+    await fpage.waitForTimeout(5200); // panel exit (1000ms) + 80-frame travel
     await cdp.send("Page.stopScreencast");
     await fpage.waitForTimeout(150); // let any in-flight screencastFrame settle before closing
 
@@ -567,9 +612,11 @@ async function main() {
 
     landed = await waitSettle(mpage, mGetFrame, 80, 6000);
     check("mobile: opening lands on 80", landed);
+    await waitSurface(mpage, 80);
     await swipe(300, 520);
     landed = await waitSettle(mpage, mGetFrame, 160, 6000);
     check("mobile: downward swipe advances to 160", landed);
+    await waitSurface(mpage, 160);
     await swipe(520, 300);
     landed = await waitSettle(mpage, mGetFrame, 80, 6000);
     check("mobile: upward swipe returns to 80", landed);

@@ -333,15 +333,29 @@
   openingMask.src = "assets/ivory-palace-arch-frame-opening.png";
   var frameArtReady = Promise.all([decoded(frameArt), decoded(openingMask)]);
 
-  function enterSurface(index) {
+  function enterSurface(index, onSettled) {
     var token = ++surfaceToken;
     if (index === FINALE_INDEX) {
       frameBox.setAttribute("data-surface", "finale");
+      onSettled();
       return;
     }
     frameArtReady.then(function () {
       // A stop left before the artwork was ready must not re-show it.
       if (token === surfaceToken) frameBox.setAttribute("data-surface", "panel");
+      setTimeout(onSettled, cssMs("--panel-enter-ms"));
+    });
+  }
+
+  // Arrival at a stop. Framed-panel stops keep every input source locked
+  // until the panel's fade-in has completed, so a long entrance can't be
+  // interrupted or doubled; the controls appear once it has settled. The
+  // Finale keeps its original behaviour (controls return on landing).
+  function arriveAtStop(index) {
+    isAnimating = true;
+    enterSurface(index, function () {
+      isAnimating = false;
+      updateNavVisibility();
     });
   }
 
@@ -410,8 +424,7 @@
         // At rest: symmetric window, since we don't yet know whether the
         // next move will be forward or backward.
         slideWindowFor(target, 0);
-        updateNavVisibility();
-        enterSurface(index);
+        arriveAtStop(index);
       });
     });
   }
@@ -503,8 +516,7 @@
     animateFrameStepped(CHAPTERS[0].frame, duration, linear, function () {
       chapterIndex = 0;
       slideWindowFor(CHAPTERS[0].frame, 0);
-      updateNavVisibility();
-      enterSurface(0);
+      arriveAtStop(0);
     });
   }
 

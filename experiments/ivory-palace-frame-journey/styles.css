@@ -7,12 +7,12 @@
 
   /* Stop surfaces (METHOD §11). JS reads the exit durations from here so
      CSS and the navigation state machine share one source of timing. */
-  --panel-enter-ms: 800ms;
-  --panel-exit-ms: 450ms;
+  --panel-enter-ms: 1400ms;
+  --panel-exit-ms: 1000ms;
   --finale-enter-ms: 1200ms;
   --finale-exit-ms: 800ms;
-  --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-dissolve: cubic-bezier(0.55, 0.06, 0.68, 0.19);
+  --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1); /* cinematic ease-out */
+  --ease-dissolve: cubic-bezier(0.42, 0, 1, 1); /* gentle ease-in */
 }
 
 * { box-sizing: border-box; }
