@@ -17,8 +17,8 @@
  *     during frame travel, rests fully visible at 80/160/240, frame 300
  *     rests on full-box warm light instead, leaving a stop clears the
  *     right surface, rapid input cannot strand or double a transition,
- *     opacity never jumps, the mist's measured footprint is ~90% × ~90%
- *     with no hard edge, layouts hold across six viewport classes,
+ *     opacity never jumps, the mist is a measured ~90% × ~90% centred
+ *     oval with no hard edge, layouts hold across six viewport classes,
  *     reduced motion keeps every state, and the reserved wording layer
  *     is empty, hidden and inert
  *
@@ -215,20 +215,34 @@ async function measureMist(page) {
       for (let i = len - 1; i >= 0; i--) if (at(i) >= 0.5) { hi = i; break; }
       return lo < 0 ? 0 : (hi - lo + 1) / len;
     };
-    const widths = [0.3, 0.5, 0.7].map((f) => span(w, (x) => a(x, Math.floor(h * f))));
-    const heights = [0.3, 0.5, 0.7].map((f) => span(h, (y) => a(Math.floor(w * f), y)));
+    // Oval axes on the centre row/column; a row 20% of the box above
+    // centre should span sqrt(1 - (0.2/0.45)^2) ~ 0.9 of the axis for an
+    // ellipse, where a rectangle would span the full axis.
+    const width = span(w, (x) => a(x, cy));
+    const height = span(h, (y) => a(cx, y));
+    const offRowWidth = span(w, (x) => a(x, Math.floor(h * 0.3)));
     let edgeMax = 0;
     for (let x = 0; x < w; x++) edgeMax = Math.max(edgeMax, a(x, 0), a(x, h - 1));
     for (let y = 0; y < h; y++) edgeMax = Math.max(edgeMax, a(0, y), a(w - 1, y));
+    // Calm centre: everything within 75% of the oval's radius.
     let coreMin = 1;
-    for (let y = Math.floor(h * 0.2); y < h * 0.8; y += 4)
-      for (let x = Math.floor(w * 0.22); x < w * 0.78; x += 4) coreMin = Math.min(coreMin, a(x, y));
+    for (let y = 0; y < h; y += 4)
+      for (let x = 0; x < w; x += 4) {
+        const dx = (x - cx) / (w * 0.45), dy = (y - cy) / (h * 0.45);
+        if (dx * dx + dy * dy <= 0.75 * 0.75) coreMin = Math.min(coreMin, a(x, y));
+      }
     const [r, g, b] = rgb(cx, cy);
-    const mean = (xs) => xs.reduce((p, q) => p + q, 0) / xs.length;
-    return { w, h, width: mean(widths), height: mean(heights), edgeMax, coreMin,
+    return { w, h, width, height, oval: offRowWidth / width, edgeMax, coreMin,
       centreAlpha: (centre - bg) / (246 - bg), warm: r - b };
   `
   );
+}
+
+// ~90% on both axes, oval (not rectangular) off-centre spans, no visible
+// edge at the box boundary, and a calm, solid centre.
+function mistOk(m) {
+  return m.width >= 0.86 && m.width <= 0.94 && m.height >= 0.86 && m.height <= 0.94 &&
+    m.oval >= 0.82 && m.oval <= 0.94 && m.edgeMax < 0.1 && m.coreMin >= 0.93;
 }
 
 async function measureFinale(page) {
@@ -467,9 +481,9 @@ async function main() {
     check("rapid-input run: no surface during travel, no opacity jumps", ov.travelLeaks === 0 && ov.ok, `leaks=${ov.travelLeaks} worst=${ov.worstJump.toFixed(3)}`);
     const mist = await measureMist(page);
     check(
-      "mist footprint ~90% x ~90%, soft to zero at every edge, solid warm centre",
-      mist.width >= 0.84 && mist.width <= 0.95 && mist.height >= 0.84 && mist.height <= 0.95 && mist.edgeMax < 0.12 && mist.coreMin >= 0.9 && mist.warm >= 3,
-      `width=${(mist.width * 100).toFixed(1)}% height=${(mist.height * 100).toFixed(1)}% edgeMax=${mist.edgeMax.toFixed(3)} coreMin=${mist.coreMin.toFixed(3)} centreAlpha=${mist.centreAlpha.toFixed(3)}`
+      "mist is a centred ~90% x ~90% oval, soft to zero at every edge, solid warm centre",
+      mistOk(mist) && mist.warm >= 3,
+      `width=${(mist.width * 100).toFixed(1)}% height=${(mist.height * 100).toFixed(1)}% oval=${mist.oval.toFixed(3)} edgeMax=${mist.edgeMax.toFixed(3)} coreMin=${mist.coreMin.toFixed(3)} centreAlpha=${mist.centreAlpha.toFixed(3)}`
     );
     check("no page errors on desktop", pageErrors.length === 0, JSON.stringify(pageErrors));
 
@@ -593,9 +607,9 @@ async function main() {
       check(
         `${name} ${width}x${height}: mist ~90%x90% of invitation, contained, no overflow, controls usable`,
         vo.surface === "mist" && vo.mistOpacity >= 0.995 && !layout.overflowX && !layout.overflowY && layout.mistInside && layout.boxInside && hit &&
-          m.width >= 0.84 && m.width <= 0.95 && m.height >= 0.84 && m.height <= 0.95 && m.edgeMax < 0.12 && m.coreMin >= 0.9 && vErrors.length === 0,
+          mistOk(m) && vErrors.length === 0,
         `mist ${mistPxW.toFixed(0)}x${mistPxH.toFixed(0)}px = ${(m.width * 100).toFixed(1)}% x ${(m.height * 100).toFixed(1)}% of ${layout.boxW.toFixed(0)}x${layout.boxH.toFixed(0)} box; ` +
-          `${((mistPxW / layout.vw) * 100).toFixed(1)}vw x ${((mistPxH / layout.vh) * 100).toFixed(1)}vh; edgeMax=${m.edgeMax.toFixed(3)} coreMin=${m.coreMin.toFixed(3)}` +
+          `${((mistPxW / layout.vw) * 100).toFixed(1)}vw x ${((mistPxH / layout.vh) * 100).toFixed(1)}vh; oval=${m.oval.toFixed(3)} edgeMax=${m.edgeMax.toFixed(3)} coreMin=${m.coreMin.toFixed(3)}` +
           `; opacity=${vo.mistOpacity} overflow=${layout.overflowX || layout.overflowY} contained=${layout.mistInside && layout.boxInside} navHit=${hit} errors=${vErrors.length}`
       );
       await vctx.close();

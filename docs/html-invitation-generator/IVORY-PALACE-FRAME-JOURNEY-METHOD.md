@@ -327,7 +327,7 @@ Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
   no surface during travel (per-animation-frame sampling), no opacity
   jumps, rapid-input bursts at rest, mid-entrance, mid-exit and
   mid-travel, the full-box finale light, the reverse from 300, and the
-  pixel-measured mist geometry;
+  pixel-measured oval geometry;
 - seven responsive viewports;
 - reduced motion;
 - the empty, inert wording layer, with none of the 348 approved
@@ -352,23 +352,24 @@ baked into, and never require regenerating, the 300 frames.
 
 ### Owner-approved treatment
 
-- **Frames 80, 160 and 240** show a large, near-square, mist-edged
-  ivory paper layer. Its footprint is about **90% of the visible
-  invitation's width × 90% of its height**, measured at the
-  half-opacity contour and centred in both axes. On portrait phones,
+- **Frames 80, 160 and 240** show a smooth, centred **vertical oval** of
+  ivory mist (revised from an earlier rough, smoke-edged rectangle). Its
+  footprint is about **90% of the visible invitation's width × 90% of
+  its height**, measured at the half-opacity contour and centred in both
+  axes. On portrait phones,
   where the invitation fills the viewport, that is the approved
   ~`90vw` × ~`90dvh`. On wider screens the 9:16 invitation is
   pillarboxed, so the mist stays at 90% of the invitation rather than
   spreading over the dark side bars.
-- The edges are **broad, smoky, cloudy and irregular on all four
-  sides**. There is no rectangle, border or clipped corner. The mist
-  fades to zero before the box edge, leaving only a narrow perimeter of
-  palace architecture.
-- The centre is **calm and substantially opaque**: about 94% opacity,
-  so a faint impression of the palace remains. The colour is **warm
-  ivory**, not cold white: a radial blend of `rgba(252,248,240,.95)` →
-  `rgba(245,236,219,.90)`. Near-invisible paper grain and soft mottling
-  sit on top.
+- The edge is **softly and evenly feathered in every direction**, with
+  no corners, streaks or irregular cut-offs. The mist fades to zero
+  before the box edge, and the palace architecture stays visible around
+  the oval.
+- The centre is **calm and opaque**: about 95–97% opacity, so only the
+  faintest impression of the palace remains. The colour is **warm
+  ivory**, not cold white: a radial blend of `rgba(252,248,240,.97)` →
+  `rgba(246,238,222,.95)`. Near-invisible paper grain and soft mottling
+  sit inside it.
 - **Frame 300** does not use the bounded mist. The whole invitation box
   dissolves into warm luminous white
   (`#fffdf9` → `#fcf7ee` → `#f8f0e2`), so no palace perimeter is left at
@@ -378,22 +379,21 @@ baked into, and never require regenerating, the 300 frames.
 
 ### Implementation
 
-- **One reusable alpha mask**, `mist/paper-mist-mask.svg` (~2KB,
-  hand-authored SVG, no text or imagery). A broadly blurred rectangle
-  gives a soft distance field. Fractal noise is added to it, weighted by
-  `(1 − field)` so it only disturbs the edge band. The sum is gently
-  steepened and re-softened, so the boundary breaks into billowy puffs
-  while the interior stays solid. A second, tightly blurred falloff
-  mask guarantees zero alpha at the box edge. The mask is applied with
-  CSS `mask` at `100% 100%`, so one asset serves every stop and every
-  viewport.
-- **One tileable texture**, `mist/paper-grain.svg` (~1KB,
-  hand-authored). Fine grain plus low-frequency mottling in warm sepia
-  at very low alpha.
-- Both SVGs are original, code-generated assets written for this
-  experiment. They have no external source or licence dependency. CSS
-  masks must be fetched over HTTP, so preview through the local server,
-  not `file://`.
+- **The oval is pure CSS.** `.stop-mist::before` is inset 5% within the
+  invitation box, with `border-radius: 50%` (an ellipse of exactly
+  90% × 90%). It is feathered with `filter: blur(2.4cqw)`. The blur
+  radius is a fraction of the invitation's width, not of each axis, so
+  the feather is the same number of pixels in every direction and scales
+  with the invitation. `.frame-box` declares `container-type: size` for
+  this, and a `blur(9px)` fallback covers browsers without container
+  units. The blurred edge's half-opacity line falls on the ellipse
+  itself, and the tail reaches (near) zero before the box edge.
+- **Paper grain** is `.stop-mist::after`: the tileable
+  `mist/paper-grain.svg` (~1KB, hand-authored, original, no text or
+  imagery). It is kept out of the blur and faded out well inside the
+  oval by a radial-gradient mask. The finale light uses the same grain.
+- The earlier SVG smoke mask (`paper-mist-mask.svg`) has been removed.
+  The mist no longer depends on any mask asset.
 - The visual state is a single attribute,
   `#frameBox[data-surface] = "none" | "mist" | "finale"`. CSS owns every
   fade. `script.js` only sets the attribute and reads the exit
@@ -426,6 +426,8 @@ No surface receives pointer events.
 
 ### Sequences
 
+- The fade timings and sequences below are unchanged by the oval
+  revision; only the shape changed.
 - **Arrival at a stop:** the camera travel completes and lands exactly on
   the target frame. `animateFrameStepped` finishes (the canvas stops),
   the chapter state updates, and only then is `data-surface` set, so the
@@ -456,20 +458,22 @@ placeholder text.
 
 Measured by `verify.js` from pixels (half-opacity contour) at frame 80, in one run (values vary by about ±0.2%):
 
-| Viewport | Invitation box | Mist footprint | Share of viewport |
+| Viewport | Invitation box | Oval axes | Share of viewport |
 |---|---|---|---|
-| 320×568 narrow mobile | 320×568 | 287×510 (89.8% × 89.8%) | 89.7vw × 89.8vh |
-| 390×844 standard mobile | 390×844 | 349×758 (89.6% × 89.8%) | 89.6vw × 89.8vh |
-| 360×800 tall mobile | 360×800 | 322×717 (89.5% × 89.7%) | 89.5vw × 89.7vh |
-| 412×915 tall mobile | 412×915 | 369×821 (89.6% × 89.7%) | 89.6vw × 89.7vh |
-| 768×1024 tablet portrait | 576×1024 | 515×918 (89.5% × 89.7%) | 67.1vw × 89.7vh |
+| 320×568 narrow mobile | 320×568 | 288×510 (90.0% × 89.8%) | 89.9vw × 89.8vh |
+| 390×844 standard mobile | 390×844 | 349×758 (89.5% × 89.8%) | 89.5vw × 89.8vh |
+| 360×800 tall mobile | 360×800 | 324×718 (90.0% × 89.8%) | 90.0vw × 89.8vh |
+| 412×915 tall mobile | 412×915 | 370×821 (89.8% × 89.7%) | 89.8vw × 89.7vh |
+| 768×1024 tablet portrait | 576×1024 | 516×920 (89.6% × 89.8%) | 67.2vw × 89.8vh |
 | 900×1400 desktop portrait | 788×1400 | 706×1256 (89.6% × 89.7%) | 78.4vw × 89.7vh |
-| 1440×900 desktop landscape | 506×900 | 452×809 (89.4% × 89.9%) | 31.4vw × 89.9vh |
+| 1440×900 desktop landscape | 506×900 | 454×810 (89.8% × 90.0%) | 31.6vw × 90.0vh |
 
 None of these viewports has horizontal or vertical overflow. The mist
-never extends past the invitation box, the controls stay hit-testable,
-the edge opacity stays ≤5% and the core opacity ≥93% (relative to the
-centre). The stage height uses `100dvh` with a `100vh` fallback.
+never extends past the invitation box, and the controls stay
+hit-testable. The oval check confirms the shape: a row 20% of the box
+above centre spans about 0.895 of the full width, against 0.898 for an
+ideal ellipse and 1.0 for a rectangle. The edge opacity stays ≤5% and
+the core (within 75% of the radius) stays ≥94% of the centre. The stage height uses `100dvh` with a `100vh` fallback.
 
 ## Files
 
@@ -480,7 +484,6 @@ experiments/ivory-palace-frame-journey/
 ├── script.js        # sliding cache, canvas renderer, frame-stepped easing, input, stop-surface hook
 ├── verify.js         # reproducible Playwright verification (§10)
 ├── mist/
-│   ├── paper-mist-mask.svg  # reusable smoky-edge alpha mask (§11)
 │   └── paper-grain.svg      # near-invisible paper grain tile (§11)
 ├── wording/          # approved wording catalogue (not displayed yet)
 └── frames/           # 300 unaltered JPEGs, ezgif-frame-001.jpg … ezgif-frame-300.jpg

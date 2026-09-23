@@ -68,6 +68,9 @@ html, body {
   overflow: hidden;
   background: #1a140d;
   box-shadow: 0 0 80px rgba(0, 0, 0, 0.55);
+  /* Lets stop surfaces size their feather to the invitation (cqw). The
+     box's size comes from height + aspect-ratio, never its content. */
+  container-type: size;
 }
 
 .frame-canvas {
@@ -86,9 +89,10 @@ html, body {
 /*
  * Layer order inside .frame-box: canvas → veil (1) → mist / finale light (2)
  * → reserved wording layer (4) → loader (5) → navigation (6).
- * Each layer fills the invitation box; the mist's ~90% × ~90% paper shape
- * and its smoky edge come from one reusable alpha mask, so there is no CSS
- * rectangle edge to see. Nothing here receives pointer events.
+ * Each layer fills the invitation box. The mist is a centred vertical oval,
+ * ~90% × ~90% of the box, whose edge is feathered by a blur sized to the
+ * box width, so it softens by the same amount in every direction.
+ * Nothing here receives pointer events.
  */
 
 .stop-veil,
@@ -108,15 +112,31 @@ html, body {
 
 .stop-mist {
   z-index: 2;
-  background:
-    url("mist/paper-grain.svg") 0 0 / 240px 240px repeat,
-    radial-gradient(ellipse 72% 62% at 50% 48%, rgba(252, 248, 240, 0.95), rgba(249, 243, 231, 0.93) 62%, rgba(245, 236, 219, 0.9));
-  -webkit-mask: url("mist/paper-mist-mask.svg") center / 100% 100% no-repeat;
-  mask: url("mist/paper-mist-mask.svg") center / 100% 100% no-repeat;
   transform: scale(1.012);
   transition:
     opacity var(--mist-exit-ms) var(--ease-dissolve),
     transform var(--mist-exit-ms) var(--ease-dissolve);
+}
+
+/* The oval itself: its half-opacity edge sits on the 90% × 90% ellipse. */
+.stop-mist::before,
+.stop-mist::after {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border-radius: 50%;
+}
+.stop-mist::before {
+  background: radial-gradient(closest-side, rgba(252, 248, 240, 0.97), rgba(250, 244, 233, 0.96) 70%, rgba(246, 238, 222, 0.95));
+  filter: blur(9px); /* fallback where container units are unsupported */
+  filter: blur(2.4cqw);
+}
+/* Near-invisible paper grain, kept out of the blur and faded well inside
+   the oval's edge. */
+.stop-mist::after {
+  background: url("mist/paper-grain.svg") 0 0 / 240px 240px repeat;
+  -webkit-mask: radial-gradient(closest-side, #000 60%, transparent 92%);
+  mask: radial-gradient(closest-side, #000 60%, transparent 92%);
 }
 
 .finale-light {
