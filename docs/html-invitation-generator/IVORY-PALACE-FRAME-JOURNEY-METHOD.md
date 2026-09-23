@@ -131,46 +131,17 @@ engine, differing only in the easing function passed in:
 - **Opening (frames 1→80)**: `linear` easing — constant real-time
   speed, matching the source clip's own pace. Reads as normal video
   playback, not an animated ramp.
-- **Every chapter journey** (80→160, 160→240, 240→300, and the same
-  in reverse): `cinematicEase`, a custom velocity curve (below). It
-  leaves a stop extremely slowly, accelerates gradually, cruises
-  moderately faster mid-journey, decelerates over a long glide and lands
-  gently on the exact destination frame.
+- **Every chapter transition** (80→160, 160→240, 240→300, and the
+  same in reverse): `gentleEase`, a 30%-weighted blend of linear and
+  cubic ease-in-out (`(1-0.3)*t + 0.3*easeInOutCubic(t)`). Accelerates
+  away from a stop, decelerates into the next.
 
-**Opening duration**: `realTimeDuration()` computes
-`(frameCount / 30) * 1000`, the source clip's own pace (80 frames ≈
-2.67s).
-
-**Journey duration**: `journeyDuration()` is 5.2s per 80 frames, with a
-4.5s floor, so the 60-frame finale leg takes 4.5s rather than a
-proportional 3.9s and leaves and lands just as gently.
-
-**The cinematic velocity curve** (`cinematicEase`, normalised time
-`t ∈ [0, 1]`). Speed is a fraction of the cruising speed:
-
-| Phase | Time | Speed | Share of travel |
-|---|---|---|---|
-| Accelerate | 0–25% | `V0 → 1` along a smoothstep (`3s² − 2s³`) | 18.8% |
-| Cruise | 25–70% | `1` (the moderately faster middle) | 58.7% |
-| Decelerate | 70–100% | `1 → V0` along the mirrored smoothstep | 22.5% |
-
-`V0 = 0.15`, so the first and last frames keep moving gently instead
-of holding for a long beat. Position is the exact integral of that
-speed, normalised to run 0 → 1. Speed and position are continuous
-everywhere, so there is no speed jump when movement begins and no
-abrupt braking. The peak speed is 1.305× the average.
-
-For an 80-frame, 5.2s leg, that means:
-
-- cruise ≈ 20 fps;
-- about 3 fps at the very start (the first frame moves about 270ms in);
-- measured roughly 9 fps across the first four frames, 20 fps
-  mid-journey, and 5.6 fps across the last four;
-- peak acceleration about 20 fps/s.
-
-The 4.5s finale leg cruises at about 18 fps. The curve never
-approaches the 30fps ceiling, so the ceiling never shapes the motion.
-Every integer frame is still shown exactly once.
+**Duration**: `realTimeDuration()` computes `(frameCount / 30) * 1000`
+— the exact real-time playback duration at the source's own frame
+rate. 80-frame transitions ≈ 2666.7ms nominal, 60-frame ≈ 2000ms
+nominal. Measured actual durations run a little longer (~3.5s / ~2.7s)
+because genuine easing needs slack time a flat 30fps schedule doesn't
+have — see the derivation in §7's "speed" sub-thread below.
 
 **Why frame-stepping, not interpolate-and-round**: `animateFrameStepped()`
 walks through every integer frame exactly once, advancing only when
@@ -181,12 +152,13 @@ guarantees zero skipped frames by construction: the loop can only ever
 move the display forward (or back) by exactly one frame per commit,
 never round a fast mid-curve position past several integers at once.
 
-History: journeys originally ran at exactly `frames/30fps` (≈2.67s per
-80 frames) with `gentleEase`, a 30%-weighted blend of linear and cubic
-ease-in-out. That left almost no room for a speed curve, because 30fps
-was already the average rate. It read as rapid, nearly constant motion,
-so the Owner asked for the slower cinematic curve above. The longer
-duration is what gives the curve room under the 30fps ceiling.
+At exactly `frames/30fps` duration, 30fps is already the *average*
+rate needed to show every frame once — there's no slack for the middle
+of an ease curve to run faster than the edges without breaking the
+30fps ceiling. `gentleEase`'s 30% weight (rather than a full cubic,
+whose peak speed is 3× the average) was chosen specifically to keep
+the "extra" time this demands modest — a clearly perceptible ease
+without ballooning total duration.
 
 A "safety catch-up" (`overtime` flag) forces advancement at the floor
 rate once elapsed time passes the nominal duration, so a transition
@@ -346,14 +318,11 @@ node experiments/ivory-palace-frame-journey/verify.js
 ```
 
 Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
-§11 there are 84 checks:
+§11 there are 75 checks:
 
 - the original journey checks: landing, skips and the 30fps ceiling on
-  every transition, plus the measured cinematic speed profile (slow
-  start, faster middle, long glide, bounded acceleration) on every leg
-  in both directions;
-- arrow visibility, the memory budget and 36-frame cap, flicker, and
-  the mobile swipe;
+  every transition, arrow visibility, the memory budget and 36-frame
+  cap, flicker, and the mobile swipe;
 - the stop-surface checks: rest state at every stop in both directions,
   no surface during travel (per-animation-frame sampling), no opacity
   jumps, measured fade-in and fade-out timing, rapid-input bursts at
@@ -467,18 +436,15 @@ the panel. No surface receives pointer events.
 
 | Transition | Duration | Easing |
 |---|---|---|
-| Panel entrance | 1800ms opacity | `cubic-bezier(0.39, 0.575, 0.565, 1)` (very soft sine ease-out) |
-| Panel exit | 1400ms opacity | `cubic-bezier(0.42, 0, 1, 1)` (gentle ease-in) |
-| Journey between stops | 5.2s per 80 frames; 4.5s for the 60-frame finale leg | `cinematicEase` (§5) |
+| Panel entrance | 1400ms opacity | `cubic-bezier(0.22, 0.61, 0.36, 1)` (smooth cinematic ease-out) |
+| Panel exit | 1000ms opacity | `cubic-bezier(0.42, 0, 1, 1)` (gentle ease-in) |
 | Finale fade to light | 1200ms | `cubic-bezier(0.4, 0, 0.2, 1)` (unchanged) |
 | Finale dissolve (leaving 300) | 800ms | `ease-in-out` (unchanged) |
 | Reduced motion | 220 / 180 / 260 / 180ms | same states, short crossfades |
 
 Measured by `verify.js` from per-animation-frame sampling: each
-entrance reaches full opacity after about 1.73s. The first frame moves
-about 1.72s after a departure begins: the 1.4s fade-out, then the
-journey's own gentle first step. Frame, fill and reserved wording layer
-fade together as one group (`#stopPanel`).
+entrance reaches full opacity after about 1.32s, and the first frame
+moves about 1.08s after a departure begins.
 
 The panel fades by opacity only. There is no scale, so the ornament
 detail never resamples mid-transition.
@@ -490,12 +456,12 @@ detail never resamples mid-transition.
   the chapter state updates, and only then is `data-surface` set to
   `panel` (after the artwork has decoded), so the fade begins. No
   surface ever appears during travel. Every input source stays locked
-  until the 1.8s fade-in has completed, so the entrance cannot be
+  until the 1.4s fade-in has completed, so the entrance cannot be
   interrupted or doubled. The navigation controls appear once the panel
   has settled. The finale is unchanged: its controls return on landing.
 - **Leaving a stop** (any input, either direction): all input is locked
   at once (`isAnimating = true`), `data-surface` returns to `none`, and
-  the journey waits the full exit duration (1400ms, or 800ms from the
+  the journey waits the full exit duration (1000ms, or 800ms from the
   finale). Only then does frame travel start, and it unlocks through the
   existing state machine. The first moved frame is at least a further
   33ms later, so the panel is fully cleared before the background moves.
