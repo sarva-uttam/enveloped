@@ -23,6 +23,12 @@
  *     reduced motion keeps every state, and the reserved wording layer
  *     is empty, hidden and inert
  *
+ *   - approved-baseline lock (docs/html-invitation-generator/
+ *     IVORY-PALACE-STOP-LAYER-APPROVAL.md): each chapter journey keeps its
+ *     approved real-time pace (~3.5s per 80-frame leg) and the page loads
+ *     the approved arch frame asset. Static source/asset locks live in
+ *     baseline.test.cjs.
+ *
  * Set VERIFY_SHOTS=<dir> to also save one screenshot per viewport.
  *
  * Requires the `playwright` package (a devDependency of the parent
@@ -296,6 +302,20 @@ function analyzeOverlaySamples(samples, maxJump) {
   return { travelLeaks, travelSamples, worstJump, ok: worstJump <= maxJump };
 }
 
+// Approved journey pace: real-time frames/30fps with gentleEase, measured
+// at ~3.5s per 80-frame leg and ~2.7s for the 60-frame finale leg. A
+// slower or faster background journey fails here.
+function journeyPaceCheck(label, log) {
+  const frames = log.length;
+  const spanMs = log[frames - 1][1] - log[0][1];
+  const range = frames > 70 ? [3000, 4200] : [2200, 3300];
+  check(
+    `${label}: approved journey pace (~${frames > 70 ? "3.5" : "2.7"}s)`,
+    spanMs >= range[0] && spanMs <= range[1],
+    `${(spanMs / 1000).toFixed(2)}s for ${frames} frames`
+  );
+}
+
 // From the rAF samples: how long each panel entrance takes to reach full
 // opacity, and how long after a departure starts (surface -> none) the
 // first frame actually moves.
@@ -412,6 +432,7 @@ async function main() {
         a.minGap >= 30,
         `minGap=${a.minGap.toFixed(2)}ms`
       );
+      journeyPaceCheck(`chapter ${CHAPTERS[i - 1]}->${CHAPTERS[i]}`, log);
       await sampleCache();
       await restChecks(CHAPTERS[i], `forward ${CHAPTERS[i]}`);
     }
@@ -435,6 +456,8 @@ async function main() {
         landed && a.frames[a.frames.length - 1] === CHAPTERS[i - 1]
       );
       check(`reverse ${CHAPTERS[i]}->${CHAPTERS[i - 1]} has zero skips`, a.skips.length === 0);
+      check(`reverse ${CHAPTERS[i]}->${CHAPTERS[i - 1]} never exceeds ~30fps`, a.minGap >= 30, `minGap=${a.minGap.toFixed(2)}ms`);
+      journeyPaceCheck(`reverse ${CHAPTERS[i]}->${CHAPTERS[i - 1]}`, log);
       await sampleCache();
       await restChecks(CHAPTERS[i - 1], `reverse ${CHAPTERS[i - 1]}`);
     }
@@ -473,6 +496,11 @@ async function main() {
     check(`no stop surface visible during frame travel (${ov.travelSamples} travel samples)`, ov.travelSamples > 200 && ov.travelLeaks === 0, `leaks=${ov.travelLeaks}`);
     check("surface opacity never jumps between animation frames", ov.ok, `worst=${ov.worstJump.toFixed(3)}`);
     await wordingLayerChecks(page, "desktop");
+    const art = await page.evaluate(() => {
+      const img = document.getElementById("stopFrameArt");
+      return { src: img.currentSrc, natural: img.naturalWidth + "x" + img.naturalHeight };
+    });
+    check("page loads the approved arch frame asset", /\/assets\/ivory-palace-arch-frame\.png$/.test(art.src) && art.natural === "941x1672", JSON.stringify(art));
 
     // ---- Rapid repeated input: at rest, mid-entrance, mid-exit and mid-travel ----
     await page.evaluate(() => { window.__frameLog = []; window.__overlaySamples = []; });

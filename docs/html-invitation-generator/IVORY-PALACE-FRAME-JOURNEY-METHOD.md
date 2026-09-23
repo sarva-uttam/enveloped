@@ -311,23 +311,31 @@ A consolidated, reusable verification script lives at
 own local static server, drives the page with Playwright, and asserts
 every property in §5–§9 and §11, printing a `PASS`/`FAIL` line per check.
 
+A fast static lock, `baseline.test.cjs`, pins the Owner-approved stop
+layer in source and assets (§11; see the approval record). It needs no
+browser.
+
 ```sh
 # From the repo root. Requires the `playwright` package (already a
 # devDependency of the parent repo) and python3 on PATH.
+node --test experiments/ivory-palace-frame-journey/baseline.test.cjs
 node experiments/ivory-palace-frame-journey/verify.js
 ```
 
 Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
-§11 there are 75 checks:
+§11 there are 85 checks:
 
 - the original journey checks: landing, skips and the 30fps ceiling on
   every transition, arrow visibility, the memory budget and 36-frame
   cap, flicker, and the mobile swipe;
+- the approved journey pace on every leg (80-frame legs 3.0–4.2s, the
+  finale leg 2.2–3.3s) and the approved frame asset actually loaded;
 - the stop-surface checks: rest state at every stop in both directions,
   no surface during travel (per-animation-frame sampling), no opacity
   jumps, measured fade-in and fade-out timing, rapid-input bursts at
-  rest, during the fade-in (ignored), mid-exit and mid-travel, the full-box finale light, the reverse from 300, and the
-  measured panel geometry, 85% fill and clear frame exterior;
+  rest, during the fade-in (ignored), mid-exit and mid-travel, the
+  full-box finale light, the reverse from 300, and the measured panel
+  geometry, 85% fill and clear frame exterior;
 - seven responsive viewports;
 - reduced motion;
 - the empty, inert wording layer, with none of the 348 approved
@@ -343,17 +351,30 @@ python3 -m http.server 4521 --bind 127.0.0.1
 # open http://127.0.0.1:4521/
 ```
 
-## 11. Framed ivory stop panels (approved visual baseline)
+## 11. Framed ivory stop panels (Owner-approved baseline, locked)
 
-**Status: the approved visual baseline, pending the Owner's final review
-of the running prototype.** No invitation wording is displayed. The
-stop surfaces are presentation layers above the canvas. They are never
-baked into, and never require regenerating, the 300 frames.
+**Status: Owner-approved and locked at commit
+`66236606542bd7701fb54f3fe0558fd623a2fbc2`.** The approved configuration,
+the development path (rejected experiments versus the approved
+implementation) and the regression protection are recorded in
+[`IVORY-PALACE-STOP-LAYER-APPROVAL.md`](IVORY-PALACE-STOP-LAYER-APPROVAL.md).
+No invitation wording is displayed. The stop surfaces are presentation
+layers above the canvas. They are never baked into, and never require
+regenerating, the 300 frames.
 
-History: first a smoky, mist-edged rectangle, then a smooth oval mist,
-then a first framed panel using a lotus-vine frame. All three are
-superseded by the cusped-arch frame below. Their styling, code and
-assets have been removed.
+History, in brief:
+
+- **Rejected:** the smoky mist rectangle (rough, inconsistent edges);
+  the oval mist (portal-like, less wording space); and the first,
+  lotus-vine frame (visually heavy, collided with the controls).
+- **Rejected and reverted:** an extended cinematic journey experiment
+  (`a7aaee6`), because it introduced lag.
+- **Approved:** the cusped-arch frame over a separate 85% HTML/CSS
+  panel, with 1.4s / 1.0s fades and the ~3.5s journey, as described
+  below.
+
+The styling, code and assets of every rejected step are gone from the
+tree but remain in Git history.
 
 ### Owner-approved treatment
 
@@ -512,6 +533,7 @@ experiments/ivory-palace-frame-journey/
 ├── styles.css       # fixed 9:16 stage, stop-surface layers and timings, nav styling
 ├── script.js        # sliding cache, canvas renderer, frame-stepped easing, input, stop-surface hook
 ├── verify.js         # reproducible Playwright verification (§10)
+├── baseline.test.cjs # static lock of the Owner-approved stop layer (§11)
 ├── assets/
 │   ├── ivory-palace-arch-frame.png          # Owner-approved stop frame artwork (§11)
 │   └── ivory-palace-arch-frame-opening.png  # fill mask: the frame's clear opening (§11)
