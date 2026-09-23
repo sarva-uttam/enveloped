@@ -1,0 +1,87 @@
+{
+  "chapter": "haldi",
+  "zone": "host-structures",
+  "status": "owner-approved-editable-wording",
+  "variations": [
+    {
+      "id": "HS-01",
+      "when": "Bride's confirmed parents host",
+      "hostLine": "`{brideParents}`",
+      "invitationLead": "`warmly invite you to the Haldi ceremony of their daughter`",
+      "nameLine": "`{brideName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-02",
+      "when": "Groom's confirmed parents host",
+      "hostLine": "`{groomParents}`",
+      "invitationLead": "`warmly invite you to the Haldi ceremony of their son`",
+      "nameLine": "`{groomName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-03",
+      "when": "Bride's family hosts",
+      "hostLine": "`The {brideFamilyName} family`",
+      "invitationLead": "`warmly invites you to celebrate the Haldi ceremony of`",
+      "nameLine": "`{brideName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-04",
+      "when": "Groom's family hosts",
+      "hostLine": "`The {groomFamilyName} family`",
+      "invitationLead": "`warmly invites you to celebrate the Haldi ceremony of`",
+      "nameLine": "`{groomName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-05",
+      "when": "Both families host one joint event",
+      "hostLine": "`The {brideFamilyName} and {groomFamilyName} families`",
+      "invitationLead": "`warmly invite you to the joint Haldi celebration of`",
+      "nameLine": "`{brideName} and {groomName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-06",
+      "when": "Named hosts; relationship unconfirmed",
+      "hostLine": "`{hosts}`",
+      "invitationLead": "`invite you to the Haldi ceremony celebrating`",
+      "nameLine": "`{honoureeName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-07",
+      "when": "Couple hosts their joint event",
+      "hostLine": "`{brideName} and {groomName}`",
+      "invitationLead": "`invite you to celebrate their Haldi ceremony with them`",
+      "nameLine": "omit",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-08",
+      "when": "Host names omitted",
+      "hostLine": "omit",
+      "invitationLead": "`Please join us for the Haldi ceremony celebrating`",
+      "nameLine": "`{honoureeName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-09",
+      "when": "Extended families host, one honouree",
+      "hostLine": "`The {invitingFamilies}`",
+      "invitationLead": "`warmly invite you to celebrate the Haldi ceremony of`",
+      "nameLine": "`{honoureeName}`",
+      "status": "owner-approved-editable-structure"
+    },
+    {
+      "id": "HS-10",
+      "when": "Named hosts; honouree omitted from this block",
+      "hostLine": "`{hosts}`",
+      "invitationLead": "`warmly invite you to join them for the Haldi ceremony`",
+      "nameLine": "omit",
+      "status": "owner-approved-editable-structure"
+    }
+  ]
+}

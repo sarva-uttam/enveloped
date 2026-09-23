@@ -1,0 +1,848 @@
+{
+  "chapter": "haldi",
+  "zone": "introductions",
+  "frame": 160,
+  "status": "owner-approved-wording-alternatives",
+  "variations": [
+    {
+      "id": "HI-001",
+      "category": "Turmeric and tradition",
+      "text": "Join us as the warmth of Haldi begins the wedding celebrations.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-002",
+      "category": "Turmeric and tradition",
+      "text": "A little turmeric, many blessings, and a beautiful beginning await.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-003",
+      "category": "Turmeric and tradition",
+      "text": "Gather for a cherished Haldi tradition before the wedding day.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-004",
+      "category": "Turmeric and tradition",
+      "text": "Let the golden hues of turmeric welcome a joyful new chapter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-005",
+      "category": "Turmeric and tradition",
+      "text": "Together, we honour the Haldi tradition with love and blessings.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-006",
+      "category": "Turmeric and tradition",
+      "text": "Come share in the warmth of turmeric and the joy of family.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-007",
+      "category": "Turmeric and tradition",
+      "text": "The wedding journey begins with Haldi, togetherness and good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-008",
+      "category": "Turmeric and tradition",
+      "text": "A cherished tradition brings loved ones together in golden colour.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-009",
+      "category": "Turmeric and tradition",
+      "text": "Join us for the gentle beauty of a Haldi celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-010",
+      "category": "Turmeric and tradition",
+      "text": "Turmeric and tender wishes mark the start of something wonderful.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-011",
+      "category": "Blessings and good wishes",
+      "text": "Come offer your blessings as the wedding celebrations begin.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-012",
+      "category": "Blessings and good wishes",
+      "text": "Your good wishes will make this Haldi gathering even more meaningful.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-013",
+      "category": "Blessings and good wishes",
+      "text": "Let us gather in love and send the couple into their next chapter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-014",
+      "category": "Blessings and good wishes",
+      "text": "A moment for blessings, laughter and the people we hold dear.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-015",
+      "category": "Blessings and good wishes",
+      "text": "Join us to surround this new beginning with heartfelt wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-016",
+      "category": "Blessings and good wishes",
+      "text": "May this Haldi celebration be filled with kindness and joy.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-017",
+      "category": "Blessings and good wishes",
+      "text": "Bring your blessings to a gathering bright with love.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-018",
+      "category": "Blessings and good wishes",
+      "text": "We gather at Haldi to share our happiness and best wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-019",
+      "category": "Blessings and good wishes",
+      "text": "With every kind wish, this celebration grows a little brighter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-020",
+      "category": "Blessings and good wishes",
+      "text": "Come share your blessings as a new journey draws near.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-021",
+      "category": "Family and togetherness",
+      "text": "Our families would love to share this Haldi moment with you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-022",
+      "category": "Family and togetherness",
+      "text": "The best celebrations begin when loved ones gather close.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-023",
+      "category": "Family and togetherness",
+      "text": "Join our families for a warm celebration before the wedding.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-024",
+      "category": "Family and togetherness",
+      "text": "Haldi is brighter when celebrated with the people we love.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-025",
+      "category": "Family and togetherness",
+      "text": "Come make this family gathering part of the wedding story.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-026",
+      "category": "Family and togetherness",
+      "text": "We look forward to sharing laughter, colour and time together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-027",
+      "category": "Family and togetherness",
+      "text": "A golden afternoon becomes special when everyone comes together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-028",
+      "category": "Family and togetherness",
+      "text": "Join the warmth of family as the wedding festivities unfold.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-029",
+      "category": "Family and togetherness",
+      "text": "Let us fill this Haldi celebration with familiar faces and happy hearts.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-030",
+      "category": "Family and togetherness",
+      "text": "Your company will bring even more warmth to our gathering.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-031",
+      "category": "Colour and atmosphere",
+      "text": "Step into a celebration glowing with colour and affection.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-032",
+      "category": "Colour and atmosphere",
+      "text": "Let golden colour set the scene for a joyful gathering.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-033",
+      "category": "Colour and atmosphere",
+      "text": "A bright beginning calls for colour, laughter and togetherness.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-034",
+      "category": "Colour and atmosphere",
+      "text": "Join us where golden tones meet heartfelt celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-035",
+      "category": "Colour and atmosphere",
+      "text": "The colours of Haldi invite us to celebrate together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-036",
+      "category": "Colour and atmosphere",
+      "text": "A celebration in warm hues begins with the people we love.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-037",
+      "category": "Colour and atmosphere",
+      "text": "Come brighten our Haldi gathering with your presence.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-038",
+      "category": "Colour and atmosphere",
+      "text": "Golden moments await as we gather before the wedding.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-039",
+      "category": "Colour and atmosphere",
+      "text": "The beauty of Haldi shines brightest when shared.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-040",
+      "category": "Colour and atmosphere",
+      "text": "Let the day be coloured with joy, warmth and good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-041",
+      "category": "Music and laughter — only if planned",
+      "text": "Come for the Haldi tradition and stay for the music and laughter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-042",
+      "category": "Music and laughter — only if planned",
+      "text": "Let music, blessings and golden colour fill the celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-043",
+      "category": "Music and laughter — only if planned",
+      "text": "A little music makes this family gathering all the sweeter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-044",
+      "category": "Music and laughter — only if planned",
+      "text": "Join us for a Haldi filled with rhythm and warm wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-045",
+      "category": "Music and laughter — only if planned",
+      "text": "Gather for turmeric, music and a whole lot of joy.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-046",
+      "category": "Music and laughter — only if planned",
+      "text": "Let the songs begin as our loved ones gather for Haldi.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-047",
+      "category": "Music and laughter — only if planned",
+      "text": "There is joy in every beat when family celebrates together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-048",
+      "category": "Music and laughter — only if planned",
+      "text": "Come share the laughter and music of this golden occasion.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-049",
+      "category": "Music and laughter — only if planned",
+      "text": "Our Haldi celebration will be brighter with your voice and smile.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-050",
+      "category": "Music and laughter — only if planned",
+      "text": "Blessings and music bring a lovely rhythm to this beginning.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-051",
+      "category": "Gentle and elegant",
+      "text": "A quiet moment of tradition opens a joyful celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-052",
+      "category": "Gentle and elegant",
+      "text": "Gather with us for a graceful beginning to the wedding festivities.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-053",
+      "category": "Gentle and elegant",
+      "text": "Haldi brings a gentle glow to this meaningful new chapter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-054",
+      "category": "Gentle and elegant",
+      "text": "We invite you to share an intimate celebration of love and family.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-055",
+      "category": "Gentle and elegant",
+      "text": "Golden light and warm company make this moment worth remembering.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-056",
+      "category": "Gentle and elegant",
+      "text": "Let us celebrate the beauty of beginning together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-057",
+      "category": "Gentle and elegant",
+      "text": "A cherished gathering awaits before the wedding day.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-058",
+      "category": "Gentle and elegant",
+      "text": "The warmth of Haldi welcomes a moment to pause and celebrate.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-059",
+      "category": "Gentle and elegant",
+      "text": "Join us for a celebration as heartfelt as it is joyful.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-060",
+      "category": "Gentle and elegant",
+      "text": "A golden gathering marks the start of a shared future.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-061",
+      "category": "Playful and contemporary",
+      "text": "Here comes the Haldi glow and all the happiness with it.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-062",
+      "category": "Playful and contemporary",
+      "text": "Let the golden celebrations begin with you beside us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-063",
+      "category": "Playful and contemporary",
+      "text": "We are bringing the colour; you bring the smiles.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-064",
+      "category": "Playful and contemporary",
+      "text": "A joyful new chapter deserves a golden start.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-065",
+      "category": "Playful and contemporary",
+      "text": "Come make a little room for colour and a lot of happiness.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-066",
+      "category": "Playful and contemporary",
+      "text": "The wedding countdown feels brighter with Haldi on the calendar.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-067",
+      "category": "Playful and contemporary",
+      "text": "We have a golden reason to gather and celebrate.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-068",
+      "category": "Playful and contemporary",
+      "text": "Come celebrate the happy moments before the big day.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-069",
+      "category": "Playful and contemporary",
+      "text": "Haldi, happy hearts and everyone we love: what a beginning.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-070",
+      "category": "Playful and contemporary",
+      "text": "Join us as the festivities find their golden glow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-071",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Haldi is a family celebration centred on turmeric and good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-072",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Join us for Haldi, a pre-wedding gathering of loved ones.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-073",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "At Haldi, our families come together to celebrate and offer blessings.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-074",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "This turmeric-centred tradition begins the celebrations with warmth.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-075",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Share in a Haldi gathering filled with family and kind wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-076",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Haldi brings loved ones together before the wedding ceremony.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-077",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Come experience a cherished pre-wedding tradition with our families.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-078",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "A celebration of turmeric and togetherness welcomes the wedding ahead.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-079",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Join a joyful family tradition as the wedding approaches.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-080",
+      "category": "Cultural explanation for unfamiliar guests",
+      "text": "Haldi offers a moment for family, celebration and good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-081",
+      "category": "Yellow attire — only when requested",
+      "text": "Wear a touch of yellow and join us for a golden Haldi gathering.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-082",
+      "category": "Yellow attire — only when requested",
+      "text": "Yellow is welcome as we celebrate this joyful Haldi tradition.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-083",
+      "category": "Yellow attire — only when requested",
+      "text": "Come dressed in yellow for an afternoon of warmth and blessings.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-084",
+      "category": "Yellow attire — only when requested",
+      "text": "Add a little yellow to your outfit and share in the celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-085",
+      "category": "Yellow attire — only when requested",
+      "text": "Let your favourite shade of yellow join the festivities.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-086",
+      "category": "Yellow attire — only when requested",
+      "text": "Bring your smile and a hint of yellow to our Haldi gathering.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-087",
+      "category": "Yellow attire — only when requested",
+      "text": "Dress in yellow, if you wish, and celebrate with our families.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-088",
+      "category": "Yellow attire — only when requested",
+      "text": "A splash of yellow will make this joyful day even brighter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-089",
+      "category": "Yellow attire — only when requested",
+      "text": "Join the golden mood with a touch of yellow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-090",
+      "category": "Yellow attire — only when requested",
+      "text": "Yellow attire is warmly encouraged for our Haldi celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HI-091",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Among marigolds and family, the Haldi celebration begins.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-092",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Let marigolds frame a gathering full of love and good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-093",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Golden petals and familiar faces welcome the wedding festivities.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-094",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Join us as loved ones gather for the turmeric ceremony.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-095",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Share in the tradition of applying Haldi with love and care.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-096",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "A gentle touch of turmeric marks this joyful family occasion.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-097",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Come witness the Haldi ritual and offer your warm wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-098",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Gather around as golden turmeric becomes part of the celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-099",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Flowers, turmeric and family make a lovely beginning.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HI-100",
+      "category": "Marigolds and turmeric application — only if true",
+      "text": "Join the Haldi ritual as loved ones celebrate the journey ahead.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    }
+  ]
+}
