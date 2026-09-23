@@ -296,6 +296,45 @@ function analyzeOverlaySamples(samples, maxJump) {
   return { travelLeaks, travelSamples, worstJump, ok: worstJump <= maxJump };
 }
 
+// Speed profile of one chapter journey from its frame log: slow start,
+// gradual acceleration, faster middle, long glide, slow landing, and no
+// sudden change in pace between neighbouring stretches of frames.
+function analyzeVelocity(log) {
+  const t = log.map((x) => x[1]);
+  const n = t.length;
+  const rate = (i, j) => (j - i) / ((t[j] - t[i]) / 1000); // fps over frames i..j
+  const q = Math.floor(n / 4);
+  const startFps = rate(0, 4), endFps = rate(n - 5, n - 1);
+  const firstQuarterFps = rate(0, q), middleFps = rate(Math.floor(n * 0.35), Math.floor(n * 0.65)), lastQuarterFps = rate(n - 1 - q, n - 1);
+  let peakFps = 0, maxAccel = 0;
+  const W = 6;
+  for (let i = 0; i + W < n; i++) peakFps = Math.max(peakFps, rate(i, i + W));
+  // Acceleration between neighbouring 6-frame windows, in fps per second:
+  // a sudden start or abrupt braking shows up as a large value here.
+  for (let i = 0; i + 2 * W < n; i += 1) {
+    const r1 = rate(i, i + W), r2 = rate(i + W, i + 2 * W);
+    const dt = ((t[i + 2 * W] + t[i + W]) / 2 - (t[i + W] + t[i]) / 2) / 1000;
+    maxAccel = Math.max(maxAccel, Math.abs(r2 - r1) / dt);
+  }
+  return { frames: n, spanMs: t[n - 1] - t[0], startFps, firstQuarterFps, middleFps, lastQuarterFps, endFps, peakFps, maxAccel };
+}
+
+function velocityCheck(label, log) {
+  const v = analyzeVelocity(log);
+  // 80-frame legs ~5.2s, the 60-frame finale leg ~4.5s (a little less
+  // is visible in the log, which starts at the first moved frame).
+  const expectMs = v.frames > 70 ? [4400, 6000] : [3800, 5000];
+  check(
+    `${label}: cinematic speed curve (slow start, faster middle, long glide)`,
+    v.spanMs >= expectMs[0] && v.spanMs <= expectMs[1] &&
+      v.startFps <= 0.6 * v.middleFps && v.endFps <= 0.5 * v.middleFps &&
+      v.middleFps > v.firstQuarterFps && v.middleFps > v.lastQuarterFps &&
+      v.peakFps <= 30.5 && v.maxAccel < 40,
+    `span=${(v.spanMs / 1000).toFixed(2)}s for ${v.frames} frames; start=${v.startFps.toFixed(1)} q1=${v.firstQuarterFps.toFixed(1)} ` +
+      `mid=${v.middleFps.toFixed(1)} q4=${v.lastQuarterFps.toFixed(1)} end=${v.endFps.toFixed(1)} peak=${v.peakFps.toFixed(1)}fps maxAccel=${v.maxAccel.toFixed(1)}fps/s`
+  );
+}
+
 // From the rAF samples: how long each panel entrance takes to reach full
 // opacity, and how long after a departure starts (surface -> none) the
 // first frame actually moves.
@@ -399,7 +438,7 @@ async function main() {
         await page.mouse.move(720, 450);
         await page.mouse.wheel(0, 100);
       }
-      landed = await waitSettle(page, getFrame, CHAPTERS[i], 6000);
+      landed = await waitSettle(page, getFrame, CHAPTERS[i], 14000);
       log = await page.evaluate(() => window.__frameLog);
       a = analyzeFrameLog(log);
       check(
@@ -412,6 +451,7 @@ async function main() {
         a.minGap >= 30,
         `minGap=${a.minGap.toFixed(2)}ms`
       );
+      velocityCheck(`chapter ${CHAPTERS[i - 1]}->${CHAPTERS[i]}`, log);
       await sampleCache();
       await restChecks(CHAPTERS[i], `forward ${CHAPTERS[i]}`);
     }
@@ -427,7 +467,7 @@ async function main() {
         window.__frameLog = [];
       });
       await page.keyboard.press("ArrowUp");
-      landed = await waitSettle(page, getFrame, CHAPTERS[i - 1], 6000);
+      landed = await waitSettle(page, getFrame, CHAPTERS[i - 1], 14000);
       log = await page.evaluate(() => window.__frameLog);
       a = analyzeFrameLog(log);
       check(
@@ -435,6 +475,8 @@ async function main() {
         landed && a.frames[a.frames.length - 1] === CHAPTERS[i - 1]
       );
       check(`reverse ${CHAPTERS[i]}->${CHAPTERS[i - 1]} has zero skips`, a.skips.length === 0);
+      check(`reverse ${CHAPTERS[i]}->${CHAPTERS[i - 1]} never exceeds ~30fps`, a.minGap >= 30, `minGap=${a.minGap.toFixed(2)}ms`);
+      velocityCheck(`reverse ${CHAPTERS[i]}->${CHAPTERS[i - 1]}`, log);
       await sampleCache();
       await restChecks(CHAPTERS[i - 1], `reverse ${CHAPTERS[i - 1]}`);
     }
@@ -455,20 +497,20 @@ async function main() {
     let samples = await page.evaluate(() => window.__overlaySamples);
     const timing = analyzePanelTiming(samples);
     check(
-      `panel fade-in takes ~1.4s at every stop (${timing.enters.length} entrances)`,
-      timing.enters.length >= 6 && timing.enters.every((t) => t >= 1250 && t <= 1700),
+      `panel fade-in takes ~1.8s at every stop (${timing.enters.length} entrances)`,
+      timing.enters.length >= 6 && timing.enters.every((t) => t >= 1600 && t <= 2100),
       timing.enters.map((t) => t.toFixed(0) + "ms").join(", ")
     );
     check(
-      `frames move only after the ~1s fade-out completes (${timing.exits.length} departures)`,
-      timing.exits.length >= 5 && timing.exits.every((t) => t >= 1000 && t <= 1300),
+      `frames move only after the ~1.4s fade-out completes (${timing.exits.length} departures)`,
+      timing.exits.length >= 5 && timing.exits.every((t) => t >= 1400 && t <= 2000),
       timing.exits.map((t) => t.toFixed(0) + "ms").join(", ")
     );
     const cssTiming = await page.evaluate(() => {
       const cs = getComputedStyle(document.documentElement);
       return [cs.getPropertyValue("--panel-enter-ms").trim(), cs.getPropertyValue("--panel-exit-ms").trim(), cs.getPropertyValue("--ease-settle").trim(), cs.getPropertyValue("--ease-dissolve").trim().replace(/\s*\/\*.*$/, "")];
     });
-    check("panel timings are 1400ms ease-out in / 1000ms ease-in out", cssTiming[0] === "1400ms" && cssTiming[1] === "1000ms", JSON.stringify(cssTiming));
+    check("panel timings are 1800ms soft ease-out in / 1400ms gentle ease-in out", cssTiming[0] === "1800ms" && cssTiming[1] === "1400ms", JSON.stringify(cssTiming));
     let ov = analyzeOverlaySamples(samples, 0.2);
     check(`no stop surface visible during frame travel (${ov.travelSamples} travel samples)`, ov.travelSamples > 200 && ov.travelLeaks === 0, `leaks=${ov.travelLeaks}`);
     check("surface opacity never jumps between animation frames", ov.ok, `worst=${ov.worstJump.toFixed(3)}`);
@@ -518,7 +560,7 @@ async function main() {
 
     // Mid-travel spam toward the finale, then straight back.
     await page.keyboard.press("ArrowDown");
-    await page.waitForTimeout(1700); // past the 1000ms fade-out: frames are moving
+    await page.waitForTimeout(2600); // past the 1400ms fade-out: frames are moving
     for (let k = 0; k < 6; k++) await page.keyboard.press(k % 2 ? "ArrowUp" : "ArrowDown");
     o = await waitSurface(page, 240);
     check("keys pressed mid-travel are ignored; lands on 240 with panel", o.frame === 240 && o.surface === "panel" && o.panelOpacity >= 0.995, JSON.stringify(o));
@@ -564,7 +606,7 @@ async function main() {
     });
     await cdp.send("Page.startScreencast", { format: "png", everyNthFrame: 1, maxWidth: 300, maxHeight: 534 });
     await fpage.click("#navDown");
-    await fpage.waitForTimeout(5200); // panel exit (1000ms) + 80-frame travel
+    await fpage.waitForTimeout(7200); // panel exit (1400ms) + 80-frame journey (~5.2s)
     await cdp.send("Page.stopScreencast");
     await fpage.waitForTimeout(150); // let any in-flight screencastFrame settle before closing
 
@@ -610,15 +652,15 @@ async function main() {
         { fromY, toY }
       );
 
-    landed = await waitSettle(mpage, mGetFrame, 80, 6000);
+    landed = await waitSettle(mpage, mGetFrame, 80, 14000);
     check("mobile: opening lands on 80", landed);
     await waitSurface(mpage, 80);
     await swipe(300, 520);
-    landed = await waitSettle(mpage, mGetFrame, 160, 6000);
+    landed = await waitSettle(mpage, mGetFrame, 160, 14000);
     check("mobile: downward swipe advances to 160", landed);
     await waitSurface(mpage, 160);
     await swipe(520, 300);
-    landed = await waitSettle(mpage, mGetFrame, 80, 6000);
+    landed = await waitSettle(mpage, mGetFrame, 80, 14000);
     check("mobile: upward swipe returns to 80", landed);
     let mo = await waitSurface(mpage, 80);
     check("mobile: panel returns at 80 after the swipe round trip", mo.surface === "panel" && mo.panelOpacity >= 0.995, JSON.stringify(mo));

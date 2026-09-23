@@ -194,42 +194,62 @@
 
   // ---------- Frame-stepping animation ----------
   //
-  // Every transition plays for its exact real-time duration at the
-  // source's rate (frames / 30fps): 80 frames = 2666.7ms, 60 frames =
-  // 2000ms. At that duration, 30fps is already the *average* rate needed
-  // to show every frame once — there is no time budget left over for a
-  // true ease curve to run faster through the middle without exceeding
-  // 30fps. So instead of interpolating-and-rounding a continuous eased
-  // position (which is what caused skipped frames before, since a fast
-  // mid-curve position can jump several integer frames between two
-  // screen refreshes), this steps through every integer frame exactly
-  // once, one at a time, and only ever advances once BOTH:
+  // Instead of interpolating-and-rounding a continuous eased position
+  // (which is what caused skipped frames before, since a fast mid-curve
+  // position can jump several integer frames between two screen
+  // refreshes), this steps through every integer frame exactly once, one
+  // at a time, and only ever advances once BOTH:
   //   (a) at least FLOOR_GAP_MS has passed since the last frame (this is
   //       the hard 30fps ceiling — never violated, by construction), and
   //   (b) the eased curve's ideal position has reached that next frame
-  //       (this holds the first/last few frames very slightly longer
-  //       than the floor, which is what reads as ease-in/ease-out).
-  // The result: zero skipped frames, never faster than 30fps, and a
-  // genuine (if necessarily gentle) ease at the edges. Because the ease
-  // needs time the flat 30fps schedule doesn't have, total duration ends
-  // up a little longer than the bare frames/30fps figure — never
-  // shorter, and never runs at more than 30fps to compensate.
+  //       (this holds frames longer wherever the curve is slow, which is
+  //       what reads as acceleration and deceleration).
+  // The result: zero skipped frames and never faster than 30fps. Chapter
+  // journeys use cinematicEase over journeyDuration (below), whose peak
+  // speed stays around 20fps, so the ceiling is never what shapes them.
   var FLOOR_GAP_MS = 1000 / 30;
 
   function linear(t) {
     return t;
   }
-  // Gentle ease: a blend of linear and cubic ease-in-out (30% ease
-  // weight). A full cubic ease-in-out has a peak speed 3x the average,
-  // which would demand far more "extra" time at the edges than a fixed
-  // real-time budget has room for. This blend keeps a clearly perceptible
-  // slow-in/slow-out without ballooning the total duration.
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  // Cinematic velocity curve for chapter journeys (both directions).
+  // Speed, as a fraction of the cruising speed, over normalised time:
+  //   0 – 25%   accelerate: V0 → 1 along a smoothstep (no jump at start)
+  //   25 – 70%  cruise at the moderately faster speed
+  //   70 – 100% decelerate: 1 → V0 along a mirrored smoothstep, a long
+  //             glide onto the destination frame
+  // V0 keeps the first and last frames moving gently rather than holding
+  // for a long beat. Position is the exact integral of that speed,
+  // normalised so the curve runs 0 → 1; velocity is continuous
+  // everywhere, so there is no sudden start and no abrupt braking.
+  var CINE_ACCEL = 0.25;
+  var CINE_CRUISE = 0.45;
+  var CINE_DECEL = 0.3;
+  var CINE_V0 = 0.15;
+  // Distance covered while ramping between V0 and 1 over unit time.
+  var CINE_RAMP_AREA = (1 + CINE_V0) / 2;
+  var CINE_TOTAL = CINE_ACCEL * CINE_RAMP_AREA + CINE_CRUISE + CINE_DECEL * CINE_RAMP_AREA;
+
+  // Integral of V0 + (1 - V0) * smoothstep(s) from 0 to s.
+  function rampUpArea(s) {
+    return CINE_V0 * s + (1 - CINE_V0) * (s * s * s - (s * s * s * s) / 2);
   }
-  function gentleEase(t) {
-    var w = 0.3;
-    return (1 - w) * t + w * easeInOutCubic(t);
+  function cinematicEase(t) {
+    if (t <= 0) return 0;
+    if (t >= 1) return 1;
+    var d;
+    if (t < CINE_ACCEL) {
+      d = CINE_ACCEL * rampUpArea(t / CINE_ACCEL);
+    } else if (t < CINE_ACCEL + CINE_CRUISE) {
+      d = CINE_ACCEL * CINE_RAMP_AREA + (t - CINE_ACCEL);
+    } else {
+      var s = (t - CINE_ACCEL - CINE_CRUISE) / CINE_DECEL;
+      // Deceleration mirrors the ramp: area = s - rampUpArea(1 - ...)
+      // expressed directly as the integral of 1 - (1 - V0) * smoothstep.
+      var decel = s - (1 - CINE_V0) * (s * s * s - (s * s * s * s) / 2);
+      d = CINE_ACCEL * CINE_RAMP_AREA + CINE_CRUISE + CINE_DECEL * decel;
+    }
+    return d / CINE_TOTAL;
   }
 
   var isAnimating = false;
@@ -295,13 +315,22 @@
     requestAnimationFrame(step);
   }
 
-  // Real-time duration at the source rate: frames / 30fps. Identical
-  // formula for the opening and every chapter transition — this IS the
-  // source video's own pace, not an arbitrary UI timing.
+  // Real-time duration at the source rate: frames / 30fps. Used for the
+  // opening (frames 1-80), which plays as the source video's own pace.
   function realTimeDuration(fromFrame, toFrame) {
     if (prefersReducedMotion) return 1;
     var frames = Math.abs(toFrame - fromFrame);
     return (frames / SOURCE_FPS) * 1000;
+  }
+
+  // Chapter journeys: 5.2s per 80 frames, so cinematicEase cruises at
+  // ~20fps. The 60-frame finale leg gets a 4.5s floor rather than a
+  // proportional 3.9s, so it leaves and lands just as gently.
+  var JOURNEY_MS_PER_80_FRAMES = 5200;
+  var JOURNEY_MIN_MS = 4500;
+  function journeyDuration(fromFrame, toFrame) {
+    if (prefersReducedMotion) return 1;
+    return Math.max(JOURNEY_MIN_MS, (Math.abs(toFrame - fromFrame) / 80) * JOURNEY_MS_PER_80_FRAMES);
   }
 
   // ---------- Stop surfaces ----------
@@ -418,8 +447,8 @@
     isAnimating = true;
     leaveSurface(function () {
       var target = CHAPTERS[index].frame;
-      var duration = realTimeDuration(currentFrame, target);
-      animateFrameStepped(target, duration, gentleEase, function () {
+      var duration = journeyDuration(currentFrame, target);
+      animateFrameStepped(target, duration, cinematicEase, function () {
         chapterIndex = index;
         // At rest: symmetric window, since we don't yet know whether the
         // next move will be forward or backward.
