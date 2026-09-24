@@ -35,6 +35,13 @@ See METHOD §12. The third layer is locked by `baseline.test.cjs`
 alongside the items below. All earlier ornament sets are superseded
 and remain only in Git history.
 
+**Background, updated:** the 300 frames were replaced in place with a
+re-export from the same source video (same names, format and size), and
+the palace canvas now carries a restrained CSS grade: `sepia(0.06)
+saturate(1.1) contrast(1.04)`, canvas only. See METHOD §13. The approved
+layers, placements, timings and finale are unchanged, and the new frame
+hash and grade are locked by `baseline.test.cjs`.
+
 ## Approved configuration
 
 | Item | Approved value | Where it lives |

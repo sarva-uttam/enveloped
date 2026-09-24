@@ -631,6 +631,55 @@ resolved at wording integration.
 stop and at seven viewports. It also checks the sequencing, input
 lock, travel invisibility and reduced motion.
 
+## 13. Replacement frame sequence and background grade
+
+**Frames.** The 300 JPEGs in `frames/` were replaced in place from the
+Owner's `ezgif-40d4e7a35b0e0977-jpg.zip`, from the same source video.
+Filenames, paths and references are unchanged. Validation before
+replacement:
+
+- exactly 300 files, `ezgif-frame-001.jpg` … `ezgif-frame-300.jpg`, in
+  sequence;
+- all baseline JPEG, 3-channel, 720 × 1280 (identical to the previous
+  set);
+- 0 corrupt files;
+- no discontinuities: the largest consecutive-frame change is 17.2 on
+  a 0–255 scale, against a median of 4.1;
+- the stop frames 1/80/160/240/300 match the previous set closely
+  (mean difference 0.2–0.3 on a 0–255 scale).
+
+The sequence contains 58 byte-identical and 60 near-identical
+consecutive frames, one every fifth frame (3, 8, 13, …). This is a
+24→30 fps pulldown pattern inherited from the source video. The
+previous approved set has exactly the same pattern, so it is not a
+replacement defect.
+
+The combined SHA-256 is `e21ab777c7c13d14…`, locked in
+`baseline.test.cjs`. The renderer, cache, preload, 30 fps ceiling,
+timing, easing and stops are unchanged.
+
+**Grade.** A non-destructive CSS filter on `.frame-canvas` only. The
+JPEGs are not edited.
+
+```css
+filter: sepia(var(--bg-warmth))        /* 0.06: restrained warm gold */
+        saturate(var(--bg-saturate))   /* 1.1 */
+        contrast(var(--bg-contrast))   /* 1.04 */
+        brightness(var(--bg-brightness)); /* 1 (unchanged) */
+```
+
+Measured on the palace strip above the frame:
+
+- saturation rises 8–10%;
+- the warm (red − blue) balance rises 7–10 points;
+- luma changes by under 2.
+
+The panel, gold frame, ornaments, wording layer, controls and finale
+light are separate layers without filters. The frame-300 finale at rest
+is pixel-identical with and without the grade (maximum difference 0).
+All 108 `verify.js` checks pass with the grade applied, including zero
+flash frames and the 30 fps ceiling.
+
 ## Files
 
 ```

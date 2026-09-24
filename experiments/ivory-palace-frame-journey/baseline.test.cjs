@@ -37,7 +37,7 @@ const APPROVED = {
   openingMask: "assets/ivory-palace-arch-frame-opening.png",
   openingMaskSha256: "0876e9d2c5bf0b77ec8b62f10d2f0e622f74082decb3304da5217650b63df6da",
   finaleGrainSha256: "f6d52e8d36c9df095053596b585f6456cd79a142ac57173324e20b1aeab038f8",
-  framesSha256: "21f6c106143d52b2f16f1b737fefdc2a06fde86bebc71a4a1d5023f15fd584ae",
+  framesSha256: "e21ab777c7c13d14cf3ed09ace8705d145a5028f8abc9ee2515d51aa0a07cf37", // replacement sequence (same source video)
   frameSize: [941, 1672]
 };
 
@@ -55,7 +55,7 @@ test("stop frames are exactly 80, 160, 240 and 300", () => {
   assert.match(script, /var TOTAL_FRAMES = 300;/);
 });
 
-test("the 300 approved background frames are unchanged", () => {
+test("the 300 approved background frames (replacement sequence) are unchanged", () => {
   const names = fs.readdirSync(path.join(DIR, "frames")).sort();
   assert.equal(names.length, 300);
   assert.equal(names[0], "ezgif-frame-001.jpg");
@@ -199,4 +199,17 @@ test("approved third-layer placement and motion", () => {
   // Sequence: ornaments after the panel settles; out before the panel.
   assert.match(script, /frameBox\.setAttribute\("data-ornaments", String\(index\)\);\s*setTimeout\(onSettled, cssMs\("--ornament-enter-ms"\)\);\s*\}\);\s*\}, cssMs\("--panel-enter-ms"\)\);/);
   assert.match(script, /surfaceToken\+\+;\s*clearOrnaments\(function \(\) \{\s*frameBox\.setAttribute\("data-surface", "none"\);/);
+});
+
+test("background grade: restrained CSS filter on the canvas only", () => {
+  const root = cssRule(":root");
+  assert.match(root, /--bg-saturate: 1\.1;/);
+  assert.match(root, /--bg-contrast: 1\.04;/);
+  assert.match(root, /--bg-warmth: 0\.06;/);
+  assert.match(root, /--bg-brightness: 1;/);
+  assert.match(css, /\.frame-canvas \{\n  filter:\n    sepia\(var\(--bg-warmth\)\)\n    saturate\(var\(--bg-saturate\)\)\n    contrast\(var\(--bg-contrast\)\)\n    brightness\(var\(--bg-brightness\)\);\n\}/);
+  assert.equal((css.match(/filter:\s*\n?\s*sepia\(/g) || []).length, 1, "grade applied in exactly one place");
+  for (const sel of [".stop-panel", ".stop-panel__fill", ".stop-ornament", ".finale-light", ".nav-btn"]) {
+    assert.doesNotMatch(cssRule(sel), /filter:/, `${sel} is not graded`);
+  }
 });

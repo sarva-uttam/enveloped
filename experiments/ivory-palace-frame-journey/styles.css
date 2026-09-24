@@ -9,6 +9,11 @@
      CSS and the navigation state machine share one source of timing. */
   --panel-enter-ms: 1400ms;
   --panel-exit-ms: 1000ms;
+  /* Background grade (canvas only; see METHOD §13). */
+  --bg-saturate: 1.1;
+  --bg-contrast: 1.04;
+  --bg-warmth: 0.06; /* sepia amount: a very restrained warm-gold tone */
+  --bg-brightness: 1;
   --finale-enter-ms: 1200ms;
   /* Third-layer ornaments (placement prototype, pending Owner approval). */
   --ornament-enter-ms: 1400ms;
@@ -89,6 +94,17 @@ html, body {
 }
 
 .frame-canvas.is-ready { opacity: 1; }
+
+/* Non-destructive colour grade for the palace background only: the frame
+   JPEGs stay untouched, and the panel, frame, ornaments, wording, controls
+   and finale light are separate layers the filter never reaches. */
+.frame-canvas {
+  filter:
+    sepia(var(--bg-warmth))
+    saturate(var(--bg-saturate))
+    contrast(var(--bg-contrast))
+    brightness(var(--bg-brightness));
+}
 
 /* ---------- Stop surfaces: framed panel, finale light ---------- */
 /*
