@@ -160,9 +160,9 @@ const translateXOf = (transform) => {
 };
 
 const ORNAMENT_FILES = {
-  0: ["ornament-80-left-haldi-drape-urli.png", "ornament-80-right-lotus-kalash-deepam.png"],
-  1: ["ornament-160-left-jasmine-lanterns.png", "ornament-160-right-lotus-urli-bowls.png"],
-  2: ["ornament-240-left-coconut-kalash.png", "ornament-240-right-ivory-kalash-diya.png"]
+  0: ["80-left-yellow-drape-urli.png", "80-right-diya-kalash-lotus.png"],
+  1: ["160-left-palace-lanterns.png", "160-right-lotus-flower-bowls.png"],
+  2: ["240-left-coconut-kalash-haldi.png", "240-right-floral-kalash-diya.png"]
 };
 
 // Sequencing measured from the rAF samples. Sample layout:
@@ -205,50 +205,54 @@ function analyzeOrnamentSequence(samples) {
   return r;
 }
 
-// Layout geometry of every ornament (transforms ignored), the panel, the
-// wording-safe region and the controls, all relative to the viewport.
-async function ornamentGeometry(page) {
-  return page.evaluate(() => {
-    const box = document.getElementById("frameBox").getBoundingClientRect();
-    const panel = document.getElementById("stopPanel").getBoundingClientRect();
-    const shift = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ornament-shift")) || 0;
-    const shiftPx = (shift / 100) * box.width; // 9cqw of the invitation box
-    const rect = (l, t, w, h) => ({ left: l, top: t, right: l + w, bottom: t + h, width: w, height: h });
-    const orn = [...document.querySelectorAll(".stop-ornament")].map((img) => {
-      const r = rect(panel.left + img.offsetLeft, panel.top + img.offsetTop, img.offsetWidth, img.offsetHeight);
-      const left = img.classList.contains("stop-ornament--left");
-      return { stop: img.getAttribute("data-stop"), side: left ? "left" : "right", src: img.getAttribute("src").split("/").pop(),
-        natural: img.naturalWidth + "x" + img.naturalHeight, ratio: img.offsetWidth / img.offsetHeight, naturalRatio: img.naturalWidth / img.naturalHeight,
-        rect: r, startRect: rect(r.left + (left ? -shiftPx : shiftPx), r.top, r.width, r.height) };
-    });
-    const safeBottom = Math.max(panel.height * 0.26, 62 + panel.height * 0.155);
-    const safe = rect(panel.left + panel.width * 0.14, panel.top + panel.height * 0.18, panel.width * 0.72, panel.height * (1 - 0.18) - safeBottom);
-    const nav = ["navUp", "navDown"].map((id) => { const r = document.getElementById(id).getBoundingClientRect(); return { id, rect: rect(r.left, r.top, r.width, r.height) }; });
-    const bg = [...document.querySelectorAll(".stop-ornaments, .stop-ornament")].map((el) => getComputedStyle(el).backgroundColor);
-    return { box: rect(box.left, box.top, box.width, box.height), panel: rect(panel.left, panel.top, panel.width, panel.height), orn, safe, nav, bg, shiftPx };
-  });
+// Approved third-layer geometry, measured from the VISIBLE ARTWORK (not
+// the PNG canvas): each ornament is rendered alone over the flat frame-box
+// background and its pixel bounds are found, as % of the invitation box.
+async function ornamentArtBounds(page, stop, side) {
+  await page.evaluate(({ stop, side }) => {
+    for (const s of ["#frameCanvas", ".stop-panel__fill", "#stopFrameArt", ".nav-btn"]) document.querySelectorAll(s).forEach((e) => (e.style.visibility = "hidden"));
+    document.querySelectorAll(".stop-ornament").forEach((e) => (e.style.visibility = e.dataset.stop === stop && e.classList.contains("stop-ornament--" + side) ? "" : "hidden"));
+  }, { stop, side });
+  await page.waitForTimeout(80);
+  const png = await page.locator("#frameBox").screenshot();
+  await page.evaluate(() => document.querySelectorAll("#frameCanvas, .stop-panel__fill, #stopFrameArt, .nav-btn, .stop-ornament").forEach((e) => (e.style.visibility = "")));
+  return analyzePng(page, png, `
+    const c = rgb(Math.floor(w / 2), Math.floor(h / 3));
+    let l = w, r = -1, t = h, b = -1;
+    for (let y = 0; y < h; y++) for (let x = 2; x < w - 2; x++) {
+      const p = rgb(x, y);
+      if (Math.abs(p[0] - c[0]) + Math.abs(p[1] - c[1]) + Math.abs(p[2] - c[2]) > 24) { if (x < l) l = x; if (x > r) r = x; if (y < t) t = y; if (y > b) b = y; }
+    }
+    return { l: l / w * 100, r: (r + 1) / w * 100, t: t / h * 100, b: (b + 1) / h * 100 };
+  `);
 }
 
-function ornamentLayoutProblems(g) {
+// Owner-approved placement: visible artwork rises from the bottom outer
+// corner to ~67-70% of the invitation height, reaches the bottom and the
+// outer edge, stays on its own side of the centre, keeps its aspect
+// ratio, and the down control stays clickable on top.
+async function ornamentPlacementProblems(page, stop) {
   const problems = [];
-  const inside = (r, o, pad = 0.5) => r.left >= o.left - pad && r.right <= o.right + pad && r.top >= o.top - pad && r.bottom <= o.bottom + pad;
-  const overlap = (a, b, gap = 0) => a.left < b.right + gap && b.left < a.right + gap && a.top < b.bottom + gap && b.top < a.bottom + gap;
-  for (const o of g.orn) {
-    const tag = `${o.stop}-${o.side}`;
-    if (!inside(o.rect, g.panel)) problems.push(`${tag} outside panel`);
-    if (!inside(o.startRect, g.box)) problems.push(`${tag} slide start clipped by the invitation edge`);
-    if (overlap(o.rect, g.safe)) problems.push(`${tag} overlaps wording-safe area`);
-    for (const n of g.nav) if (overlap(o.rect, n.rect, 8)) problems.push(`${tag} within 8px of ${n.id}`);
-    if (Math.abs(o.ratio - o.naturalRatio) > 0.02) problems.push(`${tag} aspect ratio distorted`);
-    if (o.rect.width < 70) problems.push(`${tag} too small (${o.rect.width.toFixed(0)}px)`);
+  const files = await page.evaluate((stop) => [...document.querySelectorAll(`.stop-ornament[data-stop="${stop}"]`)].map((img) => {
+    const r = img.getBoundingClientRect();
+    return { side: img.classList.contains("stop-ornament--left") ? "left" : "right", src: img.getAttribute("src").split("/").pop(),
+      ratioOk: Math.abs(r.width / r.height - img.naturalWidth / img.naturalHeight) < 0.01, fit: getComputedStyle(img).objectFit };
+  }), stop);
+  if (files.map((f) => f.src).join() !== ORNAMENT_FILES[stop].join()) problems.push(`stop ${stop} assets ${files.map((f) => f.src).join()}`);
+  const art = {};
+  for (const f of files) {
+    const a = (art[f.side] = await ornamentArtBounds(page, stop, f.side));
+    const tag = `${stop}-${f.side}`;
+    if (!f.ratioOk || f.fit !== "contain") problems.push(`${tag} aspect ratio or fit changed`);
+    if (a.t < 66.5 || a.t > 70.5) problems.push(`${tag} art top ${a.t.toFixed(1)}% (want 67-70%)`);
+    if (a.b < 98) problems.push(`${tag} art bottom ${a.b.toFixed(1)}% (not anchored to the bottom)`);
+    if (f.side === "left" ? a.l > 2.5 : a.r < 97.5) problems.push(`${tag} not anchored to its outer edge`);
+    if (f.side === "left" ? a.r > 50 : a.l < 50) problems.push(`${tag} crosses the centre`);
   }
-  for (const stop of ["0", "1", "2"]) {
-    const [l, r] = ["left", "right"].map((side) => g.orn.find((o) => o.stop === stop && o.side === side));
-    if (l.rect.right > r.rect.left) problems.push(`stop ${stop} pair overlaps itself`);
-    if (!/-left-/.test(l.src) || !/-right-/.test(r.src)) problems.push(`stop ${stop} pair sides mismatched`);
-  }
-  if (g.bg.some((c) => c !== "rgba(0, 0, 0, 0)")) problems.push("ornament container has a background");
-  return problems;
+  const layout = await page.evaluate(() => ({ overflowX: document.documentElement.scrollWidth > innerWidth }));
+  if (layout.overflowX) problems.push("horizontal overflow");
+  if (!(await navHit(page, "navDown"))) problems.push("down control not clickable above the ornaments");
+  return { problems, art };
 }
 
 
@@ -515,6 +519,11 @@ async function main() {
           : o.ornaments === stopIndex && shown.length === 2 && want.every((s) => s[2] >= 0.995 && Math.abs(translateXOf(s[3])) < 0.5),
         JSON.stringify(o.ornamentStates.map((s) => [s[0], s[1], +s[2].toFixed(3), s[3]]))
       );
+      if (frame !== 300 && !label.startsWith("reverse")) {
+        const pl = await ornamentPlacementProblems(page, stopIndex);
+        check(`${label}: approved ornament placement at ${frame} (visible art 67-70% to bottom, outer corners, own side, control on top)`, pl.problems.length === 0,
+          pl.problems.join("; ") || ["left", "right"].map((sd) => `${sd} x ${pl.art[sd].l.toFixed(1)}-${pl.art[sd].r.toFixed(1)}% top ${pl.art[sd].t.toFixed(1)}%`).join(" | "));
+      }
       const up = frame !== 80, down = frame !== 300;
       check(`${label}: navigation controls remain interactive above the surface at ${frame}`, (!up || (await navHit(page, "navUp"))) && (!down || (await navHit(page, "navDown"))));
     };
@@ -632,13 +641,6 @@ async function main() {
       seq.departures.map((d) => d.framesMoveAfterMs.toFixed(0) + "ms").join(", ")
     );
     check("ornaments never mix stops and slide the right way (left from/to the left, right from/to the right)", seq.mixed === 0 && seq.wrongDirection === 0, `mixed=${seq.mixed} wrongDirection=${seq.wrongDirection}`);
-    const geo = await ornamentGeometry(page);
-    const geoProblems = ornamentLayoutProblems(geo);
-    check(
-      "desktop: every ornament is the assigned asset, sized/placed within the panel, clear of wording area and controls",
-      geoProblems.length === 0 && ["0", "1", "2"].every((k) => geo.orn.filter((o) => o.stop === k).map((o) => o.src).join() === ORNAMENT_FILES[k].join()),
-      geoProblems.join("; ") || geo.orn.map((o) => `${o.stop}-${o.side}:${o.src} ${o.rect.width.toFixed(0)}x${o.rect.height.toFixed(0)}`).join(", ")
-    );
     const cssTiming = await page.evaluate(() => {
       const cs = getComputedStyle(document.documentElement);
       return [cs.getPropertyValue("--panel-enter-ms").trim(), cs.getPropertyValue("--panel-exit-ms").trim(), cs.getPropertyValue("--ease-settle").trim(), cs.getPropertyValue("--ease-dissolve").trim().replace(/\s*\/\*.*$/, "")];
@@ -859,13 +861,11 @@ async function main() {
       });
       const hit = await navHit(vpage, "navDown");
       if (SHOTS_DIR) await vpage.screenshot({ path: path.join(SHOTS_DIR, `panel-${width}x${height}.png`) });
-      const vg = await ornamentGeometry(vpage);
-      const vProblems = ornamentLayoutProblems(vg);
-      const pair0 = vg.orn.filter((x) => x.stop === "0");
+      const vpl = await ornamentPlacementProblems(vpage, "0");
       check(
-        `${name} ${width}x${height}: ornaments sized/placed inside the panel, clear of wording area and controls, never clipped`,
-        vProblems.length === 0,
-        vProblems.join("; ") || `stop-80 pair ${pair0.map((x) => `${x.rect.width.toFixed(0)}x${x.rect.height.toFixed(0)}`).join(" + ")}px; lanterns ${vg.orn.find((x) => x.stop === "1" && x.side === "left").rect.width.toFixed(0)}px wide; slide ${vg.shiftPx.toFixed(0)}px`
+        `${name} ${width}x${height}: approved ornament placement (visible art 67-70% to bottom, outer corners, own side, control on top, no overflow)`,
+        vpl.problems.length === 0,
+        vpl.problems.join("; ") || ["left", "right"].map((sd) => `${sd} x ${vpl.art[sd].l.toFixed(1)}-${vpl.art[sd].r.toFixed(1)}% top ${vpl.art[sd].t.toFixed(1)}%`).join(" | ")
       );
       const m = await measurePanel(vpage);
       check(

@@ -1,6 +1,7 @@
 /**
- * Approved Ivory Palace stop-layer baseline lock (Owner-approved at
- * commit 66236606542bd7701fb54f3fe0558fd623a2fbc2).
+ * Approved Ivory Palace stop-layer baseline lock (second layer
+ * Owner-approved at commit 66236606542bd7701fb54f3fe0558fd623a2fbc2;
+ * third-layer ornaments Owner-approved with the six "layer 3" PNGs).
  *
  * Fast static regression checks: any accidental change to the approved
  * configuration fails here, before the browser-driven verify.js runs.
@@ -91,8 +92,8 @@ test("framed panel keeps the artwork ratio at ~90% of the invitation", () => {
   assert.match(cssRule(".frame-box"), /container-type: size;/);
 });
 
-test("layer order: canvas, fill, frame, reserved wording, finale light, loader, controls", () => {
-  const order = ['id="frameCanvas"', 'class="stop-panel__fill"', 'id="stopFrameArt"', 'id="stopContent"', 'id="finaleLight"', 'id="loader"', 'id="navUp"', 'id="navDown"'];
+test("layer order: canvas, fill, frame, ornaments, reserved wording, finale light, loader, controls", () => {
+  const order = ['id="frameCanvas"', 'class="stop-panel__fill"', 'id="stopFrameArt"', 'class="stop-ornaments"', 'id="stopContent"', 'id="finaleLight"', 'id="loader"', 'id="navUp"', 'id="navDown"'];
   const positions = order.map((token) => html.indexOf(token));
   positions.forEach((p, i) => assert.ok(p > 0, `${order[i]} present`));
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
@@ -150,4 +151,47 @@ test("decoded-frame cache and memory ceiling unchanged", () => {
   assert.match(script, /var WINDOW_AHEAD_MOVING = 20;/);
   assert.match(script, /var WINDOW_BEHIND_MOVING = 10;/);
   assert.match(script, /var WINDOW_RADIUS_IDLE = 16;/);
+});
+
+// ---------------- Third layer (Owner-approved) ----------------
+
+const ORNAMENTS = [
+  ["0", "left", "80-left-yellow-drape-urli.png", 941, 1672, "15750ac393fde7f56dbe6d4bfa006eba2166daae60c89b02bbebba5e129d15a5"],
+  ["0", "right", "80-right-diya-kalash-lotus.png", 941, 1672, "77e71699dc003eaacda403531d9c8646b62a2d884ab5c0f3a7cc85e40d37cc1a"],
+  ["1", "left", "160-left-palace-lanterns.png", 941, 1672, "7b5ee66e4899a4add68d79e0795ee0b376a532dcfdd50cf597ec07796df52c9e"],
+  ["1", "right", "160-right-lotus-flower-bowls.png", 941, 1672, "274a798bdcd470daa3891a41076d7d1ac065d5351caefb45a572f70eb094c4b5"],
+  ["2", "left", "240-left-coconut-kalash-haldi.png", 1024, 1536, "8602bb39253dea27faa89d09f6a4d9022a6b138aaafff3cff88577aad0e3a498"],
+  ["2", "right", "240-right-floral-kalash-diya.png", 940, 1672, "4a593259fdf9ac6445eaf018c1066975137a5ac940190bd16cd865ea583004e6"]
+];
+
+test("approved third-layer ornaments: exact files, stop/side mapping and alpha", () => {
+  const files = fs.readdirSync(path.join(DIR, "assets/ornaments")).sort();
+  assert.deepEqual(files, ORNAMENTS.map((o) => o[2]).sort());
+  for (const [stop, side, file, w, h, hash] of ORNAMENTS) {
+    const png = fs.readFileSync(path.join(DIR, "assets/ornaments", file));
+    assert.equal(sha256(png), hash, file);
+    assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [w, h], file);
+    assert.equal(png[25], 6, `${file} is RGBA`);
+    const tag = new RegExp(`class="stop-ornament stop-ornament--${side}" data-stop="${stop}" src="assets/ornaments/${file.replace(/\./g, "\\.")}" width="${w}" height="${h}"`);
+    assert.match(html, tag, `${file} mapped to stop ${stop} ${side}`);
+  }
+});
+
+test("approved third-layer placement and motion", () => {
+  const root = cssRule(":root");
+  assert.match(root, /--ornament-enter-ms: 1400ms;/);
+  assert.match(root, /--ornament-exit-ms: 900ms;/);
+  assert.match(root, /--ornament-shift: 9cqw;/);
+  assert.match(root, /--ease-ornament-in: cubic-bezier\(0\.33, 1, 0\.68, 1\);/);
+  const base = cssRule(".stop-ornament");
+  assert.match(base, /bottom: 0;/);
+  assert.match(base, /width: auto;/);
+  assert.match(base, /object-fit: contain;/);
+  assert.match(cssRule(".stop-ornament--left"), /left: 0;[\s\S]*transform: translateX\(calc\(-1 \* var\(--ornament-shift\)\)\);/);
+  assert.match(cssRule(".stop-ornament--right"), /right: 0;[\s\S]*transform: translateX\(var\(--ornament-shift\)\);/);
+  assert.match(css, /\/\* Per-asset sizing: visible artwork = 32cqh tall \(top at ~68%\)\. \*\//);
+  assert.equal((css.match(/\.stop-ornament--(left|right)\[data-stop="[012]"\] \{\n  height: [\d.]+cqh;/g) || []).length, 6);
+  // Sequence: ornaments after the panel settles; out before the panel.
+  assert.match(script, /frameBox\.setAttribute\("data-ornaments", String\(index\)\);\s*setTimeout\(onSettled, cssMs\("--ornament-enter-ms"\)\);\s*\}\);\s*\}, cssMs\("--panel-enter-ms"\)\);/);
+  assert.match(script, /surfaceToken\+\+;\s*clearOrnaments\(function \(\) \{\s*frameBox\.setAttribute\("data-surface", "none"\);/);
 });

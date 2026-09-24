@@ -14,7 +14,6 @@
   --ornament-enter-ms: 1400ms;
   --ornament-exit-ms: 900ms;
   --ornament-shift: 9cqw; /* start/end offset: 9% of the invitation width */
-  --ornament-width: 40%; /* of the panel width, for the 3:2 pieces */
   --ease-ornament-in: cubic-bezier(0.33, 1, 0.68, 1); /* slow, luxurious cubic ease-out; no overshoot */
   --finale-exit-ms: 800ms;
   --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1); /* cinematic ease-out */
@@ -162,30 +161,42 @@ html, body {
 
 /* ---------- Third layer: stop ornaments (placement prototype) ---------- */
 /*
- * Inside the framed panel, above the frame artwork and below the reserved
- * wording layer. Each framed stop shows its own lower-left / lower-right
- * pair, selected by frameBox[data-ornaments] = "none" | "0" | "1" | "2".
- * Sizes are % of the panel (so they scale with the approved 90% panel):
- * 3:2 ornaments are 40% of the panel width; the near-square lanterns are
- * narrower so every ornament stands ~15.4% of the panel height. They rest
- * on the arch opening's floor (9.5% above the panel's bottom, just above
- * the frame's bottom bar) and 9% in from its sides (inside the pillars),
- * so the frame corners, the centre gap and the down control stay clear.
- * On short 9:16 invitations the fixed 50px down control reaches into that
- * band, so the ornaments never sit lower than 58px (control + 8px gap).
- * No container background.
+ * DOM-wise inside the framed panel (above the frame artwork, below the
+ * reserved wording layer; the controls sit above everything via z-index),
+ * but laid out in invitation-box coordinates: .stop-ornaments is
+ * re-centred to cover the whole invitation box. Each framed stop shows
+ * its own pair, selected by frameBox[data-ornaments] = "none"|"0"|"1"|"2".
+ *
+ * Owner blue-box placement: each ornament is anchored to its bottom
+ * outer corner and sized by HEIGHT (width: auto, natural aspect ratio),
+ * so its visible artwork rises from the invitation's bottom edge to
+ * ~68% of its height, overlapping the frame's lower rail. Width follows
+ * naturally and may cross the centre and pass behind the down control.
+ *
+ * The PNGs are the untouched originals. Their transparent padding is
+ * compensated per asset below: the image height is scaled so the visible
+ * artwork is exactly --ornament-art-height tall, and the transparent
+ * bottom / outer-side margins are offset past the box edge (only fully
+ * transparent canvas lies outside it). Heights are cqh (invitation-box
+ * height, which equals the stage's 100dvh/100vh height).
  */
 .stop-ornaments {
   position: absolute;
-  inset: 0;
+  left: 50%;
+  top: 50%;
+  width: 100cqw;
+  height: 100cqh;
+  transform: translate(-50%, -50%);
+  overflow: visible;
 }
 
 .stop-ornament {
   position: absolute;
-  bottom: max(9.5%, 58px);
-  width: var(--ornament-width);
-  height: auto;
+  bottom: 0;
+  width: auto;
+  max-width: none;
   display: block;
+  object-fit: contain;
   opacity: 0;
   user-select: none;
   -webkit-user-drag: none;
@@ -193,17 +204,49 @@ html, body {
     opacity var(--ornament-exit-ms) var(--ease-dissolve),
     transform var(--ornament-exit-ms) var(--ease-dissolve);
 }
-.stop-ornament--upright {
-  width: calc(var(--ornament-width) * 0.75); /* 1312 × 1199 artwork: same visual height as the 3:2 pieces */
-}
 .stop-ornament--left {
-  left: 9%;
+  left: 0;
+  object-position: left bottom;
   transform: translateX(calc(-1 * var(--ornament-shift)));
 }
 .stop-ornament--right {
-  right: 9%;
+  right: 0;
+  object-position: right bottom;
   transform: translateX(var(--ornament-shift));
 }
+
+/* Per-asset sizing: visible artwork = 32cqh tall (top at ~68%). */
+.stop-ornament--left[data-stop="0"] {
+  height: 32.000cqh;
+  bottom: 0.000cqh;
+  left: 0.000cqh;
+}
+.stop-ornament--right[data-stop="0"] {
+  height: 35.386cqh;
+  bottom: -0.593cqh;
+  right: -0.360cqh;
+}
+.stop-ornament--left[data-stop="1"] {
+  height: 32.173cqh;
+  bottom: 0.000cqh;
+  left: -0.423cqh;
+}
+.stop-ornament--right[data-stop="1"] {
+  height: 33.212cqh;
+  bottom: -0.616cqh;
+  right: 0.000cqh;
+}
+.stop-ornament--left[data-stop="2"] {
+  height: 32.724cqh;
+  bottom: -0.362cqh;
+  left: -0.234cqh;
+}
+.stop-ornament--right[data-stop="2"] {
+  height: 32.000cqh;
+  bottom: 0.000cqh;
+  right: 0.000cqh;
+}
+
 .frame-box[data-ornaments="0"] .stop-ornament[data-stop="0"],
 .frame-box[data-ornaments="1"] .stop-ornament[data-stop="1"],
 .frame-box[data-ornaments="2"] .stop-ornament[data-stop="2"] {

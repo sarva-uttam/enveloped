@@ -17,13 +17,15 @@ method is in
 [`IVORY-PALACE-FRAME-JOURNEY-METHOD.md`](IVORY-PALACE-FRAME-JOURNEY-METHOD.md)
 (§11 for the stop layer).
 
-**Pending, not part of this approval:** the third-layer stop ornaments
-(six lower-left/lower-right PNGs at 80, 160 and 240, in
-`assets/ornaments/`) are a placement prototype awaiting Owner review.
-See METHOD §12. They sit above the approved frame and do not change any
-item below. Adding them raised the reserved wording layer's bottom
-inset so future wording clears them. That inset was never part of this
-approval.
+**Third layer, Owner-approved:** six tall, narrow lower-corner
+ornaments, one left/right pair at each of stops 80, 160 and 240, in
+`assets/ornaments/` (mapped by filename). Each has visible artwork 32%
+of the invitation height, rising from the bottom outer corner to about
+68%. They enter after the panel settles (1.4s glide from each side) and
+leave before it (0.9s), with the controls above them. See METHOD §12.
+They are locked by `baseline.test.cjs` alongside the items below. The
+earlier ornament sets (a wide set, then its trimmed variants) were
+superseded and remain only in Git history.
 
 ## Approved configuration
 
