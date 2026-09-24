@@ -35,6 +35,15 @@ See METHOD §12. The third layer is locked by `baseline.test.cjs`
 alongside the items below. All earlier ornament sets are superseded
 and remain only in Git history.
 
+**Layer 3 baseline recorded:** commit
+`3892648600f5b63a11a00d67cffacd7a24a2d9c8` is the authoritative
+Owner-approved Layer 3 state. The workflow is codified in
+[`LAYER-3-CEREMONIAL-FOREGROUND-METHOD.md`](LAYER-3-CEREMONIAL-FOREGROUND-METHOD.md),
+with the asset catalogue, prompts, decision log and machine-readable
+config under [`ivory-palace/`](ivory-palace/). The regression checks
+are listed in
+[`LAYER-3-AUTOMATION-CONTRACT.md`](LAYER-3-AUTOMATION-CONTRACT.md).
+
 **Background, updated:** the 300 frames were replaced in place with a
 re-export from the same source video (same names, format and size), and
 the palace canvas now carries a restrained CSS grade: `sepia(0.06)

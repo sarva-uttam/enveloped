@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "templateId": "ivory-palace",
+  "layerVersion": "1.0.0",
+  "baselineCommit": "3892648600f5b63a11a00d67cffacd7a24a2d9c8",
+  "approval": {
+    "state": "owner-approved",
+    "record": "docs/html-invitation-generator/IVORY-PALACE-STOP-LAYER-APPROVAL.md",
+    "notes": "Scale approved at 6ee2ca3 (42/43/42% height, 66% reach) to match the Owner's placement composites; 3892648 is the complete approved state."
+  },
+  "assetDirectory": "experiments/ivory-palace-frame-journey/assets/ornaments",
+  "units": {
+    "height": "% of invitation box height (cqh; equals dvh on the full-height stage)",
+    "reach": "% of invitation box width (cqw)"
+  },
+  "layering": {
+    "order": [
+      "background-canvas",
+      "ivory-panel",
+      "gold-frame",
+      "layer-3-foreground",
+      "future-wording",
+      "navigation"
+    ],
+    "zIndex": {
+      "stopPanel (contains panel, frame, foreground, wording)": 2,
+      "loader": 5,
+      "navigation": 6
+    },
+    "controlsAboveForeground": true
+  },
+  "motion": {
+    "entrance": {
+      "durationMs": 1400,
+      "easing": "cubic-bezier(0.33, 1, 0.68, 1)",
+      "direction": "inward from each side"
+    },
+    "exit": {
+      "durationMs": 900,
+      "easing": "cubic-bezier(0.42, 0, 1, 1)",
+      "direction": "outward to each side"
+    },
+    "slideOffset": "9cqw",
+    "sequence": [
+      "land exactly on stop frame",
+      "Layer 2 fades in (1400ms)",
+      "Layer 3 pair decoded, then glides in",
+      "controls unlock",
+      "on leave: lock input",
+      "Layer 3 exits (900ms)",
+      "Layer 2 exits (1000ms)",
+      "journey resumes"
+    ],
+    "reducedMotion": {
+      "entranceMs": 240,
+      "exitMs": 180,
+      "slideOffset": "0px",
+      "sameSequence": true
+    },
+    "hiddenDuringTravel": true,
+    "excludedStops": [
+      300
+    ]
+  },
+  "stops": [
+    {
+      "frame": 80,
+      "stopIndex": 0,
+      "event": "Introductory celebration",
+      "left": {
+        "file": "frame-080-left-intro-drape-urli.png",
+        "width": 1168,
+        "height": 1346,
+        "sha256": "09f4bdb22bf9cb07c564b1b1a73021a3f719a17d37ac7dbeee57aa9072cb9c83",
+        "alpha": {
+          "rgba": true,
+          "minTransparentPct": 40,
+          "measuredTransparentPct": 54.7
+        },
+        "description": "Saffron ceremonial textile, jasmine and floral urli",
+        "anchor": "bottom-left",
+        "heightPct": 42,
+        "reachPct": 66,
+        "bottomOffset": "0px",
+        "outerEdgeOffset": "0px",
+        "horizontalNudge": "0px",
+        "entranceFrom": "left"
+      },
+      "right": {
+        "file": "frame-080-right-intro-diya-kalash.png",
+        "width": 1158,
+        "height": 1358,
+        "sha256": "a10f93a2ed3a4ebb319bc88030aa874face6c1ef619de311c20d0958b0217a5d",
+        "alpha": {
+          "rgba": true,
+          "minTransparentPct": 40,
+          "measuredTransparentPct": 55.6
+        },
+        "description": "Lotus, decorated kalash, flowers and tall brass diya",
+        "anchor": "bottom-right",
+        "heightPct": 42,
+        "reachPct": 66,
+        "bottomOffset": "0px",
+        "outerEdgeOffset": "0px",
+        "horizontalNudge": "0px",
+        "entranceFrom": "right"
+      }
+    },
+    {
+      "frame": 160,
+      "stopIndex": 1,
+      "event": "Haldi",
+      "left": {
+        "file": "frame-160-left-haldi-kalash-textile.png",
+        "width": 1145,
+        "height": 1374,
+        "sha256": "42b547389cdc51ebe13c893049c3092805182619232b795394b9e81d963092d6",
+        "alpha": {
+          "rgba": true,
+          "minTransparentPct": 40,
+          "measuredTransparentPct": 48.9
+        },
+        "description": "Embroidered turmeric textile, coconut kalash, mango leaves, turmeric/kumkum bowls and marigolds",
+        "anchor": "bottom-left",
+        "heightPct": 43,
+        "reachPct": 66,
+        "bottomOffset": "0px",
+        "outerEdgeOffset": "0px",
+        "horizontalNudge": "0px",
+        "entranceFrom": "left"
+      },
+      "right": {
+        "file": "frame-160-right-haldi-floral-kalash.png",
+        "width": 1152,
+        "height": 1365,
+        "sha256": "8d4af05bc731e5464c09f1940d036712219190484980e14ceda1b4f64996ca88",
+        "alpha": {
+          "rgba": true,
+          "minTransparentPct": 40,
+          "measuredTransparentPct": 51.4
+        },
+        "description": "Floral kalash, lotus, Haldi/kumkum vessels, diya, jasmine and marigolds",
+        "anchor": "bottom-right",
+        "heightPct": 43,
+        "reachPct": 66,
+        "bottomOffset": "0px",
+        "outerEdgeOffset": "0px",
+        "horizontalNudge": "0px",
+        "entranceFrom": "right"
+      }
+    },
+    {
+      "frame": 240,
+      "stopIndex": 2,
+      "event": "Wedding",
+      "left": {
+        "file": "frame-240-left-wedding-lanterns.png",
+        "width": 1131,
+        "height": 1391,
+        "sha256": "8d408cdfa328f1551aea1dc6314a6c70c359b5e5b5bccc23221a37c7e55b410d",
+        "alpha": {
+          "rgba": true,
+          "minTransparentPct": 40,
+          "measuredTransparentPct": 47.9
+        },
+        "description": "Paired Ivory Palace lanterns, jasmine, marigolds and restrained burgundy flowers",
+        "anchor": "bottom-left",
+        "heightPct": 42,
+        "reachPct": 66,
+        "bottomOffset": "0px",
+        "outerEdgeOffset": "0px",
+        "horizontalNudge": "0px",
+        "entranceFrom": "left"
+      },
+      "right": {
+        "file": "frame-240-right-wedding-lotus-urli.png",
+        "width": 1145,
+        "height": 1374,
+        "sha256": "c72e46b66d9d953ebb522f454d9b0430c0128766150c72dcd0c664caf18aa5b8",
+        "alpha": {
+          "rgba": true,
+          "minTransparentPct": 40,
+          "measuredTransparentPct": 55.7
+        },
+        "description": "Vertical lotus urli, ceremonial kalash, tall brass diya and wedding flowers",
+        "anchor": "bottom-right",
+        "heightPct": 42,
+        "reachPct": 66,
+        "bottomOffset": "0px",
+        "outerEdgeOffset": "0px",
+        "horizontalNudge": "0px",
+        "entranceFrom": "right"
+      }
+    }
+  ]
+}

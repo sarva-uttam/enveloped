@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "enveloped/layer-3-foreground/v1",
+  "title": "Layer 3 ceremonial foreground specification",
+  "description": "Template-neutral, versioned description of a Layer 3 foreground system (see LAYER-3-CEREMONIAL-FOREGROUND-METHOD.md). Documentation and regression fixture only; not read at runtime.",
+  "type": "object",
+  "required": ["schemaVersion", "templateId", "layerVersion", "baselineCommit", "approval", "units", "layering", "motion", "stops"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "templateId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "layerVersion": { "type": "string", "description": "Version of this template's Layer 3 artwork/placement, e.g. 1.0.0" },
+    "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "approval": {
+      "type": "object",
+      "required": ["state"],
+      "properties": {
+        "state": { "enum": ["draft", "placement-prototype", "owner-approved", "superseded"] },
+        "record": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "assetDirectory": { "type": "string" },
+    "units": {
+      "type": "object",
+      "description": "Units of the placement numbers. Ivory Palace uses % of the invitation box (cqh/cqw), which equals dvh on full-height layouts.",
+      "properties": { "height": { "type": "string" }, "reach": { "type": "string" } }
+    },
+    "layering": {
+      "type": "object",
+      "description": "Stacking order bottom to top and the z-index contract.",
+      "required": ["order"],
+      "properties": {
+        "order": { "type": "array", "items": { "type": "string" }, "minItems": 3 },
+        "zIndex": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "controlsAboveForeground": { "type": "boolean" }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "required": ["entrance", "exit", "sequence", "reducedMotion"],
+      "properties": {
+        "entrance": { "$ref": "#/$defs/transition" },
+        "exit": { "$ref": "#/$defs/transition" },
+        "slideOffset": { "type": "string" },
+        "sequence": { "type": "array", "items": { "type": "string" } },
+        "reducedMotion": {
+          "type": "object",
+          "properties": { "entranceMs": { "type": "integer" }, "exitMs": { "type": "integer" }, "slideOffset": { "type": "string" }, "sameSequence": { "type": "boolean" } }
+        },
+        "hiddenDuringTravel": { "type": "boolean" },
+        "excludedStops": { "type": "array", "items": { "type": "integer" } }
+      }
+    },
+    "stops": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["frame", "stopIndex", "event", "left", "right"],
+        "properties": {
+          "frame": { "type": "integer" },
+          "stopIndex": { "type": "integer" },
+          "event": { "type": "string" },
+          "left": { "$ref": "#/$defs/asset" },
+          "right": { "$ref": "#/$defs/asset" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "transition": {
+      "type": "object",
+      "required": ["durationMs", "easing"],
+      "properties": { "durationMs": { "type": "integer" }, "easing": { "type": "string" }, "direction": { "type": "string" } }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["file", "width", "height", "sha256", "alpha", "anchor", "heightPct", "reachPct"],
+      "properties": {
+        "file": { "type": "string", "pattern": "^frame-[0-9]{3}-(left|right)-[a-z0-9-]+\\.png$" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "alpha": {
+          "type": "object",
+          "required": ["rgba", "minTransparentPct"],
+          "properties": { "rgba": { "const": true }, "minTransparentPct": { "type": "number" }, "measuredTransparentPct": { "type": "number" } }
+        },
+        "description": { "type": "string" },
+        "anchor": { "enum": ["bottom-left", "bottom-right"] },
+        "heightPct": { "type": "number", "description": "Display height, % of invitation height" },
+        "reachPct": { "type": "number", "description": "Maximum inward reach, % of invitation width" },
+        "bottomOffset": { "type": "string" },
+        "outerEdgeOffset": { "type": "string" },
+        "horizontalNudge": { "type": "string" },
+        "entranceFrom": { "enum": ["left", "right"] }
+      }
+    }
+  }
+}

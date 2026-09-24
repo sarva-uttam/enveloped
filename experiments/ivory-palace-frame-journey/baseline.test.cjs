@@ -213,3 +213,79 @@ test("background grade: restrained CSS filter on the canvas only", () => {
     assert.doesNotMatch(cssRule(sel), /filter:/, `${sel} is not graded`);
   }
 });
+
+// ---------------- Layer 3 reusable-method locks (LAYER-3-AUTOMATION-CONTRACT.md) ----------------
+
+const CONFIG = JSON.parse(fs.readFileSync(path.join(DIR, "../../docs/html-invitation-generator/ivory-palace/layer-3-foreground.config.json"), "utf8"));
+const configAssets = () => CONFIG.stops.flatMap((s) => ["left", "right"].map((side) => ({ stop: String(s.stopIndex), frame: s.frame, side, ...s[side] })));
+
+test("Layer 3 config agrees with the implementation (files, hashes, mapping, placement, motion)", () => {
+  assert.equal(CONFIG.schemaVersion, 1);
+  assert.equal(CONFIG.approval.state, "owner-approved");
+  const assets = configAssets();
+  assert.equal(assets.length, 6, "two assets per Layer 3 stop");
+  assert.equal(new Set(assets.map((a) => a.sha256)).size, 6, "unique hashes");
+  assert.deepEqual(CONFIG.stops.map((s) => s.frame), [80, 160, 240]);
+  assert.deepEqual(CONFIG.motion.excludedStops, [300]);
+  for (const a of assets) {
+    const [stop, side, file, w, h, hash] = ORNAMENTS.find((o) => o[2] === a.file) || [];
+    assert.ok(file, `${a.file} is an approved asset`);
+    assert.deepEqual([stop, side, w, h, hash], [a.stop, a.side, a.width, a.height, a.sha256], a.file);
+    assert.match(css, new RegExp(`\\.stop-ornament--${a.side}\\[data-stop="${a.stop}"\\] \\{ --orn-h: ${a.heightPct}; --orn-reach: ${a.reachPct}; --orn-ratio: [\\d.]+; \\}`), `${a.file} placement`);
+    assert.equal(a.anchor, `bottom-${a.side}`);
+    assert.equal(a.entranceFrom, a.side);
+  }
+  const root = cssRule(":root");
+  assert.match(root, new RegExp(`--ornament-enter-ms: ${CONFIG.motion.entrance.durationMs}ms;`));
+  assert.match(root, new RegExp(`--ornament-exit-ms: ${CONFIG.motion.exit.durationMs}ms;`));
+  assert.match(root, new RegExp(`--ornament-shift: ${CONFIG.motion.slideOffset};`));
+});
+
+test("Layer 3 alpha contract: genuine transparency, no matte, no edge contact, correct orientation", async () => {
+  const sharp = require(require.resolve("sharp", { paths: [path.join(DIR, "../..")] }));
+  for (const a of configAssets()) {
+    const { data, info } = await sharp(path.join(DIR, "assets/ornaments", a.file)).raw().toBuffer({ resolveWithObject: true });
+    assert.equal(info.channels, 4, `${a.file} RGBA`);
+    const W = info.width, H = info.height, N = W * H;
+    let transparent = 0, opaqueBlack = 0, massL = 0, massR = 0;
+    for (let i = 0; i < N; i++) {
+      const al = data[i * 4 + 3];
+      if (al === 0) transparent++;
+      if (al === 255 && Math.max(data[i * 4], data[i * 4 + 1], data[i * 4 + 2]) < 10) opaqueBlack++;
+      if (al > 200) { if (i % W < W / 2) massL++; else massR++; }
+    }
+    assert.ok(transparent / N >= a.alpha.minTransparentPct / 100, `${a.file} transparent ${(transparent / N * 100).toFixed(1)}%`);
+    assert.ok(opaqueBlack / N < 0.01, `${a.file} has no opaque black matte`);
+    for (const [x, y] of [[0, 0], [W - 1, 0], [0, H - 1], [W - 1, H - 1]]) assert.ok(data[(y * W + x) * 4 + 3] < 200, `${a.file} corner not opaque`);
+    let edgeSolid = 0;
+    for (let x = 0; x < W; x++) edgeSolid += (data[x * 4 + 3] > 200) + (data[((H - 1) * W + x) * 4 + 3] > 200);
+    for (let y = 0; y < H; y++) edgeSolid += (data[y * W * 4 + 3] > 200) + (data[(y * W + W - 1) * 4 + 3] > 200);
+    assert.ok(edgeSolid / (2 * (W + H)) < 0.05, `${a.file} artwork cut off at a canvas edge`);
+    const outer = a.side === "left" ? massL : massR;
+    assert.ok(outer / (massL + massR) >= 0.6, `${a.file} faces its ${a.side} (outer) side`);
+  }
+});
+
+test("Layer 3 z-index: above the frame, below wording and controls", () => {
+  const panel = html.slice(html.indexOf('id="stopPanel"'), html.indexOf('id="finaleLight"'));
+  assert.ok(panel.indexOf('id="stopFrameArt"') < panel.indexOf('class="stop-ornaments"'), "ornaments after the frame");
+  assert.ok(panel.indexOf('class="stop-ornaments"') < panel.indexOf('id="stopContent"'), "ornaments before wording");
+  const z = (sel) => Number((cssRule(sel).match(/z-index: (\d+);/) || [])[1]);
+  assert.equal(z(".stop-panel"), 2);
+  assert.equal(z(".nav-btn"), 6);
+  assert.ok(z(".nav-btn") > z(".stop-panel"), "controls above the foreground");
+  assert.doesNotMatch(cssRule(".stop-ornament"), /z-index/, "no ornament z-index escaping the stop layer");
+  assert.doesNotMatch(cssRule(".stop-ornament"), /pointer-events: auto/);
+});
+
+test("Layer 3 display rules: finale exclusion and reduced motion", () => {
+  assert.match(script, /if \(index === FINALE_INDEX\) \{\s*frameBox\.setAttribute\("data-surface", "finale"\);\s*onSettled\(\);\s*return;\s*\}/, "finale returns before ornaments");
+  assert.match(html, /data-ornaments="none"/);
+  assert.equal((html.match(/data-stop="(\d)"/g) || []).length, 6);
+  assert.doesNotMatch(html, /data-stop="3"/, "no ornaments bound to the finale");
+  const rm = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
+  assert.match(rm, /--ornament-enter-ms: 240ms;/);
+  assert.match(rm, /--ornament-exit-ms: 180ms;/);
+  assert.match(rm, /--ornament-shift: 0px;/);
+  for (const sel of [".stop-ornament", ".stop-ornament--left", ".stop-ornament--right"]) assert.doesNotMatch(cssRule(sel), /transform: (?:scaleX\(-1\)|scale\(-1)/, "never mirrored");
+});

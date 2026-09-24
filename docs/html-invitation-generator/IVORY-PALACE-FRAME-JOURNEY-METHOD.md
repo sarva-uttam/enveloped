@@ -530,6 +530,13 @@ At every size:
 
 ## 12. Third-layer ceremonial foregrounds (Owner-approved)
 
+The reusable, template-neutral version of this process is
+[`LAYER-3-CEREMONIAL-FOREGROUND-METHOD.md`](LAYER-3-CEREMONIAL-FOREGROUND-METHOD.md).
+Ivory Palace specifics live in
+[`ivory-palace/`](ivory-palace/): the asset catalogue, prompts, decision
+log and `layer-3-foreground.config.json`. The authoritative Layer 3
+baseline is `3892648600f5b63a11a00d67cffacd7a24a2d9c8`.
+
 **Status: Owner-approved and locked by `baseline.test.cjs`.** They sit
 above the approved §11 second layer, which is unchanged. No wording is
 displayed.
