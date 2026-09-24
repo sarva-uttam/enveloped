@@ -143,7 +143,10 @@ function installOverlaySampler() {
         o.ornaments,
         visible.reduce((m, s) => Math.max(m, s[2]), 0),
         [...new Set(visible.map((s) => s[0]))].join(","),
-        visible.map((s) => [s[1], s[2], tx(s[3])])
+        visible.map((s) => [s[1], s[2], tx(s[3])]),
+        o.wording ? Math.max(0, ...o.wording.groups.map((g) => g[1])) : 0,
+        o.wording ? o.wording.active : -1,
+        o.wording ? o.wording.groups.map((g) => g[1]) : []
       ]);
     }
     requestAnimationFrame(sample);
@@ -210,12 +213,12 @@ function analyzeOrnamentSequence(samples) {
 // background and its pixel bounds are found, as % of the invitation box.
 async function ornamentArtBounds(page, stop, side) {
   await page.evaluate(({ stop, side }) => {
-    for (const s of ["#frameCanvas", ".stop-panel__fill", "#stopFrameArt", ".nav-btn"]) document.querySelectorAll(s).forEach((e) => (e.style.visibility = "hidden"));
+    for (const s of ["#frameCanvas", ".stop-panel__fill", "#stopFrameArt", ".invite-control", ".wording-stop"]) document.querySelectorAll(s).forEach((e) => (e.style.visibility = "hidden"));
     document.querySelectorAll(".stop-ornament").forEach((e) => (e.style.visibility = e.dataset.stop === stop && e.classList.contains("stop-ornament--" + side) ? "" : "hidden"));
   }, { stop, side });
   await page.waitForTimeout(80);
   const png = await page.locator("#frameBox").screenshot();
-  await page.evaluate(() => document.querySelectorAll("#frameCanvas, .stop-panel__fill, #stopFrameArt, .nav-btn, .stop-ornament").forEach((e) => (e.style.visibility = "")));
+  await page.evaluate(() => document.querySelectorAll("#frameCanvas, .stop-panel__fill, #stopFrameArt, .invite-control, .stop-ornament, .wording-stop").forEach((e) => (e.style.visibility = "")));
   return analyzePng(page, png, `
     const c = rgb(Math.floor(w / 2), Math.floor(h / 3));
     let l = w, r = -1, t = h, b = -1;
@@ -260,7 +263,7 @@ async function ornamentPlacementProblems(page, stop) {
 
 
 // Waits until the page is at rest on `chapter` with its surface fully in.
-async function waitSurface(page, frame, timeoutMs = 9000) {
+async function waitSurface(page, frame, timeoutMs = 12000) {
   const want = frame === 300 ? "finale" : "panel";
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
@@ -324,17 +327,17 @@ async function measurePanel(page) {
     return {
       boxW: box.width, boxH: box.height,
       x: panel.left - box.left, y: panel.top - box.top, w: panel.width, h: panel.height,
-      fillAlpha: parseFloat((getComputedStyle(fill).backgroundColor.match(/,\s*([\d.]+)\)$/) || [0, 1])[1]),
+      fillAlpha: /^rgb\(/.test(getComputedStyle(fill).backgroundColor) ? 1 : parseFloat((getComputedStyle(fill).backgroundColor.match(/,\s*([\d.]+)\)$/) || [0, 0])[1]),
       img: { complete: img.complete, natural: img.naturalWidth + "x" + img.naturalHeight }
     };
   });
   await page.evaluate(() => {
-    for (const sel of ["#frameCanvas", ".nav-btn", ".stop-ornaments"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = "hidden"));
+    for (const sel of ["#frameCanvas", ".invite-control", ".stop-ornaments", ".wording-stop"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = "hidden"));
   });
   await page.waitForTimeout(120);
   const png = await page.locator("#frameBox").screenshot();
   await page.evaluate(() => {
-    for (const sel of ["#frameCanvas", ".nav-btn", ".stop-ornaments"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = ""));
+    for (const sel of ["#frameCanvas", ".invite-control", ".stop-ornaments", ".wording-stop"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = ""));
   });
   const px = await analyzePng(
     page,
@@ -345,8 +348,9 @@ async function measurePanel(page) {
     const at = (fx, fy) => [Math.round((arg.x + fx * arg.w) * sx), Math.round((arg.y + fy * arg.h) * sy)];
     const mean = (fx, fy, r) => { const [cx, cy] = at(fx, fy); let t = 0, n = 0;
       for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++) { t += lum(x, y); n++; } return t / n; };
-    // Fill colour rgba(253,249,241) has luminance ~249.3; alpha from the centre.
-    const centreAlpha = (mean(0.5, 0.5, 6) - bg) / (249.3 - bg);
+    // Opaque paper #f7f0e3 has luminance ~240.5; at 100% opacity the centre
+    // reads as the paper itself over the dark test background (ratio ~1).
+    const centreAlpha = (mean(0.5, 0.5, 6) - bg) / (240.5 - bg);
     const [cx, cy] = at(0.5, 0.5); const [r, , b] = rgb(cx, cy);
     // The artwork's transparent exterior margin, plus the arch spandrels
     // between the cusped arch and the top bar (clear in both artwork and
@@ -371,7 +375,7 @@ async function measurePanel(page) {
 // drawn in the artwork's transparent margin, its arch spandrels or outside the panel.
 function panelOk(m) {
   return Math.abs(m.ratio - FRAME_RATIO) < 0.004 && m.fracW <= 0.905 && m.fracH <= 0.905 &&
-    Math.max(m.fracW, m.fracH) >= 0.895 && m.fillAlpha === 0.85 && Math.abs(m.centreAlpha - 0.85) < 0.03 &&
+    Math.max(m.fracW, m.fracH) >= 0.895 && m.fillAlpha === 1 && Math.abs(m.centreAlpha - 1) < 0.03 &&
     m.warm >= 3 && m.marginMax < 4 && m.outside < 4 && m.img.complete && m.img.natural === "941x1672";
 }
 
@@ -381,10 +385,10 @@ function describePanel(m) {
 }
 
 async function measureFinale(page) {
-  await page.evaluate(() => document.querySelectorAll(".nav-btn").forEach((el) => (el.style.visibility = "hidden")));
+  await page.evaluate(() => document.querySelectorAll(".invite-control, .wording-stop").forEach((el) => (el.style.visibility = "hidden")));
   await page.waitForTimeout(120);
   const png = await page.locator("#frameBox").screenshot();
-  await page.evaluate(() => document.querySelectorAll(".nav-btn").forEach((el) => (el.style.visibility = "")));
+  await page.evaluate(() => document.querySelectorAll(".invite-control, .wording-stop").forEach((el) => (el.style.visibility = "")));
   return analyzePng(
     page,
     png,
@@ -411,9 +415,10 @@ function analyzeOverlaySamples(samples, maxJump) {
   for (let i = 0; i < samples.length; i++) {
     const [frame, surface, panel, finale] = samples[i];
     const ornMax = samples[i][6] || 0;
+    const wordMax = samples[i][9] || 0;
     if (frame > 1 && !stops.has(frame)) {
       travelSamples++;
-      if (surface !== "none" || panel > 0.02 || finale > 0.02 || ornMax > 0.02) travelLeaks++;
+      if (surface !== "none" || panel > 0.02 || finale > 0.02 || ornMax > 0.02 || wordMax > 0.02) travelLeaks++;
     }
     if (i > 0) {
       worstJump = Math.max(worstJump, Math.abs(panel - samples[i - 1][2]), Math.abs(finale - samples[i - 1][3]));
@@ -454,6 +459,224 @@ function analyzePanelTiming(samples) {
   return { enters, exits };
 }
 
+
+// ---------------- Layer 4 wording placement helpers ----------------
+
+const L4 = (() => {
+  const window = {};
+  new Function("window", fs.readFileSync(path.join(DIR, "layer4-content.js"), "utf8"))(window);
+  return window.IVORY_LAYER4_CONTENT;
+})();
+
+// Geometry of every Layer 4 zone (hidden groups are still laid out), as
+// px deviations from the specified % of the invitation box.
+async function layer4Geometry(page) {
+  return page.evaluate(() => {
+    const box = document.getElementById("frameBox").getBoundingClientRect();
+    return [...document.querySelectorAll(".wording-zone")].map((z) => {
+      const r = z.getBoundingClientRect();
+      const m = z.querySelector(".wording-motion");
+      const mr = m ? m.getBoundingClientRect() : null;
+      return {
+        id: z.id, kind: z.dataset.kind,
+        top: r.top - box.top, left: r.left - box.left, w: r.width, h: r.height, boxW: box.width, boxH: box.height,
+        centreDev: Math.abs(r.left + r.width / 2 - (box.left + box.width / 2)),
+        inside: r.left >= box.left - 0.5 && r.right <= box.right + 0.5 && r.top >= box.top - 0.5 && r.bottom <= box.bottom + 0.5,
+        text: z.textContent, children: z.childElementCount, imgSrc: z.querySelector("img") ? z.querySelector("img").getAttribute("src") : null,
+        contentH: m ? m.scrollHeight : 0, contentW: m ? Math.max(...[...m.children].map((c) => c.scrollWidth), 0) : 0,
+        motionCentreDev: mr ? Math.abs(mr.left + mr.width / 2 - (r.left + r.width / 2)) : 0
+      };
+    });
+  });
+}
+
+function layer4GeometryProblems(geo) {
+  const problems = [];
+  for (const z of L4.zones) {
+    const g = geo.find((x) => x.id === z.id);
+    if (!g) { problems.push(`${z.id} missing`); continue; }
+    if (z.kind === "component") {
+      const w = Math.min(0.94 * g.boxW, Math.max((z.width / 100) * g.boxW, 272)); // min(94%, max(76%, 272px))
+      if (Math.abs(g.top - (z.top / 100) * g.boxH) > 0.75 || Math.abs(g.w - w) > 0.75) problems.push(`${z.id} box off spec`);
+      if (g.centreDev > 0.5) problems.push(`${z.id} not centred (${g.centreDev.toFixed(2)}px)`);
+      if (!g.inside) problems.push(`${z.id} outside the invitation`);
+      continue;
+    }
+    if (z.kind === "symbol") {
+      if (g.centreDev > 0.5) problems.push(`${z.id} not centred (${g.centreDev.toFixed(2)}px)`);
+      if (!g.inside) problems.push(`${z.id} outside the invitation`);
+      continue;
+    }
+    const w = z.widthCss ? Math.min(280, Math.max(144, (z.width / 100) * g.boxW)) : (z.width / 100) * g.boxW; // clamp(144px, 46%, 280px)
+    const want = { top: (z.top / 100) * g.boxH, w, h: (z.height / 100) * g.boxH };
+    if (Math.abs(g.top - want.top) > 0.75 || Math.abs(g.w - want.w) > 0.75 || Math.abs(g.h - want.h) > 0.75) problems.push(`${z.id} box off spec`);
+    if (g.centreDev > 0.5) problems.push(`${z.id} not centred (${g.centreDev.toFixed(2)}px)`);
+    if (!g.inside) problems.push(`${z.id} outside the invitation`);
+    if (z.kind === "slot" && (g.text.trim() !== "" || g.children !== 0)) problems.push(`${z.id} slot not empty`);
+    if (z.kind === "ornament" && (g.text.trim() !== "" || !g.imgSrc || !g.imgSrc.endsWith(z.image.src))) problems.push(`${z.id} enclosure image missing or wrong`);
+  }
+  return problems;
+}
+
+// Zones whose provisional text does not fit its specified box (reported,
+// not failed: typography is not decided yet).
+function layer4Overflow(geo) {
+  return geo.filter((g) => g.kind === "text" && (g.contentH > g.h + 1 || g.contentW > g.w + 1))
+    .map((g) => `${g.id}${g.contentW > g.w + 1 ? " (wider)" : ""}${g.contentH > g.h + 1 ? ` (${g.contentH.toFixed(0)}/${g.h.toFixed(0)}px tall)` : ""}`);
+}
+
+// Layer 4 sequencing from rAF samples ([9] wording max opacity, [10]
+// active group, [11] per-group opacity).
+function analyzeLayer4Sequence(samples) {
+  const r = { arrivals: 0, earlyStarts: [], lateExits: [], wrongStop: 0 };
+  for (let i = 1; i < samples.length; i++) {
+    const s = samples[i], p = samples[i - 1];
+    const idx = CHAPTERS.indexOf(s[0]);
+    if (s[9] > 0.01) {
+      const visibleGroups = (s[11] || []).map((v, k) => [v, k]).filter(([v]) => v > 0.01).map(([, k]) => k);
+      if (visibleGroups.some((k) => k !== idx)) r.wrongStop++;
+    }
+    if (p[9] <= 0.01 && s[9] > 0.01) {
+      r.arrivals++;
+      const layer23Settled = s[0] === 300 ? s[3] >= 0.995 : s[6] >= 0.995;
+      if (!layer23Settled) r.earlyStarts.push(s[0]);
+    }
+    // Leaving: Layer 3 starts exiting (ornaments attr -> none) or the finale
+    // light starts fading; wording must already be fully clear.
+    const ornLeaving = p[5] !== "none" && s[5] === "none";
+    const finaleLeaving = p[1] === "finale" && s[1] !== "finale";
+    if ((ornLeaving || finaleLeaving) && s[9] > 0.01) r.lateExits.push(s[0]);
+  }
+  return r;
+}
+
+
+// Symbol measurements with every Layer 4 motion wrapper at its rest
+// position (transitions disabled while probing, then restored).
+async function measureSymbols(page) {
+  return page.evaluate(() => {
+    const motions = [...document.querySelectorAll(".wording-motion")];
+    const saved = motions.map((m) => [m.style.transition, m.style.transform]);
+    motions.forEach((m) => { m.style.transition = "none"; m.style.transform = "none"; });
+    document.body.getBoundingClientRect();
+    const box = document.getElementById("frameBox").getBoundingClientRect();
+    const cx = box.left + box.width / 2;
+    const textBox = (el) => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); };
+    const drawn = (img) => { const r = img.getBoundingClientRect(), s = Math.min(r.width / img.naturalWidth, r.height / img.naturalHeight); return { w: img.naturalWidth * s, h: img.naturalHeight * s, r, s }; };
+    const sacred = ["haldi-sacred-opening", "wedding-sacred-opening"].map((id) => {
+      const z = document.getElementById(id), zr = z.getBoundingClientRect(), img = z.querySelector(".sacred-opening__ganesha"), d = drawn(img), m = textBox(z.querySelector(".sacred-opening__mantra"));
+      const title = document.getElementById(id.replace("sacred-opening", "title")), t = textBox(title);
+      return { id, ganesha: `${d.w.toFixed(0)}x${d.h.toFixed(0)}`, centred: Math.abs(d.r.left + d.r.width / 2 - cx) < 0.5, above: d.r.bottom <= m.top + 0.5,
+        inside: d.r.top >= zr.top + 0.5 && m.bottom <= zr.bottom - 0.5, clearOfTitle: m.bottom <= t.top, ratio: Math.abs(d.w / d.h - img.naturalWidth / img.naturalHeight) < 0.01, smallerThanTitle: d.h < t.height * 1.6 };
+    });
+    const knotImg = document.querySelector(".wedding-nuptial-knot"), kd = drawn(knotImg);
+    const bride = textBox(document.getElementById("wedding-bride-name")), groom = textBox(document.getElementById("wedding-groom-name"));
+    const kTop = kd.r.top + (kd.r.height - kd.h) / 2, kBottom = kTop + kd.h;
+    const knot = { size: `${kd.w.toFixed(0)}x${kd.h.toFixed(0)}`, centreDev: Math.abs(kd.r.left + kd.r.width / 2 - cx), gapAbove: kTop - bride.bottom, gapBelow: groom.top - kBottom,
+      smaller: kd.h < bride.height && kd.h < groom.height, ratio: Math.abs(kd.w / kd.h - knotImg.naturalWidth / knotImg.naturalHeight) < 0.01,
+      inGroup: !!knotImg.closest(".wedding-couple-names") && !knotImg.closest("#wedding-bride-name") && !knotImg.closest("#wedding-groom-name") };
+    const enc = ["closing-enclosure-top", "closing-enclosure-bottom"].map((id) => {
+      const img = document.getElementById(id).querySelector("img"), d = drawn(img);
+      return { id, src: img.getAttribute("src"), box: `${d.r.width.toFixed(1)}x${d.r.height.toFixed(1)}`, art: `${d.w.toFixed(0)}x${d.h.toFixed(0)}`, scale: d.s, centreDev: Math.abs(d.r.left + d.r.width / 2 - cx), top: d.r.top, bottom: d.r.bottom, boxW: d.r.width };
+    });
+    const closingTop = document.getElementById("closing-appreciation").getBoundingClientRect().top, closingBottom = document.getElementById("closing-family").getBoundingClientRect().bottom;
+    motions.forEach((m, i) => { m.style.transform = saved[i][1]; });
+    document.body.getBoundingClientRect();
+    motions.forEach((m, i) => { m.style.transition = saved[i][0]; });
+    return { sacred, knot, enc, encOrder: enc[0].bottom <= closingTop && enc[1].top >= closingBottom, overflowX: document.documentElement.scrollWidth > innerWidth };
+  });
+}
+
+function symbolProblems(m) {
+  const p = [];
+  for (const s of m.sacred) if (!(s.centred && s.above && s.inside && s.clearOfTitle && s.ratio && s.smallerThanTitle)) p.push(`${s.id} ${JSON.stringify(s)}`);
+  const k = m.knot;
+  if (!(k.centreDev < 0.5 && k.gapAbove >= 2 && k.gapBelow >= 2 && k.smaller && k.ratio && k.inGroup)) p.push(`knot ${JSON.stringify(k)}`);
+  const [u, l] = m.enc;
+  if (!u.src.endsWith("enclosure-e2-upper.png") || !l.src.endsWith("enclosure-e2-lower.png")) p.push("enclosure mapping");
+  if (u.centreDev > 0.5 || l.centreDev > 0.5 || Math.abs(u.boxW - l.boxW) > 0.5 || Math.abs(u.scale / l.scale - 1) > 0.01 || !m.encOrder) p.push(`enclosures ${JSON.stringify(m.enc)} order=${m.encOrder}`);
+  if (m.overflowX) p.push("horizontal overflow");
+  return p;
+}
+
+
+// Visual-refinement pass: opacity of the paper (palace never visible
+// through it), texture clipping, and the right-side control rail.
+async function paperAndRail(page) {
+  const box = await page.evaluate(() => { const r = document.getElementById("frameBox").getBoundingClientRect(); return { x: r.left, y: r.top, width: r.width, height: r.height }; });
+  const hide = (sel, v) => page.evaluate(({ sel, v }) => document.querySelectorAll(sel).forEach((e) => (e.style.visibility = v)), { sel, v });
+  await hide(".wording-stop, .stop-ornaments, .invite-controls", "hidden");
+  await page.waitForTimeout(80);
+  const withCanvas = await page.screenshot({ clip: box });
+  await hide("#frameCanvas", "hidden");
+  await page.waitForTimeout(80);
+  const noCanvas = await page.screenshot({ clip: box });
+  await hide(".stop-panel__fill", "hidden");
+  await page.waitForTimeout(80);
+  const noFill = await page.screenshot({ clip: box });
+  await hide("#frameCanvas, .stop-panel__fill, .wording-stop, .stop-ornaments, .invite-controls", "");
+  const geo = await page.evaluate(() => {
+    const b = document.getElementById("frameBox").getBoundingClientRect(), p = document.getElementById("stopPanel").getBoundingClientRect();
+    return { px: p.left - b.left, py: p.top - b.top, pw: p.width, ph: p.height };
+  });
+  const pix = await page.evaluate(async ({ a, b, c, geo }) => {
+    const load = async (b64) => { const i = new Image(); i.src = "data:image/png;base64," + b64; await i.decode(); const cv = document.createElement("canvas"); cv.width = i.width; cv.height = i.height; const g = cv.getContext("2d"); g.drawImage(i, 0, 0); return { d: g.getImageData(0, 0, i.width, i.height).data, w: i.width, h: i.height }; };
+    const A = await load(a), B = await load(b), C = await load(c);
+    let inDiff = 0, n = 0;
+    // Inside the paper opening (panel 20-80% x 25-80%): canvas on vs off must be identical.
+    for (let fy = 0.25; fy <= 0.8; fy += 0.01) for (let fx = 0.2; fx <= 0.8; fx += 0.01) {
+      const x = Math.round((geo.px + fx * geo.pw) * (A.w / (geo.px * 2 + geo.pw))), y = Math.round((geo.py + fy * geo.ph) * (A.h / (geo.py * 2 + geo.ph)));
+      const i = (y * A.w + x) * 4; inDiff = Math.max(inDiff, Math.abs(A.d[i] - B.d[i]), Math.abs(A.d[i + 1] - B.d[i + 1]), Math.abs(A.d[i + 2] - B.d[i + 2])); n++;
+    }
+    // Outside the paper (the artwork's transparent exterior margin): fill on vs off must be identical.
+    let outDiff = 0;
+    for (const [fx, fy] of [[0.03, 0.5], [0.97, 0.5], [0.3, 0.02], [0.7, 0.02], [0.3, 0.985], [0.7, 0.985], [0.3, 0.075], [0.7, 0.075]]) {
+      const x = Math.round((geo.px + fx * geo.pw) * (A.w / (geo.px * 2 + geo.pw))), y = Math.round((geo.py + fy * geo.ph) * (A.h / (geo.py * 2 + geo.ph)));
+      const i = (y * B.w + x) * 4; outDiff = Math.max(outDiff, Math.abs(B.d[i] - C.d[i]), Math.abs(B.d[i + 1] - C.d[i + 1]), Math.abs(B.d[i + 2] - C.d[i + 2]));
+    }
+    // Texture subtlety: spread of the paper's luminance across the opening.
+    let lo = 255, hi = 0;
+    for (let fy = 0.3; fy <= 0.7; fy += 0.01) for (let fx = 0.3; fx <= 0.7; fx += 0.01) {
+      const x = Math.round((geo.px + fx * geo.pw) * (B.w / (geo.px * 2 + geo.pw))), y = Math.round((geo.py + fy * geo.ph) * (B.h / (geo.py * 2 + geo.ph))), i = (y * B.w + x) * 4;
+      const l = 0.2126 * B.d[i] + 0.7152 * B.d[i + 1] + 0.0722 * B.d[i + 2]; lo = Math.min(lo, l); hi = Math.max(hi, l);
+    }
+    return { inDiff, samples: n, outDiff, lumRange: hi - lo, lumMin: lo };
+  }, { a: withCanvas.toString("base64"), b: noCanvas.toString("base64"), c: noFill.toString("base64"), geo });
+  const rail = await page.evaluate(() => {
+    const b = document.getElementById("frameBox").getBoundingClientRect();
+    const [u, d] = ["navUp", "navDown"].map((id) => document.getElementById(id).getBoundingClientRect());
+    const hit = (el) => { const r = el.getBoundingClientRect(); const h = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return h === el || el.contains(h); };
+    const cs = getComputedStyle(document.getElementById("navUp"));
+    return { up: [u.left - b.left, u.top - b.top, u.width, u.height], down: [d.left - b.left, d.top - b.top, d.width, d.height],
+      sameAxis: Math.abs(u.left + u.width / 2 - (d.left + d.width / 2)) < 0.5, upAbove: u.bottom <= d.top, rightSide: u.left > b.left + b.width * 0.6,
+      inside: [u, d].every((r) => r.left >= b.left && r.right <= b.right && r.top >= b.top && r.bottom <= b.bottom),
+      minSize: Math.min(u.width, u.height, d.width, d.height), wholeOpacity: cs.opacity, bg: cs.backgroundColor,
+      utilities: (() => {
+        const bs = [...document.querySelectorAll(".invite-controls__utilities .invite-control")].map((x) => x.getBoundingClientRect());
+        return { count: bs.length, row: bs.every((r) => Math.abs(r.top - bs[0].top) < 0.5), upperRight: bs.every((r) => r.top < b.top + b.height * 0.12 && r.left > b.left + b.width * 0.45),
+          inside: bs.every((r) => r.left >= b.left && r.right <= b.right && r.top >= b.top), min: Math.min(...bs.map((r) => Math.min(r.width, r.height))),
+          first: bs[0] ? [bs[0].left - b.left, bs[0].top - b.top, bs[0].width] : null, last: bs[2] ? [bs[2].left - b.left, bs[2].top - b.top] : null };
+      })(),
+      hitUp: document.getElementById("navUp").classList.contains("is-visible") ? hit(document.getElementById("navUp")) : null,
+      hitDown: document.getElementById("navDown").classList.contains("is-visible") ? hit(document.getElementById("navDown")) : null,
+      overflowX: document.documentElement.scrollWidth > innerWidth };
+  });
+  return { pix, rail };
+}
+
+function paperRailProblems(r) {
+  const p = [];
+  if (r.pix.inDiff !== 0) p.push(`palace shows through the paper (max diff ${r.pix.inDiff})`);
+  if (r.pix.outDiff > 1) p.push(`texture/paper escapes the opening (diff ${r.pix.outDiff})`);
+  if (r.pix.lumRange > 14) p.push(`texture too strong (luminance range ${r.pix.lumRange.toFixed(1)})`);
+  const q = r.rail;
+  const u = q.utilities;
+  if (!(q.sameAxis && q.upAbove && q.rightSide && q.inside && q.minSize >= 44 && !q.overflowX)) p.push(`rail ${JSON.stringify(q)}`);
+  if (!(u.count === 3 && u.row && u.upperRight && u.inside && u.min >= 44)) p.push(`utilities ${JSON.stringify(u)}`);
+  if (q.hitUp === false || q.hitDown === false) p.push("visible control not clickable");
+  return p;
+}
+
 async function wordingLayerChecks(page, label) {
   const layer = await page.evaluate(() => {
     const el = document.getElementById("stopContent");
@@ -466,9 +689,15 @@ async function wordingLayerChecks(page, label) {
   );
   const catalogue = JSON.parse(fs.readFileSync(path.join(DIR, "wording", "catalogue.json"), "utf8"));
   const texts = Object.values(catalogue.approvedCollections).flatMap((c) => c.items.map((x) => x.text)).filter(Boolean);
-  const html = await page.evaluate(() => document.documentElement.outerHTML + "\n" + document.body.innerText);
+  // Layer 4 (placement checkpoint) shows wording only inside #wordingLayer.
+  const html = await page.evaluate(() => {
+    const clone = document.documentElement.cloneNode(true);
+    const wl = clone.querySelector("#wordingLayer");
+    if (wl) wl.remove();
+    return clone.outerHTML;
+  });
   const shown = texts.filter((t) => html.includes(t));
-  check(`${label}: no approved catalogue wording appears in the page (${texts.length} items checked)`, shown.length === 0, JSON.stringify(shown.slice(0, 3)));
+  check(`${label}: catalogue wording appears only inside the Layer 4 wording layer (${texts.length} items checked)`, shown.length === 0, JSON.stringify(shown.slice(0, 3)));
   const focusEscapes = await page.evaluate(() => {
     const el = document.getElementById("stopContent");
     return [...document.querySelectorAll("*")].filter((n) => el.contains(n) && n.tabIndex >= 0).length;
@@ -527,6 +756,30 @@ async function main() {
         check(`${label}: approved ornament placement at ${frame} (visible art from ~57-60% to bottom, outer corners, own side, control on top)`, pl.problems.length === 0,
           pl.problems.join("; ") || ["left", "right"].map((sd) => `${sd} x ${pl.art[sd].l.toFixed(1)}-${pl.art[sd].r.toFixed(1)}% top ${pl.art[sd].t.toFixed(1)}%`).join(" | "));
       }
+      const l4 = await page.evaluate((idx) => {
+        const st = window.IvoryLayer4.state();
+        const motions = [...document.querySelectorAll(`.wording-stop[data-stop="${idx}"] .wording-motion`)].map((m) => getComputedStyle(m).transform);
+        return { st, motions };
+      }, Number(stopIndex));
+      const expectedZones = L4.zones.filter((z) => z.stop === frame && z.kind !== "slot").length;
+      check(
+        `${label}: Layer 4 shows only the stop-${frame} wording (${expectedZones} zones), fully in and at rest`,
+        l4.st.active === Number(stopIndex) && l4.st.groups.every((g, k) => (k === Number(stopIndex) ? g[0] === "in" && g[1] >= 0.995 : g[0] === "hidden" && g[1] === 0)) &&
+          l4.motions.length === expectedZones && l4.motions.every((t) => t === "none" || Math.abs(translateXOf(t)) < 0.5 && Math.abs(parseFloat((/matrix\(([^)]+)\)/.exec(t) || [0, "0,0,0,0,0,0"])[1].split(",")[5])) < 0.5),
+        JSON.stringify(l4.st) + " " + JSON.stringify(l4.motions)
+      );
+      if (frame === 160 || frame === 240) {
+        const g = await page.evaluate((idx) => {
+          const z = document.querySelector(`.wording-stop[data-stop="${idx}"] .sacred-opening`).parentElement, zr = z.getBoundingClientRect();
+          const img = z.querySelector(".sacred-opening__ganesha"), ir = img.getBoundingClientRect(), mr = z.querySelector(".sacred-opening__mantra").getBoundingClientRect();
+          const sc = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
+          return { decoded: img.complete && img.naturalWidth > 0, centreDev: Math.abs(ir.left + ir.width / 2 - (zr.left + zr.width / 2)), above: ir.bottom <= mr.top + 0.5,
+            inside: ir.top >= zr.top - 0.5 && mr.bottom <= zr.bottom + 0.5, ratio: Math.abs((img.naturalWidth * sc) / (img.naturalHeight * sc) - img.naturalWidth / img.naturalHeight) < 0.01,
+            maxH: ir.height <= zr.height * 0.52 + 0.5, opacity: parseFloat(getComputedStyle(img.parentElement).opacity) };
+        }, Number(stopIndex));
+        check(`${label}: Ganesha centred above the mantra inside the sacred opening at ${frame}, ratio kept, ≤52% of the zone`,
+          g.decoded && g.centreDev < 0.5 && g.above && g.inside && g.ratio && g.maxH && g.opacity >= 0.995, JSON.stringify(g));
+      }
       const up = frame !== 80, down = frame !== 300;
       check(`${label}: navigation controls remain interactive above the surface at ${frame}`, (!up || (await navHit(page, "navUp"))) && (!down || (await navHit(page, "navDown"))));
     };
@@ -554,7 +807,7 @@ async function main() {
         await page.mouse.move(720, 450);
         await page.mouse.wheel(0, 100);
       }
-      landed = await waitSettle(page, getFrame, CHAPTERS[i], 6000);
+      landed = await waitSettle(page, getFrame, CHAPTERS[i], 9000);
       log = await page.evaluate(() => window.__frameLog);
       a = analyzeFrameLog(log);
       check(
@@ -572,10 +825,8 @@ async function main() {
       await restChecks(CHAPTERS[i], `forward ${CHAPTERS[i]}`);
     }
 
-    const downHiddenAtFinale = await page.evaluate(
-      () => !document.getElementById("navDown").classList.contains("is-visible")
-    );
-    check("down arrow hidden at Finale (no further chapter)", downHiddenAtFinale);
+    const finaleNav = await page.evaluate(() => { const u = document.getElementById("navUp"), d = document.getElementById("navDown"); return { upEnabled: !u.disabled && u.classList.contains("is-visible"), downShownDisabled: d.disabled && d.classList.contains("is-visible") }; });
+    check("at Finale: Previous enabled; Next visible, subdued and disabled", finaleNav.upEnabled && finaleNav.downShownDisabled, JSON.stringify(finaleNav));
 
     // Reverse back to Welcome
     for (let i = CHAPTERS.length - 1; i > 0; i--) {
@@ -583,7 +834,7 @@ async function main() {
         window.__frameLog = [];
       });
       await page.keyboard.press("ArrowUp");
-      landed = await waitSettle(page, getFrame, CHAPTERS[i - 1], 6000);
+      landed = await waitSettle(page, getFrame, CHAPTERS[i - 1], 9000);
       log = await page.evaluate(() => window.__frameLog);
       a = analyzeFrameLog(log);
       check(
@@ -597,10 +848,8 @@ async function main() {
       await restChecks(CHAPTERS[i - 1], `reverse ${CHAPTERS[i - 1]}`);
     }
 
-    const upHiddenAtWelcome = await page.evaluate(
-      () => !document.getElementById("navUp").classList.contains("is-visible")
-    );
-    check("up arrow hidden at Welcome (no earlier chapter)", upHiddenAtWelcome);
+    const welcomeNav = await page.evaluate(() => { const u = document.getElementById("navUp"), d = document.getElementById("navDown"); return { upShownDisabled: u.disabled && u.classList.contains("is-visible"), downEnabled: !d.disabled && d.classList.contains("is-visible") }; });
+    check("at Welcome: Previous visible and disabled; Next enabled", welcomeNav.upShownDisabled && welcomeNav.downEnabled, JSON.stringify(welcomeNav));
     check("decoded-frame cache stays under the 150MB budget", maxCacheMB <= MEMORY_BUDGET_MB, `peak=${maxCacheMB.toFixed(1)}MB`);
     check("decoded-frame cache never exceeds its 36-frame cap", maxCachedFrames <= MAX_CACHED_FRAMES, `peak=${maxCachedFrames} frames`);
     const source = fs.readFileSync(path.join(DIR, "script.js"), "utf8");
@@ -622,6 +871,20 @@ async function main() {
       timing.exits.length >= 5 && timing.exits.every((t) => t >= 1000 && t <= 1300),
       timing.exits.map((t) => t.toFixed(0) + "ms").join(", ")
     );
+    const l4seq = analyzeLayer4Sequence(samples);
+    check(`Layer 4 enters only after Layers 2-3 settle (${l4seq.arrivals} arrivals)`, l4seq.arrivals >= 7 && l4seq.earlyStarts.length === 0, JSON.stringify(l4seq.earlyStarts));
+    check("Layer 4 clears before Layer 3 / the finale light start to exit", l4seq.lateExits.length === 0, JSON.stringify(l4seq.lateExits));
+    check("Layer 4 never shows another stop's wording", l4seq.wrongStop === 0, `wrongStop=${l4seq.wrongStop}`);
+    const dsym = symbolProblems(await measureSymbols(page));
+    check("desktop: symbols placed (Ganesha/mantra, knot between names, enclosures)", dsym.length === 0, dsym.join("; "));
+    const l4geo = await layer4Geometry(page);
+    const l4problems = layer4GeometryProblems(l4geo);
+    check(`desktop: all ${L4.zones.length} Layer 4 zones centred at 50% with the specified top/width/height; slots empty`, l4problems.length === 0, l4problems.join("; "));
+    const l4layers = await page.evaluate(() => {
+      const z = (el) => Number(getComputedStyle(el).zIndex);
+      return { wording: z(document.getElementById("wordingLayer")), stopLayer: z(document.getElementById("stopPanel")), finale: z(document.getElementById("finaleLight")), nav: z(document.getElementById("navDown").closest(".invite-controls")), pointer: getComputedStyle(document.getElementById("wordingLayer")).pointerEvents };
+    });
+    check("Layer 4 above Layer 3 (and the finale light), below the controls; never intercepts input", l4layers.wording > l4layers.stopLayer && l4layers.wording > l4layers.finale && l4layers.nav > l4layers.wording && l4layers.pointer === "none", JSON.stringify(l4layers));
     const seq = analyzeOrnamentSequence(samples);
     check(
       `ornaments enter only after the panel has settled (${seq.arrivals.length} arrivals)`,
@@ -815,15 +1078,15 @@ async function main() {
         { fromY, toY }
       );
 
-    landed = await waitSettle(mpage, mGetFrame, 80, 6000);
+    landed = await waitSettle(mpage, mGetFrame, 80, 9000);
     check("mobile: opening lands on 80", landed);
     await waitSurface(mpage, 80);
     await swipe(300, 520);
-    landed = await waitSettle(mpage, mGetFrame, 160, 6000);
+    landed = await waitSettle(mpage, mGetFrame, 160, 9000);
     check("mobile: downward swipe advances to 160", landed);
     await waitSurface(mpage, 160);
     await swipe(520, 300);
-    landed = await waitSettle(mpage, mGetFrame, 80, 6000);
+    landed = await waitSettle(mpage, mGetFrame, 80, 9000);
     check("mobile: upward swipe returns to 80", landed);
     let mo = await waitSurface(mpage, 80);
     check("mobile: panel returns at 80 after the swipe round trip", mo.surface === "panel" && mo.panelOpacity >= 0.995, JSON.stringify(mo));
@@ -836,11 +1099,14 @@ async function main() {
     // ---------------- Responsive: panel geometry across viewport classes ----------------
     const viewports = [
       ["narrow mobile portrait", 320, 568, true],
+      ["small mobile portrait", 360, 640, true],
       ["standard mobile portrait", 390, 844, true],
       ["tall mobile portrait", 360, 800, true],
       ["tall large mobile portrait", 412, 915, true],
+      ["large mobile portrait", 430, 932, true],
       ["tablet portrait", 768, 1024, true],
       ["desktop portrait preview", 900, 1400, false],
+      ["desktop portrait 1080p", 1080, 1920, false],
       ["desktop landscape", 1440, 900, false]
     ];
     for (const [name, width, height, touch] of viewports) {
@@ -864,6 +1130,25 @@ async function main() {
       });
       const hit = await navHit(vpage, "navDown");
       if (SHOTS_DIR) await vpage.screenshot({ path: path.join(SHOTS_DIR, `panel-${width}x${height}.png`) });
+      const vgeo = await layer4Geometry(vpage);
+      const vl4 = layer4GeometryProblems(vgeo);
+      check(`${name} ${width}x${height}: Layer 4 zones centred, on spec and inside the invitation`, vl4.length === 0, vl4.join("; "));
+      const pr = await paperAndRail(vpage);
+      const prp = paperRailProblems(pr);
+      check(`${name} ${width}x${height}: opaque clipped paper; utilities upper right in a row; nav rail stacked middle right; all >=44px, clickable`, prp.length === 0, prp.join("; "));
+      console.log(`[INFO] ${name} ${width}x${height}: utilities first@(${pr.rail.utilities.first.map((v) => v.toFixed(0)).join(",")}) last@(${pr.rail.utilities.last.map((v) => v.toFixed(0)).join(",")}); rail up@(${pr.rail.up.map((v) => v.toFixed(0)).join(",")}) down@(${pr.rail.down.map((v) => v.toFixed(0)).join(",")}); paper lum ${pr.pix.lumMin.toFixed(1)}+${pr.pix.lumRange.toFixed(1)}; see-through diff ${pr.pix.inDiff}`);
+      const fit = await vpage.evaluate(() => {
+        const lines = (id) => { const t = document.getElementById(id).querySelector(".wording-line").firstChild, r = document.createRange(); r.selectNodeContents(t); return new Set([...r.getClientRects()].map((x) => Math.round(x.top))).size; };
+        const over = (id) => { const z = document.getElementById(id), m = z.querySelector(".wording-motion"); return m.scrollHeight - z.getBoundingClientRect().height; };
+        return { noteLines: lines("haldi-closing-note"), noteOver: over("haldi-closing-note"), invOver: over("wedding-invitation") };
+      });
+      check(`${name} ${width}x${height}: Haldi closing note <= 2 lines and fits; wedding invitation fits`, fit.noteLines <= 2 && fit.noteOver <= 1 && fit.invOver <= 1, JSON.stringify(fit));
+      const vs = await measureSymbols(vpage);
+      const vsp = symbolProblems(vs);
+      check(`${name} ${width}x${height}: Ganesha above the mantra, knot between the names, enclosures centred and equal`, vsp.length === 0, vsp.join("; "));
+      console.log(`[INFO] ${name} ${width}x${height}: Ganesha ${vs.sacred.map((x) => x.ganesha).join(" / ")}; knot ${vs.knot.size} (gap ${vs.knot.gapAbove.toFixed(1)}px above, ${vs.knot.gapBelow.toFixed(1)}px below); enclosures box ${vs.enc[0].box}, art ${vs.enc[0].art} upper / ${vs.enc[1].art} lower`);
+      const vOverflow = layer4Overflow(vgeo);
+      console.log(`[INFO] ${name} ${width}x${height}: provisional text exceeding its zone: ${vOverflow.length ? vOverflow.join(", ") : "none"}`);
       const vpl = await ornamentPlacementProblems(vpage, "0");
       check(
         `${name} ${width}x${height}: approved ornament placement (visible art from ~57-60% to bottom, outer corners, own side, control on top, no overflow)`,
@@ -880,6 +1165,21 @@ async function main() {
       );
       await vctx.close();
     }
+
+    // ---------------- Layer 4 review outlines: development-only ----------------
+    const outlineOf = (pg) => pg.evaluate(() => [...document.querySelectorAll(".wording-zone")].map((z) => { const r = z.getBoundingClientRect(); return [z.id, getComputedStyle(z).outlineStyle, Math.round(r.width * 100), Math.round(r.height * 100)]; }));
+    const octx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const opage = await octx.newPage();
+    await opage.goto(BASE_URL, { waitUntil: "load" });
+    const plain = await outlineOf(opage);
+    await opage.goto(BASE_URL + "?review=wording", { waitUntil: "load" });
+    const review = await outlineOf(opage);
+    check(
+      "Layer 4 review outlines only with ?review=wording, without changing zone dimensions",
+      plain.every((z) => z[1] === "none") && review.every((z) => z[1] === "solid") && plain.every((z, k) => z[2] === review[k][2] && z[3] === review[k][3]),
+      `plain=${[...new Set(plain.map((z) => z[1]))]} review=${[...new Set(review.map((z) => z[1]))]}`
+    );
+    await octx.close();
 
     // ---------------- Reduced motion: same states, short crossfades ----------------
     const rctx = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
@@ -903,6 +1203,13 @@ async function main() {
     await rpage.keyboard.press("ArrowUp");
     ro = await waitSurface(rpage, 240);
     check("reduced motion: back from 300 restores the panel at 240", ro.surface === "panel" && ro.panelOpacity >= 0.995 && ro.finaleOpacity <= 0.005, JSON.stringify(ro));
+    const rL4 = await rpage.evaluate(() => {
+      const cs = getComputedStyle(document.documentElement);
+      const m = [...document.querySelectorAll('.wording-stop[data-state="in"] .wording-motion')];
+      return { stagger: cs.getPropertyValue("--wd-stagger-ms").trim(), exitStagger: cs.getPropertyValue("--wd-exit-stagger-ms").trim(), shift: cs.getPropertyValue("--wd-shift").trim(), rise: cs.getPropertyValue("--wd-rise").trim(),
+        delays: [...new Set(m.map((x) => getComputedStyle(x).transitionDelay))], transforms: [...new Set(m.map((x) => getComputedStyle(x).transform))], count: m.length };
+    });
+    check("reduced motion: Layer 4 has no translation or stagger, opacity only", rL4.count > 0 && rL4.stagger === "0ms" && rL4.exitStagger === "0ms" && rL4.shift === "0px" && rL4.rise === "0px" && rL4.delays.every((d) => /^0s(, 0s)*$/.test(d)) && rL4.transforms.join() === "none", JSON.stringify(rL4));
     const rSamples = await rpage.evaluate(() => window.__overlaySamples);
     const rSeq = analyzeOrnamentSequence(rSamples);
     const rMaxTx = Math.max(0, ...rSamples.flatMap((x) => (x[8] || []).map((d) => Math.abs(d[2]))));

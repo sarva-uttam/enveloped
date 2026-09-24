@@ -78,9 +78,18 @@ test("approved Indian arch frame asset: path, bytes, size and transparency", () 
   assert.ok(!fs.existsSync(path.join(DIR, "assets/ivory-palace-ornamental-frame.png")), "rejected floral frame must not return");
 });
 
-test("warm ivory panel is 85% opaque and masked to the frame opening", () => {
+// Owner-authorised Layer 4 visual-refinement pass: the 85% translucent
+// panel became fully opaque warm ivory paper with a subtle texture.
+test("Layer 2 paper: 100% opaque warm ivory, textured, masked to the frame opening", () => {
   const fill = cssRule(".stop-panel__fill");
-  assert.match(fill, /background: rgba\(253, 249, 241, 0\.85\);/);
+  assert.match(cssRule(":root"), /--ivory-paper-base: #f7f0e3;/);
+  assert.match(fill, /background: var\(--ivory-paper-base\);/);
+  const tex = cssRule(".stop-panel__fill::after");
+  assert.match(tex, /pointer-events: none;/);
+  assert.match(tex, /inset: 0;/);
+  assert.doesNotMatch(tex, /animation|transition/, "texture never moves");
+  assert.doesNotMatch(tex, /url\(/, "CSS-only texture, no image dependency");
+  for (const a of tex.match(/rgba\([^)]*\)/g)) assert.ok(parseFloat(a.split(",")[3]) <= 0.2, `low-alpha texture ${a}`);
   assert.match(fill, /mask: url\("assets\/ivory-palace-arch-frame-opening\.png"\) center \/ 100% 100% no-repeat;/);
   assert.match(fill, /inset: 0;/);
 });
@@ -209,8 +218,8 @@ test("background grade: restrained CSS filter on the canvas only", () => {
   assert.match(root, /--bg-brightness: 1;/);
   assert.match(css, /\.frame-canvas \{\n  filter:\n    sepia\(var\(--bg-warmth\)\)\n    saturate\(var\(--bg-saturate\)\)\n    contrast\(var\(--bg-contrast\)\)\n    brightness\(var\(--bg-brightness\)\);\n\}/);
   assert.equal((css.match(/filter:\s*\n?\s*sepia\(/g) || []).length, 1, "grade applied in exactly one place");
-  for (const sel of [".stop-panel", ".stop-panel__fill", ".stop-ornament", ".finale-light", ".nav-btn"]) {
-    assert.doesNotMatch(cssRule(sel), /filter:/, `${sel} is not graded`);
+  for (const sel of [".stop-panel", ".stop-panel__fill", ".stop-ornament", ".finale-light", ".invite-control"]) {
+    assert.doesNotMatch(cssRule(sel), /(^|[^-])filter:/, `${sel} is not graded`);
   }
 });
 
@@ -272,8 +281,8 @@ test("Layer 3 z-index: above the frame, below wording and controls", () => {
   assert.ok(panel.indexOf('class="stop-ornaments"') < panel.indexOf('id="stopContent"'), "ornaments before wording");
   const z = (sel) => Number((cssRule(sel).match(/z-index: (\d+);/) || [])[1]);
   assert.equal(z(".stop-panel"), 2);
-  assert.equal(z(".nav-btn"), 6);
-  assert.ok(z(".nav-btn") > z(".stop-panel"), "controls above the foreground");
+  assert.equal(z(".invite-controls"), 6);
+  assert.ok(z(".invite-controls") > z(".stop-panel"), "controls above the foreground");
   assert.doesNotMatch(cssRule(".stop-ornament"), /z-index/, "no ornament z-index escaping the stop layer");
   assert.doesNotMatch(cssRule(".stop-ornament"), /pointer-events: auto/);
 });

@@ -51,6 +51,21 @@ saturate(1.1) contrast(1.04)`, canvas only. See METHOD §13. The approved
 layers, placements, timings and finale are unchanged, and the new frame
 hash and grade are locked by `baseline.test.cjs`.
 
+**Interface controls and event countdowns, Owner-approved (2026-09-25):**
+the Music, Gallery and Share utilities; the middle-right navigation; the
+Haldi and Wedding countdown strips with Location and Calendar; and the
+reusable control architecture. These were approved as implemented. See
+[`INVITATION-INTERFACE-CONTROLS.md`](INVITATION-INTERFACE-CONTROLS.md)
+for the approval record, test results, the accepted small-screen finial
+overlap and the outstanding production configuration.
+
+The same checkpoint superseded two earlier approvals:
+
+- the 85% translucent panel, now fully opaque textured paper;
+- the centred navigation buttons, now the right-side rail.
+
+`baseline.test.cjs` locks both new states.
+
 ## Approved configuration
 
 | Item | Approved value | Where it lives |

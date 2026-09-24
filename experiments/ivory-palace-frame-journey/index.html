@@ -18,7 +18,7 @@
   </div>
 </noscript>
 
-<main id="app" class="app" hidden>
+<main id="app" class="app theme-ivory-palace" hidden>
 
   <!-- Fixed 9:16 stage. No page scroll; navigation is chapter-stepped via arrows/swipe/keys. -->
   <div class="stage">
@@ -53,19 +53,32 @@
         <p>Loading the journey&hellip;</p>
       </div>
 
-      <!-- Chapter navigation: previous (up) / next (down) -->
-      <button id="navUp" class="nav-btn nav-up" type="button" aria-label="Previous chapter">
-        <span class="chevron" aria-hidden="true"></span>
-      </button>
-      <button id="navDown" class="nav-btn nav-down" type="button" aria-label="Next chapter">
-        <span class="chevron" aria-hidden="true"></span>
-      </button>
+      <!-- Interface layer: global utilities (upper right, populated by
+           components/controls.js from invitation-config.js) and the journey
+           navigation rail (middle right). -->
+      <aside class="invite-controls" aria-label="Invitation controls">
+        <div class="invite-controls__utilities" role="toolbar" aria-label="Invitation utilities"></div>
+        <nav class="invite-controls__navigation" aria-label="Invitation navigation">
+          <button id="navUp" class="invite-control invite-control--previous" type="button" aria-label="Previous chapter">
+            <span class="invite-control__icon invite-control__icon--up" aria-hidden="true"></span>
+          </button>
+          <button id="navDown" class="invite-control invite-control--next" type="button" aria-label="Next chapter">
+            <span class="invite-control__icon invite-control__icon--down" aria-hidden="true"></span>
+          </button>
+        </nav>
+      </aside>
 
     </div>
   </div>
 
 </main>
 
+<script src="components/icons.js"></script>
+<script src="components/event-core.js"></script>
+<script src="invitation-config.js"></script>
+<script src="components/controls.js"></script>
+<script src="layer4-content.js"></script>
+<script src="layer4-wording.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

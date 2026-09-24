@@ -334,6 +334,7 @@
   var frameArtReady = Promise.all([decoded(frameArt), decoded(openingMask)]);
 
   function enterSurface(index, onSettled) {
+    onSettled = afterWordingEntrance(index, onSettled); // Layer 4 enters last
     var token = ++surfaceToken;
     if (index === FINALE_INDEX) {
       frameBox.setAttribute("data-surface", "finale");
@@ -356,6 +357,15 @@
     });
   }
 
+  // Layer 4 (layer4-wording.js): once Layers 2-3 have settled, the stop's
+  // wording enters; the stop counts as settled only when it is at rest.
+  function afterWordingEntrance(index, done) {
+    return function () {
+      if (window.IvoryLayer4) window.IvoryLayer4.enter(index, done);
+      else done();
+    };
+  }
+
   // Third-layer ornaments (placement prototype, pending Owner approval):
   // one lower-left / lower-right pair per framed stop, data-stop = index.
   var ornamentImgs = Array.prototype.slice.call(document.querySelectorAll(".stop-ornament"));
@@ -372,6 +382,13 @@
   // Ornaments leave first (outward slide + fade); the panel only starts
   // its exit once they have cleared.
   function clearOrnaments(done) {
+    // Layer 4 wording always leaves first, before any Layer 3 exit.
+    if (window.IvoryLayer4 && window.IvoryLayer4.isShowing()) {
+      window.IvoryLayer4.exit(function () {
+        clearOrnaments(done);
+      });
+      return;
+    }
     if (frameBox.getAttribute("data-ornaments") === "none") {
       done();
       return;
@@ -415,6 +432,7 @@
     return {
       surface: frameBox.getAttribute("data-surface"),
       ornaments: frameBox.getAttribute("data-ornaments"),
+      wording: window.IvoryLayer4 ? window.IvoryLayer4.state() : null,
       // [stop, side, opacity, transform] for every ornament.
       ornamentStates: ornamentImgs.map(function (img) {
         var cs = getComputedStyle(img);
@@ -437,8 +455,24 @@
   // -1 = not yet arrived at "Welcome" (opening autoplay in progress).
   var chapterIndex = -1;
 
+  // Interface controls (components/controls.js): the navigation rail shows
+  // both buttons at rest, with the endpoint button visible but disabled;
+  // the global utilities are independent of the journey state.
+  var navControls = window.EnvelopedControls
+    ? window.EnvelopedControls.JourneyNavigationControls(navUp, navDown)
+    : null;
+  if (window.EnvelopedControls && window.ENVELOPED_INVITATION_CONFIG) {
+    window.__utilityControls = window.EnvelopedControls.InvitationUtilityControls(
+      document.querySelector(".invite-controls__utilities"),
+      window.ENVELOPED_INVITATION_CONFIG
+    );
+  }
   function updateNavVisibility() {
     var interactive = chapterIndex >= 0 && !isAnimating;
+    if (navControls) {
+      navControls.update(interactive, chapterIndex, CHAPTERS.length);
+      return;
+    }
     navUp.classList.toggle("is-visible", interactive && chapterIndex > 0);
     navDown.classList.toggle(
       "is-visible",
