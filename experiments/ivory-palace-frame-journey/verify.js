@@ -133,13 +133,124 @@ function installOverlaySampler() {
   (function sample() {
     if (window.__overlayState) {
       const o = window.__overlayState();
-      window.__overlaySamples.push([o.frame, o.surface, o.panelOpacity, o.finaleOpacity, performance.now()]);
+      const visible = o.ornamentStates.filter((s) => s[2] > 0.01);
+      const tx = (t) => {
+        const m = /matrix\(([^)]+)\)/.exec(t || "");
+        return m ? parseFloat(m[1].split(",")[4]) : 0;
+      };
+      window.__overlaySamples.push([
+        o.frame, o.surface, o.panelOpacity, o.finaleOpacity, performance.now(),
+        o.ornaments,
+        visible.reduce((m, s) => Math.max(m, s[2]), 0),
+        [...new Set(visible.map((s) => s[0]))].join(","),
+        visible.map((s) => [s[1], s[2], tx(s[3])])
+      ]);
     }
     requestAnimationFrame(sample);
   })();
 }
 
 const overlay = (page) => page.evaluate(() => window.__overlayState());
+
+// ---------------- Third-layer ornament helpers (placement prototype) ----------------
+
+const translateXOf = (transform) => {
+  const m = /matrix\(([^)]+)\)/.exec(transform || "");
+  return m ? parseFloat(m[1].split(",")[4]) : 0;
+};
+
+const ORNAMENT_FILES = {
+  0: ["ornament-80-left-haldi-drape-urli.png", "ornament-80-right-lotus-kalash-deepam.png"],
+  1: ["ornament-160-left-jasmine-lanterns.png", "ornament-160-right-lotus-urli-bowls.png"],
+  2: ["ornament-240-left-coconut-kalash.png", "ornament-240-right-ivory-kalash-diya.png"]
+};
+
+// Sequencing measured from the rAF samples. Sample layout:
+// [frame, surface, panelOpacity, finaleOpacity, time, ornamentsAttr, ornMax, visibleStops, visibleDetail]
+function analyzeOrnamentSequence(samples) {
+  const r = { arrivals: [], departures: [], mixed: 0, wrongDirection: 0, travelLeaks: 0 };
+  const stops = new Set(CHAPTERS);
+  for (let i = 0; i < samples.length; i++) {
+    const s = samples[i];
+    if (s[7] && s[7].includes(",")) r.mixed++;
+    if (s[0] > 1 && !stops.has(s[0]) && s[6] > 0.02) r.travelLeaks++;
+    for (const [side, opacity, tx] of s[8] || []) {
+      if (opacity < 0.98 && ((side === "left" && tx > 0.5) || (side === "right" && tx < -0.5))) r.wrongDirection++;
+    }
+    if (i === 0) continue;
+    const prevAttr = samples[i - 1][5], attr = s[5];
+    if (prevAttr === "none" && attr !== "none") {
+      // Arrival: panel must already be settled when the ornaments start.
+      let panelSettledAt = null;
+      for (let j = i; j >= 0 && samples[j][1] === "panel"; j--) if (samples[j][2] >= 0.995) panelSettledAt = samples[j][4];
+      let firstVisible = null, full = null;
+      for (let j = i; j < samples.length && samples[j][5] === attr; j++) {
+        if (firstVisible === null && samples[j][6] > 0.01) firstVisible = samples[j][4];
+        if (samples[j][6] >= 0.995) { full = samples[j][4]; break; }
+      }
+      r.arrivals.push({ stop: attr, panelSettledBeforeOrnaments: panelSettledAt !== null && panelSettledAt <= s[4] + 1, enterMs: full !== null ? full - s[4] : null, firstVisibleAfterMs: firstVisible !== null ? firstVisible - s[4] : null });
+    }
+    if (prevAttr !== "none" && attr === "none") {
+      // Departure: ornaments clear, then the panel fades, then frames move.
+      const t0 = s[4], startFrame = s[0];
+      let cleared = null, panelStarts = null, moves = null;
+      for (let j = i; j < samples.length; j++) {
+        if (cleared === null && samples[j][6] <= 0.01) cleared = samples[j][4];
+        if (panelStarts === null && samples[j][2] < 0.995) panelStarts = samples[j][4];
+        if (samples[j][0] !== startFrame) { moves = samples[j][4]; break; }
+      }
+      r.departures.push({ from: prevAttr, exitMs: cleared - t0, panelStartsAfterMs: panelStarts - t0, framesMoveAfterMs: moves - t0, ornamentsClearedBeforePanel: cleared <= panelStarts + 1 });
+    }
+  }
+  return r;
+}
+
+// Layout geometry of every ornament (transforms ignored), the panel, the
+// wording-safe region and the controls, all relative to the viewport.
+async function ornamentGeometry(page) {
+  return page.evaluate(() => {
+    const box = document.getElementById("frameBox").getBoundingClientRect();
+    const panel = document.getElementById("stopPanel").getBoundingClientRect();
+    const shift = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--ornament-shift")) || 0;
+    const shiftPx = (shift / 100) * box.width; // 9cqw of the invitation box
+    const rect = (l, t, w, h) => ({ left: l, top: t, right: l + w, bottom: t + h, width: w, height: h });
+    const orn = [...document.querySelectorAll(".stop-ornament")].map((img) => {
+      const r = rect(panel.left + img.offsetLeft, panel.top + img.offsetTop, img.offsetWidth, img.offsetHeight);
+      const left = img.classList.contains("stop-ornament--left");
+      return { stop: img.getAttribute("data-stop"), side: left ? "left" : "right", src: img.getAttribute("src").split("/").pop(),
+        natural: img.naturalWidth + "x" + img.naturalHeight, ratio: img.offsetWidth / img.offsetHeight, naturalRatio: img.naturalWidth / img.naturalHeight,
+        rect: r, startRect: rect(r.left + (left ? -shiftPx : shiftPx), r.top, r.width, r.height) };
+    });
+    const safeBottom = Math.max(panel.height * 0.26, 62 + panel.height * 0.155);
+    const safe = rect(panel.left + panel.width * 0.14, panel.top + panel.height * 0.18, panel.width * 0.72, panel.height * (1 - 0.18) - safeBottom);
+    const nav = ["navUp", "navDown"].map((id) => { const r = document.getElementById(id).getBoundingClientRect(); return { id, rect: rect(r.left, r.top, r.width, r.height) }; });
+    const bg = [...document.querySelectorAll(".stop-ornaments, .stop-ornament")].map((el) => getComputedStyle(el).backgroundColor);
+    return { box: rect(box.left, box.top, box.width, box.height), panel: rect(panel.left, panel.top, panel.width, panel.height), orn, safe, nav, bg, shiftPx };
+  });
+}
+
+function ornamentLayoutProblems(g) {
+  const problems = [];
+  const inside = (r, o, pad = 0.5) => r.left >= o.left - pad && r.right <= o.right + pad && r.top >= o.top - pad && r.bottom <= o.bottom + pad;
+  const overlap = (a, b, gap = 0) => a.left < b.right + gap && b.left < a.right + gap && a.top < b.bottom + gap && b.top < a.bottom + gap;
+  for (const o of g.orn) {
+    const tag = `${o.stop}-${o.side}`;
+    if (!inside(o.rect, g.panel)) problems.push(`${tag} outside panel`);
+    if (!inside(o.startRect, g.box)) problems.push(`${tag} slide start clipped by the invitation edge`);
+    if (overlap(o.rect, g.safe)) problems.push(`${tag} overlaps wording-safe area`);
+    for (const n of g.nav) if (overlap(o.rect, n.rect, 8)) problems.push(`${tag} within 8px of ${n.id}`);
+    if (Math.abs(o.ratio - o.naturalRatio) > 0.02) problems.push(`${tag} aspect ratio distorted`);
+    if (o.rect.width < 70) problems.push(`${tag} too small (${o.rect.width.toFixed(0)}px)`);
+  }
+  for (const stop of ["0", "1", "2"]) {
+    const [l, r] = ["left", "right"].map((side) => g.orn.find((o) => o.stop === stop && o.side === side));
+    if (l.rect.right > r.rect.left) problems.push(`stop ${stop} pair overlaps itself`);
+    if (!/-left-/.test(l.src) || !/-right-/.test(r.src)) problems.push(`stop ${stop} pair sides mismatched`);
+  }
+  if (g.bg.some((c) => c !== "rgba(0, 0, 0, 0)")) problems.push("ornament container has a background");
+  return problems;
+}
+
 
 // Waits until the page is at rest on `chapter` with its surface fully in.
 async function waitSurface(page, frame, timeoutMs = 9000) {
@@ -148,7 +259,8 @@ async function waitSurface(page, frame, timeoutMs = 9000) {
   while (Date.now() - start < timeoutMs) {
     const o = await overlay(page);
     const opacity = want === "finale" ? o.finaleOpacity : o.panelOpacity;
-    if (o.frame === frame && !o.isAnimating && o.surface === want && opacity >= 0.999) return o;
+    const ornOk = want === "finale" || o.ornamentStates.filter((s) => s[0] === o.ornaments).every((s) => s[2] >= 0.999);
+    if (o.frame === frame && !o.isAnimating && o.surface === want && opacity >= 0.999 && ornOk) return o;
     await page.waitForTimeout(50);
   }
   return overlay(page);
@@ -210,12 +322,12 @@ async function measurePanel(page) {
     };
   });
   await page.evaluate(() => {
-    for (const sel of ["#frameCanvas", ".nav-btn"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = "hidden"));
+    for (const sel of ["#frameCanvas", ".nav-btn", ".stop-ornaments"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = "hidden"));
   });
   await page.waitForTimeout(120);
   const png = await page.locator("#frameBox").screenshot();
   await page.evaluate(() => {
-    for (const sel of ["#frameCanvas", ".nav-btn"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = ""));
+    for (const sel of ["#frameCanvas", ".nav-btn", ".stop-ornaments"]) document.querySelectorAll(sel).forEach((el) => (el.style.visibility = ""));
   });
   const px = await analyzePng(
     page,
@@ -291,9 +403,10 @@ function analyzeOverlaySamples(samples, maxJump) {
   let worstJump = 0;
   for (let i = 0; i < samples.length; i++) {
     const [frame, surface, panel, finale] = samples[i];
+    const ornMax = samples[i][6] || 0;
     if (frame > 1 && !stops.has(frame)) {
       travelSamples++;
-      if (surface !== "none" || panel > 0.02 || finale > 0.02) travelLeaks++;
+      if (surface !== "none" || panel > 0.02 || finale > 0.02 || ornMax > 0.02) travelLeaks++;
     }
     if (i > 0) {
       worstJump = Math.max(worstJump, Math.abs(panel - samples[i - 1][2]), Math.abs(finale - samples[i - 1][3]));
@@ -392,6 +505,16 @@ async function main() {
       } else {
         check(`${label}: framed panel fully visible at rest on ${frame}`, o.surface === "panel" && o.panelOpacity >= 0.995 && o.finaleOpacity <= 0.005, JSON.stringify(o));
       }
+      const stopIndex = String(CHAPTERS.indexOf(frame));
+      const shown = o.ornamentStates.filter((s) => s[2] > 0.01);
+      const want = frame === 300 ? [] : o.ornamentStates.filter((s) => s[0] === stopIndex);
+      check(
+        frame === 300 ? `${label}: no ornaments at frame 300` : `${label}: only the stop-${frame} ornament pair is shown, fully in place`,
+        frame === 300
+          ? shown.length === 0 && o.ornaments === "none"
+          : o.ornaments === stopIndex && shown.length === 2 && want.every((s) => s[2] >= 0.995 && Math.abs(translateXOf(s[3])) < 0.5),
+        JSON.stringify(o.ornamentStates.map((s) => [s[0], s[1], +s[2].toFixed(3), s[3]]))
+      );
       const up = frame !== 80, down = frame !== 300;
       check(`${label}: navigation controls remain interactive above the surface at ${frame}`, (!up || (await navHit(page, "navUp"))) && (!down || (await navHit(page, "navDown"))));
     };
@@ -487,6 +610,35 @@ async function main() {
       timing.exits.length >= 5 && timing.exits.every((t) => t >= 1000 && t <= 1300),
       timing.exits.map((t) => t.toFixed(0) + "ms").join(", ")
     );
+    const seq = analyzeOrnamentSequence(samples);
+    check(
+      `ornaments enter only after the panel has settled (${seq.arrivals.length} arrivals)`,
+      seq.arrivals.length >= 6 && seq.arrivals.every((a) => a.panelSettledBeforeOrnaments),
+      JSON.stringify(seq.arrivals.map((a) => a.stop))
+    );
+    check(
+      `ornament entrance takes ~1.2–1.4s to come fully to rest (${seq.arrivals.length} arrivals)`,
+      seq.arrivals.every((a) => a.enterMs !== null && a.enterMs >= 1100 && a.enterMs <= 1500),
+      seq.arrivals.map((a) => a.enterMs && a.enterMs.toFixed(0) + "ms").join(", ")
+    );
+    check(
+      `ornaments clear (~0.9s) before the panel starts its exit (${seq.departures.length} departures)`,
+      seq.departures.length >= 5 && seq.departures.every((d) => d.ornamentsClearedBeforePanel && d.exitMs >= 750 && d.exitMs <= 1050),
+      seq.departures.map((d) => `exit ${d.exitMs.toFixed(0)}ms, panel +${d.panelStartsAfterMs.toFixed(0)}ms`).join("; ")
+    );
+    check(
+      "background moves only after both layers have cleared (~0.9s + ~1.0s)",
+      seq.departures.every((d) => d.framesMoveAfterMs >= 1900 && d.framesMoveAfterMs <= 2400),
+      seq.departures.map((d) => d.framesMoveAfterMs.toFixed(0) + "ms").join(", ")
+    );
+    check("ornaments never mix stops and slide the right way (left from/to the left, right from/to the right)", seq.mixed === 0 && seq.wrongDirection === 0, `mixed=${seq.mixed} wrongDirection=${seq.wrongDirection}`);
+    const geo = await ornamentGeometry(page);
+    const geoProblems = ornamentLayoutProblems(geo);
+    check(
+      "desktop: every ornament is the assigned asset, sized/placed within the panel, clear of wording area and controls",
+      geoProblems.length === 0 && ["0", "1", "2"].every((k) => geo.orn.filter((o) => o.stop === k).map((o) => o.src).join() === ORNAMENT_FILES[k].join()),
+      geoProblems.join("; ") || geo.orn.map((o) => `${o.stop}-${o.side}:${o.src} ${o.rect.width.toFixed(0)}x${o.rect.height.toFixed(0)}`).join(", ")
+    );
     const cssTiming = await page.evaluate(() => {
       const cs = getComputedStyle(document.documentElement);
       return [cs.getPropertyValue("--panel-enter-ms").trim(), cs.getPropertyValue("--panel-exit-ms").trim(), cs.getPropertyValue("--ease-settle").trim(), cs.getPropertyValue("--ease-dissolve").trim().replace(/\s*\/\*.*$/, "")];
@@ -540,13 +692,33 @@ async function main() {
       midOpacity !== null && !midNav[0] && !midNav[1] && o.frame === 240 && o.chapterIndex === 2 && o.surface === "panel" && o.panelOpacity >= 0.995 && log[log.length - 1][0] === 240,
       `caught at opacity=${midOpacity} navVisible=${midNav} ${JSON.stringify(o)}`
     );
+    // After the fade-in settles input works again (240 -> 160), and input
+    // while that stop's ornaments are still gliding in is ignored.
     await page.keyboard.press("ArrowUp");
+    const ornStart = Date.now();
+    let ornCaught = null;
+    while (Date.now() - ornStart < 12000) {
+      const s = await overlay(page);
+      if (s.frame === 160 && s.ornaments === "1") {
+        const op = Math.max(...s.ornamentStates.filter((x) => x[0] === "1").map((x) => x[2]));
+        if (op > 0.05 && op < 0.9) { ornCaught = op; break; }
+      }
+      await page.waitForTimeout(10);
+    }
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowDown");
+    await page.evaluate(() => window.dispatchEvent(new WheelEvent("wheel", { deltaY: -120, cancelable: true })));
     o = await waitSurface(page, 160);
-    check("after the fade-in settles, input works again (back to 160)", o.frame === 160 && o.chapterIndex === 1 && o.surface === "panel", JSON.stringify(o));
+    log = await page.evaluate(() => window.__frameLog);
+    check(
+      "input works after settling (240 -> 160); input while the ornaments glide in is ignored",
+      ornCaught !== null && o.frame === 160 && o.chapterIndex === 1 && o.ornaments === "1" && log[log.length - 1][0] === 160,
+      `caught at ornament opacity=${ornCaught} ${JSON.stringify({ frame: o.frame, ornaments: o.ornaments })}`
+    );
 
     // Mid-travel spam toward the finale, then straight back.
     await page.keyboard.press("ArrowDown");
-    await page.waitForTimeout(1700); // past the 1000ms fade-out: frames are moving
+    await page.waitForTimeout(2600); // past the 900ms + 1000ms exits: frames are moving
     for (let k = 0; k < 6; k++) await page.keyboard.press(k % 2 ? "ArrowUp" : "ArrowDown");
     o = await waitSurface(page, 240);
     check("keys pressed mid-travel are ignored; lands on 240 with panel", o.frame === 240 && o.surface === "panel" && o.panelOpacity >= 0.995, JSON.stringify(o));
@@ -592,7 +764,7 @@ async function main() {
     });
     await cdp.send("Page.startScreencast", { format: "png", everyNthFrame: 1, maxWidth: 300, maxHeight: 534 });
     await fpage.click("#navDown");
-    await fpage.waitForTimeout(5200); // panel exit (1000ms) + 80-frame travel
+    await fpage.waitForTimeout(6200); // ornament exit (900ms) + panel exit (1000ms) + 80-frame travel
     await cdp.send("Page.stopScreencast");
     await fpage.waitForTimeout(150); // let any in-flight screencastFrame settle before closing
 
@@ -687,6 +859,14 @@ async function main() {
       });
       const hit = await navHit(vpage, "navDown");
       if (SHOTS_DIR) await vpage.screenshot({ path: path.join(SHOTS_DIR, `panel-${width}x${height}.png`) });
+      const vg = await ornamentGeometry(vpage);
+      const vProblems = ornamentLayoutProblems(vg);
+      const pair0 = vg.orn.filter((x) => x.stop === "0");
+      check(
+        `${name} ${width}x${height}: ornaments sized/placed inside the panel, clear of wording area and controls, never clipped`,
+        vProblems.length === 0,
+        vProblems.join("; ") || `stop-80 pair ${pair0.map((x) => `${x.rect.width.toFixed(0)}x${x.rect.height.toFixed(0)}`).join(" + ")}px; lanterns ${vg.orn.find((x) => x.stop === "1" && x.side === "left").rect.width.toFixed(0)}px wide; slide ${vg.shiftPx.toFixed(0)}px`
+      );
       const m = await measurePanel(vpage);
       check(
         `${name} ${width}x${height}: framed panel fits 90%x90%, ratio kept, contained, no overflow, controls usable`,
@@ -720,7 +900,15 @@ async function main() {
     await rpage.keyboard.press("ArrowUp");
     ro = await waitSurface(rpage, 240);
     check("reduced motion: back from 300 restores the panel at 240", ro.surface === "panel" && ro.panelOpacity >= 0.995 && ro.finaleOpacity <= 0.005, JSON.stringify(ro));
-    const rOv = analyzeOverlaySamples(await rpage.evaluate(() => window.__overlaySamples), 1);
+    const rSamples = await rpage.evaluate(() => window.__overlaySamples);
+    const rSeq = analyzeOrnamentSequence(rSamples);
+    const rMaxTx = Math.max(0, ...rSamples.flatMap((x) => (x[8] || []).map((d) => Math.abs(d[2]))));
+    check(
+      "reduced motion: ornaments crossfade in place after the panel, and clear before it",
+      rSeq.arrivals.length >= 4 && rSeq.arrivals.every((x) => x.panelSettledBeforeOrnaments) && rSeq.departures.every((d) => d.ornamentsClearedBeforePanel) && rMaxTx < 1 && rSeq.mixed === 0,
+      `arrivals=${rSeq.arrivals.length} maxSlide=${rMaxTx.toFixed(2)}px`
+    );
+    const rOv = analyzeOverlaySamples(rSamples, 1);
     check("reduced motion: no surface visible during travel", rOv.travelLeaks === 0, `leaks=${rOv.travelLeaks}`);
     check("no page errors in reduced motion", rErrors.length === 0, JSON.stringify(rErrors));
     await rctx.close();

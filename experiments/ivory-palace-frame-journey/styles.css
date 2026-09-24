@@ -10,6 +10,12 @@
   --panel-enter-ms: 1400ms;
   --panel-exit-ms: 1000ms;
   --finale-enter-ms: 1200ms;
+  /* Third-layer ornaments (placement prototype, pending Owner approval). */
+  --ornament-enter-ms: 1400ms;
+  --ornament-exit-ms: 900ms;
+  --ornament-shift: 9cqw; /* start/end offset: 9% of the invitation width */
+  --ornament-width: 40%; /* of the panel width, for the 3:2 pieces */
+  --ease-ornament-in: cubic-bezier(0.33, 1, 0.68, 1); /* slow, luxurious cubic ease-out; no overshoot */
   --finale-exit-ms: 800ms;
   --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1); /* cinematic ease-out */
   --ease-dissolve: cubic-bezier(0.42, 0, 1, 1); /* gentle ease-in */
@@ -154,14 +160,69 @@ html, body {
   transition: opacity var(--finale-enter-ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Future wording region, inside the panel: below the arch's shoulders and
-   inside the side pillars (clear opening ≈ 8–92% × 6–91% of the artwork,
-   full width only below ≈ 20%) with generous padding. Empty, hidden and
-   inert in this phase. */
+/* ---------- Third layer: stop ornaments (placement prototype) ---------- */
+/*
+ * Inside the framed panel, above the frame artwork and below the reserved
+ * wording layer. Each framed stop shows its own lower-left / lower-right
+ * pair, selected by frameBox[data-ornaments] = "none" | "0" | "1" | "2".
+ * Sizes are % of the panel (so they scale with the approved 90% panel):
+ * 3:2 ornaments are 40% of the panel width; the near-square lanterns are
+ * narrower so every ornament stands ~15.4% of the panel height. They rest
+ * on the arch opening's floor (9.5% above the panel's bottom, just above
+ * the frame's bottom bar) and 9% in from its sides (inside the pillars),
+ * so the frame corners, the centre gap and the down control stay clear.
+ * On short 9:16 invitations the fixed 50px down control reaches into that
+ * band, so the ornaments never sit lower than 58px (control + 8px gap).
+ * No container background.
+ */
+.stop-ornaments {
+  position: absolute;
+  inset: 0;
+}
+
+.stop-ornament {
+  position: absolute;
+  bottom: max(9.5%, 58px);
+  width: var(--ornament-width);
+  height: auto;
+  display: block;
+  opacity: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition:
+    opacity var(--ornament-exit-ms) var(--ease-dissolve),
+    transform var(--ornament-exit-ms) var(--ease-dissolve);
+}
+.stop-ornament--upright {
+  width: calc(var(--ornament-width) * 0.75); /* 1312 × 1199 artwork: same visual height as the 3:2 pieces */
+}
+.stop-ornament--left {
+  left: 9%;
+  transform: translateX(calc(-1 * var(--ornament-shift)));
+}
+.stop-ornament--right {
+  right: 9%;
+  transform: translateX(var(--ornament-shift));
+}
+.frame-box[data-ornaments="0"] .stop-ornament[data-stop="0"],
+.frame-box[data-ornaments="1"] .stop-ornament[data-stop="1"],
+.frame-box[data-ornaments="2"] .stop-ornament[data-stop="2"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--ornament-enter-ms) var(--ease-ornament-in),
+    transform var(--ornament-enter-ms) var(--ease-ornament-in);
+}
+
+/* Future wording region, inside the panel: below the arch's shoulders,
+   inside the side pillars and above the third-layer ornaments (whose tops
+   reach ≈ 25% from the panel bottom, or 58px + ≈ 15.4% on short 9:16
+   invitations), with generous padding. Empty, hidden and inert in this
+   phase. */
 .stop-content {
   position: absolute;
   top: 18%;
-  bottom: 12%;
+  bottom: max(26%, calc(62px + 15.5%));
   left: 14%;
   right: 14%;
   display: flex;
@@ -294,6 +355,9 @@ html, body {
     --panel-exit-ms: 180ms;
     --finale-enter-ms: 260ms;
     --finale-exit-ms: 180ms;
+    --ornament-enter-ms: 240ms;
+    --ornament-exit-ms: 180ms;
+    --ornament-shift: 0px; /* same sequence, opacity only */
   }
   .frame-canvas,
   .loader,

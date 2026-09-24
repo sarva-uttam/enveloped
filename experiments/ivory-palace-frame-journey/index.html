@@ -22,7 +22,7 @@
 
   <!-- Fixed 9:16 stage. No page scroll; navigation is chapter-stepped via arrows/swipe/keys. -->
   <div class="stage">
-    <div class="frame-box" id="frameBox" data-surface="none">
+    <div class="frame-box" id="frameBox" data-surface="none" data-ornaments="none">
 
       <canvas id="frameCanvas" class="frame-canvas" aria-label=""></canvas>
 
@@ -32,6 +32,16 @@
         <div class="stop-panel__fill" aria-hidden="true"></div>
         <img class="stop-panel__frame" id="stopFrameArt" src="assets/ivory-palace-arch-frame.png"
              width="941" height="1672" alt="" />
+        <!-- Third layer (placement prototype, pending Owner approval): one lower-left /
+             lower-right ornament pair per framed stop, shown via frameBox[data-ornaments]. -->
+        <div class="stop-ornaments" aria-hidden="true">
+          <img class="stop-ornament stop-ornament--left" data-stop="0" src="assets/ornaments/ornament-80-left-haldi-drape-urli.png" width="1536" height="1024" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--right" data-stop="0" src="assets/ornaments/ornament-80-right-lotus-kalash-deepam.png" width="1536" height="1024" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--left stop-ornament--upright" data-stop="1" src="assets/ornaments/ornament-160-left-jasmine-lanterns.png" width="1312" height="1199" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--right" data-stop="1" src="assets/ornaments/ornament-160-right-lotus-urli-bowls.png" width="1536" height="1024" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--left" data-stop="2" src="assets/ornaments/ornament-240-left-coconut-kalash.png" width="1536" height="1024" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--right" data-stop="2" src="assets/ornaments/ornament-240-right-ivory-kalash-diya.png" width="1536" height="1024" alt="" fetchpriority="low" />
+        </div>
         <!-- Reserved for future live wording. Intentionally empty, hidden and inert. -->
         <section class="stop-content" id="stopContent" hidden inert></section>
       </div>

@@ -340,11 +340,44 @@
       onSettled();
       return;
     }
+    // Decode this stop's ornament pair now, while the panel fades in.
+    var ornamentsReady = ornamentPairReady(index);
     frameArtReady.then(function () {
       // A stop left before the artwork was ready must not re-show it.
       if (token === surfaceToken) frameBox.setAttribute("data-surface", "panel");
-      setTimeout(onSettled, cssMs("--panel-enter-ms"));
+      // Third layer: only once the panel has settled, glide this stop's
+      // ornament pair in; the stop is settled when they come to rest.
+      setTimeout(function () {
+        ornamentsReady.then(function () {
+          if (token === surfaceToken) frameBox.setAttribute("data-ornaments", String(index));
+          setTimeout(onSettled, cssMs("--ornament-enter-ms"));
+        });
+      }, cssMs("--panel-enter-ms"));
     });
+  }
+
+  // Third-layer ornaments (placement prototype, pending Owner approval):
+  // one lower-left / lower-right pair per framed stop, data-stop = index.
+  var ornamentImgs = Array.prototype.slice.call(document.querySelectorAll(".stop-ornament"));
+  function ornamentPairReady(index) {
+    return Promise.all(
+      ornamentImgs
+        .filter(function (img) {
+          return img.getAttribute("data-stop") === String(index);
+        })
+        .map(decoded)
+    );
+  }
+
+  // Ornaments leave first (outward slide + fade); the panel only starts
+  // its exit once they have cleared.
+  function clearOrnaments(done) {
+    if (frameBox.getAttribute("data-ornaments") === "none") {
+      done();
+      return;
+    }
+    frameBox.setAttribute("data-ornaments", "none");
+    setTimeout(done, cssMs("--ornament-exit-ms"));
   }
 
   // Arrival at a stop. Framed-panel stops keep every input source locked
@@ -362,15 +395,17 @@
   function leaveSurface(onCleared) {
     var current = frameBox.getAttribute("data-surface");
     surfaceToken++;
-    frameBox.setAttribute("data-surface", "none");
-    if (current !== "panel" && current !== "finale") {
-      onCleared();
-      return;
-    }
-    // CSS transitions reverse from the current opacity, so leaving
-    // mid-entrance never jumps; waiting the full exit time guarantees
-    // the surface has cleared before the first frame moves.
-    setTimeout(onCleared, cssMs(current === "finale" ? "--finale-exit-ms" : "--panel-exit-ms"));
+    clearOrnaments(function () {
+      frameBox.setAttribute("data-surface", "none");
+      if (current !== "panel" && current !== "finale") {
+        onCleared();
+        return;
+      }
+      // CSS transitions reverse from the current opacity, so leaving
+      // mid-entrance never jumps; waiting the full exit time guarantees
+      // the surface has cleared before the first frame moves.
+      setTimeout(onCleared, cssMs(current === "finale" ? "--finale-exit-ms" : "--panel-exit-ms"));
+    });
   }
 
   // Read-only introspection for testing/debugging; no functional effect.
@@ -379,6 +414,17 @@
     var light = document.getElementById("finaleLight");
     return {
       surface: frameBox.getAttribute("data-surface"),
+      ornaments: frameBox.getAttribute("data-ornaments"),
+      // [stop, side, opacity, transform] for every ornament.
+      ornamentStates: ornamentImgs.map(function (img) {
+        var cs = getComputedStyle(img);
+        return [
+          img.getAttribute("data-stop"),
+          img.classList.contains("stop-ornament--left") ? "left" : "right",
+          parseFloat(cs.opacity),
+          cs.transform
+        ];
+      }),
       panelOpacity: parseFloat(getComputedStyle(panel).opacity),
       finaleOpacity: parseFloat(getComputedStyle(light).opacity),
       frame: currentFrame,

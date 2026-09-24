@@ -323,7 +323,7 @@ node experiments/ivory-palace-frame-journey/verify.js
 ```
 
 Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
-§11 there are 85 checks:
+§12 there are 106 checks:
 
 - the original journey checks: landing, skips and the 30fps ceiling on
   every transition, arrow visibility, the memory budget and 36-frame
@@ -339,7 +339,10 @@ Expected output ends with `ALL CHECKS PASSED` and exit code `0`. As of
 - seven responsive viewports;
 - reduced motion;
 - the empty, inert wording layer, with none of the 348 approved
-  catalogue sentences present in the page.
+  catalogue sentences present in the page;
+- the third-layer ornaments (§12): correct pair per stop, sequencing
+  against the panel and the journey, input lock, geometry at every
+  viewport, and reduced motion.
 
 Set `VERIFY_SHOTS=<dir>` to also save one screenshot per viewport.
 
@@ -525,6 +528,128 @@ At every size:
 - there is no overflow;
 - the controls stay hit-testable.
 
+## 12. Third-layer stop ornaments (placement prototype, pending Owner approval)
+
+**Status: placement prototype, pending the Owner's approval.** These
+decorations are not part of the locked §11 baseline and are not
+approved yet. The approved second layer (arch frame, 85% panel, 1.4s /
+1.0s fades) is unchanged, and `baseline.test.cjs` still passes against
+it. No wording is displayed.
+
+### Assets
+
+`experiments/ivory-palace-frame-journey/assets/ornaments/` holds six
+Owner-supplied transparent PNGs, byte-identical to the supplied files
+and renamed by stop and side. None is mirrored. Each composition
+already faced its assigned side, so no pair needed swapping.
+
+| Stop | Side | File | Size |
+|---|---|---|---|
+| 80 | lower left | `ornament-80-left-haldi-drape-urli.png` (draped yellow cloth, garland, urli) | 1536 × 1024 |
+| 80 | lower right | `ornament-80-right-lotus-kalash-deepam.png` (lotus, kalash, standing lamp) | 1536 × 1024 |
+| 160 | lower left | `ornament-160-left-jasmine-lanterns.png` (two jasmine-wrapped lanterns) | 1312 × 1199 |
+| 160 | lower right | `ornament-160-right-lotus-urli-bowls.png` (lotus and flower-filled bowls) | 1536 × 1024 |
+| 240 | lower left | `ornament-240-left-coconut-kalash.png` (coconut kalash, kumkum/haldi bowls, silk) | 1536 × 1024 |
+| 240 | lower right | `ornament-240-right-ivory-kalash-diya.png` (ivory kalash, diya, petals) | 1536 × 1024 |
+
+Alpha was checked on delivery:
+
+- 59–65% of each image is fully transparent, about 31–36% solid, and
+  2–5% soft edge.
+- There are no opaque backgrounds.
+- **Minor defect, reported rather than hidden:** assets 1, 3 and 5
+  (80-left, 160-left, 240-left) contain small, scattered semi-transparent
+  specks in their empty areas (alpha up to about 115; 0.2–0.6% of
+  pixels). They are not visible at display size over the ivory panel,
+  checked at 2× device pixel ratio. They could be cleaned in the source
+  if the Owner wants.
+
+Each file is about 1.5–2.3MB (12.4MB in total). They are kept at full
+resolution. A resized or WebP variant would cut download weight if
+needed.
+
+### Placement
+
+The ornaments sit inside `#stopPanel`, after the frame artwork and
+before `#stopContent`, so the layer order is canvas → 85% panel → arch
+frame → **ornaments** → reserved wording → controls. There is no
+container background. Every size is a percentage of the approved panel,
+so the ornaments scale with it:
+
+- **Width:** `--ornament-width: 40%` of the panel width for the 3:2
+  pieces. The near-square lanterns get 30% (`0.75 ×`), so every ornament
+  stands about 15.4% of the panel height. Aspect ratios are preserved
+  (`height: auto`).
+- **Position:** 9% in from the panel's left or right (inside the frame's
+  pillars), resting on the arch opening's floor at
+  `bottom: max(9.5%, 58px)`. The 58px floor keeps a gap of at least 8px
+  above the 50px down control on short 9:16 invitations.
+- **Clearance:** the pair leaves a centre gap. Nothing overlaps the
+  wording-safe area, the controls or the invitation edge, even at the
+  slide-in start position.
+- **Wording-safe area:** the reserved wording area's bottom inset was
+  raised to `max(26%, 62px + 15.5%)` of the panel so future wording
+  clears the ornaments. That layer is still empty, hidden and inert.
+
+Measured by `verify.js` (stop-80 pair; lantern width in brackets):
+
+| Viewport | Each ornament | Slide offset |
+|---|---|---|
+| 320×568 narrow mobile | 115×77 (86 wide) | 29px |
+| 390×844 standard mobile | 140×94 (105) | 35px |
+| 360×800 tall mobile | 130×86 (97) | 32px |
+| 412×915 tall mobile | 148×99 (111) | 37px |
+| 768×1024 tablet | 207×138 (156) | 52px |
+| 900×1400 desktop portrait | 284×189 (213) | 71px |
+| 1440×900 desktop landscape | 182×122 (137) | 46px |
+
+### Motion
+
+| Phase | Timing | Easing | Motion |
+|---|---|---|---|
+| Entrance | 1400ms (comes fully to rest in about 1.2s) | `cubic-bezier(0.33, 1, 0.68, 1)` (cubic ease-out, no overshoot) | opacity 0 → 1; left from `translateX(-9cqw)`, right from `+9cqw` → 0 |
+| Exit | 900ms | `cubic-bezier(0.42, 0, 1, 1)` (gentle ease-in) | opacity → 0; left out to `-9cqw`, right to `+9cqw` |
+| Reduced motion | 240ms in / 180ms out | same | opacity only (`--ornament-shift: 0px`), same sequence |
+
+The offset is 9% of the invitation width. There is no bounce, rotation
+or scale.
+
+### Sequence
+
+The state is `#frameBox[data-ornaments] = "none" | "0" | "1" | "2"`
+(stop index), alongside `data-surface`.
+
+- **Arrival at 80, 160 or 240:**
+  1. The journey lands exactly on the frame and stops.
+  2. The 85% panel and frame fade in (1.4s). Meanwhile, that stop's
+     ornament pair is decoded.
+  3. The pair glides in (1.4s).
+  4. Only then do the controls appear and input unlock.
+- **Leaving:**
+  1. Input locks immediately.
+  2. The ornaments glide outward and fade (0.9s).
+  3. The panel fades out (1.0s).
+  4. The approved ~3.5s journey starts about 1.97s after the input.
+- **Frame 300:** never shows ornaments. The finale light is unchanged.
+- A surface token prevents a late decode from showing ornaments after
+  their stop has been left. Pairs never mix, because the exit completes
+  before any travel.
+
+### Verification
+
+`verify.js` covers the third layer as follows:
+
+- the correct pair (and only that pair) at rest at each stop, in both
+  directions, and none at 300;
+- no ornament visible during travel;
+- ornaments enter only after the panel settles, and clear before the
+  panel exits;
+- frames move only after both layers clear;
+- no mixed stops, and no slide in the wrong direction;
+- input ignored while the ornaments glide in;
+- per-viewport geometry;
+- a reduced-motion crossfade in place.
+
 ## Files
 
 ```
@@ -536,7 +661,8 @@ experiments/ivory-palace-frame-journey/
 ├── baseline.test.cjs # static lock of the Owner-approved stop layer (§11)
 ├── assets/
 │   ├── ivory-palace-arch-frame.png          # Owner-approved stop frame artwork (§11)
-│   └── ivory-palace-arch-frame-opening.png  # fill mask: the frame's clear opening (§11)
+│   ├── ivory-palace-arch-frame-opening.png  # fill mask: the frame's clear opening (§11)
+│   └── ornaments/                           # six third-layer stop ornaments (§12, pending approval)
 ├── mist/
 │   └── paper-grain.svg      # paper grain tile used by the frame-300 finale light
 ├── wording/          # approved wording catalogue (not displayed yet)
