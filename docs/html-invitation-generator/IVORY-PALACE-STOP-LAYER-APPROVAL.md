@@ -17,15 +17,21 @@ method is in
 [`IVORY-PALACE-FRAME-JOURNEY-METHOD.md`](IVORY-PALACE-FRAME-JOURNEY-METHOD.md)
 (§11 for the stop layer).
 
-**Third layer, Owner-approved:** six tall, narrow lower-corner
-ornaments, one left/right pair at each of stops 80, 160 and 240, in
-`assets/ornaments/` (mapped by filename). Each has visible artwork 32%
-of the invitation height, rising from the bottom outer corner to about
-68%. They enter after the panel settles (1.4s glide from each side) and
-leave before it (0.9s), with the controls above them. See METHOD §12.
-They are locked by `baseline.test.cjs` alongside the items below. The
-earlier ornament sets (a wide set, then its trimmed variants) were
-superseded and remain only in Git history.
+**Third layer, Owner-approved:** six ceremonial foregrounds from
+`ivory-palace-final-third-layer.zip`, one left/right pair per stop at
+80, 160 and 240, in `assets/ornaments/` (mapped by the package
+manifest).
+
+- **Size:** visible height is 32/34/33% of the invitation, capped at
+  48/49/47% inward reach. Each rises from its bottom outer corner to
+  about 68% on 9:16 screens and overlaps the lower frame rail.
+- **Motion:** each pair enters after the panel settles (a 1.4s glide
+  from each side) and leaves before the panel (0.9s).
+- **Layering:** the controls stay above the ornaments.
+
+See METHOD §12. The third layer is locked by `baseline.test.cjs`
+alongside the items below. All earlier ornament sets are superseded
+and remain only in Git history.
 
 ## Approved configuration
 

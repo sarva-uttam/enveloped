@@ -1,7 +1,8 @@
 /**
  * Approved Ivory Palace stop-layer baseline lock (second layer
  * Owner-approved at commit 66236606542bd7701fb54f3fe0558fd623a2fbc2;
- * third-layer ornaments Owner-approved with the six "layer 3" PNGs).
+ * third-layer ceremonial foregrounds Owner-approved from the
+ * ivory-palace-final-third-layer package).
  *
  * Fast static regression checks: any accidental change to the approved
  * configuration fails here, before the browser-driven verify.js runs.
@@ -156,12 +157,12 @@ test("decoded-frame cache and memory ceiling unchanged", () => {
 // ---------------- Third layer (Owner-approved) ----------------
 
 const ORNAMENTS = [
-  ["0", "left", "80-left-yellow-drape-urli.png", 941, 1672, "15750ac393fde7f56dbe6d4bfa006eba2166daae60c89b02bbebba5e129d15a5"],
-  ["0", "right", "80-right-diya-kalash-lotus.png", 941, 1672, "77e71699dc003eaacda403531d9c8646b62a2d884ab5c0f3a7cc85e40d37cc1a"],
-  ["1", "left", "160-left-palace-lanterns.png", 941, 1672, "7b5ee66e4899a4add68d79e0795ee0b376a532dcfdd50cf597ec07796df52c9e"],
-  ["1", "right", "160-right-lotus-flower-bowls.png", 941, 1672, "274a798bdcd470daa3891a41076d7d1ac065d5351caefb45a572f70eb094c4b5"],
-  ["2", "left", "240-left-coconut-kalash-haldi.png", 1024, 1536, "8602bb39253dea27faa89d09f6a4d9022a6b138aaafff3cff88577aad0e3a498"],
-  ["2", "right", "240-right-floral-kalash-diya.png", 940, 1672, "4a593259fdf9ac6445eaf018c1066975137a5ac940190bd16cd865ea583004e6"]
+  ["0", "left", "frame-080-left-intro-drape-urli.png", 1168, 1346, "09f4bdb22bf9cb07c564b1b1a73021a3f719a17d37ac7dbeee57aa9072cb9c83"],
+  ["0", "right", "frame-080-right-intro-diya-kalash.png", 1158, 1358, "a10f93a2ed3a4ebb319bc88030aa874face6c1ef619de311c20d0958b0217a5d"],
+  ["1", "left", "frame-160-left-haldi-kalash-textile.png", 1145, 1374, "42b547389cdc51ebe13c893049c3092805182619232b795394b9e81d963092d6"],
+  ["1", "right", "frame-160-right-haldi-floral-kalash.png", 1152, 1365, "8d4af05bc731e5464c09f1940d036712219190484980e14ceda1b4f64996ca88"],
+  ["2", "left", "frame-240-left-wedding-lanterns.png", 1131, 1391, "8d408cdfa328f1551aea1dc6314a6c70c359b5e5b5bccc23221a37c7e55b410d"],
+  ["2", "right", "frame-240-right-wedding-lotus-urli.png", 1145, 1374, "c72e46b66d9d953ebb522f454d9b0430c0128766150c72dcd0c664caf18aa5b8"]
 ];
 
 test("approved third-layer ornaments: exact files, stop/side mapping and alpha", () => {
@@ -184,13 +185,17 @@ test("approved third-layer placement and motion", () => {
   assert.match(root, /--ornament-shift: 9cqw;/);
   assert.match(root, /--ease-ornament-in: cubic-bezier\(0\.33, 1, 0\.68, 1\);/);
   const base = cssRule(".stop-ornament");
-  assert.match(base, /bottom: 0;/);
+  assert.match(base, /bottom: var\(--orn-bottom, 0px\);/);
+  assert.match(base, /height: min\(calc\(var\(--orn-h\) \* 1cqh\), calc\(var\(--orn-reach\) \* 1cqw \/ var\(--orn-ratio\)\), 42cqh\);/);
   assert.match(base, /width: auto;/);
   assert.match(base, /object-fit: contain;/);
-  assert.match(cssRule(".stop-ornament--left"), /left: 0;[\s\S]*transform: translateX\(calc\(-1 \* var\(--ornament-shift\)\)\);/);
-  assert.match(cssRule(".stop-ornament--right"), /right: 0;[\s\S]*transform: translateX\(var\(--ornament-shift\)\);/);
-  assert.match(css, /\/\* Per-asset sizing: visible artwork = 32cqh tall \(top at ~68%\)\. \*\//);
-  assert.equal((css.match(/\.stop-ornament--(left|right)\[data-stop="[012]"\] \{\n  height: [\d.]+cqh;/g) || []).length, 6);
+  assert.match(cssRule(".stop-ornament--left"), /left: calc\(var\(--orn-edge, 0px\) \+ var\(--orn-dx, 0px\)\);[\s\S]*transform: translateX\(calc\(-1 \* var\(--ornament-shift\)\)\);/);
+  assert.match(cssRule(".stop-ornament--right"), /right: calc\(var\(--orn-edge, 0px\) - var\(--orn-dx, 0px\)\);[\s\S]*transform: translateX\(var\(--ornament-shift\)\);/);
+  // Manifest placement map: display height % and inward reach % per asset.
+  const map = [["left", "0", 32, 48], ["right", "0", 32, 48], ["left", "1", 34, 49], ["right", "1", 34, 49], ["left", "2", 33, 47], ["right", "2", 33, 47]];
+  for (const [side, stop, hgt, reach] of map) {
+    assert.match(css, new RegExp(`\\.stop-ornament--${side}\\[data-stop="${stop}"\\] \\{ --orn-h: ${hgt}; --orn-reach: ${reach}; --orn-ratio: [\\d.]+; \\}`), `${stop}-${side}`);
+  }
   // Sequence: ornaments after the panel settles; out before the panel.
   assert.match(script, /frameBox\.setAttribute\("data-ornaments", String\(index\)\);\s*setTimeout\(onSettled, cssMs\("--ornament-enter-ms"\)\);\s*\}\);\s*\}, cssMs\("--panel-enter-ms"\)\);/);
   assert.match(script, /surfaceToken\+\+;\s*clearOrnaments\(function \(\) \{\s*frameBox\.setAttribute\("data-surface", "none"\);/);

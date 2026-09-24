@@ -528,123 +528,112 @@ At every size:
 - there is no overflow;
 - the controls stay hit-testable.
 
-## 12. Third-layer stop ornaments (Owner-approved)
+## 12. Third-layer ceremonial foregrounds (Owner-approved)
 
-**Status: Owner-approved and locked by `baseline.test.cjs`.** The
-decorations sit above the approved §11 second layer, which is
-unchanged. No wording is displayed.
+**Status: Owner-approved and locked by `baseline.test.cjs`.** They sit
+above the approved §11 second layer, which is unchanged. No wording is
+displayed.
 
 ### Assets
 
-`experiments/ivory-palace-frame-journey/assets/ornaments/` holds six
-tall, narrow PNGs from the Owner's `ivory palace layer 3.zip`. They are
-byte-identical to the extracted files. The only change is dropping the
-zip's doubled `.png.png` extension. The filenames are the authoritative
-stop/side mapping. Nothing is trimmed, mirrored, stretched or
-regenerated.
+`experiments/ivory-palace-frame-journey/assets/ornaments/` holds the six
+PNGs from the Owner's `ivory-palace-final-third-layer.zip`,
+byte-identical, with their supplied filenames. The package's
+`MANIFEST.md` / `manifest.json` is the placement source. Earlier
+ornament sets are superseded and remain only in Git history.
 
-| Stop | Side | File | Size |
-|---|---|---|---|
-| 80 | lower left | `80-left-yellow-drape-urli.png` | 941 × 1672 |
-| 80 | lower right | `80-right-diya-kalash-lotus.png` | 941 × 1672 |
-| 160 | lower left | `160-left-palace-lanterns.png` | 941 × 1672 |
-| 160 | lower right | `160-right-lotus-flower-bowls.png` | 941 × 1672 |
-| 240 | lower left | `240-left-coconut-kalash-haldi.png` | 1024 × 1536 |
-| 240 | lower right | `240-right-floral-kalash-diya.png` | 940 × 1672 |
+| Stop | Side | File | Size | SHA-256 (first 16) |
+|---|---|---|---|---|
+| 80 | left | `frame-080-left-intro-drape-urli.png` | 1168 × 1346 | `09f4bdb22bf9cb07` |
+| 80 | right | `frame-080-right-intro-diya-kalash.png` | 1158 × 1358 | `a10f93a2ed3a4ebb` |
+| 160 | left | `frame-160-left-haldi-kalash-textile.png` | 1145 × 1374 | `42b547389cdc51eb` |
+| 160 | right | `frame-160-right-haldi-floral-kalash.png` | 1152 × 1365 | `8d4af05bc731e546` |
+| 240 | left | `frame-240-left-wedding-lanterns.png` | 1131 × 1391 | `8d408cdfa328f155` |
+| 240 | right | `frame-240-right-wedding-lotus-urli.png` | 1145 × 1374 | `c72e46b66d9d953e` |
 
 Alpha was verified on delivery:
 
 - every file is RGBA;
-- 54–65% of pixels are fully transparent, and about 30–43% are at
-  alpha 245 or above (the solid artwork core);
-- there is no opaque background;
-- the two frame-240 files are distinct.
+- 48–56% of pixels are fully transparent, and none is opaque black;
+- the six hashes are distinct;
+- each composition's solid mass sits 72–81% on its assigned outer side,
+  so none needed mirroring or swapping;
+- no solid artwork touches a canvas edge, so nothing is cropped.
 
-### Placement (Owner-approved)
+### Placement map
 
-- **Layout coordinates.** `.stop-ornaments` stays in the DOM inside the
-  framed panel, above the frame artwork and below the reserved wording
-  layer. It is re-centred to cover the whole invitation box, so the
-  ornaments are laid out in invitation coordinates.
-- **Anchoring.** The left ornament uses `left: 0; bottom: 0` and the
-  right uses `right: 0; bottom: 0`, with `width: auto`,
-  `object-fit: contain` and the natural aspect ratio.
-- **Sizing by height.** Each ornament is sized primarily by height. The
-  visible artwork is **32cqh** tall: 32% of the invitation height,
-  which is the stage's `100dvh`, with a `100vh` fallback. It rises from
-  the bottom edge to about **68%** and overlaps the frame's lower rail.
-- **Transparent margins in CSS.** Each PNG's transparent canvas margins
-  are compensated per asset in CSS rather than by editing files. The
-  image height is `32cqh × canvas/visible-art height`, and the
-  transparent bottom and outer-side margins are offset past the box
-  edge (only fully transparent canvas lies outside it).
-- **Controls.** They stay above the ornaments (z-index 6) and remain
-  fully clickable.
+The ornament layer is re-centred over the whole invitation box and
+sits above the frame and below the reserved wording layer. The
+controls stay on top. Each image has its own custom properties:
 
-Visible-artwork bounds, measured from rendered pixels with each
-ornament isolated. The "Width range" column is the narrowest to widest
-ornament across the three stops:
+| Stop | `--orn-h` (% height) | `--orn-reach` (% width) |
+|---|---|---|
+| 80 | 32 | 48 |
+| 160 | 34 | 49 |
+| 240 | 33 | 47 |
 
-| Viewport | Width range | Art top | Clear centre gap |
+- `--orn-ratio` is the PNG's natural width/height.
+- `--orn-bottom`, `--orn-edge` and `--orn-dx` default to 0.
+- Size: `height: min(--orn-h × 1cqh, --orn-reach × 1cqw / --orn-ratio, 42cqh)`
+  with `width: auto`. Height is the primary control. On invitations
+  taller than 9:16, the manifest's inward-reach cap takes over, so the
+  pair never crowds the centre. 42cqh is the manifest's short-screen
+  cap.
+- The left ornament is anchored at `left: 0; bottom: 0`, and the right
+  at `right: 0; bottom: 0`. Natural ratio, `object-fit: contain`, no
+  mirroring, stretching or cropping.
+
+Measured visible artwork (pixels, each ornament isolated):
+
+| Viewport | Art top | Inward reach L / R | Width each |
 |---|---|---|---|
-| 320×568 | 90–119px | 67.8–68.7% | 33–42% |
-| 390×844 | 134–178px | 68.0–68.6% | 18–29% |
-| 412×915 | 147–193px | 67.9–68.6% | 16–27% |
-| 768×1024 | 164–216px | 68.0–68.7% | 32–42% |
-| 900×1400 | 226–297px | 68.0–68.6% | 32–41% |
-| 1440×900 | 144–191px | 68.0–68.7% | 32–42% |
+| 320×568 | 67.4–69.7% | 46–48% / 43–48% | 137–153px |
+| 390×844 | 73.2–75.2% (reach cap) | 46–49% / 44–48% | 168–189px |
+| 900×1400 | 67.4–69.8% | 46–49% / 43–48% | 341–383px |
+| 1080×1920 | 67.4–69.7% | 46–49% / 44–48% | 469–525px |
+| 1440×900 | 67.3–69.8% | 46–49% / 44–48% | 220–246px |
 
-Every ornament reaches the bottom (≥99.3%) and its outer edge. None
-crosses the centre line, and there is no horizontal overflow.
+Every ornament overlaps the frame's lower rail, reaches the bottom and
+its outer edge, and has no horizontal overflow. The down control stays
+clickable on top.
 
-**Known follow-up (not addressed here):** the ornaments now rise about
-3% of the invitation height into the bottom of the reserved,
-still-empty wording-safe area. That will need attention before wording
-integration.
+**Comparison with the approved composites.** Scale, overlap and balance
+match. In the composites, the tallest elements (the 80-left drape and
+the 240 lamps) reach about 57–60%. With these PNGs' natural ~0.85
+aspect ratio, reaching that height would push each ornament past the
+manifest's 47–49% inward reach. The implementation follows the
+manifest.
+
+**Known follow-up (unchanged, not addressed here):** the ornaments rise
+into the bottom of the still-empty reserved wording-safe area.
 
 ### Motion (unchanged)
 
-| Phase | Timing | Easing | Motion |
-|---|---|---|---|
-| Entrance | 1400ms (fully at rest about 1.2s) | `cubic-bezier(0.33, 1, 0.68, 1)` | opacity 0 → 1; left from `-9cqw`, right from `+9cqw` → 0 |
-| Exit | 900ms | `cubic-bezier(0.42, 0, 1, 1)` | opacity → 0; outward to ∓9cqw |
-| Reduced motion | 240ms / 180ms | same | opacity only, same sequence |
+| Phase | Timing | Easing |
+|---|---|---|
+| Entrance | 1400ms (fully at rest about 1.2s); left from −9cqw, right from +9cqw | `cubic-bezier(0.33, 1, 0.68, 1)` |
+| Exit | 900ms outward | `cubic-bezier(0.42, 0, 1, 1)` |
+| Reduced motion | 240ms / 180ms, opacity only | same |
 
-### Sequence
-
-- **Arrival:**
-  1. The journey lands exactly on the frame.
-  2. The panel and frame fade in (1.4s).
-  3. The stop's ornament pair, decoded meanwhile, glides in (1.4s).
-  4. The controls then appear and input unlocks.
-- **Leaving:**
-  1. Input locks.
-  2. The ornaments glide outward and fade (0.9s).
-  3. The panel fades out (1.0s).
-  4. The approved ~3.5s journey starts about 1.97s after the input.
-- **Frame 300:** never shows ornaments. The finale is unchanged.
+- **Arrival:** exact landing, then the panel fades in (1.4s), then the
+  ornaments glide in, then the controls appear.
+- **Leaving:** input locks, then the ornaments exit (0.9s), then the
+  panel exits (1.0s), then the ~3.5s journey starts about 1.97s after
+  the input.
+- **Frame 300:** no ornaments; the finale is unchanged.
 
 ### Verification
 
 `baseline.test.cjs` locks:
 
-- the six files (SHA-256, size, RGBA) and their stop/side mapping;
-- the layer order;
-- the anchoring and height-based sizing rules;
-- the timings and easing;
-- the ornaments-after-panel / ornaments-before-panel sequencing.
+- the six files (hash, size, RGBA) and their mapping;
+- the placement map;
+- the sizing rule;
+- the timings and sequencing.
 
-`verify.js` checks:
-
-- the correct pair at each stop, in both directions, and none at 300;
-- no ornament during travel;
-- the sequencing and its timings;
-- input locked through the glide;
-- the approved placement, measured from visible artwork pixels (top
-  67–70%, bottom-anchored, outer-edge-anchored, own side of the centre,
-  control clickable on top, no overflow) at every stop on desktop and
-  at seven viewports;
-- reduced motion.
+`verify.js` checks the placement from visible artwork pixels at every
+stop and at seven viewports. It also checks the sequencing, input
+lock, travel invisibility and reduced motion.
 
 ## Files
 
@@ -658,7 +647,7 @@ experiments/ivory-palace-frame-journey/
 ├── assets/
 │   ├── ivory-palace-arch-frame.png          # Owner-approved stop frame artwork (§11)
 │   ├── ivory-palace-arch-frame-opening.png  # fill mask: the frame's clear opening (§11)
-│   └── ornaments/                           # six Owner-approved third-layer stop ornaments (§12)
+│   └── ornaments/                           # six Owner-approved ceremonial foregrounds (§12)
 ├── mist/
 │   └── paper-grain.svg      # paper grain tile used by the frame-300 finale light
 ├── wording/          # approved wording catalogue (not displayed yet)

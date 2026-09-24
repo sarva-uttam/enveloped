@@ -159,26 +159,22 @@ html, body {
   transition: opacity var(--finale-enter-ms) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ---------- Third layer: stop ornaments (placement prototype) ---------- */
+/* ---------- Third layer: ceremonial foregrounds (Owner-approved) ---------- */
 /*
  * DOM-wise inside the framed panel (above the frame artwork, below the
- * reserved wording layer; the controls sit above everything via z-index),
- * but laid out in invitation-box coordinates: .stop-ornaments is
- * re-centred to cover the whole invitation box. Each framed stop shows
- * its own pair, selected by frameBox[data-ornaments] = "none"|"0"|"1"|"2".
+ * reserved wording layer; controls stay above everything via z-index), but
+ * laid out in invitation-box coordinates: .stop-ornaments is re-centred to
+ * cover the whole invitation box (whose height is the stage's 100dvh).
  *
- * Owner blue-box placement: each ornament is anchored to its bottom
- * outer corner and sized by HEIGHT (width: auto, natural aspect ratio),
- * so its visible artwork rises from the invitation's bottom edge to
- * ~68% of its height, overlapping the frame's lower rail. Width follows
- * naturally and may cross the centre and pass behind the down control.
- *
- * The PNGs are the untouched originals. Their transparent padding is
- * compensated per asset below: the image height is scaled so the visible
- * artwork is exactly --ornament-art-height tall, and the transparent
- * bottom / outer-side margins are offset past the box edge (only fully
- * transparent canvas lies outside it). Heights are cqh (invitation-box
- * height, which equals the stage's 100dvh/100vh height).
+ * Placement map (ivory-palace-final-third-layer MANIFEST): per asset,
+ *   --orn-h      display height, % of the invitation height (32/34/33)
+ *   --orn-reach  maximum inward reach, % of the invitation width (48/49/47)
+ *   --orn-ratio  natural width / height of the PNG
+ *   --orn-bottom, --orn-edge, --orn-dx  bottom / outer-edge / horizontal
+ *                offsets (default 0)
+ * Height is the primary size control; on screens taller than 9:16 the
+ * inward-reach cap takes over so the pair never crowds the centre. Width
+ * is auto: natural aspect ratio, never stretched, mirrored or cropped.
  */
 .stop-ornaments {
   position: absolute;
@@ -192,7 +188,8 @@ html, body {
 
 .stop-ornament {
   position: absolute;
-  bottom: 0;
+  bottom: var(--orn-bottom, 0px);
+  height: min(calc(var(--orn-h) * 1cqh), calc(var(--orn-reach) * 1cqw / var(--orn-ratio)), 42cqh);
   width: auto;
   max-width: none;
   display: block;
@@ -205,47 +202,23 @@ html, body {
     transform var(--ornament-exit-ms) var(--ease-dissolve);
 }
 .stop-ornament--left {
-  left: 0;
+  left: calc(var(--orn-edge, 0px) + var(--orn-dx, 0px));
   object-position: left bottom;
   transform: translateX(calc(-1 * var(--ornament-shift)));
 }
 .stop-ornament--right {
-  right: 0;
+  right: calc(var(--orn-edge, 0px) - var(--orn-dx, 0px));
   object-position: right bottom;
   transform: translateX(var(--ornament-shift));
 }
 
-/* Per-asset sizing: visible artwork = 32cqh tall (top at ~68%). */
-.stop-ornament--left[data-stop="0"] {
-  height: 32.000cqh;
-  bottom: 0.000cqh;
-  left: 0.000cqh;
-}
-.stop-ornament--right[data-stop="0"] {
-  height: 35.386cqh;
-  bottom: -0.593cqh;
-  right: -0.360cqh;
-}
-.stop-ornament--left[data-stop="1"] {
-  height: 32.173cqh;
-  bottom: 0.000cqh;
-  left: -0.423cqh;
-}
-.stop-ornament--right[data-stop="1"] {
-  height: 33.212cqh;
-  bottom: -0.616cqh;
-  right: 0.000cqh;
-}
-.stop-ornament--left[data-stop="2"] {
-  height: 32.724cqh;
-  bottom: -0.362cqh;
-  left: -0.234cqh;
-}
-.stop-ornament--right[data-stop="2"] {
-  height: 32.000cqh;
-  bottom: 0.000cqh;
-  right: 0.000cqh;
-}
+/* Per-asset placement map (manifest baseline). */
+.stop-ornament--left[data-stop="0"] { --orn-h: 32; --orn-reach: 48; --orn-ratio: 0.8678; }
+.stop-ornament--right[data-stop="0"] { --orn-h: 32; --orn-reach: 48; --orn-ratio: 0.8527; }
+.stop-ornament--left[data-stop="1"] { --orn-h: 34; --orn-reach: 49; --orn-ratio: 0.8333; }
+.stop-ornament--right[data-stop="1"] { --orn-h: 34; --orn-reach: 49; --orn-ratio: 0.8440; }
+.stop-ornament--left[data-stop="2"] { --orn-h: 33; --orn-reach: 47; --orn-ratio: 0.8131; }
+.stop-ornament--right[data-stop="2"] { --orn-h: 33; --orn-reach: 47; --orn-ratio: 0.8333; }
 
 .frame-box[data-ornaments="0"] .stop-ornament[data-stop="0"],
 .frame-box[data-ornaments="1"] .stop-ornament[data-stop="1"],
