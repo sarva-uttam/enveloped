@@ -22,9 +22,11 @@ method is in
 80, 160 and 240, in `assets/ornaments/` (mapped by the package
 manifest).
 
-- **Size:** visible height is 32/34/33% of the invitation, capped at
-  48/49/47% inward reach. Each rises from its bottom outer corner to
-  about 68% on 9:16 screens and overlaps the lower frame rail.
+- **Size:** visible height is 42/43/42% of the invitation (the Owner's
+  correction of the manifest's 32–34%), with a 66% inward-reach cap.
+  Each rises from its bottom outer corner to about 57–60% on 9:16
+  screens, matching the approved composites, and may pass behind the
+  down control.
 - **Motion:** each pair enters after the panel settles (a 1.4s glide
   from each side) and leaves before the panel (0.9s).
 - **Layering:** the controls stay above the ornaments.

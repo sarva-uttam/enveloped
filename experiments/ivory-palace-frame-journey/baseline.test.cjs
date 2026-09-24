@@ -186,13 +186,13 @@ test("approved third-layer placement and motion", () => {
   assert.match(root, /--ease-ornament-in: cubic-bezier\(0\.33, 1, 0\.68, 1\);/);
   const base = cssRule(".stop-ornament");
   assert.match(base, /bottom: var\(--orn-bottom, 0px\);/);
-  assert.match(base, /height: min\(calc\(var\(--orn-h\) \* 1cqh\), calc\(var\(--orn-reach\) \* 1cqw \/ var\(--orn-ratio\)\), 42cqh\);/);
+  assert.match(base, /height: min\(calc\(var\(--orn-h\) \* 1cqh\), calc\(var\(--orn-reach\) \* 1cqw \/ var\(--orn-ratio\)\), 44cqh\);/);
   assert.match(base, /width: auto;/);
   assert.match(base, /object-fit: contain;/);
   assert.match(cssRule(".stop-ornament--left"), /left: calc\(var\(--orn-edge, 0px\) \+ var\(--orn-dx, 0px\)\);[\s\S]*transform: translateX\(calc\(-1 \* var\(--ornament-shift\)\)\);/);
   assert.match(cssRule(".stop-ornament--right"), /right: calc\(var\(--orn-edge, 0px\) - var\(--orn-dx, 0px\)\);[\s\S]*transform: translateX\(var\(--ornament-shift\)\);/);
   // Manifest placement map: display height % and inward reach % per asset.
-  const map = [["left", "0", 32, 48], ["right", "0", 32, 48], ["left", "1", 34, 49], ["right", "1", 34, 49], ["left", "2", 33, 47], ["right", "2", 33, 47]];
+  const map = [["left", "0", 42, 66], ["right", "0", 42, 66], ["left", "1", 43, 66], ["right", "1", 43, 66], ["left", "2", 42, 66], ["right", "2", 42, 66]];
   for (const [side, stop, hgt, reach] of map) {
     assert.match(css, new RegExp(`\\.stop-ornament--${side}\\[data-stop="${stop}"\\] \\{ --orn-h: ${hgt}; --orn-reach: ${reach}; --orn-ratio: [\\d.]+; \\}`), `${stop}-${side}`);
   }

@@ -166,14 +166,16 @@ html, body {
  * laid out in invitation-box coordinates: .stop-ornaments is re-centred to
  * cover the whole invitation box (whose height is the stage's 100dvh).
  *
- * Placement map (ivory-palace-final-third-layer MANIFEST): per asset,
- *   --orn-h      display height, % of the invitation height (32/34/33)
- *   --orn-reach  maximum inward reach, % of the invitation width (48/49/47)
+ * Placement map (ivory-palace-final-third-layer MANIFEST, scale corrected
+ * by the Owner to match the approved composites): per asset,
+ *   --orn-h      display height, % of the invitation height (42/43/42)
+ *   --orn-reach  maximum inward reach, % of the invitation width (66; the
+ *                ornaments may pass behind the down control)
  *   --orn-ratio  natural width / height of the PNG
  *   --orn-bottom, --orn-edge, --orn-dx  bottom / outer-edge / horizontal
  *                offsets (default 0)
  * Height is the primary size control; on screens taller than 9:16 the
- * inward-reach cap takes over so the pair never crowds the centre. Width
+ * inward-reach cap takes over so the pair does not swamp the centre. Width
  * is auto: natural aspect ratio, never stretched, mirrored or cropped.
  */
 .stop-ornaments {
@@ -189,7 +191,7 @@ html, body {
 .stop-ornament {
   position: absolute;
   bottom: var(--orn-bottom, 0px);
-  height: min(calc(var(--orn-h) * 1cqh), calc(var(--orn-reach) * 1cqw / var(--orn-ratio)), 42cqh);
+  height: min(calc(var(--orn-h) * 1cqh), calc(var(--orn-reach) * 1cqw / var(--orn-ratio)), 44cqh);
   width: auto;
   max-width: none;
   display: block;
@@ -213,12 +215,12 @@ html, body {
 }
 
 /* Per-asset placement map (manifest baseline). */
-.stop-ornament--left[data-stop="0"] { --orn-h: 32; --orn-reach: 48; --orn-ratio: 0.8678; }
-.stop-ornament--right[data-stop="0"] { --orn-h: 32; --orn-reach: 48; --orn-ratio: 0.8527; }
-.stop-ornament--left[data-stop="1"] { --orn-h: 34; --orn-reach: 49; --orn-ratio: 0.8333; }
-.stop-ornament--right[data-stop="1"] { --orn-h: 34; --orn-reach: 49; --orn-ratio: 0.8440; }
-.stop-ornament--left[data-stop="2"] { --orn-h: 33; --orn-reach: 47; --orn-ratio: 0.8131; }
-.stop-ornament--right[data-stop="2"] { --orn-h: 33; --orn-reach: 47; --orn-ratio: 0.8333; }
+.stop-ornament--left[data-stop="0"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8678; }
+.stop-ornament--right[data-stop="0"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8527; }
+.stop-ornament--left[data-stop="1"] { --orn-h: 43; --orn-reach: 66; --orn-ratio: 0.8333; }
+.stop-ornament--right[data-stop="1"] { --orn-h: 43; --orn-reach: 66; --orn-ratio: 0.8440; }
+.stop-ornament--left[data-stop="2"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8131; }
+.stop-ornament--right[data-stop="2"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8333; }
 
 .frame-box[data-ornaments="0"] .stop-ornament[data-stop="0"],
 .frame-box[data-ornaments="1"] .stop-ornament[data-stop="1"],

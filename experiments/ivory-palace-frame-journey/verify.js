@@ -228,7 +228,7 @@ async function ornamentArtBounds(page, stop, side) {
 }
 
 // Owner-approved placement (final-third-layer manifest): visible artwork
-// rises from the bottom outer corner to ~66-71% of the invitation height
+// rises from the bottom outer corner to ~57-60% of the invitation height
 // on 9:16 invitations (lower on taller phones, where the manifest's
 // inward-reach cap takes over), reaches the bottom and the outer edge,
 // stays on its own side of the centre (≤ 49% reach), keeps its aspect
@@ -247,11 +247,11 @@ async function ornamentPlacementProblems(page, stop) {
     const a = (art[f.side] = await ornamentArtBounds(page, stop, f.side));
     const tag = `${stop}-${f.side}`;
     if (!f.ratioOk || f.fit !== "contain") problems.push(`${tag} aspect ratio or fit changed`);
-    const topMax = layout.aspect >= 0.55 ? 71 : 78;
-    if (a.t < 66 || a.t > topMax) problems.push(`${tag} art top ${a.t.toFixed(1)}% (want 66-${topMax}%)`);
+    const topMax = layout.aspect >= 0.55 ? 61 : 68;
+    if (a.t < 55 || a.t > topMax) problems.push(`${tag} art top ${a.t.toFixed(1)}% (want 55-${topMax}%)`);
     if (a.b < 98) problems.push(`${tag} art bottom ${a.b.toFixed(1)}% (not anchored to the bottom)`);
     if (f.side === "left" ? a.l > 2.5 : a.r < 97.5) problems.push(`${tag} not anchored to its outer edge`);
-    if (f.side === "left" ? a.r > 50 : a.l < 50) problems.push(`${tag} crosses the centre`);
+    if (f.side === "left" ? a.r > 67 : a.l < 33) problems.push(`${tag} reaches past the 66% inward cap`);
   }
   if (layout.overflowX) problems.push("horizontal overflow");
   if (!(await navHit(page, "navDown"))) problems.push("down control not clickable above the ornaments");
@@ -524,7 +524,7 @@ async function main() {
       );
       if (frame !== 300 && !label.startsWith("reverse")) {
         const pl = await ornamentPlacementProblems(page, stopIndex);
-        check(`${label}: approved ornament placement at ${frame} (visible art from ~68% to bottom, outer corners, own side, control on top)`, pl.problems.length === 0,
+        check(`${label}: approved ornament placement at ${frame} (visible art from ~57-60% to bottom, outer corners, own side, control on top)`, pl.problems.length === 0,
           pl.problems.join("; ") || ["left", "right"].map((sd) => `${sd} x ${pl.art[sd].l.toFixed(1)}-${pl.art[sd].r.toFixed(1)}% top ${pl.art[sd].t.toFixed(1)}%`).join(" | "));
       }
       const up = frame !== 80, down = frame !== 300;
@@ -866,7 +866,7 @@ async function main() {
       if (SHOTS_DIR) await vpage.screenshot({ path: path.join(SHOTS_DIR, `panel-${width}x${height}.png`) });
       const vpl = await ornamentPlacementProblems(vpage, "0");
       check(
-        `${name} ${width}x${height}: approved ornament placement (visible art from ~68% to bottom, outer corners, own side, control on top, no overflow)`,
+        `${name} ${width}x${height}: approved ornament placement (visible art from ~57-60% to bottom, outer corners, own side, control on top, no overflow)`,
         vpl.problems.length === 0,
         vpl.problems.join("; ") || ["left", "right"].map((sd) => `${sd} x ${vpl.art[sd].l.toFixed(1)}-${vpl.art[sd].r.toFixed(1)}% top ${vpl.art[sd].t.toFixed(1)}%`).join(" | ")
       );

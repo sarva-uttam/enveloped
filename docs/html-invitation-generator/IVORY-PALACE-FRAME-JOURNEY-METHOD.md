@@ -564,48 +564,44 @@ Alpha was verified on delivery:
 
 The ornament layer is re-centred over the whole invitation box and
 sits above the frame and below the reserved wording layer. The
-controls stay on top. Each image has its own custom properties:
+controls stay on top (z-index). Each image has its own custom
+properties. The Owner corrected the manifest's 32–34% heights to match
+the approved composites:
 
 | Stop | `--orn-h` (% height) | `--orn-reach` (% width) |
 |---|---|---|
-| 80 | 32 | 48 |
-| 160 | 34 | 49 |
-| 240 | 33 | 47 |
+| 80 | 42 | 66 |
+| 160 | 43 | 66 |
+| 240 | 42 | 66 |
 
 - `--orn-ratio` is the PNG's natural width/height.
 - `--orn-bottom`, `--orn-edge` and `--orn-dx` default to 0.
-- Size: `height: min(--orn-h × 1cqh, --orn-reach × 1cqw / --orn-ratio, 42cqh)`
-  with `width: auto`. Height is the primary control. On invitations
-  taller than 9:16, the manifest's inward-reach cap takes over, so the
-  pair never crowds the centre. 42cqh is the manifest's short-screen
-  cap.
+- Size: `height: min(--orn-h × 1cqh, --orn-reach × 1cqw / --orn-ratio, 44cqh)`
+  with `width: auto`. On 9:16 invitations, height governs. On taller
+  phones, the 66% inward cap takes over so the pair does not swamp the
+  centre. The ornaments may pass behind the down control, which stays
+  above them.
 - The left ornament is anchored at `left: 0; bottom: 0`, and the right
   at `right: 0; bottom: 0`. Natural ratio, `object-fit: contain`, no
   mirroring, stretching or cropping.
 
 Measured visible artwork (pixels, each ornament isolated):
 
-| Viewport | Art top | Inward reach L / R | Width each |
-|---|---|---|---|
-| 320×568 | 67.4–69.7% | 46–48% / 43–48% | 137–153px |
-| 390×844 | 73.2–75.2% (reach cap) | 46–49% / 44–48% | 168–189px |
-| 900×1400 | 67.4–69.8% | 46–49% / 43–48% | 341–383px |
-| 1080×1920 | 67.4–69.7% | 46–49% / 44–48% | 469–525px |
-| 1440×900 | 67.3–69.8% | 46–49% / 44–48% | 220–246px |
+| Viewport | Art top | Inward reach L / R |
+|---|---|---|
+| 320×568 | 57.4–60.0% | 60–65% / 57–63% |
+| 390×844 | 62.6–65.2% (reach cap) | 65–66% / 61–65% |
+| 900×1400 | 57.5–60.0% | 60–65% / 58–63% |
+| 1440×900 | 57.6–60.0% | 60–65% / 58–63% |
 
-Every ornament overlaps the frame's lower rail, reaches the bottom and
-its outer edge, and has no horizontal overflow. The down control stays
-clickable on top.
-
-**Comparison with the approved composites.** Scale, overlap and balance
-match. In the composites, the tallest elements (the 80-left drape and
-the 240 lamps) reach about 57–60%. With these PNGs' natural ~0.85
-aspect ratio, reaching that height would push each ornament past the
-manifest's 47–49% inward reach. The implementation follows the
-manifest.
+These match the approved composites (tallest elements at about
+57–60%). The ornaments overlap the lower frame rail and each other
+behind the down control, reach the bottom and outer edges, and cause no
+horizontal overflow.
 
 **Known follow-up (unchanged, not addressed here):** the ornaments rise
-into the bottom of the still-empty reserved wording-safe area.
+well into the still-empty reserved wording-safe area. That must be
+resolved at wording integration.
 
 ### Motion (unchanged)
 
