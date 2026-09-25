@@ -42,7 +42,7 @@ export default function DashboardPage() {
             <h1 className="font-display text-4xl">My invites</h1>
             <Link
               href="/survey"
-              className="inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
+              className="focus-ring inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-ink-soft"
             >
               <Plus className="h-4 w-4" /> New invite
             </Link>
@@ -55,9 +55,9 @@ export default function DashboardPage() {
           {(authLoading || invites === null) && <p className="mt-10 text-sm text-ink-soft">Loading…</p>}
 
           {!authLoading && invites?.length === 0 && (
-            <div className="mt-14 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line py-16 text-center">
+            <div className="mt-14 flex flex-col items-center gap-3 border border-dashed border-line py-16 text-center">
               <p className="text-ink-soft">You haven&apos;t made an invite yet.</p>
-              <Link href="/survey" className="text-sm font-medium text-ink underline underline-offset-4">
+              <Link href="/survey" className="focus-ring rounded-sm text-sm font-medium text-ink underline underline-offset-4">
                 Start your first one
               </Link>
             </div>
@@ -69,7 +69,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={invite.id}
-                  className="flex items-center justify-between gap-4 rounded-2xl border border-line bg-paper-raised p-5"
+                  className="flex items-center justify-between gap-4 border border-line bg-paper-raised p-5"
                 >
                   <div>
                     <div className="flex items-center gap-2">
@@ -89,15 +89,22 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    {/* Stage 5 (see PROJECT_STATUS.md): points at the
+                        owner-management route, not the public
+                        /invite/[id] — that's where the paywall/share-
+                        panel/awaiting-publication status actually lives
+                        now, and it's the same server-verified-ownership
+                        route regardless of which invite in this list is
+                        clicked. */}
                     <Link
-                      href={`/invite/${invite.id}`}
-                      className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-ink hover:text-ink"
+                      href={`/dashboard/invite/${invite.id}`}
+                      className="focus-ring inline-flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs text-ink-soft transition hover:border-ink hover:text-ink"
                     >
                       Open <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                     <button
                       onClick={() => handleDelete(invite.id)}
-                      className="rounded-full border border-line p-2 text-ink-soft transition hover:border-red-400 hover:text-red-500"
+                      className="focus-ring rounded-full border border-line p-2 text-ink-soft transition hover:border-burgundy hover:text-burgundy"
                       aria-label="Delete this invite"
                       title="Permanently deletes this invite"
                     >

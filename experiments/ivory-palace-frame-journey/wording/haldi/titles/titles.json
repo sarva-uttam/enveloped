@@ -1,0 +1,98 @@
+{
+  "chapter": "haldi",
+  "zone": "titles",
+  "status": "owner-approved-editable-wording",
+  "rejectedIds": [
+    "HT-02",
+    "HT-04",
+    "HT-05",
+    "HT-07",
+    "HT-12"
+  ],
+  "variations": [
+    {
+      "id": "HT-01",
+      "text": "Haldi Ceremony",
+      "status": "owner-approved-wording-choice",
+      "note": "Clear formal English; safest default.",
+      "fluentHindiReviewRequired": false
+    },
+    {
+      "id": "HT-03",
+      "text": "Haldi & Blessings",
+      "status": "owner-approved-wording-choice",
+      "note": "Gentle; confirm blessings suit the family.",
+      "fluentHindiReviewRequired": false
+    },
+    {
+      "id": "HT-06",
+      "text": "Rang De Haldi",
+      "status": "owner-approved-wording-choice",
+      "note": "Playful Hindi/Hinglish from the source; celebratory colour cue, not Sanskrit.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-08",
+      "text": "Haldi Ka Jashn",
+      "status": "owner-approved-wording-choice",
+      "note": "Informal Hindi/Hindustani, “a celebration of Haldi.”",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-09",
+      "text": "Haldi Ki Khushiyan",
+      "status": "owner-approved-wording-choice",
+      "note": "Lyrical Hindi, “the joys of Haldi.”",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-10",
+      "text": "Sunehri Haldi",
+      "status": "owner-approved-wording-choice",
+      "note": "Creative Hindi, “golden Haldi”; a colour metaphor.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-11",
+      "text": "हल्दी समारोह",
+      "status": "owner-approved-wording-choice",
+      "note": "Hindi Devanagari, “Haldi ceremony”; formal.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-13",
+      "text": "Haldi Ke Rang",
+      "status": "owner-approved-wording-choice",
+      "note": "Hindi in Roman letters, “the colours of Haldi”; expressive and visual.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-14",
+      "text": "Haldi Ki Raunak",
+      "status": "owner-approved-wording-choice",
+      "note": "Hindi/Urdu register, “the glow or liveliness of Haldi”; festive.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-15",
+      "text": "Haldi Ki Mehfil",
+      "status": "owner-approved-wording-choice",
+      "note": "Hindi/Urdu register, “a Haldi gathering”; suggests a social celebration.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-16",
+      "text": "Haldi Ki Rasam",
+      "status": "owner-approved-wording-choice",
+      "note": "Hindi/Urdu register, “the Haldi ritual”; use when the ritual is the focus.",
+      "fluentHindiReviewRequired": true
+    },
+    {
+      "id": "HT-17",
+      "text": "Khushiyon Ki Haldi",
+      "status": "owner-approved-wording-choice",
+      "note": "Hindi in Roman letters, “a Haldi of joys”; playful, fluent idiom review especially important.",
+      "fluentHindiReviewRequired": true
+    }
+  ]
+}

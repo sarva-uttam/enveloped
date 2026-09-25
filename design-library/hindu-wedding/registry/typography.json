@@ -1,0 +1,57 @@
+[
+  {
+    "id": "TYPE-001",
+    "name": "Mozart Script",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Mozart Script",
+    "licenceStatus": "TO_VERIFY",
+    "source": null,
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
+  },
+  {
+    "id": "TYPE-002",
+    "name": "Slight",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Slight",
+    "licenceStatus": "TO_VERIFY",
+    "source": null,
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
+  },
+  {
+    "id": "TYPE-003",
+    "name": "Ms Claudy",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Ms Claudy",
+    "licenceStatus": "TO_VERIFY",
+    "source": null,
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
+  },
+  {
+    "id": "TYPE-004",
+    "name": "Ecatherina",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Ecatherina",
+    "licenceStatus": "TO_VERIFY",
+    "source": null,
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
+  },
+  {
+    "id": "TYPE-005",
+    "name": "Modern Symphony",
+    "role": "NAMES_AND_SHORT_HEADINGS",
+    "fontFamily": "Modern Symphony",
+    "licenceStatus": "TO_VERIFY",
+    "source": null,
+    "approvalStatus": "APPROVED_IN_PRINCIPLE",
+    "productionEligible": false,
+    "note": "Owner-approved visual direction. Production use is prohibited until the correct commercial licence and webfont embedding rights are verified or purchased."
+  }
+]

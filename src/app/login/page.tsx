@@ -49,7 +49,7 @@ function LoginForm() {
 
   if (status === "sent") {
     return (
-      <div className="mx-auto max-w-sm rounded-2xl border border-line bg-paper-raised p-8 text-center">
+      <div className="mx-auto max-w-sm border-t-2 border-champagne bg-paper-raised p-8 text-center">
         <CheckCircle2 className="mx-auto h-8 w-8 text-blush" />
         <h1 className="mt-4 font-display text-2xl">Check your email</h1>
         <p className="mt-2 text-sm text-ink-soft">
@@ -67,7 +67,7 @@ function LoginForm() {
         We&apos;ll email you a link — no password needed.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-8 rounded-2xl border border-line bg-paper-raised p-6">
+      <form onSubmit={handleSubmit} className="mt-8 border border-line bg-paper-raised p-6">
         <label className="block">
           <span className="text-xs font-medium uppercase tracking-wide text-ink-soft">Email</span>
           <input
@@ -76,16 +76,18 @@ function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="mt-1.5 w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm outline-none transition focus:border-ink"
+            className="focus-ring mt-1.5 w-full rounded-sm border border-line bg-paper px-4 py-3 text-sm outline-none transition focus:border-ink"
           />
         </label>
 
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+        {error && (
+          <p role="alert" className="mt-3 text-sm text-burgundy">{error}</p>
+        )}
 
         <button
           type="submit"
           disabled={status === "sending" || !email.trim()}
-          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-paper transition hover:bg-ink-soft disabled:opacity-60"
+          className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-paper transition hover:bg-ink-soft disabled:opacity-60"
         >
           {status === "sending" ? (
             <>

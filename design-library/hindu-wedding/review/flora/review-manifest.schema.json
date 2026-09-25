@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "startingCommit",
+    "entries",
+    "reviewStatus",
+    "productionSelectable"
+  ],
+  "properties": {
+    "reviewStatus": {
+      "const": "UNDER_REVIEW"
+    },
+    "productionSelectable": {
+      "const": false
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 23,
+      "maxItems": 23,
+      "items": {
+        "type": "object",
+        "required": [
+          "candidateId",
+          "id",
+          "publicName",
+          "generationPrompt",
+          "nativeDimensions",
+          "transparency",
+          "technicalQA",
+          "culturalQA",
+          "reviewStatus",
+          "productionSelectable"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "HW-FLORAL-001",
+              "HW-FLORAL-002",
+              "HW-FLORAL-003",
+              "HW-FLORAL-004",
+              "HW-FLORAL-005",
+              "HW-FLORAL-006",
+              "HW-FLORAL-007",
+              "HW-FLORAL-008",
+              "HW-FLORAL-009",
+              "HW-FLORAL-010",
+              "HW-FLORAL-011",
+              "HW-FLORAL-012",
+              "HW-FLORAL-013",
+              "HW-FLORAL-015",
+              "HW-FOLIAGE-001",
+              "HW-FOLIAGE-002",
+              "HW-FOLIAGE-005",
+              "HW-FOLIAGE-006",
+              "HW-FOLIAGE-007"
+            ]
+          },
+          "reviewStatus": {
+            "const": "UNDER_REVIEW"
+          },
+          "productionSelectable": {
+            "const": false
+          },
+          "masterPath": {
+            "type": "string"
+          },
+          "productionCandidatePath": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

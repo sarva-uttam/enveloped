@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/asset-generation-status.schema.json",
+  "title": "asset-generation-status schema",
+  "type": "object",
+  "required": [
+    "componentId",
+    "generationStatus",
+    "approvalStatus"
+  ],
+  "properties": {
+    "componentId": {},
+    "generationStatus": {},
+    "approvalStatus": {}
+  },
+  "additionalProperties": true
+}

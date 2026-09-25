@@ -1,0 +1,29 @@
+[
+  {
+    "id": "MUSIC-NONE",
+    "name": "No Music",
+    "sourceType": "NONE",
+    "requiresInteraction": true,
+    "autoplay": false,
+    "licenceEvidenceRequired": false,
+    "approvalStatus": "APPROVED"
+  },
+  {
+    "id": "MUSIC-CLIENT",
+    "name": "Client Provided Licensed Track",
+    "sourceType": "CLIENT_PROVIDED",
+    "requiresInteraction": true,
+    "autoplay": false,
+    "licenceEvidenceRequired": true,
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "MUSIC-LIBRARY",
+    "name": "Approved Licensed Library Track",
+    "sourceType": "LICENSED_LIBRARY",
+    "requiresInteraction": true,
+    "autoplay": false,
+    "licenceEvidenceRequired": true,
+    "approvalStatus": "PLANNED"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://enveloped.local/schemas/survey-mapping.schema.json",
+  "title": "survey-mapping schema",
+  "type": "object",
+  "required": [
+    "id",
+    "stepId",
+    "questionId",
+    "kind",
+    "affectsPreview",
+    "dataDestination"
+  ],
+  "properties": {
+    "id": {},
+    "stepId": {},
+    "questionId": {},
+    "kind": {},
+    "affectsPreview": {},
+    "dataDestination": {}
+  },
+  "additionalProperties": true
+}

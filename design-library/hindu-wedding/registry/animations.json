@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ANIM-FADE",
+    "name": "Gentle Fade",
+    "kind": "REVEAL",
+    "userInteractionRequired": false,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-PETALS",
+    "name": "Falling Petals",
+    "kind": "AMBIENT",
+    "userInteractionRequired": false,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-LIGHT-PARTICLES",
+    "name": "Floating Light Particles",
+    "kind": "AMBIENT",
+    "userInteractionRequired": false,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-CURTAIN",
+    "name": "Curtain Opening",
+    "kind": "OPENING",
+    "userInteractionRequired": true,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-DOOR",
+    "name": "Temple Door Opening",
+    "kind": "OPENING",
+    "userInteractionRequired": true,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-ENVELOPE",
+    "name": "Envelope Opening",
+    "kind": "OPENING",
+    "userInteractionRequired": true,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-BELL",
+    "name": "Bell Sway",
+    "kind": "AMBIENT",
+    "userInteractionRequired": false,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "ANIM-GARLAND",
+    "name": "Garland Sway",
+    "kind": "AMBIENT",
+    "userInteractionRequired": false,
+    "reducedMotionFallback": "Show the final static state using an optional short opacity fade.",
+    "approvalStatus": "PLANNED"
+  }
+]

@@ -1,0 +1,828 @@
+{
+  "chapter": "haldi",
+  "zone": "welcome-lines",
+  "frame": 160,
+  "status": "owner-approved-wording-alternatives",
+  "variations": [
+    {
+      "id": "HW-001",
+      "category": "Warm welcomes",
+      "text": "We cannot wait to welcome you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-002",
+      "category": "Warm welcomes",
+      "text": "Your presence will mean so much.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-003",
+      "category": "Warm welcomes",
+      "text": "Come celebrate this moment with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-004",
+      "category": "Warm welcomes",
+      "text": "We would love to see you there.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-005",
+      "category": "Warm welcomes",
+      "text": "Join us for a lovely beginning.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-006",
+      "category": "Warm welcomes",
+      "text": "A warm welcome awaits you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-007",
+      "category": "Warm welcomes",
+      "text": "We hope you can join us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-008",
+      "category": "Warm welcomes",
+      "text": "Come share the joy with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-009",
+      "category": "Warm welcomes",
+      "text": "This celebration is sweeter with you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-010",
+      "category": "Warm welcomes",
+      "text": "We look forward to welcoming you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-011",
+      "category": "Smiles and good wishes",
+      "text": "Bring your smiles and good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-012",
+      "category": "Smiles and good wishes",
+      "text": "Your smile will brighten our day.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-013",
+      "category": "Smiles and good wishes",
+      "text": "Come with your brightest smile.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-014",
+      "category": "Smiles and good wishes",
+      "text": "Bring your warmth to our gathering.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-015",
+      "category": "Smiles and good wishes",
+      "text": "Let your good wishes join ours.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-016",
+      "category": "Smiles and good wishes",
+      "text": "We hope to share a smile with you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-017",
+      "category": "Smiles and good wishes",
+      "text": "Your kindness makes this moment brighter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-018",
+      "category": "Smiles and good wishes",
+      "text": "Come with joy in your heart.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-019",
+      "category": "Smiles and good wishes",
+      "text": "Bring a smile; we will bring the colour.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-020",
+      "category": "Smiles and good wishes",
+      "text": "Your good wishes are always welcome.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-021",
+      "category": "Blessings — where appropriate",
+      "text": "Come with your blessings and love.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-022",
+      "category": "Blessings — where appropriate",
+      "text": "Your blessings will make this special.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-023",
+      "category": "Blessings — where appropriate",
+      "text": "Share your blessings with our family.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-024",
+      "category": "Blessings — where appropriate",
+      "text": "Bring your warmest wishes for the couple.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-025",
+      "category": "Blessings — where appropriate",
+      "text": "Join us in blessing this new beginning.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-026",
+      "category": "Blessings — where appropriate",
+      "text": "Your blessings are a cherished gift.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-027",
+      "category": "Blessings — where appropriate",
+      "text": "Come offer your love and blessings.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-028",
+      "category": "Blessings — where appropriate",
+      "text": "We would treasure your good wishes.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-029",
+      "category": "Blessings — where appropriate",
+      "text": "Let us celebrate with grateful hearts.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-030",
+      "category": "Blessings — where appropriate",
+      "text": "Bless this beginning with your presence.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-031",
+      "category": "Yellow attire — only if requested",
+      "text": "Bring your smile and a touch of yellow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-032",
+      "category": "Yellow attire — only if requested",
+      "text": "A little yellow would be lovely.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-033",
+      "category": "Yellow attire — only if requested",
+      "text": "Wear yellow and celebrate with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-034",
+      "category": "Yellow attire — only if requested",
+      "text": "Come in your favourite shade of yellow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-035",
+      "category": "Yellow attire — only if requested",
+      "text": "Add a splash of yellow to the day.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-036",
+      "category": "Yellow attire — only if requested",
+      "text": "Yellow attire is warmly welcomed.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-037",
+      "category": "Yellow attire — only if requested",
+      "text": "Wear a hint of yellow, if you wish.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-038",
+      "category": "Yellow attire — only if requested",
+      "text": "Bring your best golden glow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-039",
+      "category": "Yellow attire — only if requested",
+      "text": "A touch of yellow completes the mood.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-040",
+      "category": "Yellow attire — only if requested",
+      "text": "Let yellow brighten the celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": [
+        "client-confirmation-required"
+      ]
+    },
+    {
+      "id": "HW-041",
+      "category": "Golden and colourful",
+      "text": "Come make the day shine brighter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-042",
+      "category": "Golden and colourful",
+      "text": "Join us in the golden glow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-043",
+      "category": "Golden and colourful",
+      "text": "Let us share a little sunshine.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-044",
+      "category": "Golden and colourful",
+      "text": "Bring your colour to our celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-045",
+      "category": "Golden and colourful",
+      "text": "A golden gathering awaits you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-046",
+      "category": "Golden and colourful",
+      "text": "Come add your sparkle to the day.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-047",
+      "category": "Golden and colourful",
+      "text": "The day shines brighter with you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-048",
+      "category": "Golden and colourful",
+      "text": "Share this colourful moment with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-049",
+      "category": "Golden and colourful",
+      "text": "Come bask in the joy of Haldi.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-050",
+      "category": "Golden and colourful",
+      "text": "Our golden moment is yours to share.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-051",
+      "category": "Family and belonging",
+      "text": "There is a place for you with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-052",
+      "category": "Family and belonging",
+      "text": "Our family would love your company.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-053",
+      "category": "Family and belonging",
+      "text": "Come gather close with loved ones.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-054",
+      "category": "Family and belonging",
+      "text": "Celebrate with the people who care.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-055",
+      "category": "Family and belonging",
+      "text": "We would love to gather together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-056",
+      "category": "Family and belonging",
+      "text": "Join our family for this happy moment.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-057",
+      "category": "Family and belonging",
+      "text": "Your company will make us smile.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-058",
+      "category": "Family and belonging",
+      "text": "Come be part of this family celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-059",
+      "category": "Family and belonging",
+      "text": "There is joy in being together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-060",
+      "category": "Family and belonging",
+      "text": "We hope to have you beside us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-061",
+      "category": "Playful and light",
+      "text": "Come for Haldi; stay for the smiles.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-062",
+      "category": "Playful and light",
+      "text": "Let the happy moments begin.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-063",
+      "category": "Playful and light",
+      "text": "Your smile is on our guest list.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-064",
+      "category": "Playful and light",
+      "text": "Bring the joy; we have the Haldi.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-065",
+      "category": "Playful and light",
+      "text": "A little colour, a lot of laughter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-066",
+      "category": "Playful and light",
+      "text": "Come brighten the festivities.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-067",
+      "category": "Playful and light",
+      "text": "Good company makes the best celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-068",
+      "category": "Playful and light",
+      "text": "Join the golden side of the celebration.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-069",
+      "category": "Playful and light",
+      "text": "Let us make a lovely memory together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-070",
+      "category": "Playful and light",
+      "text": "We saved a little joy for you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-071",
+      "category": "Graceful and formal",
+      "text": "We would be honoured by your presence.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-072",
+      "category": "Graceful and formal",
+      "text": "Your company would be a pleasure.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-073",
+      "category": "Graceful and formal",
+      "text": "Please share this occasion with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-074",
+      "category": "Graceful and formal",
+      "text": "We look forward to celebrating together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-075",
+      "category": "Graceful and formal",
+      "text": "It would be a joy to welcome you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-076",
+      "category": "Graceful and formal",
+      "text": "Please join us for this cherished occasion.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-077",
+      "category": "Graceful and formal",
+      "text": "Your presence would make the day memorable.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-078",
+      "category": "Graceful and formal",
+      "text": "We warmly invite you to join us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-079",
+      "category": "Graceful and formal",
+      "text": "We hope you will celebrate with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-080",
+      "category": "Graceful and formal",
+      "text": "We would be delighted to see you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-081",
+      "category": "Short and mobile",
+      "text": "See you at Haldi!",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-082",
+      "category": "Short and mobile",
+      "text": "Come celebrate!",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-083",
+      "category": "Short and mobile",
+      "text": "Join the joy.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-084",
+      "category": "Short and mobile",
+      "text": "With love, see you there.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-085",
+      "category": "Short and mobile",
+      "text": "Let us gather.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-086",
+      "category": "Short and mobile",
+      "text": "Your presence matters.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-087",
+      "category": "Short and mobile",
+      "text": "Come share the glow.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-088",
+      "category": "Short and mobile",
+      "text": "Haldi awaits!",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-089",
+      "category": "Short and mobile",
+      "text": "Celebrate with us.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-090",
+      "category": "Short and mobile",
+      "text": "Together is brighter.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-091",
+      "category": "Poetic sign-offs",
+      "text": "Your presence will colour our memories.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-092",
+      "category": "Poetic sign-offs",
+      "text": "Come be part of a golden memory.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-093",
+      "category": "Poetic sign-offs",
+      "text": "Every welcome is warmer with you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-094",
+      "category": "Poetic sign-offs",
+      "text": "A little golden joy is waiting for you.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-095",
+      "category": "Poetic sign-offs",
+      "text": "Let this beginning be shared together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-096",
+      "category": "Poetic sign-offs",
+      "text": "Come turn a moment into a memory.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-097",
+      "category": "Poetic sign-offs",
+      "text": "The sweetest colour is the joy we share.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-098",
+      "category": "Poetic sign-offs",
+      "text": "Let our laughter meet yours at Haldi.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-099",
+      "category": "Poetic sign-offs",
+      "text": "This golden chapter welcomes you in.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    },
+    {
+      "id": "HW-100",
+      "category": "Poetic sign-offs",
+      "text": "Come, and make this moment ours together.",
+      "language": "en",
+      "status": "owner-approved-wording-alternative",
+      "flags": []
+    }
+  ]
+}

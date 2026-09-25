@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Ivory Palace — Chapter Journey (Frame Prototype)</title>
+<meta name="description" content="Feasibility prototype: 300-frame chapter-stop wedding invitation journey." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="preload" href="assets/ivory-palace-arch-frame-opening.png" as="image" />
+</head>
+<body>
+
+<noscript>
+  <div class="noscript-fallback">
+    <img src="frames/ezgif-frame-001.jpg" alt="Ivory Palace doors" />
+    <p>This journey needs JavaScript enabled to play through. Please enable JavaScript and reload.</p>
+  </div>
+</noscript>
+
+<main id="app" class="app theme-ivory-palace" hidden>
+
+  <!-- Fixed 9:16 stage. No page scroll; navigation is chapter-stepped via arrows/swipe/keys. -->
+  <div class="stage">
+    <div class="frame-box" id="frameBox" data-surface="none" data-ornaments="none">
+
+      <canvas id="frameCanvas" class="frame-canvas" aria-label=""></canvas>
+
+      <!-- Stop surfaces: presentation-only layers above the canvas, driven by
+           frameBox[data-surface] ("none" | "panel" | "finale"). Never baked into frames. -->
+      <div class="stop-panel" id="stopPanel">
+        <div class="stop-panel__fill" aria-hidden="true"></div>
+        <img class="stop-panel__frame" id="stopFrameArt" src="assets/ivory-palace-arch-frame.png"
+             width="941" height="1672" alt="" />
+        <!-- Third layer (placement prototype, pending Owner approval): one lower-left /
+             lower-right ornament pair per framed stop, shown via frameBox[data-ornaments]. -->
+        <div class="stop-ornaments" aria-hidden="true">
+          <img class="stop-ornament stop-ornament--left" data-stop="0" src="assets/ornaments/frame-080-left-intro-drape-urli.png" width="1168" height="1346" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--right" data-stop="0" src="assets/ornaments/frame-080-right-intro-diya-kalash.png" width="1158" height="1358" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--left" data-stop="1" src="assets/ornaments/frame-160-left-haldi-kalash-textile.png" width="1145" height="1374" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--right" data-stop="1" src="assets/ornaments/frame-160-right-haldi-floral-kalash.png" width="1152" height="1365" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--left" data-stop="2" src="assets/ornaments/frame-240-left-wedding-lanterns.png" width="1131" height="1391" alt="" fetchpriority="low" />
+          <img class="stop-ornament stop-ornament--right" data-stop="2" src="assets/ornaments/frame-240-right-wedding-lotus-urli.png" width="1145" height="1374" alt="" fetchpriority="low" />
+        </div>
+        <!-- Reserved for future live wording. Intentionally empty, hidden and inert. -->
+        <section class="stop-content" id="stopContent" hidden inert></section>
+      </div>
+      <div class="finale-light" id="finaleLight" aria-hidden="true"></div>
+
+      <!-- Loading fallback -->
+      <div id="loader" class="loader" role="status" aria-live="polite">
+        <div class="loader-mark" aria-hidden="true"></div>
+        <p>Loading the journey&hellip;</p>
+      </div>
+
+      <!-- Interface layer: global utilities (upper right, populated by
+           components/controls.js from invitation-config.js) and the journey
+           navigation rail (middle right). -->
+      <aside class="invite-controls" aria-label="Invitation controls">
+        <div class="invite-controls__utilities" role="toolbar" aria-label="Invitation utilities"></div>
+        <nav class="invite-controls__navigation" aria-label="Invitation navigation">
+          <button id="navUp" class="invite-control invite-control--previous" type="button" aria-label="Previous chapter">
+            <span class="invite-control__icon invite-control__icon--up" aria-hidden="true"></span>
+          </button>
+          <button id="navDown" class="invite-control invite-control--next" type="button" aria-label="Next chapter">
+            <span class="invite-control__icon invite-control__icon--down" aria-hidden="true"></span>
+          </button>
+        </nav>
+      </aside>
+
+    </div>
+  </div>
+
+</main>
+
+<script src="components/icons.js"></script>
+<script src="components/event-core.js"></script>
+<script src="invitation-config.js"></script>
+<script src="components/controls.js"></script>
+<script src="layer4-content.js"></script>
+<script src="layer4-wording.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

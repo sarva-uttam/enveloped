@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "startingCommit",
+    "approvalStatus",
+    "entries",
+    "selectionStates",
+    "references",
+    "rejectedCandidates"
+  ],
+  "properties": {
+    "approvalStatus": {
+      "enum": [
+        "UNDER_REVIEW",
+        "APPROVED"
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "required": [
+          "minimumTier",
+          "approvalStatus",
+          "productionEligible",
+          "sourceFilePath",
+          "deliveryFilePath",
+          "priceAdjustment",
+          "id",
+          "exactGenerationPrompt",
+          "publicName",
+          "generationModel",
+          "generationDate",
+          "technical",
+          "placement",
+          "culturalReviewNotes"
+        ],
+        "properties": {
+          "minimumTier": {
+            "const": "BRONZE"
+          },
+          "approvalStatus": {
+            "enum": [
+              "UNDER_REVIEW",
+              "APPROVED"
+            ]
+          },
+          "productionEligible": {
+            "type": "boolean"
+          },
+          "sourceFilePath": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deliveryFilePath": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "priceAdjustment": {
+            "const": 0
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^HW-(GANESHA|SACRED|HEADER)-[0-9]{3}$"
+          },
+          "exactGenerationPrompt": {
+            "type": "string",
+            "minLength": 100
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "approvalStatus": {
+                  "const": "UNDER_REVIEW"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "productionEligible": {
+                  "const": false
+                },
+                "sourceFilePath": {
+                  "type": "null"
+                },
+                "deliveryFilePath": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "required": [
+                "ownerApprovalRecord"
+              ],
+              "properties": {
+                "productionEligible": {
+                  "const": true
+                },
+                "sourceFilePath": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "deliveryFilePath": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "selectionStates": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "imageFilePath",
+          "productionEligible"
+        ],
+        "properties": {
+          "id": {
+            "const": "NO_SACRED_IMAGERY"
+          },
+          "imageFilePath": {
+            "type": "null"
+          },
+          "productionEligible": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

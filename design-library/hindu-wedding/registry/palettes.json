@@ -1,0 +1,98 @@
+[
+  {
+    "id": "PAL-IVORY-BLUSH",
+    "name": "Ivory and Blush",
+    "colors": {
+      "background": "#F7F0E7",
+      "primary": "#B98686",
+      "accent": "#C9A45C",
+      "text": "#332821"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-IVORY-GOLD",
+    "name": "Ivory and Gold",
+    "colors": {
+      "background": "#F5EFE3",
+      "primary": "#A7792D",
+      "accent": "#D8B86A",
+      "text": "#30271E"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-BURGUNDY-GOLD",
+    "name": "Burgundy and Gold",
+    "colors": {
+      "background": "#4A1020",
+      "primary": "#D3AE62",
+      "accent": "#F0D79B",
+      "text": "#FFF5DD"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-TEMPLE-GOLD",
+    "name": "Temple Gold",
+    "colors": {
+      "background": "#8A511D",
+      "primary": "#E0B65C",
+      "accent": "#A83224",
+      "text": "#FFF5DA"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-SAGE-IVORY",
+    "name": "Sage and Ivory",
+    "colors": {
+      "background": "#E9E8D8",
+      "primary": "#64735B",
+      "accent": "#B38B45",
+      "text": "#293127"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-BLUSH-PEACH",
+    "name": "Blush and Peach",
+    "colors": {
+      "background": "#F8E4DF",
+      "primary": "#B86F6B",
+      "accent": "#D8A15E",
+      "text": "#3E2928"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-TEAL-MAROON",
+    "name": "Peacock Teal and Maroon",
+    "colors": {
+      "background": "#0D5257",
+      "primary": "#7A1F3D",
+      "accent": "#C6A354",
+      "text": "#FFF4D6"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  },
+  {
+    "id": "PAL-CINEMATIC-AMBER",
+    "name": "Cinematic Amber",
+    "colors": {
+      "background": "#17120E",
+      "primary": "#C78432",
+      "accent": "#F2C56D",
+      "text": "#FFF1D5"
+    },
+    "contrastNotes": "Validate WCAG contrast for every text token before production approval.",
+    "approvalStatus": "PLANNED"
+  }
+]

@@ -1,0 +1,920 @@
+/* Layer 4 typography: self-hosted OFL fonts (assets/fonts/FONTS.md). */
+@font-face {
+  font-family: "Ivory Script";
+  src: url("assets/fonts/alex-brush-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ivory Serif";
+  src: url("assets/fonts/playfair-display-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ivory Serif";
+  src: url("assets/fonts/playfair-display-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ivory: #f6f0e4;
+  --ivory-dim: #d8cbb0;
+  --gold-soft: #cba96a;
+  --stage-bg: #0e0b08;
+  --serif: "Georgia", "Times New Roman", serif;
+
+  /* Stop surfaces (METHOD §11). JS reads the exit durations from here so
+     CSS and the navigation state machine share one source of timing. */
+  --panel-enter-ms: 1400ms;
+  --panel-exit-ms: 1000ms;
+  /* Background grade (canvas only; see METHOD §13). */
+  --bg-saturate: 1.1;
+  --bg-contrast: 1.04;
+  --bg-warmth: 0.06; /* sepia amount: a very restrained warm-gold tone */
+  --bg-brightness: 1;
+  --finale-enter-ms: 1200ms;
+  /* Layer 4 wording motion (placement checkpoint, not Owner-approved). */
+  --l4-script: "Ivory Script", "Segoe Script", "Brush Script MT", cursive;
+  --l4-serif: "Ivory Serif", Georgia, "Iowan Old Style", serif;
+  --ivory-paper-base: #f7f0e3; /* Layer 2 opaque Ivory Palace paper */
+  --l4-crimson: #9f163a;
+  --l4-charcoal: #382b23;
+  --wd-enter-ms: 700ms;
+  --wd-name-enter-ms: 850ms;
+  --wd-slow-enter-ms: 1100ms;
+  --wd-stagger-ms: 110ms;
+  --wd-exit-ms: 400ms;
+  --wd-exit-stagger-ms: 30ms;
+  --wd-shift: 16px;
+  --wd-rise: 12px;
+  --wd-symbol-rise: 4px; /* knot: simple fade, minimal upward movement */
+  --ease-wording: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-wording-out: cubic-bezier(0.4, 0, 1, 1);
+  /* Third-layer ornaments (placement prototype, pending Owner approval). */
+  --ornament-enter-ms: 1400ms;
+  --ornament-exit-ms: 900ms;
+  --ornament-shift: 9cqw; /* start/end offset: 9% of the invitation width */
+  --ease-ornament-in: cubic-bezier(0.33, 1, 0.68, 1); /* slow, luxurious cubic ease-out; no overshoot */
+  --finale-exit-ms: 800ms;
+  --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1); /* cinematic ease-out */
+  --ease-dissolve: cubic-bezier(0.42, 0, 1, 1); /* gentle ease-in */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--stage-bg);
+  color: var(--ivory);
+  font-family: var(--serif);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.noscript-fallback {
+  max-width: 420px;
+  margin: 10vh auto;
+  text-align: center;
+  padding: 0 24px;
+}
+.noscript-fallback img {
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.app[hidden] { display: none; }
+
+/* ---------- Fixed stage (no page scroll) ---------- */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh; /* fallback where dvh is unsupported */
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--stage-bg);
+}
+
+.frame-box {
+  position: relative;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: #1a140d;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.55);
+  /* Lets stop surfaces size their feather to the invitation (cqw). The
+     box's size comes from height + aspect-ratio, never its content. */
+  container-type: size;
+}
+
+.frame-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.frame-canvas.is-ready { opacity: 1; }
+
+/* Non-destructive colour grade for the palace background only: the frame
+   JPEGs stay untouched, and the panel, frame, ornaments, wording, controls
+   and finale light are separate layers the filter never reaches. */
+.frame-canvas {
+  filter:
+    sepia(var(--bg-warmth))
+    saturate(var(--bg-saturate))
+    contrast(var(--bg-contrast))
+    brightness(var(--bg-brightness));
+}
+
+/* ---------- Stop surfaces: framed panel, finale light ---------- */
+/*
+ * Layer order inside .frame-box: canvas → framed panel (2): ivory fill →
+ * ornamental frame → reserved wording layer; finale light (2) → loader (5)
+ * → navigation (6). Nothing here receives pointer events.
+ *
+ * The panel keeps the frame artwork's own 941 × 1672 ratio and is as large
+ * as fits in 90% × 90% of the invitation box (cq units; see .frame-box).
+ */
+
+.stop-panel,
+.finale-light {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.stop-panel {
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 90%; /* fallback where container units are unsupported */
+  width: min(90cqw, calc(90cqh * 941 / 1672));
+  aspect-ratio: 941 / 1672;
+  transform: translate(-50%, -50%);
+  will-change: opacity;
+  transition: opacity var(--panel-exit-ms) var(--ease-dissolve);
+}
+
+/* Ivory fill, 85% opaque, only inside the frame: masked to the artwork's
+   own clear opening (the cusped arch and curved lower corners, derived
+   from the artwork and grown ~4px to tuck under the inner gold line), so
+   the spandrels, lattice corners and transparent exterior stay clear. */
+.stop-panel__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ivory-paper-base); /* 100% opaque warm ivory paper */
+  -webkit-mask: url("assets/ivory-palace-arch-frame-opening.png") center / 100% 100% no-repeat;
+  mask: url("assets/ivory-palace-arch-frame-opening.png") center / 100% 100% no-repeat;
+}
+
+/* Fine striated paper texture: very low-alpha horizontal fibres at
+   co-prime periods and slight angles (so no repeat reads at normal
+   distance) plus soft tonal variation. It lives inside the fill, so the
+   fill's opening mask clips it to the paper; it never covers the frame,
+   never takes input and never moves. The paper stays fully opaque. */
+.stop-panel__fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(132, 103, 67, 0.018) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0.6deg, rgba(132, 103, 67, 0.014) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(-0.4deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(0.25deg, rgba(120, 92, 58, 0.012) 0 2px, transparent 2px 17px),
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.2), transparent 42%),
+    radial-gradient(ellipse at 70% 75%, rgba(170, 132, 82, 0.025), transparent 48%);
+  mix-blend-mode: multiply;
+}
+
+.stop-panel__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.finale-light {
+  inset: 0;
+  z-index: 2;
+  background:
+    url("mist/paper-grain.svg") 0 0 / 240px 240px repeat,
+    radial-gradient(ellipse 85% 65% at 50% 44%, #fffdf9, #fcf7ee 58%, #f8f0e2);
+  transition: opacity var(--finale-exit-ms) ease-in-out;
+}
+
+.frame-box[data-surface="panel"] .stop-panel {
+  opacity: 1;
+  transition: opacity var(--panel-enter-ms) var(--ease-settle);
+}
+.frame-box[data-surface="finale"] .finale-light {
+  opacity: 1;
+  transition: opacity var(--finale-enter-ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Third layer: ceremonial foregrounds (Owner-approved) ---------- */
+/*
+ * DOM-wise inside the framed panel (above the frame artwork, below the
+ * reserved wording layer; controls stay above everything via z-index), but
+ * laid out in invitation-box coordinates: .stop-ornaments is re-centred to
+ * cover the whole invitation box (whose height is the stage's 100dvh).
+ *
+ * Placement map (ivory-palace-final-third-layer MANIFEST, scale corrected
+ * by the Owner to match the approved composites): per asset,
+ *   --orn-h      display height, % of the invitation height (42/43/42)
+ *   --orn-reach  maximum inward reach, % of the invitation width (66; the
+ *                ornaments may pass behind the down control)
+ *   --orn-ratio  natural width / height of the PNG
+ *   --orn-bottom, --orn-edge, --orn-dx  bottom / outer-edge / horizontal
+ *                offsets (default 0)
+ * Height is the primary size control; on screens taller than 9:16 the
+ * inward-reach cap takes over so the pair does not swamp the centre. Width
+ * is auto: natural aspect ratio, never stretched, mirrored or cropped.
+ */
+.stop-ornaments {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100cqw;
+  height: 100cqh;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+.stop-ornament {
+  position: absolute;
+  bottom: var(--orn-bottom, 0px);
+  height: min(calc(var(--orn-h) * 1cqh), calc(var(--orn-reach) * 1cqw / var(--orn-ratio)), 44cqh);
+  width: auto;
+  max-width: none;
+  display: block;
+  object-fit: contain;
+  opacity: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition:
+    opacity var(--ornament-exit-ms) var(--ease-dissolve),
+    transform var(--ornament-exit-ms) var(--ease-dissolve);
+}
+.stop-ornament--left {
+  left: calc(var(--orn-edge, 0px) + var(--orn-dx, 0px));
+  object-position: left bottom;
+  transform: translateX(calc(-1 * var(--ornament-shift)));
+}
+.stop-ornament--right {
+  right: calc(var(--orn-edge, 0px) - var(--orn-dx, 0px));
+  object-position: right bottom;
+  transform: translateX(var(--ornament-shift));
+}
+
+/* Per-asset placement map (manifest baseline). */
+.stop-ornament--left[data-stop="0"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8678; }
+.stop-ornament--right[data-stop="0"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8527; }
+.stop-ornament--left[data-stop="1"] { --orn-h: 43; --orn-reach: 66; --orn-ratio: 0.8333; }
+.stop-ornament--right[data-stop="1"] { --orn-h: 43; --orn-reach: 66; --orn-ratio: 0.8440; }
+.stop-ornament--left[data-stop="2"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8131; }
+.stop-ornament--right[data-stop="2"] { --orn-h: 42; --orn-reach: 66; --orn-ratio: 0.8333; }
+
+.frame-box[data-ornaments="0"] .stop-ornament[data-stop="0"],
+.frame-box[data-ornaments="1"] .stop-ornament[data-stop="1"],
+.frame-box[data-ornaments="2"] .stop-ornament[data-stop="2"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--ornament-enter-ms) var(--ease-ornament-in),
+    transform var(--ornament-enter-ms) var(--ease-ornament-in);
+}
+
+/* Future wording region, inside the panel: below the arch's shoulders,
+   inside the side pillars and above the third-layer ornaments (whose tops
+   reach ≈ 25% from the panel bottom, or 58px + ≈ 15.4% on short 9:16
+   invitations), with generous padding. Empty, hidden and inert in this
+   phase. */
+.stop-content {
+  position: absolute;
+  top: 18%;
+  bottom: max(26%, calc(62px + 15.5%));
+  left: 14%;
+  right: 14%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 4%, 24px);
+  text-align: center;
+  color: #3b2b1b;
+  overflow-wrap: anywhere;
+}
+.stop-content[hidden] { display: none; }
+
+/* ---------- Layer 4: wording placement (checkpoint, not Owner-approved) ---------- */
+/*
+ * Above the whole stop layer (panel, frame, ceremonial foreground) and the
+ * finale light; below the loader and the navigation controls. Geometry is %
+ * of the invitation box. Zones are centred on the zone itself; motion lives
+ * on the inner .wording-motion wrapper so centring is never overwritten.
+ * Font sizes, family and colour below are PROVISIONAL placeholders for
+ * placement review only; typography is decided in a later review.
+ */
+.wording-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.wording-stop {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  visibility: hidden;
+}
+.wording-stop[data-state="ready"],
+.wording-stop[data-state="in"],
+.wording-stop[data-state="out"] {
+  visibility: visible;
+}
+.wording-zone {
+  position: absolute;
+  top: var(--top);
+  left: 50%;
+  width: var(--w);
+  height: var(--h);
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: visible;
+  font-family: var(--l4-serif); /* formal serif: supporting wording */
+  font-weight: 400;
+  font-size: clamp(11px, 1.7cqh, 26px);
+  line-height: 1.25;
+  color: var(--l4-charcoal);
+  overflow-wrap: break-word;
+}
+/* Ceremonial script: ceremony titles and personal names, deep crimson. */
+.wording-zone[data-role="couple-heading"],
+.wording-zone[data-role="ceremony-title"],
+.wording-zone[data-role="honouree-name"],
+.wording-zone[data-role="bride-name"],
+.wording-zone[data-role="groom-name"] {
+  font-family: var(--l4-script);
+  font-size: clamp(20px, 3.6cqh, 56px);
+  line-height: 1.1;
+  color: var(--l4-crimson);
+}
+.wording-zone[data-role="sacred-invocation"] {
+  font-size: clamp(13px, 2.2cqh, 32px);
+  color: var(--l4-crimson);
+}
+/* Owner-authorised fit corrections (coordinates otherwise unchanged). */
+.wording-zone#haldi-closing-note {
+  width: clamp(144px, 46%, 280px);
+  font-size: clamp(11px, 3cqw, 16px); /* brief: 3vw; cqw = invitation width */
+  line-height: 1.05;
+}
+.wording-zone#wedding-invitation {
+  font-size: clamp(11px, 1.6cqh, 24.5px); /* ~6% below the supporting size */
+  line-height: 1.04;
+}
+
+/* Structured serif date component. */
+.wording-zone[data-role="date-time"] {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: lining-nums;
+}
+.wording-motion {
+  display: block;
+  width: 100%;
+  --dur: var(--wd-enter-ms);
+  opacity: 0;
+  transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0);
+  transition:
+    opacity var(--wd-exit-ms) var(--ease-wording-out) calc(var(--j) * var(--wd-exit-stagger-ms)),
+    transform var(--wd-exit-ms) var(--ease-wording-out) calc(var(--j) * var(--wd-exit-stagger-ms));
+}
+.wording-motion.is-name { --dur: var(--wd-name-enter-ms); }
+.wording-motion.is-slow { --dur: var(--wd-slow-enter-ms); }
+.wording-motion[data-enter="up"] { --dy: var(--wd-rise); }
+.wording-motion[data-enter="left"] { --dx: calc(-1 * var(--wd-shift)); }
+.wording-motion[data-enter="right"] { --dx: var(--wd-shift); }
+.wording-motion[data-enter="fade-up"] { --dy: var(--wd-symbol-rise); }
+.wording-motion[data-enter="fade"] { --dx: 0px; --dy: 0px; }
+.wording-stop[data-state="in"] .wording-motion {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--dur) var(--ease-wording) calc(var(--i) * var(--wd-stagger-ms)),
+    transform var(--dur) var(--ease-wording) calc(var(--i) * var(--wd-stagger-ms));
+}
+.wording-line { display: block; }
+
+/* Sacred opening (stops 160, 240): the Owner-approved crimson Ganesha,
+   centred above the mantra; both move together on the motion wrapper.
+   Sizes use cqw (invitation width), the equivalent of the brief's vw in
+   this invitation-relative coordinate system. Aspect ratio is preserved
+   (object-fit: contain, auto height); never stretched. */
+.sacred-opening {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 2px 0; /* neither element touches the zone boundary */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 0.5cqh, 6px);
+}
+.sacred-opening__ganesha {
+  display: block;
+  width: clamp(34px, 10cqw, 72px);
+  height: auto;
+  max-height: 52%;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.sacred-opening__mantra {
+  width: 100%;
+  text-align: center;
+  white-space: normal;
+}
+
+/* Narrow invitations (<= 360px): the sacred group moves down 0.8cqh
+   (padding-top shifts a centred flex column by half its value) and
+   Ganesha is slightly smaller, clearing the frame's top arch point. The
+   outer container is unchanged. */
+@container (max-width: 360px) {
+  .sacred-opening { padding-top: calc(2px + 1.6cqh); }
+  .sacred-opening__ganesha { width: clamp(28px, 8.5cqw, 72px); }
+}
+
+/* Bride name, nuptial knot, groom name: one semantic group spanning the
+   invitation box, so the names keep their approved coordinates. */
+.wording-subgroup {
+  position: absolute;
+  inset: 0;
+}
+/* Small internal adjustment (allowed by the brief) solely to open an
+   intentional gap for the knot: the bride's name sits slightly higher and
+   the groom's slightly lower inside their unchanged approved zones. */
+.wording-zone#wedding-bride-name { padding-bottom: min(1.6cqh, 14px); }
+.wording-zone#wedding-groom-name { padding-top: min(1.6cqh, 14px); }
+/* The knot zone is centred on the 50% axis at its own centre point
+   (--center-y), between the two name zones, never inside either. */
+.wording-zone.wording-symbol-zone {
+  top: var(--center-y);
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+}
+.wedding-nuptial-knot {
+  display: block;
+  width: clamp(38px, 10cqw, 72px);
+  height: auto;
+  max-height: clamp(16px, 2.6cqh, 30px);
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+/* Stop-300 enclosures: dedicated upright and inverted PNGs (no runtime
+   flip), contained in their approved 60% x 4% zones. */
+.closing-enclosure .wording-motion {
+  height: 100%;
+}
+.closing-enclosure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Every Layer 4 image is decorative/associated: no input, no selection. */
+.wording-layer img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Development-only placement review: add ?review=wording to the URL.
+   Inset outlines draw inside each zone and do not change layout. */
+.frame-box.wording-review .wording-zone {
+  outline: 2px solid var(--review);
+  outline-offset: -2px;
+}
+
+/* ---------- Loader ---------- */
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: radial-gradient(circle at 50% 40%, #241c12, #0e0b08 80%);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  z-index: 5;
+}
+.loader[data-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-soft);
+  border-top-color: transparent;
+  animation: spin 1.1s linear infinite;
+}
+.loader p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--ivory-dim);
+  text-transform: uppercase;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Interface layer: utilities (upper right) + navigation rail ---------- */
+/*
+ * Reusable Enveloped controls (components/controls.js), themed by the
+ * Ivory Palace tokens below. The interface layer spans the invitation box
+ * above Layers 1-4 and never takes input itself; only buttons do.
+ *   .invite-controls__utilities   Music, Gallery, Share: horizontal, upper right
+ *   .invite-controls__navigation  Previous above Next: vertical, middle right
+ * Rail centre 47%: measured to keep both buttons clear of every wording
+ * line at every stop (see verify.js). Sizes follow the approved mockup
+ * (about 8% of the invitation width) with a 44px minimum touch target.
+ */
+.theme-ivory-palace {
+  --ctl-surface: rgba(250, 245, 236, 0.74);
+  --ctl-surface-hover: rgba(252, 248, 241, 0.94);
+  --ctl-surface-quiet: rgba(250, 245, 236, 0.56);
+  --ctl-surface-disabled: rgba(250, 245, 236, 0.34);
+  --ctl-border: rgba(166, 124, 60, 0.62);
+  --ctl-border-quiet: rgba(166, 124, 60, 0.46);
+  --ctl-border-disabled: rgba(166, 124, 60, 0.24);
+  --ctl-icon: #9f163a;
+  --ctl-icon-quiet: #382b23;
+  --ctl-icon-disabled: rgba(56, 43, 35, 0.3);
+  --ctl-focus: #9f163a;
+  --strip-paper: #f8f2e8;
+  --strip-border: rgba(166, 124, 60, 0.7);
+}
+
+.invite-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none; /* only the controls themselves take input */
+}
+.invite-controls__utilities {
+  position: absolute;
+  top: max(1.6cqh, 10px, env(safe-area-inset-top));
+  right: max(8px, calc(3.5cqw - 4px), env(safe-area-inset-right));
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(6px, 1.4cqw, 14px);
+}
+.invite-controls__utilities[hidden] { display: none; }
+.invite-controls__navigation {
+  position: absolute;
+  right: max(8px, calc(3.5cqw - 4px), env(safe-area-inset-right));
+  top: 47%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.4cqw, 14px);
+}
+
+.invite-control {
+  position: relative;
+  width: clamp(44px, 8cqw, 60px);
+  height: clamp(44px, 8cqw, 60px);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--ctl-surface);
+  border: 1px solid var(--ctl-border);
+  color: var(--ctl-icon);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  pointer-events: auto;
+  transition: opacity 0.4s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.invite-control:hover:not(:disabled),
+.invite-control:focus-visible {
+  background: var(--ctl-surface-hover);
+  border-color: var(--ctl-border);
+}
+.invite-control:active:not(:disabled) {
+  background: rgba(240, 229, 210, 0.95);
+}
+.invite-control:focus-visible {
+  outline: 2px solid var(--ctl-focus);
+  outline-offset: 2px;
+}
+.invite-control:disabled {
+  background: var(--ctl-surface-disabled);
+  border-color: var(--ctl-border-disabled);
+  color: var(--ctl-icon-disabled);
+  cursor: default;
+}
+.invite-control.is-active {
+  background: var(--ctl-surface-hover);
+  box-shadow: inset 0 0 0 1px var(--ctl-border);
+}
+/* Without backdrop blur (unsupported browsers), keep the surface readable. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .invite-control { background: rgba(250, 245, 236, 0.9); }
+}
+.invite-control__icon { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; pointer-events: none; }
+.invite-control__icon svg { width: 42%; height: 42%; }
+.event-strip .event-action .invite-control__icon svg { width: clamp(18px, 2.6cqw, 28px); height: clamp(18px, 2.6cqw, 28px); }
+
+/* Navigation: quieter than the utilities; hidden while travelling. */
+.invite-controls__navigation .invite-control {
+  background: var(--ctl-surface-quiet);
+  border-color: var(--ctl-border-quiet);
+  color: var(--ctl-icon-quiet);
+  opacity: 0;
+  pointer-events: none;
+}
+.invite-controls__navigation .invite-control.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.invite-controls__navigation .invite-control:disabled {
+  background: var(--ctl-surface-disabled);
+  border-color: var(--ctl-border-disabled);
+  color: var(--ctl-icon-disabled);
+}
+
+/* Tooltips (supporting labels; the accessible name is aria-label). */
+.invite-control[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(56, 43, 35, 0.9);
+  color: #fbf6ec;
+  font: 12px/1.3 Georgia, serif;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.invite-controls__navigation .invite-control[data-tooltip]::after,
+.event-strip .invite-control[data-tooltip]::after {
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+.event-strip .invite-control[data-tooltip]::after {
+  top: auto;
+  bottom: calc(100% + 6px);
+  right: 0;
+  transform: none;
+}
+.invite-control[data-tooltip]:hover::after,
+.invite-control[data-tooltip]:focus-visible::after { opacity: 1; }
+
+/* Feedback (share/copy/music), no browser alerts. */
+.invite-feedback {
+  position: absolute;
+  top: calc(max(1.6cqh, 10px) + clamp(44px, 8cqw, 60px) + 10px);
+  right: max(8px, calc(3.5cqw - 4px));
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(56, 43, 35, 0.9);
+  color: #fbf6ec;
+  font: 13px/1.3 Georgia, serif;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.invite-feedback.is-shown { opacity: 1; transform: none; }
+.invite-feedback:empty { display: none; }
+
+.invite-offscreen {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Stop-300 event strips (Layer 4) ---------- */
+/* Both strips live in one zone below the lower enclosure. Width 76% of
+   the invitation, widening only as far as needed on narrow phones
+   (compact representation: >=272px so every 44px target fits). */
+.wording-zone.closing-events {
+  height: auto;
+  width: min(94%, max(76%, 272px));
+  justify-content: flex-start;
+}
+.closing-events .wording-motion {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.3cqh, 22px);
+}
+.event-strip {
+  --strip-h: clamp(46px, 4.3cqh, 72px); /* 44px targets + 1px borders */
+  position: relative;
+  box-sizing: border-box;
+  height: var(--strip-h);
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto; /* name | rule | countdown | rule | actions */
+  align-items: center;
+  padding: 0 clamp(10px, 2.2cqw, 24px);
+  border: 1px solid var(--strip-border);
+  border-radius: 12px;
+  background:
+    repeating-linear-gradient(0deg, rgba(132, 103, 67, 0.018) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0.6deg, rgba(132, 103, 67, 0.014) 0 1px, transparent 1px 7px),
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.35), transparent 60%),
+    var(--strip-paper);
+  pointer-events: auto;
+  container-type: inline-size;
+  text-align: center;
+  line-height: 1;
+}
+.event-strip__cap {
+  position: absolute;
+  top: 50%;
+  width: clamp(14px, 2.4cqw, 22px);
+  height: clamp(14px, 2.4cqw, 22px);
+  transform: translate(-50%, -50%);
+  color: rgba(166, 124, 60, 0.85);
+  pointer-events: none;
+}
+.event-strip__cap--start { left: 0; }
+.event-strip__cap--end { left: 100%; }
+.event-strip__cap-art { display: block; width: 100%; height: 100%; }
+.event-strip__name {
+  font-family: var(--l4-serif);
+  font-weight: 600;
+  font-size: clamp(10px, 1.55cqh, 19px);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--l4-crimson);
+  padding-right: clamp(6px, 1.6cqw, 16px);
+  white-space: nowrap;
+}
+.event-strip__rule {
+  width: 1px;
+  height: 52%;
+  background: rgba(166, 124, 60, 0.55);
+}
+.event-strip__time {
+  padding: 0 clamp(4px, 1.2cqw, 14px);
+  font-family: var(--l4-serif);
+  font-size: clamp(10px, 1.45cqh, 18px);
+  color: var(--l4-charcoal);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.event-strip__count .count-compact { display: none; }
+.event-strip__actions {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.event-strip .event-action {
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--l4-crimson);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.event-strip .event-action:hover:not(:disabled),
+.event-strip .event-action:focus-visible { background: rgba(166, 124, 60, 0.12); }
+.event-strip .event-action:disabled { background: transparent; color: rgba(56, 43, 35, 0.28); }
+.event-strip[data-state="unavailable"] .event-strip__time,
+.event-strip[data-state="completed"] .event-strip__time {
+  font-style: italic;
+  font-size: clamp(10px, 1.35cqh, 16px);
+}
+/* Compact representation on narrow strips. */
+@container (max-width: 330px) {
+  .event-strip__count .count-full { display: none; }
+  .event-strip__count .count-compact { display: inline; }
+  .event-strip__name { letter-spacing: 0.02em; }
+}
+
+/* Calendar menu. */
+.event-calendar { position: relative; display: flex; }
+.event-calendar__menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  z-index: 2;
+  min-width: 200px;
+  padding: 4px;
+  border: 1px solid var(--strip-border);
+  border-radius: 8px;
+  background: var(--strip-paper);
+  box-shadow: 0 6px 18px rgba(56, 43, 35, 0.16);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.event-calendar__menu.opens-down { bottom: auto; top: calc(100% + 6px); }
+.event-calendar__menu[hidden] { display: none; }
+.event-calendar__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--l4-charcoal);
+  font: 14px/1.2 var(--l4-serif);
+  text-decoration: none;
+  cursor: pointer;
+}
+.event-calendar__item svg { color: var(--l4-crimson); flex: 0 0 auto; }
+.event-calendar__item:hover,
+.event-calendar__item:focus-visible { background: rgba(166, 124, 60, 0.14); outline: none; }
+.event-calendar__item:focus-visible { box-shadow: inset 0 0 0 2px var(--ctl-focus); }
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Same resting states; a short opacity-only crossfade. */
+  :root {
+    --panel-enter-ms: 220ms;
+    --panel-exit-ms: 180ms;
+    --finale-enter-ms: 260ms;
+    --finale-exit-ms: 180ms;
+    --ornament-enter-ms: 240ms;
+    --ornament-exit-ms: 180ms;
+    --ornament-shift: 0px; /* same sequence, opacity only */
+    --wd-enter-ms: 220ms;
+    --wd-name-enter-ms: 220ms;
+    --wd-slow-enter-ms: 220ms;
+    --wd-exit-ms: 160ms;
+    --wd-stagger-ms: 0ms;
+    --wd-exit-stagger-ms: 0ms;
+    --wd-shift: 0px;
+    --wd-rise: 0px;
+    --wd-symbol-rise: 0px;
+  }
+  .frame-canvas,
+  .loader,
+  .invite-control {
+    transition-duration: 0.01ms !important;
+  }
+  .loader-mark {
+    animation-duration: 2.4s;
+  }
+}
